@@ -243,26 +243,25 @@
 			<task ID="225" UniqueID="250" OutlineLevel="5" Name="Confeccionar Material de Soporte" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
 			<task ID="226" UniqueID="322" OutlineLevel="5" Name="Organizar capacitaciones" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
 			<task ID="227" UniqueID="307" OutlineLevel="5" Name="Realizar las capacitaciones correspondientes" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="228" UniqueID="114" OutlineLevel="3" Name="Nivel de Esfuerzo" Duration="1d" RemainingDuration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="229" UniqueID="252" OutlineLevel="4" Name="Organizaci&#243;n de reuniones " Duration="1d" RemainingDuration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="230" UniqueID="310" OutlineLevel="5" Name="Establecer lugar, fecha y hora de reuni&#243;n" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="231" UniqueID="311" OutlineLevel="5" Name="Asistir a la reuni&#243;n" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="232" UniqueID="312" OutlineLevel="5" Name="Documentar temas tratados" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="233" UniqueID="253" OutlineLevel="4" Name="Presentaciones" Duration="1d" RemainingDuration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="234" UniqueID="316" OutlineLevel="5" Name="Definir temas a presentar" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="235" UniqueID="317" OutlineLevel="5" Name="Estructurar presentaci&#243;n" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="236" UniqueID="318" OutlineLevel="5" Name="Llevar a cabo la presentaci&#243;n" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="237" UniqueID="254" OutlineLevel="4" Name="Investigaciones" Duration="1d" RemainingDuration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="238" UniqueID="313" OutlineLevel="5" Name="Definir temas a investigar" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="239" UniqueID="314" OutlineLevel="5" Name="Buscar material relevante" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
-			<task ID="240" UniqueID="315" OutlineLevel="5" Name="Asimilar los conocimientos (te&#243;rica y pr&#225;cticamente)" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="228" UniqueID="334" OutlineLevel="5" Name="Evaluar la capacitacion" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="229" UniqueID="114" OutlineLevel="3" Name="Nivel de Esfuerzo" Duration="1d" RemainingDuration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="230" UniqueID="252" OutlineLevel="4" Name="Organizaci&#243;n de reuniones " Duration="1d" RemainingDuration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="231" UniqueID="310" OutlineLevel="5" Name="Establecer lugar, fecha y hora de reuni&#243;n" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="232" UniqueID="311" OutlineLevel="5" Name="Asistir a la reuni&#243;n" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="233" UniqueID="312" OutlineLevel="5" Name="Documentar temas tratados" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="234" UniqueID="253" OutlineLevel="4" Name="Presentaciones" Duration="1d" RemainingDuration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="235" UniqueID="316" OutlineLevel="5" Name="Definir temas a presentar" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="236" UniqueID="317" OutlineLevel="5" Name="Estructurar presentaci&#243;n" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="237" UniqueID="318" OutlineLevel="5" Name="Llevar a cabo la presentaci&#243;n" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="238" UniqueID="254" OutlineLevel="4" Name="Investigaciones" Duration="1d" RemainingDuration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="239" UniqueID="313" OutlineLevel="5" Name="Definir temas a investigar" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="240" UniqueID="314" OutlineLevel="5" Name="Buscar material relevante" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
+			<task ID="241" UniqueID="315" OutlineLevel="5" Name="Asimilar los conocimientos (te&#243;rica y pr&#225;cticamente)" Duration="1d" Start="2013-05-20T08:00" Finish="2013-05-20T17:00" EarlyStart="2013-05-20T08:00" EarlyFinish="2013-05-20T17:00" LateStart="2013-05-20T08:00" LateFinish="2013-05-20T17:00" Critical="yes" EffortDriven="yes" FixedCostAccrual="Prorated"/>
 		</tasks>
-		<outline current="333">
+		<outline current="112">
 			<collapse uid="26"/>
 			<collapse uid="27"/>
 			<collapse uid="28"/>
-			<collapse uid="191"/>
-			<collapse uid="33"/>
 			<collapse uid="34"/>
 			<collapse uid="35"/>
 			<collapse uid="36"/>
@@ -281,28 +280,89 @@
 			<collapse uid="204"/>
 			<collapse uid="151"/>
 			<collapse uid="182"/>
-			<collapse uid="196"/>
-			<collapse uid="198"/>
 			<collapse uid="227"/>
 			<collapse uid="228"/>
 			<collapse uid="324"/>
 			<collapse uid="229"/>
+			<collapse uid="238"/>
 			<collapse uid="240"/>
 			<collapse uid="241"/>
-			<collapse uid="265"/>
-			<collapse uid="242"/>
-			<collapse uid="280"/>
 			<collapse uid="243"/>
 			<collapse uid="244"/>
 			<collapse uid="245"/>
 			<collapse uid="246"/>
 			<collapse uid="247"/>
 			<collapse uid="248"/>
-			<collapse uid="249"/>
-			<collapse uid="251"/>
 			<collapse uid="252"/>
 			<collapse uid="253"/>
 			<collapse uid="254"/>
+			<hidden uid="58"/>
+			<hidden uid="59"/>
+			<hidden uid="60"/>
+			<hidden uid="61"/>
+			<hidden uid="63"/>
+			<hidden uid="64"/>
+			<hidden uid="65"/>
+			<hidden uid="78"/>
+			<hidden uid="79"/>
+			<hidden uid="80"/>
+			<hidden uid="81"/>
+			<hidden uid="66"/>
+			<hidden uid="67"/>
+			<hidden uid="68"/>
+			<hidden uid="70"/>
+			<hidden uid="71"/>
+			<hidden uid="72"/>
+			<hidden uid="73"/>
+			<hidden uid="74"/>
+			<hidden uid="75"/>
+			<hidden uid="76"/>
+			<hidden uid="77"/>
+			<hidden uid="96"/>
+			<hidden uid="97"/>
+			<hidden uid="106"/>
+			<hidden uid="100"/>
+			<hidden uid="101"/>
+			<hidden uid="102"/>
+			<hidden uid="103"/>
+			<hidden uid="164"/>
+			<hidden uid="166"/>
+			<hidden uid="167"/>
+			<hidden uid="321"/>
+			<hidden uid="169"/>
+			<hidden uid="170"/>
+			<hidden uid="171"/>
+			<hidden uid="172"/>
+			<hidden uid="173"/>
+			<hidden uid="174"/>
+			<hidden uid="175"/>
+			<hidden uid="176"/>
+			<hidden uid="177"/>
+			<hidden uid="205"/>
+			<hidden uid="212"/>
+			<hidden uid="207"/>
+			<hidden uid="208"/>
+			<hidden uid="178"/>
+			<hidden uid="179"/>
+			<hidden uid="180"/>
+			<hidden uid="181"/>
+			<hidden uid="319"/>
+			<hidden uid="320"/>
+			<hidden uid="290"/>
+			<hidden uid="291"/>
+			<hidden uid="292"/>
+			<hidden uid="295"/>
+			<hidden uid="296"/>
+			<hidden uid="297"/>
+			<hidden uid="298"/>
+			<hidden uid="299"/>
+			<hidden uid="300"/>
+			<hidden uid="316"/>
+			<hidden uid="317"/>
+			<hidden uid="318"/>
+			<hidden uid="313"/>
+			<hidden uid="314"/>
+			<hidden uid="315"/>
 		</outline>
 	</proj>
 	<printInfo mode="scale" orient="landscape" pagesWide="1" pagesHigh="1" scale="100%" bw="no" enlarge="no" byColumn="no" adjustPageBreaks="no" marginTop="36pt" marginLeft="36pt" marginBottom="36pt" marginRight="36pt"/>
@@ -1532,6 +1592,9 @@
 	<treediff id="307">
 		<item listmode="stemleft"/>
 		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="334">
+		<item calign="branch_nearest" listmode="stemleft"/>
 	</treediff>
 	<treediff id="252">
 		<item calign="branch_nearest" listmode="stemleft"/>
