@@ -20,7 +20,7 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>templates/pruebaLayout.xhtml</welcome-file>
-        <welcome-file>prueba.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>primefaces.THEME</param-name>
