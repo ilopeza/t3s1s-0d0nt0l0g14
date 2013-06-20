@@ -46,9 +46,11 @@
                     <ui:include src="commonLeftMenu.xhtml"/>
                 </p:layoutUnit>
                 <p:layoutUnit id="center" position="center">
-                    <p:outputPanel id="mainContent">
-                        <ui:include src="#{MyManagedBean.mainContent}" />
-                    </p:outputPanel>
+                    <h:form id="mainForm">
+                        <p:outputPanel id="mainContent">             #{MyManagedBean.mainContent}
+                            <ui:include src="#{MyManagedBean.mainContent}" />
+                        </p:outputPanel>
+                    </h:form>
                 </p:layoutUnit>
             </p:layout>
         </h:body>

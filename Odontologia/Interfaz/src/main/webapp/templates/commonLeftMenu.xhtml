@@ -9,7 +9,9 @@
         <h:form>
             <p:panelMenu>
                 <p:submenu label="Gestión de Pacientes">
-                    <p:menuitem value="Datos de Paciente"/>
+                    <p:menuitem value="Datos de Paciente"
+                                actionListener="#{MyManagedBean.changeInterfaz('/pages/pacientes/prueba.xhtml')}" 
+                                update=":mainForm:mainContent"/>
                     <p:menuitem value="Consultar Paciente"/>
                 </p:submenu>
                 <p:submenu label="Gestión de Asignaciones">
