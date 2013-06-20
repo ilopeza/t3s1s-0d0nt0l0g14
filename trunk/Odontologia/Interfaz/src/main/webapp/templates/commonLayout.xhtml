@@ -38,19 +38,17 @@
                     <ui:include src="commonHeader.xhtml"/>
                 </p:layoutUnit>
 
-                <p:layoutUnit id="bottom" position="south" size="60">
+                <!--p:layoutUnit id="bottom" position="south" size="60">
                     <ui:include src="commonFooter.xhtml"/>
-                </p:layoutUnit>
+                </p:layoutUnit-->
 
                 <p:layoutUnit id="left" position="west" size="300" collapsible="true" header="Opciones" minSize="200">
                     <ui:include src="commonLeftMenu.xhtml"/>
                 </p:layoutUnit>
                 <p:layoutUnit id="center" position="center">
-                    <h:form>
-                        <ui:insert name="content">
-                            Content
-                        </ui:insert>
-                    </h:form>
+                    <p:outputPanel id="mainContent">
+                        <ui:include src="#{MyManagedBean.mainContent}" />
+                    </p:outputPanel>
                 </p:layoutUnit>
             </p:layout>
         </h:body>
