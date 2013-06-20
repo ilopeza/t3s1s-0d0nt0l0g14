@@ -43,6 +43,11 @@
                 <property name="databasePlatform" value="org.hibernate.dialect.MySQLInnoDBDialect" />
             </bean> 
         </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+            </props>
+        </property>
         <property name="loadTimeWeaver">
             <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
         </property>
