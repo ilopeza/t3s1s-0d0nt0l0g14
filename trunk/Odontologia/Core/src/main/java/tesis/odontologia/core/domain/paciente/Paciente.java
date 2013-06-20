@@ -192,9 +192,9 @@ public class Paciente extends Persona {
     public void setLugar(String lugar) {
         this.lugar = lugar;
     }
-}
 
-enum EstudiosTipo {
+
+public enum EstudiosTipo {
 
     PRIMARIO {
         @Override
@@ -222,7 +222,7 @@ enum EstudiosTipo {
     };
 }
 
-enum EstadoCivilTipo {
+public enum EstadoCivilTipo {
 
     SOLTERO {
         @Override
@@ -248,4 +248,5 @@ enum EstadoCivilTipo {
             return "Viudo/a";
         }
     };
+}
 }
