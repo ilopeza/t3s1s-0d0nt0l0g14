@@ -5,13 +5,12 @@
 package tesis.odontologia.core.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import tesis.odontologia.core.domain.Persona;
 
 /**
  *
  * @author Maxi
  */
-public interface PersonaDao extends JpaRepository<Persona, Long>{
-    
+public interface PersonaDao extends JpaRepository<Persona, Long>, QueryDslPredicateExecutor {
 }

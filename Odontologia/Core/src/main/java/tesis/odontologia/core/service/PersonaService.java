@@ -4,16 +4,9 @@
  */
 package tesis.odontologia.core.service;
 
-import java.io.Serializable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import tesis.odontologia.core.domain.Persona;
-
 /**
  *
  * @author Maxi
  */
 public interface PersonaService {
-    
-    void save(Persona p);
-    
 }

@@ -15,18 +15,17 @@ import javax.persistence.Version;
  *
  * @author Maxi
  */
-@MappedSuperclass 
+@MappedSuperclass
 public abstract class Generic implements Serializable {
-    
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
     @Version
     private Integer version;
-    
+
     //GETTERS AND SETTERS
-    
     public Long getId() {
         return id;
     }
@@ -42,5 +41,6 @@ public abstract class Generic implements Serializable {
     public void setVersion(Integer version) {
         this.version = version;
     }
-    
+
+    abstract void validar() throws Exception;
 }
