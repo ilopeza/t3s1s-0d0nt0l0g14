@@ -13,5 +13,4 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
  */
 @ContextConfiguration(value = "classpath:context.xml")
 public abstract class AbstractTest extends AbstractTestNGSpringContextTests {
-    
 }
