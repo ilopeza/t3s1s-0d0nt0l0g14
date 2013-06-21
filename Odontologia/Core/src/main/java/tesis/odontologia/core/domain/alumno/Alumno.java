@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import tesis.odontologia.core.domain.Persona;
+import tesis.odontologia.core.exception.GenericException;
 
 /**
  *
@@ -28,6 +29,9 @@ public class Alumno extends Persona {
         super(nombre, apellido);
     }
 
-    
-    
+    @Override
+    public void validar() throws GenericException {
+        super.validar();
+    }
+
 }

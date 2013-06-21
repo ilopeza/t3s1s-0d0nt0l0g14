@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Temporal;
+import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.PersonaException;
 
 /**
@@ -80,7 +81,7 @@ public abstract class Persona extends Generic {
 
     //VALIDAR
     @Override
-    void validar() throws Exception {
+    public void validar() throws GenericException {
         if (documento == null) {
             throw new PersonaException("El documento no puede ser nulo.");
         }
