@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.core.domain.usuario;
 
+import javax.persistence.Entity;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.RolException;
@@ -12,6 +13,7 @@ import tesis.odontologia.core.exception.RolException;
  *
  * @author alespe
  */
+@Entity
 public class Rol extends Generic{
     private String nombre;
 
