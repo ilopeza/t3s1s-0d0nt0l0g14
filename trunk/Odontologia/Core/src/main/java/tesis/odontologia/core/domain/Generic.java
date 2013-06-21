@@ -10,13 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import tesis.odontologia.core.interfaces.Validator;
 
 /**
  *
  * @author Maxi
  */
 @MappedSuperclass
-public abstract class Generic implements Serializable {
+public abstract class Generic implements Serializable, Validator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,5 +43,4 @@ public abstract class Generic implements Serializable {
         this.version = version;
     }
 
-    abstract void validar() throws Exception;
 }

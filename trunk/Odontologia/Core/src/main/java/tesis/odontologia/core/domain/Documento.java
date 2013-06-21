@@ -10,6 +10,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import tesis.odontologia.core.exception.DocumentoException;
+import tesis.odontologia.core.exception.GenericException;
 
 /**
  *
@@ -51,7 +52,7 @@ public class Documento implements Serializable {
         this.tipoDocumento = tipoDocumento;
     }
 
-    void validar() throws Exception {
+    void validar() throws GenericException {
         if (numero == null) {
             throw new DocumentoException("El numero de documento no puede ser nulo.");
         }

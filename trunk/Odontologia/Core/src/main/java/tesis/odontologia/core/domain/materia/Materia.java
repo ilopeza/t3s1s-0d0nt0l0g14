@@ -5,6 +5,7 @@
 package tesis.odontologia.core.domain.materia;
 
 import tesis.odontologia.core.domain.Generic;
+import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.MateriaException;
 
 /**
@@ -31,7 +32,7 @@ public class Materia extends Generic {
     }
 
     @Override
-    void validar() throws Exception {
+    public void validar() throws GenericException {
         if (nombre == null || nombre.isEmpty()) {
             throw new MateriaException("El nombre de la materia no puede ser nulo o vacio.");
         }
