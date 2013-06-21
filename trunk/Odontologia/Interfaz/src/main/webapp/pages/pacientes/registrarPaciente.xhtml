@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="">
+        <ui:define name="content">
+            <h:form id="form">  
+                <p:tabView id="tabView" dynamic="true" cache="true">  
+
+                    <p:tab id="datosPersonales" title="Datos Personales">  
+                        <h:panelGrid columns="6" cellpadding="10">  
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Nombre y apellido completo:"/>
+                                </p:column>
+                                <p:column colspan="5">
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Núm. de doc.:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="txtNumDoc"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Estado civil:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneListbox id="selectEstadoCivil"> 
+                                        <f:selectItem itemLabel="Casado" itemValue="1"/>
+                                        <f:selectItem itemLabel="Divorciado" itemValue="2"/>
+                                        <f:selectItem itemLabel="Soltero" itemValue="3"/>
+                                    </p:selectOneListbox>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Religión:"/>´
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="txtReligion"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Edad:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="txtEdad"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Nacionalidad:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="txtNacionalidad"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Obra social"/>´
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="txtObraSocial"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Lugar de nacimiento:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="txtLugarDeNacimiento"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Provincia"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneListbox id="selectProvincia"> 
+                                        <f:selectItem itemLabel="Casado" itemValue="1"/>
+                                        <f:selectItem itemLabel="Divorciado" itemValue="2"/>
+                                        <f:selectItem itemLabel="Soltero" itemValue="3"/>
+                                    </p:selectOneListbox>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Fecha"/>´
+                                </p:column>
+                                <p:column>
+                                    <p:inputMask value="Fecha de nac.:" mask="99/99/9999"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Estudios:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:radioButton id="rdbEstudios">
+                                        <f:selectItem itemLabel="Sí" itemValue="1" />  
+                                        <f:selectItem itemLabel="No" itemValue="2" />  
+                                    </p:radioButton>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Nivel alcanzado:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:selectOneListbox id="selectNivelEstudio"> 
+                                        <f:selectItem itemLabel="Primario" itemValue="1"/>
+                                        <f:selectItem itemLabel="Secundario" itemValue="2"/>
+                                        <f:selectItem itemLabel="Universitario" itemValue="3"/>
+                                    </p:selectOneListbox>
+                                </p:column>                         
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Trabajo o profesión:"/>
+                                </p:column>
+                                <p:column colspan="4">
+                                    <p:inputText id="txtTrabajo"/>
+                                </p:column>                         
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Domicilio actual:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:inputText id="txtDomicilioActual"/>
+                                </p:column> 
+                                <p:column>
+                                    <p:outputLabel value="Ciudad:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:inputText id="txtCiudadActual"/>
+                                </p:column> 
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Residencia anterior:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:inputText id="txtResidenciaAnterior"/>
+                                </p:column> 
+                                <p:column>
+                                    <p:outputLabel value="Ciudad anterior:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:inputText id="txtCiudadActual"/>
+                                </p:column> 
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Teléfono:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:inputMask id="txtTelefono" mask="(999) 999-9999"/> 
+                                </p:column> 
+                                <p:column>
+                                    <p:outputLabel value="Celular:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:inputMask id="txtCelular" mask="(999) 999-999999"/>
+                                </p:column> 
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Médico de cabecera:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:inputText id="txtMedicoCabecera"/>
+                                </p:column> 
+                                <p:column>
+                                    <p:outputLabel value="Teléfono:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:inputMask id="txtTelefonoMedico" mask="(999) 999-999999"/>
+                                </p:column> 
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Servicio de emergencia:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:radioButton id="rdbServicioEmergencia">
+                                        <f:selectItem itemLabel="Sí" itemValue="1" />  
+                                        <f:selectItem itemLabel="No" itemValue="2" />  
+                                    </p:radioButton>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Cuál?:"/>
+                                </p:column>
+                                <p:column colspan="4">
+                                    <p:inputText id="txtServicioEmergencia"/>
+                                </p:column>                         
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Privado de libertad:"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:selectOneRadio id="options">  
+                                        <f:selectItem itemLabel="Sí" itemValue="1" />  
+                                        <f:selectItem itemLabel="No" itemValue="2" />   
+                                    </p:selectOneRadio> 
+                                </p:column> 
+                                <p:column>
+                                    <p:outputLabel value="Lugar"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:inputMask id="txtLugar" mask="(999) 999-999999"/>
+                                </p:column> 
+                            </p:row>
+                        </h:panelGrid>  
+                    </p:tab>  
+                    <p:tab id="tab2" title="Godfather Part II">  
+                        <h:panelGrid columns="2" cellpadding="10">  
+
+                        </h:panelGrid>  
+                    </p:tab>  
+
+                    <p:tab id="tab3" title="Godfather Part III">  
+                        <h:panelGrid columns="2" cellpadding="10">  
+
+                        </h:panelGrid>  
+                    </p:tab>  
+
+                </p:tabView>  
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
