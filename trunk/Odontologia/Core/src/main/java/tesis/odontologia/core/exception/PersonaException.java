@@ -8,7 +8,7 @@ package tesis.odontologia.core.exception;
  *
  * @author Maxi
  */
-public class PersonaException extends Exception {
+public class PersonaException extends GenericException {
 
     public PersonaException(String message) {
         super(message);
