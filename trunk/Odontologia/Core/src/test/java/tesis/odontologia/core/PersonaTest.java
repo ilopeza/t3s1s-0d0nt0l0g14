@@ -22,7 +22,7 @@ public class PersonaTest extends AbstractTest {
     @Test
     public void crearPaciente() {
         p = new Paciente("Maximiliano", "Barros");
-        p.setDocumento(new Documento(34688417, Documento.TipoDocumento.DNI));
+        p.setDocumento(new Documento("34688417", Documento.TipoDocumento.DNI));
         p.setDomicilio(new Domicilio("Macaon 4123", "Cordoba"));
         personaDao.save(p);
     }
