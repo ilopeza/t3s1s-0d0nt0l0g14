@@ -12,7 +12,10 @@
                     <p:menuitem value="Datos de Paciente"
                                 actionListener="#{MyManagedBean.changeInterfaz('/pages/pacientes/prueba.xhtml')}" 
                                 update=":mainForm:mainContent"/>
-                    <p:menuitem value="Consultar Paciente"/>
+                    
+                    <p:menuitem value="Consultar Paciente"
+                                actionListener="#{MyManagedBean.changeInterfaz('/pages/pacientes/prueba.xhtml')}" 
+                                update=":mainForm:mainContent"/>
                 </p:submenu>
                 <p:submenu label="Gestión de Asignaciones">
                     <p:menuitem value="Nuevo"/>
