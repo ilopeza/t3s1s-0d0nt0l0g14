@@ -19,7 +19,7 @@ import tesis.odontologia.core.exception.DocumentoException;
 public class Documento implements Serializable {
 
     @Column(nullable = false)
-    private Integer numero;
+    private String numero;
     
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -29,17 +29,17 @@ public class Documento implements Serializable {
     public Documento() {
     }
 
-    public Documento(Integer numero, TipoDocumento tipo) {
+    public Documento(String numero, TipoDocumento tipo) {
         this.numero = numero;
         this.tipoDocumento = tipo;
     }
 
     //GETTERS AND SETTERS
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
