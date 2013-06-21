@@ -4,6 +4,9 @@
  */
 package tesis.odontologia.core.domain.usuario;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import tesis.odontologia.core.domain.Bajeable;
 import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.UsuarioException;
@@ -12,10 +15,13 @@ import tesis.odontologia.core.exception.UsuarioException;
  *
  * @author alespe
  */
+@Entity
+
 public class Usuario extends Bajeable{
     
     private String usuario;
     private String contraseña;
+    @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)
     private Rol rol;
 
     public Usuario() {

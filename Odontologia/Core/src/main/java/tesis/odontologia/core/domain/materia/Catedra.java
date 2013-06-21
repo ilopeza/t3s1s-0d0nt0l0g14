@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.core.domain.materia;
 
+import javax.persistence.Entity;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.exception.CatedraException;
 import tesis.odontologia.core.exception.GenericException;
@@ -12,6 +13,7 @@ import tesis.odontologia.core.exception.GenericException;
  *
  * @author alespe
  */
+@Entity
 public class Catedra extends Generic {
 
     private String nombre;
