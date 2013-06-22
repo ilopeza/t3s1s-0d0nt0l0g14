@@ -5,6 +5,7 @@
 package tesis.odontologia.core.domain;
 
 import java.util.Calendar;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -12,7 +13,10 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import tesis.odontologia.core.domain.usuario.Usuario;
 import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.PersonaException;
 
@@ -36,6 +40,10 @@ public abstract class Persona extends Generic {
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar fechaNacimiento;
+    
+    @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)
+    @JoinColumn(name= "usuario_id")
+    private Usuario usuario;
 
     //CONSTRUCTORS
     public Persona() {
@@ -77,6 +85,14 @@ public abstract class Persona extends Generic {
 
     public void setDocumento(Documento documento) {
         this.documento = documento;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     //VALIDAR
