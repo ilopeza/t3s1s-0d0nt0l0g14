@@ -1,2 +1,6 @@
-<div>Pagina de vista de pacientes</div>
+<div xmlns:p="http://primefaces.org/ui">
+    <p:outputLabel value="#{PacienteBean.paciente.apellido}"/>
+    <p:outputLabel value="#{PacienteBean.paciente.domicilio.ciudadActual}"/>
+    <p:outputLabel value="#{PacienteBean.paciente.documento.tipoDocumento}" />                
+</div>
 
