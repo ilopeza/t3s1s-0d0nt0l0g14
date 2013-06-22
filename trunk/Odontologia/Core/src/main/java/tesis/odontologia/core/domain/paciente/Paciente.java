@@ -4,13 +4,17 @@
  */
 package tesis.odontologia.core.domain.paciente;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import tesis.odontologia.core.domain.Persona;
+import tesis.odontologia.core.domain.historiaclinica.HistoriaClinica;
 import tesis.odontologia.core.exception.GenericException;
 
 /**
@@ -56,6 +60,10 @@ public class Paciente extends Persona {
     private String privadoLibertad;
     
     private String lugar;
+    
+    @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)
+    @JoinColumn(name="historiaclinica_id")
+    private HistoriaClinica historiaClinica;
 
     //CONSTRUCTORS
     public Paciente() {
@@ -193,6 +201,15 @@ public class Paciente extends Persona {
     public void setLugar(String lugar) {
         this.lugar = lugar;
     }
+
+    public HistoriaClinica getHistoriaClinica() {
+        return historiaClinica;
+    }
+
+    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+        this.historiaClinica = historiaClinica;
+    }
+    
 
     
     //VALIDACIONES
