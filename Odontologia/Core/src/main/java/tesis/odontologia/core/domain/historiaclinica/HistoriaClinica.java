@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.domain.Persona;
@@ -32,6 +33,8 @@ public class HistoriaClinica extends Generic{
     private Calendar fechaApertura;
     
     //se tiene que definir la persona que va  aca.
+    @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)
+    @JoinColumn(name="persona_id")
     private Persona realizoHistoriaClinica;
     
     @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL)
