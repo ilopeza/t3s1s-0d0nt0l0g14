@@ -14,9 +14,6 @@
                 <title>PrimeFaces - ShowCase</title>
             </f:facet>
 
-            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
-            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
-
             <style type="text/css">
                 .ui-layout-north {
                     z-index:20 !important;
@@ -46,11 +43,11 @@
                     <ui:include src="commonLeftMenu.xhtml"/>
                 </p:layoutUnit>
                 <p:layoutUnit id="center" position="center">
-                    <h:form id="mainForm">
-                        <p:outputPanel id="mainContent">             #{MyManagedBean.mainContent}
-                            <ui:include src="#{MyManagedBean.mainContent}" />
+                        <p:outputPanel id="mainContent">
+                            <ui:insert name="content">
+                                Insertar contenido acá.
+                            </ui:insert>
                         </p:outputPanel>
-                    </h:form>
                 </p:layoutUnit>
             </p:layout>
         </h:body>
