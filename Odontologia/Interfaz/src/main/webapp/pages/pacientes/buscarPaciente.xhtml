@@ -8,7 +8,7 @@
 
     <ui:define name="content">
         pagina buscar paciente!!!
-        <h:form title="formBuscar">
+        <h:form id="formBuscar">
 
             <p:dataTable id="BuscarTableBean" var="paciente" value="#{buscarTableBean.pacientes}"
                          rowKey="#{paciente.nombre}"  
@@ -20,50 +20,34 @@
                     </p:outputPanel>  
                 </f:facet>                                   
 
-                <p:column id="asignarColumn" headerText="Asignar" style="width:5%">  
+                <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Seleccionar"/>
+                        <h:outputText value="Nombre" />
                     </f:facet>
-                    <p:commandButton value="Seleccionar" icon="ui-icon-extlink" action="#{buscarTableBean.navigate()}" />
-                </p:column> 
-
-                <p:column id="nombreColumn" headerText="Nombre"
-                          footerText="contains" filterMatchMode="contains">  
-                    <h:outputText value="#{paciente.nombre}" />  
-                </p:column>  
+                    <p:commandLink value="#{paciente.nombre}" update=":pacienteDetailForm:display" oncomplete="pacienteDialog.show()"  title="View">
+                        <f:setPropertyActionListener value="#{paciente}" target="#{buscarTableBean.pacienteSeleccionado}" />    
+                    </p:commandLink>
+                </p:column>
 
                 <p:column id="apellidoColumn" headerText="Apellido">  
                     <h:outputText value="#{paciente.apellido}" />  
                 </p:column>
-
-                <f:facet name="footer">  
-                    <p:commandButton id="viewButton" value="View" icon="ui-icon-search"  
-                                     update=":form2:display" oncomplete="carDialog.show()"/>  
-                </f:facet>
-
             </p:dataTable>
 
         </h:form>
 
-        <h:form title="form2">
-
-            <p:dialog id="dialog" header="Car Detail" widgetVar="carDialog" resizable="false"  
-                      width="200" showEffect="clip" hideEffect="fold">  
-
-                <h:panelGrid id="display" columns="2" cellpadding="4">                       
-
-                    <h:outputText value="Model:" />  
+        <p:dialog header="Detalles" widgetVar="pacienteDialog" resizable="false" id="userDlg" > 
+            <h:form id="pacienteDetailForm">
+                <p:panelGrid id="display" columns="2" style="margin:0 auto;">   
+                    <h:outputText value="Nombre:" />  
                     <h:outputText value="#{buscarTableBean.pacienteSeleccionado.nombre}" />  
 
-                    <h:outputText value="Year:" />  
-                    <h:outputText value="#{buscarTableBean.pacienteSeleccionado.apellido}" />  
-  
-                </h:panelGrid>  
-            </p:dialog>
+                    <h:outputText value="Apellido:" />  
+                    <h:outputText value="#{buscarTableBean.pacienteSeleccionado.apellido}" /> 
 
-        </h:form>
-
-
+                </p:panelGrid> 
+            </h:form>
+        </p:dialog> 
     </ui:define>
 
 </ui:composition>
