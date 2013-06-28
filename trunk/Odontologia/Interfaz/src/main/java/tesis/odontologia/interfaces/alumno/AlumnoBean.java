@@ -58,6 +58,7 @@ public class AlumnoBean {
     }
     
     
+    
     public void savePaciente() {
         //AlumnoService.create(nuevoAlumno);
     }
