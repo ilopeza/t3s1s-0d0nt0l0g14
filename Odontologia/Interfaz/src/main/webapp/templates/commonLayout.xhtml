@@ -44,9 +44,7 @@
                 </p:layoutUnit>
                 <p:layoutUnit id="center" position="center">
                         <p:outputPanel id="mainContent">
-                            <ui:insert name="content">
-                                Insertar contenido acá.
-                            </ui:insert>
+                            <ui:include src="#{MyManagedBean.mainContent}"/>
                         </p:outputPanel>
                 </p:layoutUnit>
             </p:layout>
