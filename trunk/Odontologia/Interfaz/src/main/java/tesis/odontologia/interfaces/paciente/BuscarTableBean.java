@@ -9,7 +9,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.component.html.HtmlDataTable;
 import tesis.odontologia.core.domain.paciente.Paciente;
 
 /**
