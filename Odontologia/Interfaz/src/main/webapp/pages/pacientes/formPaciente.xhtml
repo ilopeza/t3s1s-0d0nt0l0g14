@@ -105,11 +105,13 @@
                     <h:outputLabel value="Lugar"/>
                     <p:inputText id="txtLugar" value="#{formPacienteBean.paciente.lugar}" />
 
-                    <p:commandButton value="Guardar" ajax="false" action="#{formPacienteBean.navigate()}"/>
-                </p:panelGrid>
-            </h:form>
-        </p:tab>
-        <p:tab title="Datos consulta">
+                        <p:commandButton value="Guardar" ajax="false" action="#{formPacienteBean.navigate()}"/>
+                        
+                        <p:commandButton value="Guardar y asignar" ajax="false" action="#{buscarTableBeanAlumnos.navigate()}"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:tab>
+            <p:tab title="Datos consulta">
 
         </p:tab>
         <p:tab title="Odontograma">
