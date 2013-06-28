@@ -1,118 +1,116 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../templates/commonLayout.xhtml"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      template="./../../templates/commonLayout.xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+    pagina buscar paciente!!!
+    <h:form id="formBuscar">
 
-    <ui:define name="content">
-        pagina buscar paciente!!!
-        <h:form id="formBuscar">
+        <p:dataTable id="BuscarTableBean" var="paciente" value="#{buscarTableBean.pacientes}"
+                     rowKey="#{paciente.nombre}"  
+                     selection="#{buscarTableBean.pacienteSeleccionado}">  
 
-            <p:dataTable id="BuscarTableBean" var="paciente" value="#{buscarTableBean.pacientes}"
-                         rowKey="#{paciente.nombre}"  
-                         selection="#{buscarTableBean.pacienteSeleccionado}">  
+            <f:facet name="header" >  
+                <p:outputPanel>  
+                    <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
+                </p:outputPanel>  
+            </f:facet>                                   
 
-                <f:facet name="header" >  
+            <p:column selectionMode="single" style="width:18px"/>  
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Nombre" />
+                </f:facet>
+                <p:commandLink value="#{paciente.nombre}" >
+                    <f:setPropertyActionListener value="#{paciente}" target="#{buscarTableBean.pacienteSeleccionado}" />    
+                </p:commandLink>
+            </p:column>
+
+            <p:column id="apellidoColumn" headerText="Apellido">  
+                <h:outputText value="#{paciente.apellido}" />  
+            </p:column>
+
+            <p:column id="documentoColumn" headerText="Documento"/>  
+            <p:column id="domicilioColumn" headerText="Domicilio"/> 
+            <p:column id="edadColumn" headerText="Edad"/> 
+            <p:column id="problemasColumn" headerText="Problemas"/> 
+        </p:dataTable>
+
+        <p:commandButton value="Asignar Paciente"  
+                         update=":pacienteDetailForm:display" 
+                         oncomplete="pacienteDialog.show()"  
+                         title="View">                
+        </p:commandButton> 
+    </h:form>
+
+    <p:dialog header="Asignacion de Pacientes" widgetVar="pacienteDialog" resizable="false" id="userDlg" > 
+        <h:form id="pacienteDetailForm">
+            <p:panelGrid id="display" columns="1" style="margin:0 auto;">   
+
+                <f:facet name="pacientes" >  
                     <p:outputPanel>  
-                        <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
+                        <h:outputText value="Pacientes Odontológicos" />                  
                     </p:outputPanel>  
-                </f:facet>                                   
+                </f:facet>
+                <p:column id="nombreAlumnoColumn" headerText="Nombre" > 
+                    <h:outputText value="Nombre del Paciente: "/>
+                    <h:outputText value="#{buscarTableBean.pacienteSeleccionado.nombre}" />
+                </p:column>
 
-                <p:column selectionMode="single" style="width:18px"/>  
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="Nombre" />
+                <p:column id="apellidoAlumnoColumn" headerText="Apellido">
+                    <h:outputText value="Apellido del Paciente: "/>
+                    <h:outputText value="#{buscarTableBean.pacienteSeleccionado.apellido}" />
+                </p:column>
+
+
+                <h:outputLabel value="Ingrese nombre del alumno:"/>
+                <p:inputText id="nombreBusqueda" value="#{buscarTableBeanAlumnos.varBusqueda}"/>
+
+
+                <p:panelGrid id="tablaAlumnos" columns="1" style="margin:0 auto;">
+                    <f:facet name="footer">
+                        <p:commandButton value="Buscar" action="#{buscarTableBeanAlumnos.buscarAlumno()}" 
+                                         update=":pacienteDetailForm:tablaAlumnos"/>
+
+                        <p:column id="columnaTablaAlumnos" colspan="2">
+                            <p:dataTable id="BuscarTableBean2" var="alumno" value="#{buscarTableBeanAlumnos.alumnos}"
+                                         rowKey="#{alumno.nombre}" selection="#{buscarTableBeanAlumnos.alumnoSeleccionado}">  
+
+                                <f:facet name="pepe" >  
+                                    <p:outputPanel>  
+                                        <h:outputText value="Alumnos" />                  
+                                    </p:outputPanel>  
+                                </f:facet>                                   
+
+                                <p:column selectionMode="single" style="width:18px" />
+                                <p:column>
+                                    <p:commandLink value="#{alumno.nombre}" >
+                                        <f:setPropertyActionListener value="#{alumno}" target="#{buscarTableBeanAlumnos.alumnoSeleccionado}" />    
+                                    </p:commandLink>         
+                                </p:column>
+
+                                <p:column id="apellidoColumn2" headerText="Apellido">  
+                                    <h:outputText value="#{alumno.apellido}" />  
+                                </p:column>
+
+                                <p:column id="catedraColumn2" headerText="Cátedra"/>
+
+                            </p:dataTable>
+                        </p:column>
+
+
                     </f:facet>
-                    <p:commandLink value="#{paciente.nombre}" >
-                        <f:setPropertyActionListener value="#{paciente}" target="#{buscarTableBean.pacienteSeleccionado}" />    
-                    </p:commandLink>
-                </p:column>
+                </p:panelGrid>
+                <p:commandButton value="Asignar"  
+                                 action="#{buscarTableBeanAlumnos.navigate()}"/>                           
+            </p:panelGrid>               
 
-                <p:column id="apellidoColumn" headerText="Apellido">  
-                    <h:outputText value="#{paciente.apellido}" />  
-                </p:column>
 
-                <p:column id="documentoColumn" headerText="Documento"/>  
-                <p:column id="domicilioColumn" headerText="Domicilio"/> 
-                <p:column id="edadColumn" headerText="Edad"/> 
-                <p:column id="problemasColumn" headerText="Problemas"/> 
-            </p:dataTable>
 
-            <p:commandButton value="Asignar Paciente"  
-                             update=":pacienteDetailForm:display" 
-                             oncomplete="pacienteDialog.show()"  
-                             title="View">                
-            </p:commandButton> 
         </h:form>
+    </p:dialog> 
 
-        <p:dialog header="Asignacion de Pacientes" widgetVar="pacienteDialog" resizable="false" id="userDlg" > 
-            <h:form id="pacienteDetailForm">
-                <p:panelGrid id="display" columns="1" style="margin:0 auto;">   
+</html>
 
-                    <f:facet name="pacientes" >  
-                        <p:outputPanel>  
-                            <h:outputText value="Pacientes Odontológicos" />                  
-                        </p:outputPanel>  
-                    </f:facet>
-                    <p:column id="nombreAlumnoColumn" headerText="Nombre" > 
-                        <h:outputText value="Nombre del Paciente: "/>
-                        <h:outputText value="#{buscarTableBean.pacienteSeleccionado.nombre}" />
-                    </p:column>
-
-                    <p:column id="apellidoAlumnoColumn" headerText="Apellido">
-                        <h:outputText value="Apellido del Paciente: "/>
-                        <h:outputText value="#{buscarTableBean.pacienteSeleccionado.apellido}" />
-                    </p:column>
-
-
-                    <h:outputLabel value="Ingrese nombre del alumno:"/>
-                    <p:inputText id="nombreBusqueda" value="#{buscarTableBeanAlumnos.varBusqueda}"/>
-
-
-                    <p:panelGrid id="tablaAlumnos" columns="1" style="margin:0 auto;">
-                        <f:facet name="footer">
-                            <p:commandButton value="Buscar" action="#{buscarTableBeanAlumnos.buscarAlumno()}" 
-                                             update=":pacienteDetailForm:tablaAlumnos"/>
-
-                            <p:column id="columnaTablaAlumnos" colspan="2">
-                                <p:dataTable id="BuscarTableBean2" var="alumno" value="#{buscarTableBeanAlumnos.alumnos}"
-                                             rowKey="#{alumno.nombre}" selection="#{buscarTableBeanAlumnos.alumnoSeleccionado}">  
-
-                                    <f:facet name="pepe" >  
-                                        <p:outputPanel>  
-                                            <h:outputText value="Alumnos" />                  
-                                        </p:outputPanel>  
-                                    </f:facet>                                   
-
-                                    <p:column selectionMode="single" style="width:18px" />
-                                    <p:column>
-                                        <p:commandLink value="#{alumno.nombre}" >
-                                            <f:setPropertyActionListener value="#{alumno}" target="#{buscarTableBeanAlumnos.alumnoSeleccionado}" />    
-                                        </p:commandLink>         
-                                    </p:column>
-
-                                    <p:column id="apellidoColumn2" headerText="Apellido">  
-                                        <h:outputText value="#{alumno.apellido}" />  
-                                    </p:column>
-
-                                    <p:column id="catedraColumn2" headerText="Cátedra"/>
-
-                                </p:dataTable>
-                            </p:column>
-
-
-                        </f:facet>
-                    </p:panelGrid>
-                    <p:commandButton value="Asignar"  
-                                     action="#{buscarTableBeanAlumnos.navigate()}"/>                           
-                </p:panelGrid>               
-
-
-
-            </h:form>
-        </p:dialog> 
-    </ui:define>
-
-</ui:composition>
