@@ -14,7 +14,19 @@
 
     <h:form id="formAsignaciones">
 
+
+    <ui:define name="content">
+        <h3>El alumno/a:</h3> 
+        <h:outputText value="#{buscarTableBeanAlumnos.alumnoSeleccionado.nombre}" />      
+        <h:outputText value="#{buscarTableBeanAlumnos.alumnoSeleccionado.apellido}" />      
+        <h3>tiene asignado a:</h3>
+        <h:outputText value="#{buscarTableBean.pacienteSeleccionado.nombre}" />
+        <h:outputText value="#{buscarTableBean.pacienteSeleccionado.apellido}" />
+        
+        <h:form id="formAsignaciones">
+
         <p:dataTable id="asignacion" var="paciente" value="#{buscarTableBean.pacientes}">  
+
 
             <f:facet name="header" >  
                 <p:outputPanel>  
