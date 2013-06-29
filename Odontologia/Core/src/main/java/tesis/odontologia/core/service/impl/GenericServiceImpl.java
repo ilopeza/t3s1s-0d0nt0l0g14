@@ -17,18 +17,19 @@ import tesis.odontologia.core.service.GenericService;
  *
  * @author Maxi
  */
-public abstract class GenericServiceImpl<E extends Object, D extends GenericDao> implements GenericService<E> {
+public abstract class GenericServiceImpl<E extends Object, DAO extends GenericDao> implements GenericService<E> {
 
-    private D dao;
+    private DAO dao;
 
-    public D getDao() {
-        return dao;
-    }
-
-    public void setDao(D dao) {
+    public void setDao(DAO dao) {
         this.dao = dao;
     }
-
+    
+    @Override
+    public DAO getDao() {
+        return dao;
+    }
+    
     @Override
     public <S extends E> S save(S entity) {
         return (S) dao.save(entity);
