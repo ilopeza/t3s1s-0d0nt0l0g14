@@ -4,9 +4,12 @@
  */
 package tesis.odontologia.core.service;
 
+import tesis.odontologia.core.domain.Persona;
+
 /**
  *
  * @author Maxi
  */
-public interface PersonaService {
+public interface PersonaService extends GenericService<Persona> {
+
 }

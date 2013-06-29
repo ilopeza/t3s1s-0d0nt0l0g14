@@ -5,7 +5,6 @@
 package tesis.odontologia.core.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tesis.odontologia.core.dao.PersonaDao;
@@ -18,12 +17,14 @@ import tesis.odontologia.core.service.PersonaService;
  */
 @Service(value = "personaService")
 @Transactional(readOnly = true)
-public class PersonaServiceImpl implements PersonaService {
+public class PersonaServiceImpl extends GenericServiceImpl<Persona, PersonaDao> implements PersonaService {
 
     private PersonaDao personaDao;
 
     @Autowired
     public PersonaServiceImpl(PersonaDao personaDao) {
         this.personaDao = personaDao;
+        super.setDao(personaDao);
     }
+
 }
