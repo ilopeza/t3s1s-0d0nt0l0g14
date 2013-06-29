@@ -4,31 +4,23 @@
  */
 package tesis.odontologia.core.domain.materia;
 
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import tesis.odontologia.core.domain.Generic;
-import tesis.odontologia.core.exception.CatedraException;
 import tesis.odontologia.core.exception.GenericException;
+import tesis.odontologia.core.exception.TrabajoPracticoException;
 
 /**
  *
  * @author alespe
  */
 @Entity
-public class Catedra extends Generic {
-
+public class TrabajoPractico extends Generic {
     private String nombre;
-    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL)
-    @JoinColumn(name = "materia_id")
-    private List<TrabajoPractico> trabajoPractico;
 
-    public Catedra() {
+    public TrabajoPractico() {
     }
 
-    public Catedra(String nombre) {
+    public TrabajoPractico(String nombre) {
         this.nombre = nombre;
     }
 
@@ -42,8 +34,11 @@ public class Catedra extends Generic {
 
     @Override
     public void validar() throws GenericException {
-        if (nombre == null || nombre.isEmpty()) {
-            throw new CatedraException("El nombre de la cátedra no puede ser nulo o vacio.");
+        if(nombre==null || nombre.isEmpty()){
+            throw new TrabajoPracticoException("El nombre del trabajo práctico no puede estar vacio o nulo");
         }
     }
+    
+    
+    
 }
