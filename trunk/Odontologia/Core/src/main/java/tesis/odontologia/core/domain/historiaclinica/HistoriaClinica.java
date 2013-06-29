@@ -41,16 +41,22 @@ public class HistoriaClinica extends Generic{
     @JoinColumn(name="historiaclinica_id")
     private List<Atencion> atencion;
     
+    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL)
+    @JoinColumn(name="historiaclinica_id")
+    private List<Diagnostico> diagnostico;
+    
     //CONSTRUCTORS
     public HistoriaClinica() {
     }
 
-    public HistoriaClinica(int numero, Calendar fechaApertura, Persona realizoHistoriaClinica, List<Atencion> atencion) {
+    public HistoriaClinica(int numero, Calendar fechaApertura, Persona realizoHistoriaClinica, List<Atencion> atencion, List<Diagnostico> diagnostico) {
         this.numero = numero;
         this.fechaApertura = fechaApertura;
         this.realizoHistoriaClinica = realizoHistoriaClinica;
         this.atencion = atencion;
+        this.diagnostico = diagnostico;
     }
+
     
     //GETTERS AND SETTERS
     public int getNumero() {
@@ -85,7 +91,14 @@ public class HistoriaClinica extends Generic{
         this.atencion = atencion;
     }
 
-    
+    public List<Diagnostico> getDiagnostico() {
+        return diagnostico;
+    }
+
+    public void setDiagnostico(List<Diagnostico> diagnostico) {
+        this.diagnostico = diagnostico;
+    }
+   
     
     @Override
     public void validar() throws GenericException {
