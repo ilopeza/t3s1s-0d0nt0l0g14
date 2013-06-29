@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import tesis.odontologia.core.dao.GenericDao;
 
 /**
  *
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Sort;
  */
 public interface GenericService<E extends Object> {
 
+    <DAO extends GenericDao> DAO getDao();
+    
     <S extends E> S save(S entity);
     
     List<E> findAll();
