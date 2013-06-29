@@ -95,6 +95,11 @@ public abstract class Persona extends Generic {
         this.usuario = usuario;
     }
 
+    @Override
+    public String toString() {
+        return apellido + ", "+ nombre;
+    }
+
     //VALIDAR
     @Override
     public void validar() throws GenericException {
