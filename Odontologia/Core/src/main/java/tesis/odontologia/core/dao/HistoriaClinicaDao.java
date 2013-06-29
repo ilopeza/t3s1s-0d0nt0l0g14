@@ -4,8 +4,6 @@
  */
 package tesis.odontologia.core.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import tesis.odontologia.core.domain.historiaclinica.HistoriaClinica;
 
 
@@ -13,5 +11,5 @@ import tesis.odontologia.core.domain.historiaclinica.HistoriaClinica;
  *
  * @author Maxi
  */
-public interface HistoriaClinicaDao extends JpaRepository<HistoriaClinica, Long>, QueryDslPredicateExecutor {
+public interface HistoriaClinicaDao extends GenericDao<HistoriaClinica, Long> {
 }

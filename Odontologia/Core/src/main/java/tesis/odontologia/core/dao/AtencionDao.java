@@ -4,13 +4,11 @@
  */
 package tesis.odontologia.core.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import tesis.odontologia.core.domain.historiaclinica.Atencion;
 
 /**
  *
  * @author Maxi
  */
-public interface AtencionDao extends JpaRepository<Atencion, Long>, QueryDslPredicateExecutor {
+public interface AtencionDao extends GenericDao<Atencion, Long> {
 }
