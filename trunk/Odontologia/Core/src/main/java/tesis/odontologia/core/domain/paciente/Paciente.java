@@ -55,6 +55,7 @@ public class Paciente extends Persona {
     
     private String telefonoMedico;
     
+    @Column(nullable = true)
     private String servicioEmergencia;
     
     private String privadoLibertad;
@@ -208,6 +209,10 @@ public class Paciente extends Persona {
 
     public void setHistoriaClinica(HistoriaClinica historiaClinica) {
         this.historiaClinica = historiaClinica;
+    }
+    
+    public boolean hasEstudio(){
+        return tipoEstudios != null;
     }
     
 
