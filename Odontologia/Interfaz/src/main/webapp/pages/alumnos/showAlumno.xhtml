@@ -1,20 +1,23 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:ui="http://java.sun.com/jsf/facelets"
-      template="./../../templates/commonLayout.xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:form id="formShowAlumno">
-        <h3>El alumno fue registrado con éxito</h3>
-        <p:panelGrid id="grid" columns="2">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"> 
 
-            <h:outputLabel value="Apellido:"/>
-            <h:outputLabel value="#{formAlumnoBean.alumno.apellido}"/>
-            <h:outputLabel value="Nombre:"/>
-            <h:outputLabel value="#{formAlumnoBean.alumno.nombre}"/>
+    <ui:define name="content">
+        <h:form id="formShowAlumno">
+            <h3>El alumno fue registrado con éxito</h3>
+            <p:panelGrid id="grid" columns="2">
 
-        </p:panelGrid>
-    </h:form>
-</html>
+                <h:outputLabel value="Apellido:"/>
+                <h:outputLabel value="#{formAlumnoBean.alumno.apellido}"/>
+                <h:outputLabel value="Nombre:"/>
+                <h:outputLabel value="#{formAlumnoBean.alumno.nombre}"/>
+
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
 

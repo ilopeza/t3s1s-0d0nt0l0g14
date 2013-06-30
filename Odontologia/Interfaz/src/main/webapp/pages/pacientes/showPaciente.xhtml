@@ -1,14 +1,16 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:ui="http://java.sun.com/jsf/facelets"
-      template="./../../templates/commonLayout.xhtml">
-    #{formPacienteBean.paciente.apellido}
-    #{formPacienteBean.paciente.celular}
-    #{formPacienteBean.paciente.religion}
-    #{formPacienteBean.paciente.documento.numero}
-    #{formPacienteBean.paciente.obraSocial}
-    #{formPacienteBean.paciente.trabajo}
-    #{formPacienteBean.paciente.domicilio.ciudadActual}
-    #{formPacienteBean.paciente.lugar}
-</html>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml">
+    <ui:define name="content">
+        #{formPacienteBean.paciente.apellido}
+        #{formPacienteBean.paciente.celular}
+        #{formPacienteBean.paciente.religion}
+        #{formPacienteBean.paciente.documento.numero}
+        #{formPacienteBean.paciente.obraSocial}
+        #{formPacienteBean.paciente.trabajo}
+        #{formPacienteBean.paciente.domicilio.ciudadActual}
+        #{formPacienteBean.paciente.lugar}
+    </ui:define>
+</ui:composition>
 

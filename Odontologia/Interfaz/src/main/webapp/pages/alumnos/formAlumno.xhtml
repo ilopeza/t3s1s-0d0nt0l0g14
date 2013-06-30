@@ -1,31 +1,35 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html 
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <h:form id="formAlumno">
-        <h3>Nuevo Alumno</h3>
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="./../../templates/commonLayout.xhtml">
+        <ui:define name="content">
+            <h:form id="formAlumno">
+                <h3>Nuevo Alumno</h3>
 
-        <p:panelGrid id="grid" columns="4">
+                <p:panelGrid id="grid" columns="4">
 
-            <h:outputLabel value="Nombre"/>
-            <h:inputText id="txtNombre" value="#{formAlumnoBean.alumno.nombre}"/>
-            <h:outputLabel value="Apellido"/>
-            <h:inputText id="txtApellido" value="#{formAlumnoBean.alumno.apellido}" />
+                    <h:outputLabel value="Nombre"/>
+                    <h:inputText id="txtNombre" value="#{formAlumnoBean.alumno.nombre}"/>
+                    <h:outputLabel value="Apellido"/>
+                    <h:inputText id="txtApellido" value="#{formAlumnoBean.alumno.apellido}" />
 
-            <h:outputLabel value="Tipo de documento:"/>
-            <p:selectOneMenu id="selectedTipoDocumento" value="#{formAlumnoBean.alumno.documento.tipoDocumento}" > 
-                <f:selectItem itemLabel="Elija uno..." itemValue=""/>
-                <f:selectItems value="#{formAlumnoBean.listaTipoDocumento}"/>
-            </p:selectOneMenu>
-            <h:outputLabel value="Número de documento"/>
-            <h:inputText id="txtDocumento" value="#{formAlumnoBean.alumno.documento.numero}" />
+                    <h:outputLabel value="Tipo de documento:"/>
+                    <p:selectOneMenu id="selectedTipoDocumento" value="#{formAlumnoBean.alumno.documento.tipoDocumento}" > 
+                        <f:selectItem itemLabel="Elija uno..." itemValue=""/>
+                        <f:selectItems value="#{formAlumnoBean.listaTipoDocumento}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Número de documento"/>
+                    <h:inputText id="txtDocumento" value="#{formAlumnoBean.alumno.documento.numero}" />
 
-            <p:commandButton value="Guardar" ajax="true" action="#{formAlumnoBean.navigate()}"/>
-        </p:panelGrid>
-    </h:form>
-
+                    <p:commandButton value="Guardar" ajax="true" action="#{formAlumnoBean.navigate()}"/>
+                </p:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </html>
 
 
