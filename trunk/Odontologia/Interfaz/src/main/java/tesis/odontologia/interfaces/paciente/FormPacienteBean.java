@@ -10,9 +10,11 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedProperty;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.paciente.Domicilio;
 import tesis.odontologia.core.domain.paciente.Paciente;
+import tesis.odontologia.core.service.PersonaService;
 
 /**
  *
@@ -31,6 +33,9 @@ public class FormPacienteBean {
     private List<Paciente> pacientes;
     private String docBusqueda;
 
+    @ManagedProperty(value = "#{personaService}")
+    private PersonaService personaService;
+    
     public String getDocBusqueda() {
         return docBusqueda;
     }
@@ -68,7 +73,7 @@ public class FormPacienteBean {
 
     public String save() {
         paciente.toString();
-        //paciente = servicePaciente.save();
+        paciente = personaService.save(paciente);
         return "showPaciente";
     }
 
@@ -127,4 +132,9 @@ public class FormPacienteBean {
      */
     public FormPacienteBean() {
     }
+
+    public void setPersonaService(PersonaService personaService) {
+        this.personaService = personaService;
+    }
+    
 }

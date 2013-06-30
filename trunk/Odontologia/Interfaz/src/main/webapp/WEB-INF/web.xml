@@ -25,4 +25,19 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>bluesky</param-value>
     </context-param>
+    
+    <!-- Inyeccion de Spring-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+    
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    <!-- READ THE XmlWebApplicationContext FOR SPRING -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
 </web-app>
