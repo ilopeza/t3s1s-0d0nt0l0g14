@@ -66,7 +66,9 @@ public class FormPacienteBean {
         return listaEstudioTipo;
     }
 
-    public String navigate() {
+    public String save() {
+        paciente.toString();
+        //paciente = servicePaciente.save();
         return "showPaciente";
     }
 
