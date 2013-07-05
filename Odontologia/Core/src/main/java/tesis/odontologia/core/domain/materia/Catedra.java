@@ -21,7 +21,8 @@ import tesis.odontologia.core.exception.GenericException;
 public class Catedra extends Generic {
 
     private String nombre;
-    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL)
+    
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "materia_id")
     private List<TrabajoPractico> trabajoPractico;
 

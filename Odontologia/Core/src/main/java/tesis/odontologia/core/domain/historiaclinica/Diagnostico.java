@@ -8,6 +8,8 @@ package tesis.odontologia.core.domain.historiaclinica;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.exception.DiagnosticoticoException;
@@ -20,7 +22,10 @@ import tesis.odontologia.core.exception.GenericException;
 @Entity
 public class Diagnostico extends Generic{
     
+    @ManyToOne
+    @JoinColumn(name = "trabajopractico_id")
     private TrabajoPractico trabajoPractico;
+    
     private String descripcion;
 
     @Enumerated(EnumType.STRING)
@@ -61,10 +66,9 @@ public class Diagnostico extends Generic{
 
     @Override
     public void validar() throws GenericException {
-        if(trabajoPractico ==null){
+        if(trabajoPractico == null){
              throw new DiagnosticoticoException("El trabajo practico no debe ser nulo");
         }
-       trabajoPractico.validar();
     }
     
 public enum EstadoDiagnostico {
