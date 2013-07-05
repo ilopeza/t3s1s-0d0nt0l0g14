@@ -43,4 +43,10 @@ public abstract class Generic implements Serializable, Validator {
         this.version = version;
     }
 
+    public boolean isNew(){
+        if(id == null && version == null) {
+            return true;
+        }
+        return false;
+    }
 }
