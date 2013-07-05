@@ -6,11 +6,13 @@ package tesis.odontologia.interfaces.paciente;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.paciente.Domicilio;
 import tesis.odontologia.core.domain.paciente.Paciente;
@@ -21,20 +23,71 @@ import tesis.odontologia.core.service.PersonaService;
  * @author Ignacio
  */
 @ManagedBean(name = "formPacienteBean")
-@ApplicationScoped
+@ViewScoped
 public class FormPacienteBean {
 
     private Paciente paciente;
     private List<Documento.TipoDocumento> listaTipoDocumento;
     //Lista de EstadoCivil
     private List<Paciente.EstadoCivilTipo> listaEstadoCivilTipo;
-    //Lita de EstudiosTipo
+    //Lista de EstudiosTipo
     private List<Paciente.EstudiosTipo> listaEstudioTipo;
+    //Lista de pacientes.
     private List<Paciente> pacientes;
     private String docBusqueda;
+    //Fecha de nacimiento del paciente
+    private Date fechaNacimiento;
+    // Para conocer si estudia o no.
+    private int estudia;
+    // Para saber si tiene servicio de emergencia.
+    private int servicio;
+ 
+    
+    public int getEstudia() {
+        if(paciente != null && paciente.getTipoEstudios() != null){
+            estudia = 1;
+        }else{
+            estudia = 0;
+        }
+        return estudia;
+    }
 
+    public void setEstudia(int estudia) {
+        this.estudia = estudia;
+        if(estudia == 0){
+            paciente.setTipoEstudios(null);
+        }
+    }
+
+    public int getServicio() {
+        if(paciente != null && paciente.getServicioEmergencia()!=null){
+            servicio = 1;
+        }else{
+            servicio = 0;
+        }
+        return servicio;
+    }
+
+    public void setServicio(int servicio) {
+        
+        this.servicio = servicio;
+    }
+        
     @ManagedProperty(value = "#{personaService}")
     private PersonaService personaService;
+    
+    
+    public Date getFechaNacimiento() {
+        return paciente.getFechaNacimiento() == null? null: paciente.getFechaNacimiento().getTime();
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        
+        this.fechaNacimiento = fechaNacimiento;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaNacimiento);
+        paciente.setFechaNacimiento(cal);
+    }
     
     public String getDocBusqueda() {
         return docBusqueda;
@@ -49,6 +102,10 @@ public class FormPacienteBean {
     }
 
     public void setPaciente(Paciente p) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaNacimiento);
+        p.setFechaNacimiento(cal);
+        
         this.paciente = p;
     }
 
@@ -84,6 +141,10 @@ public class FormPacienteBean {
             paciente = new Paciente();
             paciente.setDomicilio(new Domicilio());
             paciente.setDocumento(new Documento());
+            
+            
+
+          
         }
             
         pacientes = new ArrayList<Paciente>();
@@ -136,5 +197,4 @@ public class FormPacienteBean {
     public void setPersonaService(PersonaService personaService) {
         this.personaService = personaService;
     }
-    
 }
