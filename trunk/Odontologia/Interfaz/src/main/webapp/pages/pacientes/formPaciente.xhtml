@@ -19,33 +19,31 @@
                 <h:form id="formPaciente">
                     <p:panelGrid id="grid" columns="4">
                         <h:outputLabel value="Nombre"/>
-                        <h:inputText id="txtNombre" value="#{formPacienteBean.paciente.nombre}"/>
+                        <p:inputText id="txtNombre" value="#{formPacienteBean.paciente.nombre}"/>
                         <h:outputLabel value="Apellido"/>
-                        <h:inputText id="txtApellido" value="#{formPacienteBean.paciente.apellido}" />
+                        <p:inputText id="txtApellido" value="#{formPacienteBean.paciente.apellido}" />
 
                         <h:outputLabel value="Tipo de documento:"/>
-                        <p:selectOneMenu id="selectedTipoDocumento" value="#{formPacienteBean.paciente.documento.tipoDocumento}" > 
-                            <f:selectItem itemLabel="Elija uno..." itemValue=""/>
+                        <p:selectOneMenu id="selectedTipoDocumento" value="#{formPacienteBean.paciente.documento.tipoDocumento}" >
                             <f:selectItems value="#{formPacienteBean.listaTipoDocumento}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Número de documento"/>
-                        <h:inputText id="txtDocumento" value="#{formPacienteBean.paciente.documento.numero}" />
+                        <p:inputText id="txtDocumento" value="#{formPacienteBean.paciente.documento.numero}" />
 
                         <h:outputLabel value="Estado Civil:"/>
-                        <p:selectOneMenu id="selectedEstadoCivil" value="#{formPacienteBean.paciente.estadoCivil}"> 
-                            <f:selectItem itemLabel="Elija uno..." itemValue=""/>
+                        <p:selectOneMenu id="selectedEstadoCivil" value="#{formPacienteBean.paciente.estadoCivil}">
                             <f:selectItems value="#{formPacienteBean.listaEstadoCivilTipo}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Religión:"/>
-                        <h:inputText id="txtReligion" value="#{formPacienteBean.paciente.religion}" />
+                        <p:inputText id="txtReligion" value="#{formPacienteBean.paciente.religion}" />
 
                         <h:outputLabel value="Nacionalidad"/>
-                        <h:inputText id="txtNacionalidad" value="#{formPacienteBean.paciente.nacionalidad}"/>
+                        <p:inputText id="txtNacionalidad" value="#{formPacienteBean.paciente.nacionalidad}"/>
                         <h:outputLabel value="Obra social"/>
-                        <h:inputText id="txtObraSocial" value="#{formPacienteBean.paciente.obraSocial}" />
+                        <p:inputText id="txtObraSocial" value="#{formPacienteBean.paciente.obraSocial}" />
 
                         <h:outputLabel value="Lugar de nacimiento:"/>
-                        <h:inputText id="txtLugarDeNacimiento" value="#{formPacienteBean.paciente.lugarNacimiento}"/>
+                        <p:inputText id="txtLugarDeNacimiento" value="#{formPacienteBean.paciente.lugarNacimiento}"/>
                         <h:outputLabel value="Provincia"/>
                         <p:selectOneMenu id="selectProvincia"> 
                             <f:selectItem itemLabel="Elija uno..." itemValue=""/>
@@ -55,53 +53,47 @@
                         </p:selectOneMenu>
 
                         <h:outputLabel value="Fecha de nac:"/>
-                        <p:inputMask id="txtFechaNacimiento" value="#{formPacienteBean.paciente.fechaNacimiento}" mask="99/99/9999"/>
+                        <p:calendar id="cal" value="#{formPacienteBean.fechaNacimiento}" navigator="true"  yearRange="c-100:c"/> 
                         <p:outputLabel value="Trabajo:"/>
                         <p:inputText id="txtTrabajo" value="#{formPacienteBean.paciente.trabajo}"/>
 
-                        <h:outputLabel value="Estudios:"/>
-                        <p:selectOneRadio id="rdbEstudios">
-                            <f:selectItem itemLabel="Sí" itemValue="1" />  
-                            <f:selectItem itemLabel="No" itemValue="2" />  
-                        </p:selectOneRadio>
-                        <h:outputLabel value="Nivel:"/>
+                        <h:outputLabel value="Estudios: "/>
                         <p:selectOneMenu id="selectNivelEstudio" value="#{formPacienteBean.paciente.tipoEstudios}"> 
-                            <f:selectItem itemLabel="Elija uno..." itemValue=""/>
                             <f:selectItems value="#{formPacienteBean.listaEstudioTipo}"/>   
                         </p:selectOneMenu>
 
                         <h:outputLabel value="Domicilio actual:"/>
-                        <h:inputText id="txtDomicilioActual" value="#{formPacienteBean.paciente.domicilio.domicilioActual}"/>
+                        <p:inputText id="txtDomicilioActual" value="#{formPacienteBean.paciente.domicilio.domicilioActual}"/>
                         <h:outputLabel value="Ciudad:"/>
-                        <h:inputText id="txtCiudadActual" value="#{formPacienteBean.paciente.domicilio.ciudadActual}" />
+                        <p:inputText id="txtCiudadActual" value="#{formPacienteBean.paciente.domicilio.ciudadActual}" />
 
                         <h:outputLabel value="Domicilio anterior:"/>
-                        <h:inputText id="txtResidenciaAnterior" value="#{formPacienteBean.paciente.domicilio.residenciaAnterior}"/>
+                        <p:inputText id="txtResidenciaAnterior" value="#{formPacienteBean.paciente.domicilio.residenciaAnterior}"/>
                         <h:outputLabel value="Ciudad:"/>
-                        <h:inputText id="txtCiudadAnterior" value="#{formPacienteBean.paciente.domicilio.ciudadAnterior}" />
+                        <p:inputText id="txtCiudadAnterior" value="#{formPacienteBean.paciente.domicilio.ciudadAnterior}" />
 
                         <h:outputLabel value="Teléfono:"/>
-                        <h:inputText id="txtTelefono" value="#{formPacienteBean.paciente.telefono}"/>
+                        <p:inputText id="txtTelefono" value="#{formPacienteBean.paciente.telefono}"/>
                         <h:outputLabel value="Celular:"/>
-                        <h:inputText id="txtCelular" value="#{formPacienteBean.paciente.celular}" />
+                        <p:inputText id="txtCelular" value="#{formPacienteBean.paciente.celular}" />
 
                         <h:outputLabel value="Médico de cabecera:"/>
-                        <h:inputText id="txtMedicoCabecera" value="#{formPacienteBean.paciente.medicoCabecera}"/>
+                        <p:inputText id="txtMedicoCabecera" value="#{formPacienteBean.paciente.medicoCabecera}"/>
                         <h:outputLabel value="Teléfono"/>
-                        <h:inputText id="txtTelefonoMedico" value="#{formPacienteBean.paciente.telefonoMedico}" />
+                        <p:inputText id="txtTelefonoMedico" value="#{formPacienteBean.paciente.telefonoMedico}" />
 
                         <h:outputLabel value="Serv. de emergencia:"/>
-                        <p:selectOneRadio id="rdbServicioEmergencia">
+                        <p:selectOneRadio id="rdbServicioEmergencia" value="#{formPacienteBean.servicio}">
                             <f:selectItem itemLabel="Sí" itemValue="1" />  
-                            <f:selectItem itemLabel="No" itemValue="2" />  
+                            <f:selectItem itemLabel="No" itemValue="0" />  
                         </p:selectOneRadio>
                         <h:outputLabel value="Cuál?:"/>
-                        <h:inputText id="txtServicioEmergencia" value="#{formPacienteBean.paciente.servicioEmergencia}"/>
+                        <p:inputText id="txtServicioEmergencia" value="#{formPacienteBean.paciente.servicioEmergencia}"/>
 
                         <h:outputLabel value="Privado de libertad:"/>
-                        <p:selectOneRadio id="rdbPrivadoLibertad">  
+                        <p:selectOneRadio id="rdbPrivadoLibertad" value="#{formPacienteBean.paciente.privadoLibertad}">  
                             <f:selectItem itemLabel="Sí" itemValue="1" />  
-                            <f:selectItem itemLabel="No" itemValue="2" />   
+                            <f:selectItem itemLabel="No" itemValue="0" />   
                         </p:selectOneRadio> 
                         <h:outputLabel value="Lugar"/>
                         <p:inputText id="txtLugar" value="#{formPacienteBean.paciente.lugar}" />
