@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <p:fieldset id="fldsDatosDocum" legend="Datos personales" toggleable="true">
+                        <h:panelGrid id="gridDatosPersonales" columns="8" cellpadding="3" cellspacing="3" >
+
+                            <h:outputLabel value="Nombre"/>
+                            <p:inputText id="txtNombre" value="#{formPacienteBean.paciente.nombre}"/>
+                            <h:outputLabel value="Apellido"/>
+                            <p:inputText id="txtApellido" value="#{formPacienteBean.paciente.apellido}" />
+
+                            <h:outputLabel value="Tipo de documento:"/>
+                            <p:selectOneMenu id="selectedTipoDocumento" value="#{formPacienteBean.paciente.documento.tipoDocumento}" >
+                                <f:selectItems value="#{formPacienteBean.listaTipoDocumento}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Número de documento"/>
+                            <p:inputText id="txtDocumento" value="#{formPacienteBean.paciente.documento.numero}" />
+
+                            <h:outputLabel value="Estado Civil:"/>
+                            <p:selectOneMenu id="selectedEstadoCivil" value="#{formPacienteBean.paciente.estadoCivil}">
+                                <f:selectItems value="#{formPacienteBean.listaEstadoCivilTipo}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Nacionalidad"/>
+                            <p:inputText id="txtNacionalidad" value="#{formPacienteBean.paciente.nacionalidad}"/>
+
+                            <h:outputLabel value="Lugar de nacimiento:"/>
+                            <p:inputText id="txtLugarDeNacimiento" value="#{formPacienteBean.paciente.lugarNacimiento}"/>
+                            <h:outputLabel value="Provincia"/>
+                            <p:selectOneMenu id="selectProvincia"> 
+                                <f:selectItem itemLabel="Elija uno..." itemValue=""/>
+                                <f:selectItem itemLabel="Córdoba" itemValue="1"/>
+                                <f:selectItem itemLabel="Buenos Aires" itemValue="2"/>
+                                <f:selectItem itemLabel="Santa Fe" itemValue="3"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel value="Fecha de nac:"/>
+                            <p:calendar id="cal" value="#{formPacienteBean.fechaNacimiento}" navigator="true"  yearRange="c-100:c"/> 
+                        </h:panelGrid>
+
+                    </p:fieldset>
+                    <p:fieldset id="fldsDomicilio" legend="Domicilio y contacto" toggleable="true" toggleSpeed="150">
+                        <h:panelGrid id="gridDomicilio" columns="8" cellpadding="3" cellspacing="3" >
+                            <h:outputLabel value="Domicilio actual:"/>
+                            <p:inputText id="txtDomicilioActual" value="#{formPacienteBean.paciente.domicilio.domicilioActual}"/>
+                            <h:outputLabel value="Ciudad:"/>
+                            <p:inputText id="txtCiudadActual" value="#{formPacienteBean.paciente.domicilio.ciudadActual}" />
+
+                            <h:outputLabel value="Domicilio anterior:"/>
+                            <p:inputText id="txtResidenciaAnterior" value="#{formPacienteBean.paciente.domicilio.residenciaAnterior}"/>
+                            <h:outputLabel value="Ciudad:"/>
+                            <p:inputText id="txtCiudadAnterior" value="#{formPacienteBean.paciente.domicilio.ciudadAnterior}" />
+
+                            <h:outputLabel value="Teléfono:"/>
+                            <p:inputText id="txtTelefono" value="#{formPacienteBean.paciente.telefono}"/>
+                            <h:outputLabel value="Celular:"/>
+                            <p:inputText id="txtCelular" value="#{formPacienteBean.paciente.celular}" />
+                        </h:panelGrid>
+                    </p:fieldset>
+
+                    <p:fieldset id="fldsTrabajoEstudios" legend="Trabajo y estudios" toggleable="true" toggleSpeed="150"  >
+                        <h:panelGrid id="gridTrabajoEstudios" columns="8" cellpadding="3" cellspacing="3">
+                            <p:outputLabel value="Trabajo:"/>
+                            <p:inputText id="txtTrabajo" value="#{formPacienteBean.paciente.trabajo}"/>
+
+                            <h:outputLabel value="Estudios: "/>
+                            <p:selectOneMenu id="selectNivelEstudio" value="#{formPacienteBean.paciente.tipoEstudios}"> 
+                                <f:selectItems value="#{formPacienteBean.listaEstudioTipo}"/>   
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </p:fieldset>
+
+                    <p:fieldset id="fldsDatosMedicos" legend="Datos médicos" toggleable="true" toggleSpeed="150"> 
+                        <h:panelGrid id="gridDatosMedicos" columns="10">
+                            <h:outputLabel value="Obra social"/>
+                            <p:inputText id="txtObraSocial" value="#{formPacienteBean.paciente.obraSocial}" />
+
+                            <h:outputLabel value="Médico de cabecera:"/>
+                            <p:inputText id="txtMedicoCabecera" value="#{formPacienteBean.paciente.medicoCabecera}"/>
+                            <h:outputLabel value="Teléfono"/>
+                            <p:inputText id="txtTelefonoMedico" value="#{formPacienteBean.paciente.telefonoMedico}" />
+
+                            <h:outputLabel value="Serv. de emergencia:"/>
+                            <p:selectOneRadio id="rdbServicioEmergencia" value="#{formPacienteBean.servicio}">
+                                <f:selectItem itemLabel="Sí" itemValue="1" />  
+                                <f:selectItem itemLabel="No" itemValue="0" />  
+                            </p:selectOneRadio>
+                            <h:outputLabel value="Cuál?:"/>
+                            <p:inputText id="txtServicioEmergencia" value="#{formPacienteBean.paciente.servicioEmergencia}"/>
+
+                        </h:panelGrid>
+                    </p:fieldset>
+
+                    <p:fieldset id="fldsOtros" legend="Otros datos" toggleable="true" toggleSpeed="150">
+                        <h:panelGrid id="gridOtros" columns="8" cellpadding="3" cellspacing="3" >
+                            <h:outputLabel value="Religión:"/>
+                            <p:inputText id="txtReligion" value="#{formPacienteBean.paciente.religion}" />
+                            <h:outputLabel value="Privado de libertad:"/>
+                            <p:selectOneRadio id="rdbPrivadoLibertad" value="#{formPacienteBean.paciente.privadoLibertad}">  
+                                <f:selectItem itemLabel="Sí" itemValue="1" />  
+                                <f:selectItem itemLabel="No" itemValue="0" />   
+                            </p:selectOneRadio> 
+                            <h:outputLabel value="Lugar"/>
+                            <p:inputText id="txtLugar" value="#{formPacienteBean.paciente.lugar}" />
+                        </h:panelGrid>
+                    </p:fieldset>
+
+                    <h:panelGrid id="gridBotones" columns="2" cellpadding="3" cellspacing="3" >
+                        <p:commandButton value="Guardar" actionListener="#{formPacienteBean.save()}" oncomplete="dlgPaciente.show()"/>
+                        <p:commandButton value="Guardar y asignar" ajax="false" action="#{buscarTableBeanAlumnos.navigate()}"/>
+                    </h:panelGrid>
+</html>
+
