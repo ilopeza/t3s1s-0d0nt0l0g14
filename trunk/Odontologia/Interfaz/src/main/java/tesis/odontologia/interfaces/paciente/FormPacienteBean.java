@@ -42,6 +42,9 @@ public class FormPacienteBean {
     // Para saber si tiene servicio de emergencia.
     private int servicio;
  
+            
+    @ManagedProperty(value = "#{personaService}")
+    private PersonaService personaService;
     
     public int getEstudia() {
         if(paciente != null && paciente.getTipoEstudios() != null){
@@ -72,9 +75,7 @@ public class FormPacienteBean {
         
         this.servicio = servicio;
     }
-        
-    @ManagedProperty(value = "#{personaService}")
-    private PersonaService personaService;
+
     
     
     public Date getFechaNacimiento() {
@@ -102,9 +103,7 @@ public class FormPacienteBean {
     }
 
     public void setPaciente(Paciente p) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(fechaNacimiento);
-        p.setFechaNacimiento(cal);
+        
         
         this.paciente = p;
     }
@@ -128,10 +127,11 @@ public class FormPacienteBean {
         return listaEstudioTipo;
     }
 
-    public String save() {
-        paciente.toString();
+    public void save() {
+
+        
         paciente = personaService.save(paciente);
-        return "showPaciente";
+        
     }
 
     @PostConstruct
@@ -141,10 +141,6 @@ public class FormPacienteBean {
             paciente = new Paciente();
             paciente.setDomicilio(new Domicilio());
             paciente.setDocumento(new Documento());
-            
-            
-
-          
         }
             
         pacientes = new ArrayList<Paciente>();
@@ -170,6 +166,7 @@ public class FormPacienteBean {
         p3.getDocumento().setNumero("789");
         p3.setDomicilio(new Domicilio());
         p3.setApellido("Jiji");
+        
         
         lista.add(p1);
         lista.add(p2);
