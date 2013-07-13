@@ -7,31 +7,46 @@
                 xmlns:h="http://java.sun.com/jsf/html">
 
     <ui:define name="content">
-        pagina buscar paciente!!!
+
         <h:form id="formBuscarPaciente">
+            <h:panelGrid id="gridBuscar" >
+                <h:panelGrid id="gridBusquedaSimple" columns="4">
+                    <h:outputLabel value="Nro. Documnto:"/> 
+                    <p:inputText id="nroDocumentoBusqueda" value="#{buscarTableBean.paciente.documento.numero}"/>
 
-            <p:panel id="gridBuscar">
-                <h:outputLabel value="Nro Documnto"/> 
-                <p:inputText id="nroDocumentoBusqueda" value="#{buscarTableBean.paciente.documento.numero}"/>
-
-                <h:outputLabel value="Materia"/> 
-                <p:selectOneMenu id="selectMateria"> 
-                    <f:selectItem itemLabel="Elija una..." itemValue=""/>
-                    <f:selectItem itemLabel="Peridoncia" itemValue="1"/>
-                    <f:selectItem itemLabel="Ortodoncia" itemValue="2"/>
-                    <f:selectItem itemLabel="Prótesis" itemValue="3"/>
-                </p:selectOneMenu>
-
-
+                    <h:outputLabel value="Materia:"/> 
+                    <p:selectOneMenu id="selectMateria"> 
+                        <f:selectItem itemLabel="Elija una..." itemValue=""/>
+                        <f:selectItem itemLabel="Peridoncia" itemValue="1"/>
+                        <f:selectItem itemLabel="Ortodoncia" itemValue="2"/>
+                        <f:selectItem itemLabel="Prótesis" itemValue="3"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </h:panelGrid>
                 <p:panel id="pnl" header="Filtro Avanzado" toggleable="true" toggleSpeed="10" widgetVar="panel" collapsed="true" >  
-
-                    <h:outputText value="FC Barcelona dasdasdasdasdasdadadsadads"/>
-
-
+                    <h:outputLabel value="Buscar por:"/>
+                    <h:panelGrid columns="4">
+                        <h:outputLabel value="Materia"/>
+                        <p:selectOneMenu id="cmbMateriaFiltro" value="#{buscarTableBean.materiaElegida}" filter="true" filterMatchMode="startsWith">
+                           
+                            <f:selectItems value="#{buscarTableBean.materias}"/>
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Trabajo práctico:"/>
+                        <p:selectOneMenu id="cmbTrabajoPracticoFiltro" value="#{buscarTableBean.practicoFiltro}" filter="true" filterMatchMode="startsWith">
+                            <f:selectItems value="#{buscarTableBean.practicos}"/>
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Edad desde:"/>
+                        <p:inputMask id="txtEdadDesde" value="#{buscarTableBean.edadDesdeFiltro}" mask="99"/>
+                        <h:outputLabel value="Edad hasta:"/>
+                        <p:inputMask id="txtEdadHasta" value="#{buscarTableBean.edadHastaFiltro}" mask="99"/>
+                                     
+                    </h:panelGrid>
                 </p:panel>
-            </p:panel>
-
         </h:form>
+        <br>
+            
+        </br>
 
         <h:form id="formResultadoBusquedaPacientes">
 
