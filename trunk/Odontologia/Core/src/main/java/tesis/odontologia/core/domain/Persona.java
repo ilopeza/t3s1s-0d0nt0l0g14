@@ -40,10 +40,12 @@ public abstract class Persona extends Generic {
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar fechaNacimiento;
-    
-    @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)
-    @JoinColumn(name= "usuario_id")
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+    
+    @Column(length = 75, nullable = true)
+    private String email;
 
     //CONSTRUCTORS
     public Persona() {
@@ -52,6 +54,11 @@ public abstract class Persona extends Generic {
     public Persona(String nombre, String apellido) {
         this.nombre = nombre;
         this.apellido = apellido;
+    }
+    
+    public Persona(Documento documento, String email) {
+        this.documento = documento;
+        this.email = email;
     }
 
     //GETTERS AND SETTERS
@@ -95,9 +102,23 @@ public abstract class Persona extends Generic {
         this.usuario = usuario;
     }
 
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
-        return apellido + ", "+ nombre;
+        return apellido + ", " + nombre;
     }
 
     //VALIDAR
