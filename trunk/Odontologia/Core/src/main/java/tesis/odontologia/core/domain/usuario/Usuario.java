@@ -5,8 +5,10 @@
 package tesis.odontologia.core.domain.usuario;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import tesis.odontologia.core.domain.Bajeable;
 import tesis.odontologia.core.exception.GenericException;
@@ -19,28 +21,34 @@ import tesis.odontologia.core.exception.UsuarioException;
 @Entity
 
 public class Usuario extends Bajeable{
-    
-    private String usuario;
+    @Column (length = 50, nullable = false)
+    private String nombreUsuario;
+    @Column (length = 50, nullable = false)
     private String contraseña;
-    @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)
+    
     @JoinColumn(name="rol_id")
+    @ManyToOne
     private Rol rol;
+    
+    @Column(length = 75, nullable = false)
+    private String email;
 
     public Usuario() {
     }
 
-    public Usuario(String usuario, String contraseña, Rol rol) {
-        this.usuario = usuario;
+    public Usuario(String usuario, String contraseña, Rol rol, String email) {
+        this.nombreUsuario = usuario;
         this.contraseña = contraseña;
         this.rol = rol;
+        this.email = email;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setNombreUsuario(String usuario) {
+        this.nombreUsuario = usuario;
     }
 
     public String getContraseña() {
@@ -58,10 +66,24 @@ public class Usuario extends Bajeable{
     public void setRol(Rol rol) {
         this.rol = rol;
     }
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
 
     @Override
     public void validar() throws GenericException {
-       if(usuario ==null || usuario.isEmpty()){
+       if(nombreUsuario ==null || nombreUsuario.isEmpty()){
            throw new UsuarioException("El nombre de usuario no puede ser nulo o vacio");
        }
        
@@ -74,9 +96,4 @@ public class Usuario extends Bajeable{
        }
        rol.validar();
     }
-    
-    
-    
-    
-    
 }
