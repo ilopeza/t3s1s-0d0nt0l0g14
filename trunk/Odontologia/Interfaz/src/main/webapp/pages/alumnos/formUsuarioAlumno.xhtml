@@ -12,28 +12,23 @@
 
                 <p:panelGrid id="grid" columns="4">
 
-                    <h:outputLabel value="Tipo de documento:"/>
-                    <p:selectOneMenu id="selectedTipoDocumento" value="#{formAlumnoBean.alumno.documento.tipoDocumento}" > 
-                        <f:selectItem itemLabel="Elija uno..." itemValue=""/>
-                        <f:selectItems value="#{formAlumnoBean.listaTipoDocumento}"/>
-                    </p:selectOneMenu>
                     <h:outputLabel value="Número de documento"/>
-                    <h:inputText id="txtDocumento" value="#{formAlumnoBean.alumno.documento.numero}" />
+                    <h:inputText id="txtDocumento" value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}" />
                     <h:outputLabel value="E-mail"/>
-                    <h:inputText id="txtEmail" value="#{formAlumnoBean.alumno.email}"/>
+                    <h:inputText id="txtEmail" value="#{formUsuarioAlumnoBean.usuario.email}"/>
 
-                    <p:commandButton value="Guardar" ajax="true" action="#{formAlumnoBean.registrarAlumno()}"
+                    <p:commandButton value="Guardar" ajax="true" action="#{formUsuarioAlumnoBean.registrarUsuarioAlumno()}"
                                      oncomplete="dialogWidget.show()" update=":formdisplay:display"/>
                 </p:panelGrid>
             </h:form>
             
             
-            <p:dialog header="Registro Alumno" widgetVar="dialogWidget" resizable="false" appendToBody="true" modal="true" >
+            <p:dialog header="Registro Usuario(Alumno)" widgetVar="dialogWidget" resizable="false" appendToBody="true" modal="true" >
                 <h:form id="formdisplay">
                     <h:panelGrid id="display" columns="1" cellpadding="4" style="margin:0 auto;">
                         <h3>Datos de registro</h3>
                         <p>
-                            <h:outputText value="#{formAlumnoBean.datosAlumnoRegistrado()}"/>
+                            <h:outputText value="#{formUsuarioAlumnoBean.datosUsuarioRegistrado()}"/>
                             <h:button id="aceptarButton" value="Aceptar"/>
                         </p>
                     </h:panelGrid>
