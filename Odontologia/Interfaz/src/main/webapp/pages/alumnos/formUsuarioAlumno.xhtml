@@ -8,16 +8,16 @@
     <ui:composition template="./../../templates/commonLayout.xhtml">
         <ui:define name="content">
             <h:form id="formAlumno">
-                <h3>Nuevo Alumno</h3>
+                <h3>Nuevo Usuario[Alumno]</h3>
 
-                <p:panelGrid id="grid" columns="4">
+                <p:panelGrid id="grid" columns="2">
 
                     <h:outputLabel value="Número de documento"/>
                     <h:inputText id="txtDocumento" value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}" />
                     <h:outputLabel value="E-mail"/>
                     <h:inputText id="txtEmail" value="#{formUsuarioAlumnoBean.usuario.email}"/>
 
-                    <p:commandButton value="Guardar" ajax="true" action="#{formUsuarioAlumnoBean.registrarUsuarioAlumno()}"
+                    <p:commandButton value="Guardar" ajax="true" action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
                                      oncomplete="dialogWidget.show()" update=":formdisplay:display"/>
                 </p:panelGrid>
             </h:form>
