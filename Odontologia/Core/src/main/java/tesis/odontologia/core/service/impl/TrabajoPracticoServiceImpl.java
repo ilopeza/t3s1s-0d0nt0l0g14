@@ -7,11 +7,8 @@ package tesis.odontologia.core.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tesis.odontologia.core.dao.CatedraDao;
 import tesis.odontologia.core.dao.TrabajoPracticoDao;
-import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
-import tesis.odontologia.core.service.CatedraService;
 import tesis.odontologia.core.service.TrabajoPracticoService;
 
 /**
