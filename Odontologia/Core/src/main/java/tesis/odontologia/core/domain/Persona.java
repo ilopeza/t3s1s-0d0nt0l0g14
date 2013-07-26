@@ -31,13 +31,10 @@ public abstract class Persona extends Generic {
 
     @Column(length = 50, nullable = false)
     private String apellido;
-    
     @Column(length = 50, nullable = false)
     private String nombre;
-    
     @Embedded
     private Documento documento;
-    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar fechaNacimiento;
     
@@ -109,5 +106,15 @@ public abstract class Persona extends Generic {
             throw new PersonaException("El documento no puede ser nulo.");
         }
         documento.validar();
+    }
+
+    /*
+     * Calcula y devuelve un int con la edad de la persona.
+     */
+    public int getEdad() {
+        if (fechaNacimiento == null) {
+            return 0;
+        }
+        return Calendar.getInstance().get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
     }
 }
