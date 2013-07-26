@@ -226,6 +226,13 @@ public class Paciente extends Persona {
 
 public enum EstudiosTipo {
 
+    NINGUNO {
+        @Override
+        public String toString() {
+            return "Ninguno";
+        }
+    },
+    
     PRIMARIO {
         @Override
         public String toString() {
