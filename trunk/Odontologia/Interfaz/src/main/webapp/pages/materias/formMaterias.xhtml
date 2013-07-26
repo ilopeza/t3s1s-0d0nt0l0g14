@@ -27,13 +27,16 @@
         </h:form>  
 
         
-        <p:dialog header="Materia" widgetVar="materia" resizable="false" appendToBody="true" modal="true">  
+        <p:dialog header="Materia" widgetVar="materia" resizable="false" appendToBody="true" modal="true" closable="false" >  
             <h:form id="formMateriaDialog">  
                 <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
                     <h:outputLabel for="nombre" value="Nombre: " />  
                     <p:inputText id="nombre" value="#{materiaBean.materia.nombre}" />    
                 </h:panelGrid>
-                <p:commandButton update=":formMaterias:tableMaterias" oncomplete="materia.hide()" title="Aceptar" 
+                <p:commandButton update=":formMaterias:tableMaterias" oncomplete="materia.hide()" value="Cancelar"
+                                 actionListener="#{materiaBean.resetFields()}">
+                </p:commandButton>
+                <p:commandButton update=":formMaterias:tableMaterias" oncomplete="materia.hide()" value="Aceptar" 
                                  actionListener="#{materiaBean.saveMateria()}" >
                 </p:commandButton>
             </h:form>  
