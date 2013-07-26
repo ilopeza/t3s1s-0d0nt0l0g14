@@ -13,146 +13,139 @@
                 <h:panelGrid id="gridBusquedaSimple" columns="4">
                     <h:outputLabel value="Nro. Documnto:"/> 
                     <p:inputText id="nroDocumentoBusqueda" value="#{buscarTableBean.paciente.documento.numero}"/>
-
-                    <h:outputLabel value="Materia:"/> 
-                    <p:selectOneMenu id="selectMateria"> 
-                        <f:selectItem itemLabel="Elija una..." itemValue=""/>
-                        <f:selectItem itemLabel="Peridoncia" itemValue="1"/>
-                        <f:selectItem itemLabel="Ortodoncia" itemValue="2"/>
-                        <f:selectItem itemLabel="Prótesis" itemValue="3"/>
-                    </p:selectOneMenu>
                 </h:panelGrid>
             </h:panelGrid>
-                <p:panel id="pnl" header="Filtro Avanzado" toggleable="true" toggleSpeed="10" widgetVar="panel" collapsed="true" >  
-                    <h:outputLabel value="Buscar por:"/>
-                    <h:panelGrid columns="4">
-                        <h:outputLabel value="Materia"/>
-                        <p:selectOneMenu id="cmbMateriaFiltro" value="#{buscarTableBean.materiaElegida}" filter="true" filterMatchMode="startsWith">
-                           
-                            <f:selectItems value="#{buscarTableBean.materias}"/>
-                        </p:selectOneMenu>
-                        <h:outputLabel value="Trabajo práctico:"/>
-                        <p:selectOneMenu id="cmbTrabajoPracticoFiltro" value="#{buscarTableBean.practicoFiltro}" filter="true" filterMatchMode="startsWith">
-                            <f:selectItems value="#{buscarTableBean.practicos}"/>
-                        </p:selectOneMenu>
-                        
-                        <h:outputLabel value="Edad desde:"/>
-                        <p:inputMask id="txtEdadDesde" value="#{buscarTableBean.edadDesdeFiltro}" mask="99"/>
-                        <h:outputLabel value="Edad hasta:"/>
-                        <p:inputMask id="txtEdadHasta" value="#{buscarTableBean.edadHastaFiltro}" mask="99"/>
-                                     
-                    </h:panelGrid>
-                </p:panel>
-        </h:form>
-        <br>
-            
-        </br>
+            <p:panel id="pnl" header="Filtro Avanzado" toggleable="true" toggleSpeed="10" widgetVar="panel" collapsed="true" >  
+                <h:outputLabel value="Buscar por:"/>
+                <h:panelGrid columns="4">
+  
+                    <h:outputLabel value="Materia"/>
+                    <p:selectOneMenu id="cmbMateriaFiltro" value="#{buscarTableBean.materiaElegida}" filter="true" filterMatchMode="startsWith" >
+                        <f:selectItems value="#{buscarTableBean.materias}" var="materia" itemLabel="#{materia.nombre}" itemValue="#{materia}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Trabajo práctico:"/>
+                    <!---
+                    <p:selectOneMenu id="cmbTrabajoPracticoFiltro" value="{buscarTableBean.practicoFiltro}" filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="{buscarTableBean.practicos}" />
+                    </p:selectOneMenu>-->
 
-        <h:form id="formResultadoBusquedaPacientes">
+                    <h:outputLabel value="Edad desde:"/>
+                    <p:inputMask id="txtEdadDesde" value="#{buscarTableBean.edadDesdeFiltro}" mask="99"/>
+                    <h:outputLabel value="Edad hasta:"/>
+                    <p:inputMask id="txtEdadHasta" value="#{buscarTableBean.edadHastaFiltro}" mask="99"/>
+            </h:panelGrid>
+        </p:panel>
+            <p:commandButton id="btnBuscar" ajax="true" oncomplete="#{buscarTableBean}" update=":formResultadoBusquedaPacientes:tblResultadosBusquedaPaciente"/>
+    </h:form>
+    <br>
 
-            <p:dataTable id="BuscarTableBean" var="paciente" value="#{buscarTableBean.pacientes}"
-                         rowKey="#{paciente.nombre}"  
-                         selection="#{buscarTableBean.pacienteSeleccionado}">  
+    </br>
 
-                <f:facet name="header" >  
+    <h:form id="formResultadoBusquedaPacientes">
+
+        <p:dataTable id="tblResultadosBusquedaPaciente" var="paciente" value="#{buscarTableBean.pacientes}"
+                     rowKey="#{paciente.nombre}"  
+                     selection="#{buscarTableBean.pacienteSeleccionado}">  
+
+            <f:facet name="header" >  
+                <p:outputPanel>  
+                    <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
+                </p:outputPanel>  
+            </f:facet>                                   
+
+            <p:column selectionMode="single" style="width:18px"/>  
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Nombre" />
+                </f:facet>
+                <p:commandLink value="#{paciente.nombre}" >
+                    <f:setPropertyActionListener value="#{paciente}" target="#{buscarTableBean.pacienteSeleccionado}" />    
+                </p:commandLink>
+            </p:column>
+
+            <p:column id="apellidoColumn" headerText="Apellido">  
+                <h:outputText value="#{paciente.apellido}" />  
+            </p:column>
+
+            <p:column id="documentoColumn" headerText="Documento"/>  
+            <p:column id="domicilioColumn" headerText="Domicilio"/> 
+            <p:column id="edadColumn" headerText="Edad"/> 
+            <p:column id="problemasColumn" headerText="Problemas"/> 
+        </p:dataTable>
+
+        <p:commandButton value="Asignar Paciente"  
+                         update=":pacienteDetailForm:display" 
+                         oncomplete="pacienteDialog.show()"  
+                         title="View">                
+        </p:commandButton> 
+    </h:form>
+
+    <p:dialog header="Asignacion de Pacientes" widgetVar="pacienteDialog" resizable="false" id="userDlg"> 
+        <h:form id="pacienteDetailForm">
+            <p:panelGrid id="display" columns="1" style="margin:0 auto;">   
+
+                <f:facet name="pacientes" >  
                     <p:outputPanel>  
-                        <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
+                        <h:outputText value="Pacientes Odontológicos" />                  
                     </p:outputPanel>  
-                </f:facet>                                   
+                </f:facet>
+                <p:column id="nombreAlumnoColumn" headerText="Nombre" > 
+                    <h:outputText value="Nombre del Paciente: "/>
+                    <h:outputText value="#{buscarTableBean.pacienteSeleccionado.nombre}" />
+                </p:column>
 
-                <p:column selectionMode="single" style="width:18px"/>  
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="Nombre" />
+                <p:column id="apellidoAlumnoColumn" headerText="Apellido">
+                    <h:outputText value="Apellido del Paciente: "/>
+                    <h:outputText value="#{buscarTableBean.pacienteSeleccionado.apellido}" />
+                </p:column>
+
+
+                <h:outputLabel value="Ingrese nombre del alumno:"/>
+                <p:inputText id="nombreBusqueda" value="#{buscarTableBeanAlumnos.varBusqueda}"/>
+
+
+                <p:panelGrid id="tablaAlumnos" columns="1" style="margin:0 auto;">
+                    <f:facet name="footer">
+                        <p:commandButton value="Buscar" action="#{buscarTableBeanAlumnos.buscarAlumno()}" 
+                                         update=":pacienteDetailForm:tablaAlumnos"/>
+
+                        <p:column id="columnaTablaAlumnos" colspan="2">
+                            <p:dataTable id="BuscarTableBean2" var="alumno" value="#{buscarTableBeanAlumnos.alumnos}"
+                                         rowKey="#{alumno.nombre}" selection="#{buscarTableBeanAlumnos.alumno}">  
+
+                                <f:facet name="pepe" >  
+                                    <p:outputPanel>  
+                                        <h:outputText value="Alumnos" />                  
+                                    </p:outputPanel>  
+                                </f:facet>                                   
+
+                                <p:column selectionMode="single" style="width:18px" />
+                                <p:column>
+                                    <p:commandLink value="#{alumno.nombre}" >
+                                        <f:setPropertyActionListener value="#{alumno}" target="#{buscarTableBeanAlumnos.alumnoSeleccionado}" />    
+                                    </p:commandLink>         
+                                </p:column>
+
+                                <p:column id="apellidoColumn2" headerText="Apellido">  
+                                    <h:outputText value="#{alumno.apellido}" />  
+                                </p:column>
+
+                                <p:column id="catedraColumn2" headerText="Cátedra"/>
+
+                            </p:dataTable>
+                        </p:column>
+
+
                     </f:facet>
-                    <p:commandLink value="#{paciente.nombre}" >
-                        <f:setPropertyActionListener value="#{paciente}" target="#{buscarTableBean.pacienteSeleccionado}" />    
-                    </p:commandLink>
-                </p:column>
+                </p:panelGrid>
+                <p:commandButton value="Asignar"  
+                                 action="#{buscarTableBeanAlumnos.navigate()}"/>                           
+            </p:panelGrid>               
 
-                <p:column id="apellidoColumn" headerText="Apellido">  
-                    <h:outputText value="#{paciente.apellido}" />  
-                </p:column>
 
-                <p:column id="documentoColumn" headerText="Documento"/>  
-                <p:column id="domicilioColumn" headerText="Domicilio"/> 
-                <p:column id="edadColumn" headerText="Edad"/> 
-                <p:column id="problemasColumn" headerText="Problemas"/> 
-            </p:dataTable>
 
-            <p:commandButton value="Asignar Paciente"  
-                             update=":pacienteDetailForm:display" 
-                             oncomplete="pacienteDialog.show()"  
-                             title="View">                
-            </p:commandButton> 
         </h:form>
-
-        <p:dialog header="Asignacion de Pacientes" widgetVar="pacienteDialog" resizable="false" id="userDlg" > 
-            <h:form id="pacienteDetailForm">
-                <p:panelGrid id="display" columns="1" style="margin:0 auto;">   
-
-                    <f:facet name="pacientes" >  
-                        <p:outputPanel>  
-                            <h:outputText value="Pacientes Odontológicos" />                  
-                        </p:outputPanel>  
-                    </f:facet>
-                    <p:column id="nombreAlumnoColumn" headerText="Nombre" > 
-                        <h:outputText value="Nombre del Paciente: "/>
-                        <h:outputText value="#{buscarTableBean.pacienteSeleccionado.nombre}" />
-                    </p:column>
-
-                    <p:column id="apellidoAlumnoColumn" headerText="Apellido">
-                        <h:outputText value="Apellido del Paciente: "/>
-                        <h:outputText value="#{buscarTableBean.pacienteSeleccionado.apellido}" />
-                    </p:column>
-
-
-                    <h:outputLabel value="Ingrese nombre del alumno:"/>
-                    <p:inputText id="nombreBusqueda" value="#{buscarTableBeanAlumnos.varBusqueda}"/>
-
-
-                    <p:panelGrid id="tablaAlumnos" columns="1" style="margin:0 auto;">
-                        <f:facet name="footer">
-                            <p:commandButton value="Buscar" action="#{buscarTableBeanAlumnos.buscarAlumno()}" 
-                                             update=":pacienteDetailForm:tablaAlumnos"/>
-
-                            <p:column id="columnaTablaAlumnos" colspan="2">
-                                <p:dataTable id="BuscarTableBean2" var="alumno" value="#{buscarTableBeanAlumnos.alumnos}"
-                                             rowKey="#{alumno.nombre}" selection="#{buscarTableBeanAlumnos.alumno}">  
-
-                                    <f:facet name="pepe" >  
-                                        <p:outputPanel>  
-                                            <h:outputText value="Alumnos" />                  
-                                        </p:outputPanel>  
-                                    </f:facet>                                   
-
-                                    <p:column selectionMode="single" style="width:18px" />
-                                    <p:column>
-                                        <p:commandLink value="#{alumno.nombre}" >
-                                            <f:setPropertyActionListener value="#{alumno}" target="#{buscarTableBeanAlumnos.alumnoSeleccionado}" />    
-                                        </p:commandLink>         
-                                    </p:column>
-
-                                    <p:column id="apellidoColumn2" headerText="Apellido">  
-                                        <h:outputText value="#{alumno.apellido}" />  
-                                    </p:column>
-
-                                    <p:column id="catedraColumn2" headerText="Cátedra"/>
-
-                                </p:dataTable>
-                            </p:column>
-
-
-                        </f:facet>
-                    </p:panelGrid>
-                    <p:commandButton value="Asignar"  
-                                     action="#{buscarTableBeanAlumnos.navigate()}"/>                           
-                </p:panelGrid>               
-
-
-
-            </h:form>
-        </p:dialog> 
-    </ui:define>
+    </p:dialog> 
+</ui:define>
 
 </ui:composition>
