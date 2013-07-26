@@ -29,6 +29,11 @@ public class Materia extends Generic {
     public Materia() {
     }
 
+    @Override
+    public String toString() {
+        return "Materia{" + "nombre=" + nombre + '}';
+    }
+
     public Materia(String nombre, List<Catedra> catedra) {
         this.nombre = nombre;
         this.catedra = catedra;
