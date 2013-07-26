@@ -32,6 +32,7 @@ public class MateriaBean {
     private Catedra catedra;
     private Materia selectedMateria;
     private Catedra selectedCatedra;
+    
     @ManagedProperty(value = "#{materiaService}")
     private MateriaService materiaService;
     @ManagedProperty(value = "#{catedraService}")
@@ -41,6 +42,10 @@ public class MateriaBean {
     public void init() {
         materias = materiaService.findAll();
         catedras = catedraService.findAll();
+        resetFields();
+    }
+    
+    public void resetFields() {
         materia = new Materia();
         catedra = new Catedra();
     }
