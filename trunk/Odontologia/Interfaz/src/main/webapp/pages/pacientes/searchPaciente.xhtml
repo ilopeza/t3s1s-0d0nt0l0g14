@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formBusquedaPacientes">
+            <h:panelGrid id="pnlBusqueda" columns="2">
+                <h:outputLabel value="Nro. Documento:"/>
+                <p:inputText value="#{searchPacienteBean.nroDocumentoFiltro}"/>
+            </h:panelGrid>
+
+            <p:panel id="pnl" header="Filtro Avanzado" toggleable="true" toggleSpeed="10" widgetVar="panel" collapsed="true" >  
+                <h:outputLabel value="Buscar por:"/>
+                <h:panelGrid columns="4">
+
+                    <h:outputLabel value="Materia"/>
+                    <p:selectOneMenu id="cmbMateriaFiltro" value="#{searchPacienteBean.materiaFiltro}" filter="true" filterMatchMode="startsWith" >
+
+                        <f:selectItems value="#{searchPacienteBean.materias}" var="materia" itemLabel="#{materia.nombre}" itemValue="#{materia}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Trabajo práctico:"/>
+                    <!---
+                    <p:selectOneMenu id="cmbTrabajoPracticoFiltro" value="{buscarTableBean.practicoFiltro}" filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="{buscarTableBean.practicos}" />
+                    </p:selectOneMenu>
+                    -->
+                    <h:outputLabel value="Edad desde:"/>
+                    <p:inputMask id="txtEdadDesde" value="#{searchPacienteBean.edadDesdeFiltro}" mask="99"/>
+                    <h:outputLabel value="Edad hasta:"/>
+                    <p:inputMask id="txtEdadHasta" value="#{searchPacienteBean.edadHastaFiltro}" mask="99"/>
+                </h:panelGrid>
+
+            </p:panel>
+
+            <p:commandButton id="btnBuscar" value="Buscar" action="#{searchPacienteBean.buscarPacientes()}" update=":formTablaPacientes:tblResultadosBusquedaPaciente"/> 
+        </h:form>
+
+        <h:form id="formTablaPacientes">
+            <p:dataTable id="tblResultadosBusquedaPaciente" var="paciente" value="#{searchPacienteBean.pacientes}"
+                         rowKey="#{paciente.nombre}"  
+                         selection="#{searchPacienteBean.pacienteSeleccionado}">
+                <f:facet name="header" >  
+                    <p:outputPanel>  
+                        <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
+                    </p:outputPanel>  
+                </f:facet>                                   
+
+                <p:column selectionMode="single" style="width:18px"/>  
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Nombre" />
+                    </f:facet>
+                    <p:commandLink value="#{paciente.nombre}" >
+                        <f:setPropertyActionListener value="#{paciente}" target="#{searchPacienteBean.pacienteSeleccionado}" />    
+                    </p:commandLink>
+                </p:column>
+
+                <p:column id="apellidoColumn" headerText="Apellido">  
+                    <h:outputText value="#{paciente.apellido}" />  
+                </p:column>
+
+                <p:column id="documentoColumn" headerText="Documento">
+                    <h:outputText value="#{paciente.documento.numero}" />
+                </p:column>
+                <p:column id="domicilioColumn" headerText="Domicilio"/> 
+                <p:column id="edadColumn" headerText="Edad">
+                    <h:outputText value="#{paciente.fechaNacimiento}" />
+                </p:column>
+                <p:column id="problemasColumn" headerText="Problemas"/> 
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
