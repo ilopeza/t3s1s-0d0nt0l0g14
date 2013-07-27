@@ -12,6 +12,7 @@ import java.util.List;
 import tesis.odontologia.core.domain.QPersona;
 import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
 import tesis.odontologia.core.domain.materia.Materia;
+import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.domain.paciente.QPaciente;
 
 /**
@@ -27,22 +28,21 @@ public class PacienteSpecs {
     }
 
     public static BooleanExpression byNumeroDocumento(String nroDocumento) {
-        return $.documento.numero.eq(nroDocumento);
+        return $.documento.numero.equalsIgnoreCase(nroDocumento);
     }
     
 
     public static BooleanExpression byMenorA(Calendar edadHasta) {
-        return $.fechaNacimiento.before(edadHasta);
+        return $.fechaNacimiento.after(edadHasta);
     }
     
     public static BooleanExpression byMayorA(Calendar edadDesde){
-        return $.fechaNacimiento.after(edadDesde);
+        return $.fechaNacimiento.before(edadDesde);
     }
     
     public static BooleanExpression byEdadEntre(Calendar desde, Calendar hasta){
         return $.fechaNacimiento.between(hasta, hasta);
     }
-  
       
     public static BooleanExpression byDiagnosticoMateria(Materia materia){
         List<Diagnostico.EstadoDiagnostico> estados = new ArrayList<Diagnostico.EstadoDiagnostico>();
@@ -52,5 +52,10 @@ public class PacienteSpecs {
         return $.historiaClinica.diagnostico.any().estado.in(estados)
                 .and($.historiaClinica.diagnostico.any().materia.eq(materia));
     }
+    
+    public static BooleanExpression byTipoPersona(Object t){
+        return $.instanceOf(Paciente.class); 
+    }
+            
 
 }
