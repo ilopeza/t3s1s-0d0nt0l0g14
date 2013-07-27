@@ -6,6 +6,8 @@ package tesis.odontologia.core.domain.materia;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.TrabajoPracticoException;
@@ -18,9 +20,12 @@ import tesis.odontologia.core.exception.TrabajoPracticoException;
 public class TrabajoPractico extends Generic {
     
     @Column(length = 150, nullable = false)
+    @Size(min = 1, max = 150)
+    @NotNull
     private String nombre;
     
     @Column(length = 300)
+    @Size(min = 1, max = 300)
     private String descripcion;
 
     public TrabajoPractico() {

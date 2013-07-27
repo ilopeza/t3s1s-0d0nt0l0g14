@@ -15,6 +15,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.exception.AtencionException;
 import tesis.odontologia.core.exception.GenericException;
@@ -30,24 +32,32 @@ public abstract class Atencion extends Generic {
     
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
     private Calendar fechaAtencion;
     
     @Column(nullable = false, length = 700)
+    @Size(min = 1, max = 700)
+    @NotNull
     private String motivoConsultaOdontologica;
     
     @Column(length = 255)
+    @Size(min = 1, max = 255)
     private String comoComenzo;
     
     @Column(length = 255)
+    @Size(min = 1, max = 255)
     private String cuantoTiempoHace;
     
     @Column(length = 255)
+    @Size(min = 1, max = 255)
     private String donde;
     
     @Column(length = 255)
+    @Size(min = 1, max = 255)
     private String aQueLoAtribuye;
     
     @Column(length = 255)
+    @Size(min = 1, max = 255)
     private String queHizo;
 
     @ManyToOne(cascade = CascadeType.ALL)
