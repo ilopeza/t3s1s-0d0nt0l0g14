@@ -76,8 +76,6 @@ public class FormPacienteBean {
         this.servicio = servicio;
     }
 
-    
-    
     public Date getFechaNacimiento() {
         return paciente.getFechaNacimiento() == null? null: paciente.getFechaNacimiento().getTime();
     }
@@ -127,10 +125,10 @@ public class FormPacienteBean {
         return listaEstudioTipo;
     }
 
-    public void save() {
+    public String save() {
 
-        
         paciente = personaService.save(paciente);
+        return "formPaciente";
         
     }
 
