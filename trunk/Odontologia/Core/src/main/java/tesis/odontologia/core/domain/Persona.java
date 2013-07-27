@@ -16,6 +16,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.usuario.Usuario;
 import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.PersonaException;
@@ -29,12 +31,19 @@ import tesis.odontologia.core.exception.PersonaException;
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public abstract class Persona extends Generic {
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 150)
+    @Size(min = 1, max = 150)
+    @NotNull
     private String apellido;
-    @Column(length = 50, nullable = false)
+    
+    @Column(length = 150)
+    @Size(min = 1, max = 150)
+    @NotNull
     private String nombre;
+    
     @Embedded
     private Documento documento;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar fechaNacimiento;
     

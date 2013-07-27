@@ -7,6 +7,8 @@ package tesis.odontologia.core.domain.paciente;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -15,16 +17,22 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Domicilio implements Serializable {
 
-    @Column(nullable = false)
+    @Column(length = 150)
+    @Size(min = 1, max = 150)
+    @NotNull
     private String domicilioActual;
     
-    @Column(nullable = false)
+    @Column(length = 150)
+    @Size(min = 1, max = 150)
+    @NotNull
     private String ciudadActual;
     
-    @Column(nullable = true)
+    @Column(length = 150)
+    @Size(min = 1, max = 150)
     private String residenciaAnterior;
     
-    @Column(nullable = true)
+    @Column(length = 150)
+    @Size(min = 1, max = 150)
     private String ciudadAnterior;
 
     //CONSTRUCTORS

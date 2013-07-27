@@ -7,6 +7,7 @@ package tesis.odontologia.core.service.impl;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

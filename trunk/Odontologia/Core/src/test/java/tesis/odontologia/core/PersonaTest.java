@@ -8,6 +8,7 @@ import tesis.odontologia.core.domain.Persona;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import static org.testng.Assert.*;
 import tesis.odontologia.core.domain.Documento;
+import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.paciente.Domicilio;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.specification.PacienteSpecs;
@@ -66,5 +67,14 @@ public class PersonaTest extends AbstractTest {
         Persona findOne = personaService.findOne(PacienteSpecs.byNombre("robert"));
         assertNotNull(findOne);
         System.out.println("FinOne Predicate: " + findOne);
+    }
+    
+    @Test(dependsOnMethods = "testSpecification")
+    public void testAlumno() {
+        Alumno a = new Alumno("Juan", "Barrionuevo");
+        a.setDocumento(new Documento("28188271", Documento.TipoDocumento.DNI));
+        a = personaService.save(a);
+        assertNotNull(a);
+        assertFalse(a.isNew());
     }
 }

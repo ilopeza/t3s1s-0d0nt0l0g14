@@ -13,6 +13,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Persona;
 import tesis.odontologia.core.domain.historiaclinica.HistoriaClinica;
 import tesis.odontologia.core.exception.GenericException;
@@ -28,38 +29,63 @@ public class Paciente extends Persona {
     @Enumerated(EnumType.STRING)
     private EstadoCivilTipo estadoCivil;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String religion;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String nacionalidad;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String obraSocial;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String lugarNacimiento;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String provincia;
     
-    @Column(nullable = true)
+    @Column
     @Enumerated(EnumType.STRING)
     private EstudiosTipo tipoEstudios;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String trabajo;
     
     @Embedded
     private Domicilio domicilio;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String telefono;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String celular;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String medicoCabecera;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String telefonoMedico;
     
-    @Column(nullable = true)
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String servicioEmergencia;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String privadoLibertad;
     
+    @Column(length = 50)
+    @Size(min = 1, max = 50)
     private String lugar;
     
     @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)

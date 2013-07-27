@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import tesis.odontologia.core.exception.DocumentoException;
 import tesis.odontologia.core.exception.GenericException;
 
@@ -19,11 +21,14 @@ import tesis.odontologia.core.exception.GenericException;
 @Embeddable
 public class Documento implements Serializable {
 
-    @Column(nullable = false)
+    @Column(length = 15, nullable = false)
+    @Size(min = 1, max = 15)
+    @NotNull
     private String numero;
     
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private TipoDocumento tipoDocumento;
 
     //CONSTRUCTORS
