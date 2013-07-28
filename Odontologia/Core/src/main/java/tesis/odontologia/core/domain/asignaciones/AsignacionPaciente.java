@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.domain.alumno.Alumno;
+import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.exception.AsignacionPacienteException;
 import tesis.odontologia.core.exception.GenericException;
@@ -43,12 +44,12 @@ public class AsignacionPaciente extends Generic{
     private Alumno alumno;
     
     @Enumerated(EnumType.STRING)
-    private AsignacionPaciente.EstadoAsignacion estado;
+    private EstadoAsignacion estado;
 
     public AsignacionPaciente() {
     }
 
-    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, AsignacionPaciente.EstadoAsignacion estado) {
+    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, EstadoAsignacion estado) {
         this.fechaAsignacion = fechaAsignacion;
         this.paciente = paciente;
         this.alumno = alumno;
@@ -79,11 +80,11 @@ public class AsignacionPaciente extends Generic{
         this.alumno = alumno;
     }
 
-    public AsignacionPaciente.EstadoAsignacion getEstado() {
+    public EstadoAsignacion getEstado() {
         return estado;
     }
 
-    public void setEstado(AsignacionPaciente.EstadoAsignacion estado) {
+    public void setEstado(EstadoAsignacion estado) {
         this.estado = estado;
     }
     
