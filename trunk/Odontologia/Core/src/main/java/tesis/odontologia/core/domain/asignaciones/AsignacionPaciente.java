@@ -48,7 +48,7 @@ public class AsignacionPaciente extends Generic{
     public AsignacionPaciente() {
     }
 
-    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, EstadoAsignacion estado) {
+    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, AsignacionPaciente.EstadoAsignacion estado) {
         this.fechaAsignacion = fechaAsignacion;
         this.paciente = paciente;
         this.alumno = alumno;
@@ -79,11 +79,11 @@ public class AsignacionPaciente extends Generic{
         this.alumno = alumno;
     }
 
-    public EstadoAsignacion getEstado() {
+    public AsignacionPaciente.EstadoAsignacion getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoAsignacion estado) {
+    public void setEstado(AsignacionPaciente.EstadoAsignacion estado) {
         this.estado = estado;
     }
     
