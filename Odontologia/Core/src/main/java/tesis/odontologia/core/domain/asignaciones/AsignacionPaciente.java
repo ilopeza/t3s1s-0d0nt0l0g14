@@ -16,7 +16,6 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.domain.alumno.Alumno;
-import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.exception.AsignacionPacienteException;
 import tesis.odontologia.core.exception.GenericException;
