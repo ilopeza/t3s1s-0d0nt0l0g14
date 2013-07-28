@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<html 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="./../../templates/commonLayout.xhtml">
+        <ui:define name="content">
+
+            <h:form id="formDatosPersonalesAlumno">
+
+                <h:panelGrid id="gridDatosPersonalesAlumno" columns="2" cellpadding="3" cellspacing="3" >
+
+                    <h:outputLabel value="Nombre" />
+                    <p:inputText id="txtNombre" value="#{formAlumnoBean.alumno.nombre}" size="50" style=""/>
+                    <h:outputLabel value="Apellido"/>
+                    <p:inputText id="txtApellido" value="#{formAlumnoBean.alumno.apellido}" size="50"/>
+                    <h:outputLabel value="Tipo de documento:"/>
+                    <p:selectOneMenu id="selectedTipoDocumento" value="#{formAlumnoBean.alumno.documento.tipoDocumento}" >
+                        <f:selectItems value="#{formAlumnoBean.listaTipoDocumento}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Número de documento"/>
+                    <p:inputText id="txtNumero" value="#{formAlumnoBean.alumno.documento.numero}" size="50"/>
+                    <h:outputLabel value="Número de Documento del Alumno tomado del loguin" style="color: brown"/>
+                    <h:outputLabel value="Correo electronico"/>
+
+                    <p:commandButton value="Guardar" actionListener="#{formAlumnoBean.save()}"/>
+
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
