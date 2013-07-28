@@ -27,7 +27,7 @@ import tesis.odontologia.core.exception.GenericException;
  */
 
 @Entity
-public class AsignacionPaciente extends Generic{
+public class asignacionPaciente extends Generic{
     
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
