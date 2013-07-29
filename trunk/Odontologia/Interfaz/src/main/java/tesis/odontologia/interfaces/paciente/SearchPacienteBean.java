@@ -7,6 +7,7 @@ package tesis.odontologia.interfaces.paciente;
 import com.mysema.query.types.Predicate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -166,20 +167,7 @@ public class SearchPacienteBean {
         if(edadHastaFiltro != null && edadHastaFiltro.length() > 0){
             p = PacienteSpecs.byMenorA(convertirFechaHasta()).and(p);
         }
-       
-//        } else {
-//            if (edadHastaFiltro != null && edadHastaFiltro.length() > 0) {
-//                //Busca pacientes que hayan nacido a partir de cierto año.
-//                p = PacienteSpecs.byMenorA(convertirFechaHasta());
-//            } else {
-//                p = PacienteSpecs.byEdadEntre(convertirFechaDesde(), convertirFechaHasta());
-//            }
-//        }
-//        if (!materiaFiltro.getNombre().equalsIgnoreCase("Ninguno")) {
-//            p = PacienteSpecs.byDiagnosticoMateria(materiaFiltro).and(p);
-//        }
-
-        pacientes = (List<Paciente>) personaService.findAll(p);
+        pacientes.addAll((Collection<? extends Paciente>) personaService.findAll(p));
     }
     
     private void buscarTodosLosPacientes(){
