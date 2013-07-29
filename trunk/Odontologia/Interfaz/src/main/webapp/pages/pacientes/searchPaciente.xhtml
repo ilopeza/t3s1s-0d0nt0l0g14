@@ -42,7 +42,10 @@
         <h:form id="formTablaPacientes">
             <p:dataTable id="tblResultadosBusquedaPaciente" var="paciente" value="#{searchPacienteBean.pacientes}"
                          rowKey="#{paciente.nombre}"  
-                         selection="#{searchPacienteBean.pacienteSeleccionado}">
+                         selection="#{searchPacienteBean.pacienteSeleccionado}"
+                         selectionMode="single"
+                         paginator="true"
+                         rows="10">
                 <f:facet name="header" >  
                     <p:outputPanel>  
                         <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
@@ -54,7 +57,7 @@
                     <f:facet name="header">
                         <h:outputText value="Nombre" />
                     </f:facet>
-                    <p:commandLink value="#{paciente.nombre}" >
+                    <p:commandLink value="#{paciente.nombre}" update=":formAsignacionPaciente" oncomplete="dlgAsignacion.show()">
                         <f:setPropertyActionListener value="#{paciente}" target="#{searchPacienteBean.pacienteSeleccionado}" />    
                     </p:commandLink>
                 </p:column>
@@ -68,11 +71,32 @@
                 </p:column>
                 <p:column id="domicilioColumn" headerText="Domicilio"/> 
                 <p:column id="edadColumn" headerText="Edad">
-                    <h:outputText value="#{paciente.fechaNacimiento}" />
+                    <h:outputText value="#{paciente.calcularEdad}" />
                 </p:column>
-                <p:column id="problemasColumn" headerText="Problemas"/> 
+                <p:column id="problemasColumn" headerText="Problemas">
+                    <p:selectOneMenu id="cmbMateriasAplicables">
+                        
+                    </p:selectOneMenu>
+                </p:column> 
             </p:dataTable>
         </h:form>
+        
+        <p:dialog id="dlgAsignarPaciente" closeOnEscape="true" closable="true"
+                  widgetVar="dlgAsignacion"
+                  header="Asignación de pacientes">
+            <h:form id="formAsignacionPaciente">
+                
+                <h:panelGrid id="pnlPacienteSeleccionado">
+                    <p:outputLabel value="#{searchPacienteBean.pacienteSeleccionado.toString}"/>
+                </h:panelGrid>
+                <h:panelGrid id="pnlAlumno" columns="2">
+                    <h:outputText value="Núm. de documento"/>
+                    <p:inputText id="nroDocumentoAlumno" value="#{searchPacienteBean.nroDocumentoAlumno}"/>
+                    <p:commandButton id="cmdBuscarAlumno" value="Buscar" update=""/>
+                </h:panelGrid>
+            </h:form>
+            
+        </p:dialog>
+    
     </ui:define>
-
 </ui:composition>
