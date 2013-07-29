@@ -46,6 +46,9 @@ public class SearchPacienteBean {
     private String edadDesdeFiltro;
     private String edadHastaFiltro;
     
+    //Atributos para buscar el alumno.
+    private String nroDocumentoAlumno;
+    
     //Servicio
     @ManagedProperty(value = "#{personaService}")
     private PersonaService personaService;
@@ -121,6 +124,14 @@ public class SearchPacienteBean {
         this.edadHastaFiltro = edadHastaFiltro;
     }
 
+    public String getNroDocumentoAlumno() {
+        return nroDocumentoAlumno;
+    }
+
+    public void setNroDocumentoAlumno(String nroDocumentoAlumno) {
+        this.nroDocumentoAlumno = nroDocumentoAlumno;
+    }
+    
     public PersonaService getPersonaService() {
         return personaService;
     }
