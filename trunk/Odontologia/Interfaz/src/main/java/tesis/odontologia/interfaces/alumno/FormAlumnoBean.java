@@ -21,7 +21,6 @@ import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.RolService;
 import tesis.odontologia.core.service.UsuarioService;
 import tesis.odontologia.core.specification.RolSpecs;
-import tesis.odontologia.core.specification.UsuarioSpecs;
 
 /**
  *
