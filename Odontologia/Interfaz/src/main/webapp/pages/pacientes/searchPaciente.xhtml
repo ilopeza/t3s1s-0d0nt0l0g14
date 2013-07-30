@@ -13,37 +13,38 @@
                 <p:inputText value="#{searchPacienteBean.nroDocumentoFiltro}"/>
             </h:panelGrid>
 
-            <p:panel id="pnl" header="Filtro Avanzado" toggleable="true" toggleSpeed="10" widgetVar="panel" collapsed="true" >  
+            <!--p:panel id="pnl" header="Filtro Avanzado" toggleable="true" toggleSpeed="10" widgetVar="panel" collapsed="true" >  
                 <h:outputLabel value="Buscar por:"/>
                 <h:panelGrid columns="4">
 
                     <h:outputLabel value="Materia"/>
                     <p:selectOneMenu id="cmbMateriaFiltro" value="#{searchPacienteBean.materiaFiltro}" filter="true" filterMatchMode="startsWith" >
-
                         <f:selectItems value="#{searchPacienteBean.materias}" var="materia" itemLabel="#{materia.nombre}" itemValue="#{materia}"/>
                     </p:selectOneMenu>
                     <h:outputLabel value="Trabajo práctico:"/>
-                    <!---
+          
                     <p:selectOneMenu id="cmbTrabajoPracticoFiltro" value="{buscarTableBean.practicoFiltro}" filter="true" filterMatchMode="startsWith">
                         <f:selectItems value="{buscarTableBean.practicos}" />
                     </p:selectOneMenu>
-                    -->
+                   
                     <h:outputLabel value="Edad desde:"/>
                     <p:inputMask id="txtEdadDesde" value="#{searchPacienteBean.edadDesdeFiltro}" mask="99"/>
                     <h:outputLabel value="Edad hasta:"/>
                     <p:inputMask id="txtEdadHasta" value="#{searchPacienteBean.edadHastaFiltro}" mask="99"/>
                 </h:panelGrid>
 
-            </p:panel>
+            </p:panel--> 
 
-            <p:commandButton id="btnBuscar" value="Buscar" action="#{searchPacienteBean.buscarPacientes()}" update=":formTablaPacientes:tblResultadosBusquedaPaciente"/> 
+
+            <p:commandButton id="btnBuscar" value="Buscar" action="#{searchPacienteBean.buscarPacientes()}" 
+                             update=":formTablaPacientes:tblResultadosBusquedaPaciente"/> 
         </h:form>
 
         <h:form id="formTablaPacientes">
             <p:dataTable id="tblResultadosBusquedaPaciente" var="paciente" value="#{searchPacienteBean.pacientes}"
-                         rowKey="#{paciente.nombre}"  
+                         rowKey="#{paciente.documento.numero}"  
                          selection="#{searchPacienteBean.pacienteSeleccionado}"
-                         selectionMode="single"
+
                          paginator="true"
                          rows="10">
                 <f:facet name="header" >  
@@ -52,51 +53,64 @@
                     </p:outputPanel>  
                 </f:facet>                                   
 
-                <p:column selectionMode="single" style="width:18px"/>  
+                <p:column selectionMode="single" style="width:2%" />
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Nombre" />
+                        <h:outputText value="Documento" />
                     </f:facet>
-                    <p:commandLink value="#{paciente.nombre}" update=":formAsignacionPaciente" oncomplete="dlgAsignacion.show()">
+                    <p:commandLink value="#{paciente.documento.numero}" >
                         <f:setPropertyActionListener value="#{paciente}" target="#{searchPacienteBean.pacienteSeleccionado}" />    
                     </p:commandLink>
                 </p:column>
+                <!--p:column id="nombreColumn" headerText="Documento">  
+                    <h:outputText value="#{paciente.documento.numero}" />  
+                </p:column-->
 
                 <p:column id="apellidoColumn" headerText="Apellido">  
                     <h:outputText value="#{paciente.apellido}" />  
                 </p:column>
 
-                <p:column id="documentoColumn" headerText="Documento">
-                    <h:outputText value="#{paciente.documento.numero}" />
+                <p:column id="documentoColumn" headerText="Nombre">
+                    <h:outputText value="#{paciente.nombre}" />
                 </p:column>
                 <p:column id="domicilioColumn" headerText="Domicilio"/> 
-                <p:column id="edadColumn" headerText="Edad">
-                    <h:outputText value="#{paciente.calcularEdad}" />
-                </p:column>
+
                 <p:column id="problemasColumn" headerText="Problemas">
                     <p:selectOneMenu id="cmbMateriasAplicables">
-                        
+
                     </p:selectOneMenu>
                 </p:column> 
+
             </p:dataTable>
+            <p:commandButton value="Asignar Alumno"                               
+                             oncomplete="dlgAsignacion.show()"  
+                             title="View"
+                             update=":formDialog:pnlPacienteSeleccionado"/>
+
         </h:form>
-        
-        <p:dialog id="dlgAsignarPaciente" closeOnEscape="true" closable="true"
-                  widgetVar="dlgAsignacion"
-                  header="Asignación de pacientes">
-            <h:form id="formAsignacionPaciente">
-                
+
+        <h:form id="formDialog">
+
+            <p:dialog id="dlgAsignarPaciente" closeOnEscape="true" closable="true"
+                      widgetVar="dlgAsignacion"
+                      header="Asignación de pacientes">
+
                 <h:panelGrid id="pnlPacienteSeleccionado">
-                    <p:outputLabel value="#{searchPacienteBean.pacienteSeleccionado.toString}"/>
+                    <h:outputLabel value="#{searchPacienteBean.pacienteSeleccionado.nombre}" />
                 </h:panelGrid>
+
                 <h:panelGrid id="pnlAlumno" columns="2">
-                    <h:outputText value="Núm. de documento"/>
+                    <h:outputText value="Núm. de documento del alumno"/>
                     <p:inputText id="nroDocumentoAlumno" value="#{searchPacienteBean.nroDocumentoAlumno}"/>
                     <p:commandButton id="cmdBuscarAlumno" value="Buscar" update=""/>
                 </h:panelGrid>
-            </h:form>
-            
-        </p:dialog>
-    
+
+
+            </p:dialog>
+        </h:form>
+
+
+
     </ui:define>
+
 </ui:composition>
