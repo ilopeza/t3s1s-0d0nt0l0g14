@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formBuscarAlumno">
+
+            <h:panelGrid id="pnlBusquedaAlumno" columns="2">
+                <h:outputLabel value="Nro. Documento:"/>
+                <p:inputText value="#{searchAlumnoBean.nroDocumentoFiltro}"/> 
+            </h:panelGrid>
+            
+            <p:commandButton  id="btnBuscarAlumno" value="Buscar" action="#{searchAlumnoBean.buscarAlumno()}" 
+                              update=":formDatosAlumnoEncontrado:tblResultadosBusquedaAlumno"/>
+
+        </h:form>
+        
+        <h:form id="formDatosAlumnoEncontrado">
+            <p:dataTable id="tblResultadosBusquedaAlumno" var="alumno" value="#{searchAlumnoBean.alumno}">
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Resultado de la Busqueda de Alumnos" />
+                    </p:outputPanel>
+                </f:facet>
+                
+                <p:column id="nombreAlumnoEncontrado" headerText="Nombre">
+                    <h:outputText value="#{alumno.nombre}" />
+                </p:column>
+                
+                <p:column id="apellidoAlumnoEncontrado" headerText="Apellido">
+                    <h:outputText value="#{alumno.apellido}" />
+                </p:column>
+                
+                <p:column id="documentoAlumnoEncontrado" headerText="Documento">
+                    <h:outputText value="#{alumno.documento.numero}" />
+                </p:column>
+                                
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
