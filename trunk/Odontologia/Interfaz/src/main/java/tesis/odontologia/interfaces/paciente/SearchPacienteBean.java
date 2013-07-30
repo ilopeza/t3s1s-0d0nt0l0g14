@@ -13,11 +13,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.Documento.TipoDocumento;
+import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.service.PersonaService;
+import tesis.odontologia.core.specification.AlumnoSpecs;
 import tesis.odontologia.core.specification.PacienteSpecs;
 import tesis.odontologia.core.specification.PersonaSpecs;
 import tesis.odontologia.interfaces.util.Utiles;
@@ -27,7 +30,7 @@ import tesis.odontologia.interfaces.util.Utiles;
  * @author Ignacio
  */
 @ManagedBean(name = "searchPacienteBean")
-@RequestScoped
+@ViewScoped
 public class SearchPacienteBean {
     
     //Atributos comunes
@@ -47,8 +50,9 @@ public class SearchPacienteBean {
     private String edadHastaFiltro;
     
     //Atributos para buscar el alumno.
-    private String nroDocumentoAlumno;
-    
+    private String nroDocumentoAlumnoBuscado;
+    private Alumno alumnoBuscado;
+
     //Servicio
     @ManagedProperty(value = "#{personaService}")
     private PersonaService personaService;
@@ -66,6 +70,14 @@ public class SearchPacienteBean {
 
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
+    }
+    
+     public Alumno getAlumnoBuscado() {
+        return alumnoBuscado;
+    }
+
+    public void setAlumnoBuscado(Alumno alumno) {
+        this.alumnoBuscado = alumno;
     }
 
     public List<Paciente> getPacientes() {
@@ -124,12 +136,12 @@ public class SearchPacienteBean {
         this.edadHastaFiltro = edadHastaFiltro;
     }
 
-    public String getNroDocumentoAlumno() {
-        return nroDocumentoAlumno;
+    public String getNroDocumentoAlumnoBuscado() {
+        return nroDocumentoAlumnoBuscado;
     }
 
-    public void setNroDocumentoAlumno(String nroDocumentoAlumno) {
-        this.nroDocumentoAlumno = nroDocumentoAlumno;
+    public void setNroDocumentoAlumnoBuscado(String nroDocumentoAlumno) {
+        this.nroDocumentoAlumnoBuscado = nroDocumentoAlumno;
     }
     
     public PersonaService getPersonaService() {
@@ -146,9 +158,9 @@ public class SearchPacienteBean {
     }
     
     // Métodos de la interfaz.
-    public String buscarPacientes(){
+    public void buscarPacientes(){
         if(nroDocumentoFiltro == null || nroDocumentoFiltro.isEmpty()){
-            if(edadDesdeFiltro == null && edadHastaFiltro == null && edadDesdeFiltro.isEmpty() && edadHastaFiltro.isEmpty()){
+            if((edadDesdeFiltro == null || edadDesdeFiltro.isEmpty()) && (edadHastaFiltro.isEmpty() || edadHastaFiltro == null)){
                 buscarTodosLosPacientes();
             }else{
                 busquedaAvanzada();
@@ -156,7 +168,6 @@ public class SearchPacienteBean {
         }else{
             busquedaSimple();
         }    
-        return "searchPaciente";
     }
   
     //Métodos auxiliares.
@@ -198,6 +209,13 @@ public class SearchPacienteBean {
         int anioHasta = anioActual - Utiles.convertStringToInt(edadHastaFiltro).intValue();
 
         return Utiles.convertIntegerToCalendarYear(anioHasta);
+    }
+    
+    public void buscarAlumno(){
+        Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoAlumnoBuscado);
+        Alumno alu = personaService.findOne(p);
+        
+        alumnoBuscado = alu;
     }
     
     //Carga auxiliar

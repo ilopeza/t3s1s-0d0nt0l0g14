@@ -18,8 +18,8 @@
                 <h:panelGrid columns="4">
 
                     <h:outputLabel value="Materia"/>
-                    <p:selectOneMenu id="cmbMateriaFiltro" value="#{searchPacienteBean.materiaFiltro}" filter="true" filterMatchMode="startsWith" >
-                        <f:selectItems value="#{searchPacienteBean.materias}" var="materia" itemLabel="#{materia.nombre}" itemValue="#{materia}"/>
+                    <p:selectOneMenu id="cmbMateriaFiltro" value="{searchPacienteBean.materiaFiltro}" filter="true" filterMatchMode="startsWith" >
+                        <f:selectItems value="{searchPacienteBean.materias}" var="materia" itemLabel="#{materia.nombre}" itemValue="#{materia}"/>
                     </p:selectOneMenu>
                     <h:outputLabel value="Trabajo práctico:"/>
           
@@ -28,23 +28,23 @@
                     </p:selectOneMenu>
                    
                     <h:outputLabel value="Edad desde:"/>
-                    <p:inputMask id="txtEdadDesde" value="#{searchPacienteBean.edadDesdeFiltro}" mask="99"/>
+                    <p:inputMask id="txtEdadDesde" value="{searchPacienteBean.edadDesdeFiltro}" mask="99"/>
                     <h:outputLabel value="Edad hasta:"/>
-                    <p:inputMask id="txtEdadHasta" value="#{searchPacienteBean.edadHastaFiltro}" mask="99"/>
+                    <p:inputMask id="txtEdadHasta" value="{searchPacienteBean.edadHastaFiltro}" mask="99"/>
                 </h:panelGrid>
 
             </p:panel--> 
 
 
             <p:commandButton id="btnBuscar" value="Buscar" action="#{searchPacienteBean.buscarPacientes()}" 
-                             update=":formTablaPacientes:tblResultadosBusquedaPaciente"/> 
+                             update=":formTablaPacientes:tblResultadosBusquedaPaciente" icon="ui-icon-search"/> 
         </h:form>
 
         <h:form id="formTablaPacientes">
             <p:dataTable id="tblResultadosBusquedaPaciente" var="paciente" value="#{searchPacienteBean.pacientes}"
                          rowKey="#{paciente.documento.numero}"  
                          selection="#{searchPacienteBean.pacienteSeleccionado}"
-
+                         selectionMode="single"
                          paginator="true"
                          rows="10">
                 <f:facet name="header" >  
@@ -53,20 +53,19 @@
                     </p:outputPanel>  
                 </f:facet>                                   
 
-                <p:column selectionMode="single" style="width:2%" />
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="Documento" />
                     </f:facet>
-                    <p:commandLink value="#{paciente.documento.numero}" >
+                    <p:commandLink value="#{paciente.documento.numero}" update=":formDialog" oncomplete="dlgAsignacion.show()">
                         <f:setPropertyActionListener value="#{paciente}" target="#{searchPacienteBean.pacienteSeleccionado}" />    
                     </p:commandLink>
                 </p:column>
                 <!--p:column id="nombreColumn" headerText="Documento">  
-                    <h:outputText value="#{paciente.documento.numero}" />  
+                    <h:outputText value="{paciente.documento.numero}" />  
                 </p:column-->
 
-                <p:column id="apellidoColumn" headerText="Apellido">  
+                <p:column id="apellidoColumn" headerText="Apellido y nombre">  
                     <h:outputText value="#{paciente.apellido}" />  
                 </p:column>
 
@@ -82,35 +81,25 @@
                 </p:column> 
 
             </p:dataTable>
-            <p:commandButton value="Asignar Alumno"                               
-                             oncomplete="dlgAsignacion.show()"  
-                             title="View"
-                             update=":formDialog:pnlPacienteSeleccionado"/>
-
         </h:form>
-
-        <h:form id="formDialog">
-
-            <p:dialog id="dlgAsignarPaciente" closeOnEscape="true" closable="true"
-                      widgetVar="dlgAsignacion"
-                      header="Asignación de pacientes">
-
+        
+        <p:dialog id="dlgAsignarPaciente" closeOnEscape="true" closable="true"
+                  widgetVar="dlgAsignacion"
+                  header="Asignación de pacientes">
+            <h:form id="formDialog">
                 <h:panelGrid id="pnlPacienteSeleccionado">
-                    <h:outputLabel value="#{searchPacienteBean.pacienteSeleccionado.nombre}" />
+                    <h:outputLabel value="#{searchPacienteBean.pacienteSeleccionado.apellido} , #{searchPacienteBean.pacienteSeleccionado.nombre}" />
                 </h:panelGrid>
 
                 <h:panelGrid id="pnlAlumno" columns="2">
                     <h:outputText value="Núm. de documento del alumno"/>
-                    <p:inputText id="nroDocumentoAlumno" value="#{searchPacienteBean.nroDocumentoAlumno}"/>
-                    <p:commandButton id="cmdBuscarAlumno" value="Buscar" update=""/>
+                    <p:inputText id="nroDocumentoAlumno" value="#{searchPacienteBean.nroDocumentoAlumnoBuscado}"/>
+                    
+                    <p:commandButton id="btnBuscarAlumno" value="Buscar" action="#{searchPacienteBean.buscarAlumno()}" update=":formDialog" icon="ui-icon-search"/>
+                    <h:outputLabel value="#{searchPacienteBean.alumnoBuscado.apellido}"/>
+                    
                 </h:panelGrid>
-
-
-            </p:dialog>
-        </h:form>
-
-
-
+            </h:form>
+        </p:dialog>
     </ui:define>
-
 </ui:composition>
