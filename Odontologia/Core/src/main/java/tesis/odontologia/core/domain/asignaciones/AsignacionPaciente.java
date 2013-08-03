@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.domain.alumno.Alumno;
+import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.exception.AsignacionPacienteException;
 import tesis.odontologia.core.exception.GenericException;
@@ -42,17 +43,22 @@ public class AsignacionPaciente extends Generic{
     @JoinColumn(name = "alumno_id")
     private Alumno alumno;
     
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "materia_id")
+    private Materia materia;
+    
     @Enumerated(EnumType.STRING)
     private EstadoAsignacion estado;
 
     public AsignacionPaciente() {
     }
 
-    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, EstadoAsignacion estado) {
+    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, EstadoAsignacion estado, Materia materia) {
         this.fechaAsignacion = fechaAsignacion;
         this.paciente = paciente;
         this.alumno = alumno;
         this.estado = estado;
+        this.materia = materia;
     }
 
     public Calendar getFechaAsignacion() {
@@ -87,11 +93,27 @@ public class AsignacionPaciente extends Generic{
         this.estado = estado;
     }
     
+    
+    
     @Override
     public void validar() throws GenericException {
         if(fechaAsignacion == null){ // trabajoPractico
              throw new AsignacionPacienteException("La fecha de asignación no debe ser nulo");
         }
+    }
+
+    /**
+     * @return the materia
+     */
+    public Materia getMateria() {
+        return materia;
+    }
+
+    /**
+     * @param materia the materia to set
+     */
+    public void setMateria(Materia materia) {
+        this.materia = materia;
     }
     
     
