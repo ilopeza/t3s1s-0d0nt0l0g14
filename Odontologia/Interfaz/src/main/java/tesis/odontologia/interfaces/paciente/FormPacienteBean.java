@@ -130,15 +130,9 @@ public class FormPacienteBean {
     }
 
     public String save() {
-        try {
-            paciente.validar();
-        } catch(GenericException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", ex.getMessage()));
-            return null;
-        }
+        paciente = personaService.save(paciente);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()+
                 " guardado correctamente."));
-        paciente = personaService.save(paciente);
         return "formPaciente";
     }
 
