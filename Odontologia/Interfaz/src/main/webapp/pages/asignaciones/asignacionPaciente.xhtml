@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="content">
+        Asignacion de pacientes        
+
+        <h:form id="formBusquedaPacientesAsignacion">
+
+            <h:panelGrid id="pnlBusquedaAsignacion" columns="2">
+                <h:outputLabel value="Nro. Documento:"/>
+                <p:inputText value="#{asignacionBean.nroDocumentoFiltro}"/>
+            </h:panelGrid>
+
+            <p:panel id="pnl" header="Filtro Avanzado" toggleable="true" toggleSpeed="10" widgetVar="panel" collapsed="true" >  
+                <h:outputLabel value="Buscar por:"/>
+                <h:panelGrid columns="4">
+                                    
+
+                    <h:outputLabel value="Edad desde:"/>
+                    <p:inputMask id="txtEdadDesde" value="#{asignacionBean.edadDesdeFiltro}" mask="99"/>
+
+                    <h:outputLabel value="Edad hasta:"/>
+                    <p:inputMask id="txtEdadHasta" value="#{asignacionBean.edadHastaFiltro}" mask="99"/>
+
+                </h:panelGrid>
+
+            </p:panel> 
+
+
+            <p:commandButton id="btnBuscar" value="Buscar" action="#{asignacionBean.buscarPacientes()}" 
+                             update=":formTablaPacientesAsignacion:tblResultadosBusquedaPacienteAsignacion" icon="ui-icon-search"/> 
+        </h:form>
+
+        <h:form id="formTablaPacientesAsignacion">
+            <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" var="paciente" value="#{asignacionBean.pacientes}"
+                         rowKey="#{paciente.documento.numero}"  
+                         selection="#{asignacionBean.pacienteSeleccionado}"
+                         selectionMode="single"
+                         paginator="true"
+                         rows="10">
+
+                <f:facet name="header" >  
+                    <p:outputPanel>  
+                        <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
+                    </p:outputPanel>  
+                </f:facet>                                   
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Documento" />
+                    </f:facet>
+                    <p:commandLink value="#{paciente.documento.numero}" >
+                        <f:setPropertyActionListener value="#{paciente}" target="#{asignacionBean.pacienteSeleccionado}" />    
+                    </p:commandLink>
+                </p:column>
+                <!--p:column id="nombreColumn" headerText="Documento">  
+                    <h:outputText value="{paciente.documento.numero}" />  
+                </p:column-->
+
+                <p:column id="apellidoColumn" headerText="Apellido y nombre">  
+                    <h:outputText value="#{paciente.apellido}" />  
+                </p:column>
+
+                <p:column id="documentoColumn" headerText="Nombre">
+                    <h:outputText value="#{paciente.nombre}" />
+                </p:column>
+                <p:column id="domicilioColumn" headerText="Domicilio"/> 
+
+            </p:dataTable>
+        </h:form>
+
+
+        <h:form id="formBuscarMateriaAsignar">
+            <h:panelGrid id="gridMaterias" columns="8" cellpadding="3" cellspacing="3" >
+                <h:outputLabel value="Materia"/>
+                <p:selectOneMenu id="selectedMateriaPacienteAsignar" value="#{asignacionBean.materia}"  filter="true">
+                    <f:selectItems value="#{asignacionBean.materias}" var="materia" itemLabel="#{materia.nombre}" itemValue="#{materia}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+        </h:form>
+
+
+
+        <h:form id="formBuscarAlumnoAsignar">
+
+            <h:panelGrid id="pnlBusquedaAlumno" columns="2">
+                <h:outputLabel value="Nro. Documento:"/>
+                <p:inputText value="#{asignacionBean.nroDocumentoFiltro}"/> 
+            </h:panelGrid>
+
+            <p:commandButton  id="btnBuscarAlumnoAsignar" value="Buscar" action="#{asignacionBean.buscarAlumno()}" 
+                              update=":formDatosAlumnoEncontradoAsignar:tblResultadosBusquedaAlumnoAsignar"/>
+
+        </h:form>
+
+
+        <h:form id="formDatosAlumnoEncontradoAsignar">
+            <p:dataTable id="tblResultadosBusquedaAlumnoAsignar" var="alumno" value="#{asignacionBean.alumno}">
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Resultado de la Busqueda de Alumnos para asignar" />
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column id="nombreAlumnoEncontrado" headerText="Nombre">
+                    <h:outputText value="#{alumno.nombre}" />
+                </p:column>
+
+                <p:column id="apellidoAlumnoEncontrado" headerText="Apellido">
+                    <h:outputText value="#{alumno.apellido}" />
+                </p:column>
+
+                <p:column id="documentoAlumnoEncontrado" headerText="Documento">
+                    <h:outputText value="#{alumno.documento.numero}" />
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="formBotonAsignar">
+            <p:commandButton value="Asignar" actionListener="#{asignacionBean.save()}"/>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
