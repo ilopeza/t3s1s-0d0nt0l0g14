@@ -32,15 +32,17 @@ public class AsignacionPaciente extends Generic{
     
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "La fecha de asignacion no puede ser nula.")
     private Calendar fechaAsignacion;
     
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "paciente_id")
+    @NotNull(message = "El paciente de la asignacion no puede ser nulo.")
     private Paciente paciente;
     
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "alumno_id")
+    @NotNull(message = "El alumno de la asignacion no puede ser nulo.")
     private Alumno alumno;
     
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)

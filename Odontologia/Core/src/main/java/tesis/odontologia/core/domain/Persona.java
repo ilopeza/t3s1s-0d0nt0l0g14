@@ -15,7 +15,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.usuario.Usuario;
@@ -29,22 +31,24 @@ import tesis.odontologia.core.exception.PersonaException;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"numero", "tipoDocumento"})})
 public abstract class Persona extends Generic {
 
     @Column(length = 150)
-    @Size(min = 1, max = 150)
-    @NotNull
+    @Size(min = 1, max = 150, message = "El apellido debe tener entre 1 y 150 caracteres.")
+    @NotNull(message = "El apellido no puede ser nulo.")
     private String apellido;
     
     @Column(length = 150)
-    @Size(min = 1, max = 150)
-    @NotNull
+    @Size(min = 1, max = 150, message = "El nombre debe tener entre 1 y 150 caracteres")
+    @NotNull(message = "El nombre no puede ser nulo.")
     private String nombre;
     
     @Embedded
     private Documento documento;
     
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "La fecha de nacimiento no puede ser nula.")
     private Calendar fechaNacimiento;
     
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)

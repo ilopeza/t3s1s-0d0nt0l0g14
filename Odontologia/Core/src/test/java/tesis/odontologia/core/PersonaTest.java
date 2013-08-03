@@ -1,15 +1,14 @@
 package tesis.odontologia.core;
 
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
-import tesis.odontologia.core.dao.PersonaDao;
 import tesis.odontologia.core.domain.Persona;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import static org.testng.Assert.*;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.alumno.Alumno;
-import tesis.odontologia.core.domain.paciente.Domicilio;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.specification.PacienteSpecs;
 
@@ -26,7 +25,8 @@ public class PersonaTest extends AbstractTest {
     public void crearPaciente() {
         p = new Paciente("Maximiliano", "Barros");
         p.setDocumento(new Documento("34688417", Documento.TipoDocumento.DNI));
-        p.setDomicilio(new Domicilio("Macaon 4123", "Cordoba"));
+        p.setFechaNacimiento(Calendar.getInstance());
+//        p.setDomicilio(new Domicilio("Macaon 4123", "Cordoba"));
         personaService.save(p);
     }
 
@@ -42,7 +42,8 @@ public class PersonaTest extends AbstractTest {
     public void guardarConService() {
         Paciente pa = new Paciente("Roberto", "Rodriguez");
         pa.setDocumento(new Documento("17267218", Documento.TipoDocumento.DNI));
-        pa.setDomicilio(new Domicilio("Ruelle 4123", "Cordoba"));
+//        pa.setDomicilio(new Domicilio("Ruelle 4123", "Cordoba"));
+        pa.setFechaNacimiento(Calendar.getInstance());
         personaService.save(pa);
     }
     
@@ -73,6 +74,7 @@ public class PersonaTest extends AbstractTest {
     public void testAlumno() {
         Alumno a = new Alumno("Juan", "Barrionuevo");
         a.setDocumento(new Documento("28188271", Documento.TipoDocumento.DNI));
+        a.setFechaNacimiento(Calendar.getInstance());
         a = personaService.save(a);
         assertNotNull(a);
         assertFalse(a.isNew());

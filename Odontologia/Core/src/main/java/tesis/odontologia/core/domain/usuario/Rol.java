@@ -4,7 +4,10 @@
  */
 package tesis.odontologia.core.domain.usuario;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.RolException;
@@ -15,6 +18,10 @@ import tesis.odontologia.core.exception.RolException;
  */
 @Entity
 public class Rol extends Generic{
+    
+    @Column(length = 50)
+    @Size(min = 1, max = 50, message = "El rol debe tener entre 1 y 50 caracteres.")
+    @NotNull(message = "El nombre del rol no puede ser nulo.")
     private String nombre;
 
     public Rol() {

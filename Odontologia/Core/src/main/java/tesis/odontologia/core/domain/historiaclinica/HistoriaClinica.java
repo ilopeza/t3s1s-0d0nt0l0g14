@@ -28,25 +28,30 @@ import tesis.odontologia.core.exception.HistoriaClinicaException;
 public class HistoriaClinica extends Generic {
 
     @Column(nullable = false)
-    @NotNull
+    @NotNull(message = "El numero de historia clinica no puede ser nulo.")
     private int numero;
+    
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "La fecha de apertura de historia clinica no puede ser nula.")
     private Calendar fechaApertura;
+    
     //se tiene que definir la persona que va  aca.
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "persona_id")
     @Valid
     private Persona realizoHistoriaClinica;
+    
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "historiaclinica_id")
     @Valid
     private List<Atencion> atencion;
+    
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "historiaclinica_id")
     @Valid
     private List<Diagnostico> diagnostico;
+    
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @Valid
     @NotNull

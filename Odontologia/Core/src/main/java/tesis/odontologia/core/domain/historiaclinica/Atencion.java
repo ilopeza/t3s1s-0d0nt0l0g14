@@ -32,32 +32,32 @@ public abstract class Atencion extends Generic {
     
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "La fecha de atencion no puede ser nula.")
     private Calendar fechaAtencion;
     
     @Column(nullable = false, length = 700)
-    @Size(min = 1, max = 700)
-    @NotNull
+    @Size(min = 1, max = 700, message = "El motivo de la consulta debe tener entre 1 y 700 caracteres")
+    @NotNull(message = "El motivo de la consulta no puede ser nulo.")
     private String motivoConsultaOdontologica;
     
     @Column(length = 255)
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 255, message = "El campo como comenzo debe tener entre 1 y 255 caracteres")
     private String comoComenzo;
     
     @Column(length = 255)
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 255, message = "El campo hace cuanto tiempo debe tener entre 1 y 255 caracteres")
     private String cuantoTiempoHace;
     
     @Column(length = 255)
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 255, message = "El campo donde debe tener entre 1 y 255 caracteres")
     private String donde;
     
     @Column(length = 255)
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 255, message = "El campo a que lo atribuye debe tener entre 1 y 255 caracteres")
     private String aQueLoAtribuye;
     
     @Column(length = 255)
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 255, message = "El campo que hizo debe tener entre 1 y 255 caracteres")
     private String queHizo;
 
     @ManyToOne(cascade = CascadeType.ALL)

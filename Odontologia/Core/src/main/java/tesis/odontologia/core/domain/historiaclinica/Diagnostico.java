@@ -10,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
@@ -29,6 +30,7 @@ public class Diagnostico extends Generic{
     
     @ManyToOne
     @JoinColumn(name = "materia_id")
+    @NotNull(message = "La materia del diagnostico no puede ser nula.")
     private Materia materia;
     
     private String descripcion;
