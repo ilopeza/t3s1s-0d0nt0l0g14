@@ -4,7 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
-    <p:growl id="msg" sticky="true">
+    <p:growl id="msg" sticky="true"/>
     <p:fieldset id="fldsDatosDocum" legend="Datos personales" toggleable="true">
         <h:panelGrid id="gridDatosPersonales" columns="8" cellpadding="3" cellspacing="3" >
 
@@ -113,6 +113,5 @@
         <p:commandButton value="Guardar" action="#{formPacienteBean.save()}" update="@form" />
         <p:commandButton value="Guardar y asignar" ajax="false" action="#{buscarTableBeanAlumnos.navigate()}"/>
     </h:panelGrid>
-    </p:growl>
 </html>
 
