@@ -10,12 +10,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.print.attribute.standard.Severity;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.paciente.Domicilio;
 import tesis.odontologia.core.domain.paciente.Paciente;
+import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.service.PersonaService;
 
 /**
@@ -81,7 +85,7 @@ public class FormPacienteBean {
     }
 
     public void setFechaNacimiento(Date fechaNacimiento) {
-        
+        if(fechaNacimiento == null) return;
         this.fechaNacimiento = fechaNacimiento;
         Calendar cal = Calendar.getInstance();
         cal.setTime(fechaNacimiento);
@@ -126,10 +130,16 @@ public class FormPacienteBean {
     }
 
     public String save() {
-
+        try {
+            paciente.validar();
+        } catch(GenericException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", ex.getMessage()));
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()+
+                " guardado correctamente."));
         paciente = personaService.save(paciente);
         return "formPaciente";
-        
     }
 
     @PostConstruct
