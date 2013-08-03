@@ -52,20 +52,33 @@ public class HistoriaClinica extends Generic {
     @NotNull
     @JoinColumn(name = "historiaClinica_id")
     private List<DetalleHistoriaClinica> detallesHC;
+    
+    @NotNull
+    private boolean sexoFemenino;
 
     //CONSTRUCTORS
     public HistoriaClinica() {
     }
 
-    public HistoriaClinica(int numero, Calendar fechaApertura, Persona realizoHistoriaClinica, List<Atencion> atencion, List<Diagnostico> diagnostico) {
+    public HistoriaClinica(int numero, Calendar fechaApertura, Persona realizoHistoriaClinica,
+            List<Atencion> atencion, List<Diagnostico> diagnostico, boolean sexoFemenino) {
         this.numero = numero;
         this.fechaApertura = fechaApertura;
         this.realizoHistoriaClinica = realizoHistoriaClinica;
         this.atencion = atencion;
         this.diagnostico = diagnostico;
+        this.sexoFemenino = sexoFemenino;
     }
 
     //GETTERS AND SETTERS
+    public boolean isSexoFemenino() {
+        return sexoFemenino;
+    }
+
+    public void setSexoFemenino(boolean sexoFemenino) {
+        this.sexoFemenino = sexoFemenino;
+    }
+    
     public int getNumero() {
         return numero;
     }
@@ -123,7 +136,6 @@ public class HistoriaClinica extends Generic {
 
     @Override
     public void validar() throws GenericException {
-
         if (realizoHistoriaClinica == null) {
             throw new HistoriaClinicaException("La persona que realizó la historia clinica no puede ser nula");
         }
@@ -169,6 +181,167 @@ public class HistoriaClinica extends Generic {
         hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G5P8, 5));
         hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P9, 4));
         
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G6P1, 6));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G6P2, 6));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G6P3, 6));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G6P4, 6));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G7P1, 7));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G7P2, 7));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G8P1, 8));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G8P2, 8));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G8P3, 8));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G8P4, 8));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G8P5, 8));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G8P6, 8));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G9P1, 9));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G9P2, 9));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G9P3, 9));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G9P4, 9));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G10P1, 10));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G10P2, 10));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G10P3, 10));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G10P4, 10));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G10P5, 10));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G10P6, 10));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G10P7, 10));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G10P8, 10));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G10P9, 10));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G11P1, 11));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G11P2, 11));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G11P3, 11));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G11P4, 11));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G11P5, 11));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G11P6, 11));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G12P1, 12));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G12P2, 12));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G13P1, 13));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G13P2, 13));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G13P3, 13));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G13P4, 13));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G14P1, 14));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G14P2, 14));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G14P3, 14));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G14P4, 14));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G15P1, 15));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G15P2, 15));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G15P3, 15));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G15P4, 15));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G15P5, 15));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G15P6, 15));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G15P7, 15));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G15P8, 15));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G15P9, 15));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G15P10, 15));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G15P11, 15));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G15P12, 15));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G15P13, 15));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G16P1, 16));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G16P2, 16));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G16P3, 16));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G17P1, 17));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G17P2, 17));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G17P3, 17));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G17P4, 17));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G17P5, 17));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G17P6, 17));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G17P7, 17));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G18P1, 18));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G18P2, 18));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G18P3, 18));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G18P4, 18));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G18P5, 18));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G19P1, 19));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G19P2, 19));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G19P3, 19));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G19P4, 19));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G19P5, 19));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G19P6, 19));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G19P7, 19));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G19P8, 19));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G19P9, 19));
+        
+        if(hc.isSexoFemenino()) {
+            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P1, 20));
+            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P2, 20));
+            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P3, 20));
+            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P4, 20));
+            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P5, 20));
+            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P6, 20));
+            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P7, 20));
+            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P8, 20));
+            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P9, 20));
+            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P10, 20));
+            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P11, 20));
+            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P12, 20));
+            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P13, 20));
+            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P14, 20));
+        }
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G21P1, 21));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G21P2, 21));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G21P3, 21));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G21P4, 21));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G21P5, 21));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G21P6, 21));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G21P7, 21));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G21P8, 21));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G21P9, 21));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G21P10, 21));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G21P11, 21));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G21P12, 21));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G21P13, 21));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G22P1, 22));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G22P2, 22));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G22P3, 22));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G22P4, 22));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G22P5, 22));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G23P1, 23));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G23P2, 23));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G24P1, 24));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G24P2, 24));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G25P1, 25));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G25P2, 25));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G25P3, 25));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G25P4, 25));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G25P5, 25));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G26P1, 26));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G26P2, 26));
+        
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G27P1, 27));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G27P2, 27));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G27P3, 27));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G27P4, 27));
+        
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G28P1, 28));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G28P2, 28));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G28P3, 28));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G28P4, 28));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G28P5, 28));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G28P6, 28));
+        
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G29P1, 29));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G29P2, 29));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G29P3, 29));
+        hc.addDetalle(new CampoEnumerable(DetalleHistoriaClinica.G29P4, 29));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G29P5, 29));
         
         return hc;
     }

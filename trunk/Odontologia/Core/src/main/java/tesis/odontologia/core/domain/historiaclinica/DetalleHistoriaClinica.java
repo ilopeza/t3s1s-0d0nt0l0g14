@@ -45,6 +45,7 @@ public abstract class DetalleHistoriaClinica extends Generic {
     public static final String PORQUE = "¿Por qué?";
     public static final String DONDE = "¿Donde?";
     public static final String CANTIDAD_DIARIA = "Cantidad diaria";
+    public static final String OTROS = "Otros";
     
     
     
@@ -94,7 +95,11 @@ public abstract class DetalleHistoriaClinica extends Generic {
     public static final String G7P2 = "¿Requirio internacion?";
    
     public static final String G8P1 = "¿Es alergico?";
-    public static final String G8P2 = "¿A que?";
+    public static final String G8P2 = "Anestesicos";
+    public static final String G8P3 = "Antibioticos";
+    public static final String G8P4 = "A.I.N.E.S.";
+    public static final String G8P5 = "Yodo";
+    public static final String G8P6 = OTROS;
    
     public static final String G9P1 = "¿Fue intervenido quirurgicamente?";
     public static final String G9P2 = DE_QUE;
@@ -112,10 +117,11 @@ public abstract class DetalleHistoriaClinica extends Generic {
     public static final String G10P9 = "¿Tiene problemas hepaticos?";
     
     public static final String G11P1 = "¿Le duelen las articulaciones?";
-    public static final String G11P2 = CUALES;
-    public static final String G11P3 = "¿Toma algun medicamento?";
-    public static final String G11P4 = CUAL;
-    public static final String G11P5 = DESDE_CUANDO;
+    public static final String G11P2 = "Pequeñas articulaciones";
+    public static final String G11P3 = "Grandes articulaciones";
+    public static final String G11P4 = "¿Toma algun medicamento?";
+    public static final String G11P5 = CUAL;
+    public static final String G11P6 = DESDE_CUANDO;
    
     public static final String G12P1 = "¿Tiene dificultad o presenta dolor al abrir la boca?";
     public static final String G12P2 = QUE;
@@ -159,7 +165,9 @@ public abstract class DetalleHistoriaClinica extends Generic {
     
     public static final String G18P1 = "¿Ha padecido o padece cancer?";
     public static final String G18P2 = DE_QUE;
-    public static final String G18P3 = TRATAMIENTO;
+    public static final String G18P3 = "Radioterapia";
+    public static final String G18P4 = "Quimioterapia";
+    public static final String G18P5 = "Quirurgico";
     
     public static final String G19P1 = "¿Padece o padecio enfermedades de la sangre?";
     public static final String G19P2 = CUAL;
@@ -215,14 +223,16 @@ public abstract class DetalleHistoriaClinica extends Generic {
     
     public static final String G25P1 = "¿Consume drogas?";
     public static final String G25P2 = CUAL;
-    public static final String G25P3 = "¿Por que via?";
+    public static final String G25P3 = "Por via inhalatoria";
+    public static final String G25P4 = "Bucal";
+    public static final String G25P5 = "Parental";
     
     public static final String G26P1 = "¿Se ha efectuado tatuajes?";
     public static final String G26P2 = "¿Se ha colocado pearcing?";
     
-    public static final String G27P1 = "¿Cual es su peso normal?";
+    public static final String G27P1 = "¿Cual es su peso normal? (Kg)";
     public static final String G27P2 = "¿Perdio peso ultimamente?";
-    public static final String G27P3 = "¿Cuanto?";
+    public static final String G27P3 = "¿Cuanto? (Kg)";
     public static final String G27P4 = "¿En que tiempo?";
     
     public static final String G28P1 = "¿Cuando consulto por ultima vez a su medico?";
@@ -234,7 +244,9 @@ public abstract class DetalleHistoriaClinica extends Generic {
     
     public static final String G29P1 = "¿Tiene alguna enfermedad que quiera dejar constancia?";
     public static final String G29P2 = "¿Tiene tratamientos con medicina alternativa?";
-    public static final String G29P3 = CUAL;
+    public static final String G29P3 = "Homeopatia";
+    public static final String G29P4 = "Acupuntura";
+    public static final String G29P5 = OTROS;
     
     
     
