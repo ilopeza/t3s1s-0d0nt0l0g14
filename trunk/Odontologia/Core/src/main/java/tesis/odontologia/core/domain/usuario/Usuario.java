@@ -4,12 +4,10 @@
  */
 package tesis.odontologia.core.domain.usuario;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Bajeable;
@@ -23,24 +21,25 @@ import tesis.odontologia.core.exception.UsuarioException;
 @Entity
 
 public class Usuario extends Bajeable{
+    
     @Column (length = 50, nullable = false)
-    @Size(min = 1, max = 50)
-    @NotNull
+    @Size(min = 1, max = 50, message = "El nombre de usuario debe tener entre 1 y 50 caracteres.")
+    @NotNull(message = "El nombre de usuario no puede ser nulo.")
     private String nombreUsuario;
     
     @Column (length = 50, nullable = false)
-    @Size(min = 1, max = 50)
-    @NotNull
+    @Size(min = 1, max = 50, message = "La contraseña debe tener entre 1 y 50 caracteres.")
+    @NotNull(message = "La contraseña no puede ser nula.")
     private String contraseña;
     
     @JoinColumn(name="rol_id")
     @ManyToOne
-    @NotNull
+    @NotNull(message = "El rol no puede ser nulo.")
     private Rol rol;
     
     @Column(length = 75, nullable = false)
-    @Size(min = 1, max = 75)
-    @NotNull
+    @Size(min = 1, max = 75, message = "El email debe tener entre 1 y 75 caracteres.")
+    @NotNull(message = "El email del usuario no puede ser nulo")
     private String email;
 
     public Usuario() {

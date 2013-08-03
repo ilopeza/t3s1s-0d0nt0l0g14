@@ -21,14 +21,14 @@ import tesis.odontologia.core.exception.GenericException;
 @Embeddable
 public class Documento implements Serializable {
 
-    @Column(length = 15, nullable = false)
-    @Size(min = 1, max = 15)
-    @NotNull
+    @Column(name = "numero", length = 15, nullable = false)
+    @Size(min = 1, max = 15, message = "El numero de documento debe tener entre 1 y 15 caracteres.")
+    @NotNull(message = "El numero de documento no puede ser nulo.")
     private String numero;
     
-    @Column(nullable = false)
+    @Column(name = "tipoDocumento", nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "El tipo de documento no puede ser nulo.")
     private TipoDocumento tipoDocumento;
 
     //CONSTRUCTORS

@@ -6,9 +6,12 @@ package tesis.odontologia.core.domain.materia;
 
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.MateriaException;
@@ -20,6 +23,9 @@ import tesis.odontologia.core.exception.MateriaException;
 @Entity
 public class Materia extends Generic {
 
+    @Column(length = 150)
+    @Size(min = 1, max = 150, message = "El nombre de la materia debe tener entre 1 y 150 caracteres")
+    @NotNull(message = "El nombre de la materia no puede ser nulo.")
     private String nombre;
     
     @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL)
@@ -31,7 +37,7 @@ public class Materia extends Generic {
 
     @Override
     public String toString() {
-        return "Materia{" + "nombre=" + nombre + '}';
+        return nombre;
     }
 
     public Materia(String nombre, List<Catedra> catedra) {

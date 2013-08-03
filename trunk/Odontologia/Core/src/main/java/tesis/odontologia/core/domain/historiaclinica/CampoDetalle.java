@@ -19,8 +19,7 @@ import javax.validation.constraints.Size;
 public class CampoDetalle extends DetalleHistoriaClinica {
 
     @Column(name="detalle", length=100)
-    @Size(min=1, max=100)
-    @NotNull
+    @Size(min=1, max=100, message = "La descripcion debe tener entre 1 y 100 caracteres o estar vacia.")
     private String only_detalle;
 
     public CampoDetalle() {

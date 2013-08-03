@@ -19,8 +19,9 @@
     <jpa:repositories base-package="tesis.odontologia.core.dao" />
     
     <!-- SI AGREGO INTERCEPTORES SUBIR A .core -->
-    <context:component-scan base-package="tesis.odontologia.core.service" />
+    <context:component-scan base-package="tesis.odontologia.core" />
     
+    <bean class ="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
     
     
     <bean id="mysqlDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >

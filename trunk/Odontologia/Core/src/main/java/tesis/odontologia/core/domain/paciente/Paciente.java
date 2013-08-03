@@ -30,23 +30,23 @@ public class Paciente extends Persona {
     private EstadoCivilTipo estadoCivil;
     
     @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "La religion debe tener entre 1 y 50 caracteres.")
     private String religion;
     
     @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "La nacionalidad debe tener entre 1 y 50 caracteres.")
     private String nacionalidad;
     
-    @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Column(length = 75)
+    @Size(min = 1, max = 75, message = "La obra social debe tener entre 1 y 75 caracteres.")
     private String obraSocial;
     
     @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "El lugar de nacimiento debe tener entre 1 y 50 caracteres.")
     private String lugarNacimiento;
     
     @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "La provincia debe tener entre 1 y 50 caracteres.")
     private String provincia;
     
     @Column
@@ -54,38 +54,37 @@ public class Paciente extends Persona {
     private EstudiosTipo tipoEstudios;
     
     @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "El trabajo debe tener entre 1 y 50 caracteres.")
     private String trabajo;
     
     @Embedded
     private Domicilio domicilio;
     
     @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "El telefono debe tener entre 1 y 50 caracteres.")
     private String telefono;
     
     @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "El celular debe tener entre 1 y 50 caracteres.")
     private String celular;
     
-    @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Column(length = 100)
+    @Size(min = 1, max = 100, message = "El medico de cabecera debe tener entre 1 y 100 caracteres.")
     private String medicoCabecera;
     
     @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "El telefono del medico debe tener entre 1 y 50 caracteres.")
     private String telefonoMedico;
     
     @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "El servicio de emergencia debe tener entre 1 y 50 caracteres.")
     private String servicioEmergencia;
     
-    @Column(length = 50)
-    @Size(min = 1, max = 50)
-    private String privadoLibertad;
+    @Column(name = "privadoLibertad")
+    private boolean privadoLibertad;
     
-    @Column(length = 50)
-    @Size(min = 1, max = 50)
+    @Column(length = 75)
+    @Size(min = 1, max = 75, message = "El lugar de privacion de libertad debe tener entre 1 y 75 caracteres.")
     private String lugar;
     
     @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)
@@ -213,11 +212,11 @@ public class Paciente extends Persona {
         this.telefonoMedico = telefonoMedico;
     }
 
-    public String getPrivadoLibertad() {
+    public boolean isPrivadoLibertad() {
         return privadoLibertad;
     }
 
-    public void setPrivadoLibertad(String privadoLibertad) {
+    public void setPrivadoLibertad(boolean privadoLibertad) {
         this.privadoLibertad = privadoLibertad;
     }
 
