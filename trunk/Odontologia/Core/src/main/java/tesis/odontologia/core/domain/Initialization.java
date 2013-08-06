@@ -6,8 +6,6 @@ package tesis.odontologia.core.domain;
 
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.service.MateriaService;

@@ -106,7 +106,7 @@ public abstract class DetalleHistoriaClinica extends Generic {
     public static final String G9P3 = "¿Con que tipo de anestesia?";
     public static final String G9P4 = CUANDO;
    
-    public static final String G10P1 = "¿Tubo hepatitis?";
+    public static final String G10P1 = "¿Tuvo hepatitis?";
     public static final String G10P2 = "¿Que tipo?";
     public static final String G10P3 = "¿Hace cuanto tiempo?";
     public static final String G10P4 = "¿Se hace controles?";
@@ -126,7 +126,7 @@ public abstract class DetalleHistoriaClinica extends Generic {
     public static final String G12P1 = "¿Tiene dificultad o presenta dolor al abrir la boca?";
     public static final String G12P2 = QUE;
    
-    public static final String G13P1 = "¿Tuvo convulciones?";
+    public static final String G13P1 = "¿Tuvo convulsiones?";
     public static final String G13P2 = DESDE_CUANDO;
     public static final String G13P3 = "¿Causa probable?";
     public static final String G13P4 = "¿Medicacion?";
@@ -225,10 +225,10 @@ public abstract class DetalleHistoriaClinica extends Generic {
     public static final String G25P2 = CUAL;
     public static final String G25P3 = "Por via inhalatoria";
     public static final String G25P4 = "Bucal";
-    public static final String G25P5 = "Parental";
+    public static final String G25P5 = "Parenteral";
     
     public static final String G26P1 = "¿Se ha efectuado tatuajes?";
-    public static final String G26P2 = "¿Se ha colocado pearcing?";
+    public static final String G26P2 = "¿Se ha colocado piercing?";
     
     public static final String G27P1 = "¿Cual es su peso normal? (Kg)";
     public static final String G27P2 = "¿Perdio peso ultimamente?";
