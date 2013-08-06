@@ -44,14 +44,22 @@
     </p:fieldset>
     <p:fieldset id="fldsDomicilio" legend="Domicilio y contacto" toggleable="true" toggleSpeed="150">
         <h:panelGrid id="gridDomicilio" columns="8" cellpadding="3" cellspacing="3" >
-            <h:outputLabel value="Domicilio actual:"/>
-            <p:inputText id="txtDomicilioActual" value="#{formPacienteBean.paciente.domicilio.domicilioActual}"/>
+            <h:outputLabel value="Calle:"/>
+            <p:inputText id="txtCalle" value="#{formPacienteBean.paciente.domicilio.calle}"/>
+            <h:outputLabel value="Número:"/>
+            <p:inputText id="txtCalleNumero" value="#{formPacienteBean.paciente.domicilio.calleNumero}"/>
+            <h:outputLabel value="Barrio:"/>
+            <p:inputText id="txtBarrio" value="#{formPacienteBean.paciente.domicilio.barrio}"/>
+            <h:outputLabel value="Piso:"/>
+            <p:inputText id="txtPiso" value="#{formPacienteBean.paciente.domicilio.piso}"/>
+            <h:outputLabel value="Depto:"/>
+            <p:inputText id="txtDepartamento" value="#{formPacienteBean.paciente.domicilio.departamento}"/>
             <h:outputLabel value="Ciudad:"/>
             <p:inputText id="txtCiudadActual" value="#{formPacienteBean.paciente.domicilio.ciudadActual}" />
-
+            
             <h:outputLabel value="Domicilio anterior:"/>
             <p:inputText id="txtResidenciaAnterior" value="#{formPacienteBean.paciente.domicilio.residenciaAnterior}"/>
-            <h:outputLabel value="Ciudad:"/>
+            <h:outputLabel value="Ciudad domicilio anterior:"/>
             <p:inputText id="txtCiudadAnterior" value="#{formPacienteBean.paciente.domicilio.ciudadAnterior}" />
 
             <h:outputLabel value="Teléfono:"/>
