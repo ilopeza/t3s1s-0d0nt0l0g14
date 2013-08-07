@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="content">
+        <h:outputLabel value="Asignacion de pacientes" style="font-size:18px; font-weight: bold"/> 
+
+        <h:form id="formBusquedaPacientesAsignacion">
+            <p:growl id="msg" sticky="true"/>
+
+            <h:panelGrid id="pnlBusquedaAlumno" columns="4">
+                <h:outputLabel value="Nro. Documento:"/>
+                <p:inputText value="#{asignacionBean.nroDocumentoAlumnoBuscado}"/>
+                <p:commandButton  id="btnBuscarAlumnoAsignar" 
+                                  value="Buscar" 
+                                  actionListener="#{asignacionBean.buscarAlumno()}" 
+                                  update="tblAsignacionesAlumno pnlBusquedaAlumno msg"
+                                  process="@this, pnlBusquedaAlumno"/>
+                <h:outputLabel id="datosAlumno" rendered="#{asignacionBean.alumnoBuscado ne null}" 
+                               value= "Alumno: #{asignacionBean.alumnoBuscado.toString()} 
+                               #{asignacionBean.alumnoBuscado.documento.toString()}">
+                </h:outputLabel>
+            </h:panelGrid>
+
+            <p:dataTable id="tblAsignacionesAlumno" var="asignaciones" value="#{asignacionBean.asignaciones}" 
+                         emptyMessage="Alumno sin asignaciones">
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Asignaciones del alumno #{asignacionBean.alumnoBuscado.toString()}" />
+                    </p:outputPanel>
+                </f:facet>
+                <p:column id="Paciente" headerText="Paciente">
+                    <h:outputText value="#{asignacion.paciente}" />
+                </p:column>
+                <p:column id="Alumno" headerText="Alumno">
+                    <h:outputText value="#{asignacion.alumno}" />
+                </p:column>
+                <p:column id="Materia" headerText="Materia">
+                    <h:outputText value="#{asignacion.materia}" />
+                </p:column>
+                <p:column id="Estado" headerText="Estado Asignacion">
+                    <h:outputText value="#{asignacion.estado}" />
+                </p:column>
+            </p:dataTable>
+
+
+
+            <h:panelGrid id="gridMaterias" columns="8" cellpadding="3" cellspacing="3" >
+                <h:outputLabel value="Materia"/>
+                <p:selectOneMenu id="selectedMateriaPacienteAsignar" value="#{asignacionBean.materia}"  filter="true">
+                    <f:selectItems value="#{asignacionBean.materias}" var="materia" itemLabel="#{materia.nombre}" itemValue="#{materia}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+
+            <h:outputLabel value="Busqueda de pacientes" style=" font-size: 14px"/> 
+
+            <h:panelGrid id="pnlBusquedaAsignacion" columns="3">
+
+
+                <h:outputLabel value="Nombre o apellido: "/>
+                <p:inputText value="#{asignacionBean.filtroPaciente}"/>
+                <p:commandButton id="btnBuscar" value="Buscar" 
+                                 actionListener="#{asignacionBean.buscarPacientes()}" 
+                                 update="tblResultadosBusquedaPacienteAsignacion msg" 
+                                 icon="ui-icon-search"
+                                 process="@this, pnlBusquedaAsignacion"/> 
+            </h:panelGrid>
+
+            <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
+                         var="paciente" value="#{asignacionBean.pacientes}"
+                         selectionMode="single"
+                         selection="#{asignacionBean.pacienteSeleccionado}">
+                <f:facet name="header" >  
+                    <p:outputPanel>  
+                        <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
+                    </p:outputPanel>  
+                </f:facet>                                   
+
+                <p:column id="Documento" headerText="Documento">  
+                    <h:outputText value="#{paciente.documento}" />  
+                </p:column>
+                <p:column id="NombYApellido" headerText="Apellido y nombre">  
+                    <h:outputText value="#{paciente}" />  
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="Asignar" 
+                             action="#{asignacionBean.save()}"/>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
