@@ -37,15 +37,14 @@ import tesis.odontologia.interfaces.util.Utiles;
 public class AsignacionBean {
 
     
-    private String nroDocumentoFiltro;
     private AsignacionPaciente asignacion;
-    private Paciente paciente;
+    private Paciente pacienteBuscado;
     private List<Paciente> pacientes;
-    private Alumno alumno;
     private Materia materia;
     private List<Materia> materias;
 
     //Atributos búsqueda tabla.
+    private String nroDocumentoBusquedaPaciente;
     private Paciente pacienteSeleccionado;
     
     //Atributos búsqueda avanzada.
@@ -56,6 +55,7 @@ public class AsignacionBean {
     //Atributos para buscar el alumno.
     private String nroDocumentoAlumnoBuscado;
     private Alumno alumnoBuscado;
+
     
     
     @ManagedProperty(value = "#{asignacionPacienteService}")
@@ -80,36 +80,23 @@ public class AsignacionBean {
     @PostConstruct
     public void init() {
         materias = materiaService.findAll();
+        pacientes = new ArrayList<Paciente>();
     }
     
     /**
      * @return the paciente
      */
     public Paciente getPaciente() {
-        return paciente;
+        return pacienteBuscado;
     }
 
     /**
      * @param paciente the paciente to set
      */
     public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-    
-    
-    /**
-     * @return the alumno
-     */
-    public Alumno getAlumno() {
-        return alumno;
+        this.pacienteBuscado = paciente;
     }
 
-    /**
-     * @param alumno the alumno to set
-     */
-    public void setAlumno(Alumno alumno) {
-        this.alumno = alumno;
-    }
 
     /**
      * @return the materia
@@ -139,21 +126,25 @@ public class AsignacionBean {
         this.asignacionPacienteService = asignacionPacienteService;
     }
     
-    public void save()
+    public String save()
     {
+        materia = new Materia();
+        materia.setNombre("Matemática");
         asignacion = new AsignacionPaciente();
-        asignacion.setAlumno(alumno);
+        asignacion.setAlumno(alumnoBuscado);
         asignacion.setEstado(AsignacionPaciente.EstadoAsignacion.PENDIENTE);
-        asignacion.setPaciente(paciente);
+        asignacion.setPaciente(pacienteBuscado);
         asignacion.setFechaAsignacion(Calendar.getInstance());
         asignacion.setMateria(materia);
         asignacionPacienteService.save(asignacion);
+        
+        return "asignacionPaciente";
     }
     
     
     // Métodos de la interfaz.
     public void buscarPacientes(){
-        if(nroDocumentoFiltro == null || nroDocumentoFiltro.isEmpty()){
+        if(nroDocumentoBusquedaPaciente == null || nroDocumentoBusquedaPaciente.isEmpty()){
             if((edadDesdeFiltro == null || edadDesdeFiltro.isEmpty()) && (edadHastaFiltro.isEmpty() || edadHastaFiltro == null)){
                 buscarTodosLosPacientes();
             }else{
@@ -167,9 +158,9 @@ public class AsignacionBean {
     //Métodos auxiliares.
     private void busquedaSimple() {
         pacientes.clear();
-        Predicate p = PacienteSpecs.byNumeroDocumento(nroDocumentoFiltro);
-        Paciente p1 = (Paciente) personaService.findOne(p);
-        pacientes.add(p1);
+        Predicate p = PacienteSpecs.byNumeroDocumento(nroDocumentoBusquedaPaciente);
+        pacienteBuscado = (Paciente) personaService.findOne(p);
+        pacientes.add(pacienteBuscado);
     }
 
     private void busquedaAvanzada() {
@@ -221,24 +212,23 @@ public class AsignacionBean {
     }
 
     /**
-     * @return the nroDocumentoFiltro
+     * @return the nroDocumentoBusquedaPaciente
      */
-    public String getNroDocumentoFiltro() {
-        return nroDocumentoFiltro;
+    public String getNroDocumentoBusquedaPaciente() {
+        return nroDocumentoBusquedaPaciente;
     }
 
     /**
-     * @param nroDocumentoFiltro the nroDocumentoFiltro to set
+     * @param nroDocumentoBusquedaPaciente the nroDocumentoBusquedaPaciente to set
      */
-    public void setNroDocumentoFiltro(String nroDocumentoFiltro) {
-        this.nroDocumentoFiltro = nroDocumentoFiltro;
+    public void setNroDocumentoBusquedaPaciente(String nroDocumentoBusquedaPaciente) {
+        this.nroDocumentoBusquedaPaciente = nroDocumentoBusquedaPaciente;
     }
     
-    public String buscarAlumno() {
-        Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoFiltro);
-        alumno = (Alumno) getPersonaService().findOne(p);
+    public void buscarAlumno() {
+        Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoAlumnoBuscado);
+        alumnoBuscado = (Alumno) getPersonaService().findOne(p);
         
-        return "searchAlumno";
     }
     
     //    public void buscarAlumno(){
@@ -373,6 +363,15 @@ public class AsignacionBean {
     public void setAlumnoBuscado(Alumno alumnoBuscado) {
         this.alumnoBuscado = alumnoBuscado;
     }
+    
+    public Paciente getPacienteBuscado() {
+        return pacienteBuscado;
+    }
+
+    public void setPacienteBuscado(Paciente pacienteBuscado) {
+        this.pacienteBuscado = pacienteBuscado;
+    }
+    
 
     /**
      * @return the materiaService

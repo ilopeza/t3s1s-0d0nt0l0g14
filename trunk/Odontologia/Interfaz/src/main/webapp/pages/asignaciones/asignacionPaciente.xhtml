@@ -11,15 +11,21 @@
 
         <h:form id="formBusquedaPacientesAsignacion">
 
-            <h:panelGrid id="pnlBusquedaAsignacion" columns="2">
+
+            <h:panelGrid id="pnlBusquedaAsignacion" columns="3">
                 <h:outputLabel value="Nro. Documento:"/>
-                <p:inputText value="#{asignacionBean.nroDocumentoFiltro}"/>
+                <p:inputText value="#{asignacionBean.nroDocumentoBusquedaPaciente}"/>
+                <p:commandButton id="btnBuscar" value="Buscar" 
+                                 actionListener="#{asignacionBean.buscarPacientes()}" 
+                                 update="tblResultadosBusquedaPacienteAsignacion" 
+                                 icon="ui-icon-search"
+                                 process="@this, pnlBusquedaAsignacion"/> 
             </h:panelGrid>
 
             <p:panel id="pnl" header="Filtro Avanzado" toggleable="true" toggleSpeed="10" widgetVar="panel" collapsed="true" >  
                 <h:outputLabel value="Buscar por:"/>
                 <h:panelGrid columns="4">
-                                    
+
 
                     <h:outputLabel value="Edad desde:"/>
                     <p:inputMask id="txtEdadDesde" value="#{asignacionBean.edadDesdeFiltro}" mask="99"/>
@@ -31,16 +37,9 @@
 
             </p:panel> 
 
+            <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
+                         var="paciente" value="#{asignacionBean.pacientes}"
 
-            <p:commandButton id="btnBuscar" value="Buscar" action="#{asignacionBean.buscarPacientes()}" 
-                             update=":formTablaPacientesAsignacion:tblResultadosBusquedaPacienteAsignacion" icon="ui-icon-search"/> 
-        </h:form>
-
-        <h:form id="formTablaPacientesAsignacion">
-            <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" var="paciente" value="#{asignacionBean.pacientes}"
-                         rowKey="#{paciente.documento.numero}"  
-                         selection="#{asignacionBean.pacienteSeleccionado}"
-                         selectionMode="single"
                          paginator="true"
                          rows="10">
 
@@ -72,34 +71,22 @@
                 <p:column id="domicilioColumn" headerText="Domicilio"/> 
 
             </p:dataTable>
-        </h:form>
-
-
-        <h:form id="formBuscarMateriaAsignar">
             <h:panelGrid id="gridMaterias" columns="8" cellpadding="3" cellspacing="3" >
                 <h:outputLabel value="Materia"/>
                 <p:selectOneMenu id="selectedMateriaPacienteAsignar" value="#{asignacionBean.materia}"  filter="true">
                     <f:selectItems value="#{asignacionBean.materias}" var="materia" itemLabel="#{materia.nombre}" itemValue="#{materia}"/>
                 </p:selectOneMenu>
             </h:panelGrid>
-        </h:form>
-
-
-
-        <h:form id="formBuscarAlumnoAsignar">
-
-            <h:panelGrid id="pnlBusquedaAlumno" columns="2">
+            <h:panelGrid id="pnlBusquedaAlumno" columns="3">
                 <h:outputLabel value="Nro. Documento:"/>
-                <p:inputText value="#{asignacionBean.nroDocumentoFiltro}"/> 
+                <p:inputText value="#{asignacionBean.nroDocumentoAlumnoBuscado}"/>
+                <p:commandButton  id="btnBuscarAlumnoAsignar" 
+                                  value="Buscar" 
+                                  actionListener="#{asignacionBean.buscarAlumno()}" 
+                                  update="tblResultadosBusquedaAlumnoAsignar"
+                                  process="@this, pnlBusquedaAlumno"/>
             </h:panelGrid>
 
-            <p:commandButton  id="btnBuscarAlumnoAsignar" value="Buscar" action="#{asignacionBean.buscarAlumno()}" 
-                              update=":formDatosAlumnoEncontradoAsignar:tblResultadosBusquedaAlumnoAsignar"/>
-
-        </h:form>
-
-
-        <h:form id="formDatosAlumnoEncontradoAsignar">
             <p:dataTable id="tblResultadosBusquedaAlumnoAsignar" var="alumno" value="#{asignacionBean.alumno}">
                 <f:facet name="header">
                     <p:outputPanel>
@@ -120,12 +107,9 @@
                 </p:column>
 
             </p:dataTable>
+            <p:commandButton value="Asignar" 
+                             action="#{asignacionBean.save()}"/>
         </h:form>
-
-        <h:form id="formBotonAsignar">
-            <p:commandButton value="Asignar" actionListener="#{asignacionBean.save()}"/>
-        </h:form>
-
+        
     </ui:define>
-
 </ui:composition>
