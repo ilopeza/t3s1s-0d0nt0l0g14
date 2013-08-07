@@ -50,7 +50,7 @@ public class AsignacionPaciente extends Generic{
     private Materia materia;
     
     @Enumerated(EnumType.STRING)
-    private EstadoAsignacion estado;
+    private EstadoAsignacion estado = EstadoAsignacion.PENDIENTE;
 
     public AsignacionPaciente() {
     }

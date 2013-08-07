@@ -26,6 +26,10 @@ public class PacienteSpecs {
     public static BooleanExpression byNombre(String nombre) {
         return $.nombre.containsIgnoreCase(nombre);
     }
+    
+    public static BooleanExpression byNombreOApellido(String nombApp) {
+        return $.nombre.containsIgnoreCase(nombApp).or($.apellido.containsIgnoreCase(nombApp));
+    }
 
     public static BooleanExpression byNumeroDocumento(String nroDocumento) {
         return $.documento.numero.equalsIgnoreCase(nroDocumento);
