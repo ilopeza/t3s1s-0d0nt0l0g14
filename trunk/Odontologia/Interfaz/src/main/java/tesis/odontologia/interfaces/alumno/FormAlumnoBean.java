@@ -6,6 +6,7 @@ package tesis.odontologia.interfaces.alumno;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -70,6 +71,7 @@ public class FormAlumnoBean {
         usuario.setEmail("mau.g.sistemas");
         //usuario = usuarioService.findOne(UsuarioSpecs.byNombreUsuario("35018118"));
         alumno.setUsuario(usuario);
+        alumno.setFechaNacimiento(Calendar.getInstance());
         personaService.save(alumno);        
     }
     
