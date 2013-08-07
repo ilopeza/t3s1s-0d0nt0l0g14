@@ -10,9 +10,11 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
@@ -24,6 +26,7 @@ import tesis.odontologia.core.service.CatedraService;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.specification.AlumnoSpecs;
+import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
 import tesis.odontologia.core.specification.PacienteSpecs;
 import tesis.odontologia.core.specification.PersonaSpecs;
 import tesis.odontologia.interfaces.util.Utiles;
@@ -32,57 +35,170 @@ import tesis.odontologia.interfaces.util.Utiles;
  *
  * @author Mau
  */
-@ManagedBean (name = "asignacionBean")
+@ManagedBean(name = "asignacionBean")
 @ViewScoped
 public class AsignacionBean {
 
-    
     private AsignacionPaciente asignacion;
     private Paciente pacienteBuscado;
     private List<Paciente> pacientes;
     private Materia materia;
     private List<Materia> materias;
-
+    private List<AsignacionPaciente> asignaciones;
     //Atributos búsqueda tabla.
-    private String nroDocumentoBusquedaPaciente;
+    private String filtroPaciente;
     private Paciente pacienteSeleccionado;
-    
     //Atributos búsqueda avanzada.
     private Materia materiaFiltro;
     private String edadDesdeFiltro;
     private String edadHastaFiltro;
-    
     //Atributos para buscar el alumno.
     private String nroDocumentoAlumnoBuscado;
     private Alumno alumnoBuscado;
-
-    
-    
     @ManagedProperty(value = "#{asignacionPacienteService}")
     private AsignacionPacienteService asignacionPacienteService;
-    
     //Servicio
     @ManagedProperty(value = "#{personaService}")
     private PersonaService personaService;
-    
     @ManagedProperty(value = "#{materiaService}")
     private MateriaService materiaService;
-    
     @ManagedProperty(value = "#{catedraService}")
     private CatedraService catedraService;
-    
+
     /**
      * Creates a new instance of AsignacionBean
      */
     public AsignacionBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         materias = materiaService.findAll();
         pacientes = new ArrayList<Paciente>();
     }
-    
+
+    public String save() {
+        asignacion = new AsignacionPaciente();
+        asignacion.setAlumno(alumnoBuscado);
+        asignacion.setEstado(AsignacionPaciente.EstadoAsignacion.PENDIENTE);
+        asignacion.setPaciente(pacienteBuscado);
+        asignacion.setFechaAsignacion(Calendar.getInstance());
+        asignacion.setMateria(materia);
+        asignacionPacienteService.save(asignacion);
+
+        return "asignacionPaciente";
+    }
+
+    // Métodos de la interfaz.
+    public void buscarPacientes() {
+//        if (filtroPaciente == null || filtroPaciente.isEmpty()) {
+//            if ((edadDesdeFiltro == null || edadDesdeFiltro.isEmpty()) && (edadHastaFiltro.isEmpty() || edadHastaFiltro == null)) {
+//                buscarTodosLosPacientes();
+//            } else {
+//                busquedaAvanzada();
+//            }
+//        } else {
+            busquedaSimple();
+//        }
+    }
+
+    //Métodos auxiliares.
+    private void busquedaSimple() {
+        pacientes.clear();
+        if(filtroPaciente == null || filtroPaciente.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "El filtro de busqueda de paciente no puede estar vacio.", null));
+            return;
+        }
+        pacientes = (List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(filtroPaciente).and
+                (PersonaSpecs.byClass(Paciente.class)));
+        if(pacientes == null || pacientes.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
+            return;
+        }
+    }
+
+    private void busquedaAvanzada() {
+        pacientes.clear();
+        Predicate p = null;
+
+        if (edadDesdeFiltro != null && edadDesdeFiltro.length() > 0) {
+            // Busca pacientes que tengan como máximo cierta edad.
+            p = PacienteSpecs.byMayorA(convertirFechaDesde());
+        }
+        if (edadHastaFiltro != null && edadHastaFiltro.length() > 0) {
+            p = PacienteSpecs.byMenorA(convertirFechaHasta()).and(p);
+        }
+        pacientes.addAll((Collection<? extends Paciente>) personaService.findAll(p));
+    }
+
+    private void buscarTodosLosPacientes() {
+        Predicate p = PersonaSpecs.byClass(Paciente.class);
+        pacientes = (List<Paciente>) personaService.findAll(p);
+    }
+
+    private Calendar convertirFechaDesde() {
+        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
+        int anioDesde = anioActual - Utiles.convertStringToInt(edadDesdeFiltro).intValue();
+
+        return Utiles.convertIntegerToCalendarYear(anioDesde);
+    }
+
+    private Calendar convertirFechaHasta() {
+        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
+        int anioHasta = anioActual - Utiles.convertStringToInt(edadHastaFiltro).intValue();
+
+        return Utiles.convertIntegerToCalendarYear(anioHasta);
+    }
+
+    public void buscarAlumno() {
+        if (nroDocumentoAlumnoBuscado == null || nroDocumentoAlumnoBuscado.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Numero de documento del alumno nulo o vacio.", null));
+            return;
+        }
+
+        Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoAlumnoBuscado);
+        alumnoBuscado = (Alumno) getPersonaService().findOne(p);
+        if (alumnoBuscado == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontro al alumno.", null));
+            return;
+        }
+        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
+        if (asignaciones == null || asignaciones.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
+            return;
+        }
+    }
+
+    //    public void buscarAlumno(){
+    //        Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoAlumnoBuscado);
+    //        Alumno alu = personaService.findOne(p);
+    //
+    //        alumnoBuscado = alu;
+    //    }
+    /**
+     * @return the asignacion
+     */
+    public AsignacionPaciente getAsignacion() {
+        return asignacion;
+    }
+
+    /**
+     * @param asignacion the asignacion to set
+     */
+    public void setAsignacion(AsignacionPaciente asignacion) {
+        this.asignacion = asignacion;
+    }
+
+    public String getFiltroPaciente() {
+        return filtroPaciente;
+    }
+
+    public void setFiltroPaciente(String filtroPaciente) {
+        this.filtroPaciente = filtroPaciente;
+    }
+
     /**
      * @return the paciente
      */
@@ -96,7 +212,6 @@ public class AsignacionBean {
     public void setPaciente(Paciente paciente) {
         this.pacienteBuscado = paciente;
     }
-
 
     /**
      * @return the materia
@@ -125,118 +240,14 @@ public class AsignacionBean {
     public void setAsignacionPacienteService(AsignacionPacienteService asignacionPacienteService) {
         this.asignacionPacienteService = asignacionPacienteService;
     }
-    
-    public String save()
-    {
-        materia = new Materia();
-        materia.setNombre("Matemática");
-        asignacion = new AsignacionPaciente();
-        asignacion.setAlumno(alumnoBuscado);
-        asignacion.setEstado(AsignacionPaciente.EstadoAsignacion.PENDIENTE);
-        asignacion.setPaciente(pacienteBuscado);
-        asignacion.setFechaAsignacion(Calendar.getInstance());
-        asignacion.setMateria(materia);
-        asignacionPacienteService.save(asignacion);
-        
-        return "asignacionPaciente";
-    }
-    
-    
-    // Métodos de la interfaz.
-    public void buscarPacientes(){
-        if(nroDocumentoBusquedaPaciente == null || nroDocumentoBusquedaPaciente.isEmpty()){
-            if((edadDesdeFiltro == null || edadDesdeFiltro.isEmpty()) && (edadHastaFiltro.isEmpty() || edadHastaFiltro == null)){
-                buscarTodosLosPacientes();
-            }else{
-                busquedaAvanzada();
-            }
-        }else{
-            busquedaSimple();
-        }    
-    }
-  
-    //Métodos auxiliares.
-    private void busquedaSimple() {
-        pacientes.clear();
-        Predicate p = PacienteSpecs.byNumeroDocumento(nroDocumentoBusquedaPaciente);
-        pacienteBuscado = (Paciente) personaService.findOne(p);
-        pacientes.add(pacienteBuscado);
+
+    public List<AsignacionPaciente> getAsignaciones() {
+        return asignaciones;
     }
 
-    private void busquedaAvanzada() {
-        pacientes.clear();
-        Predicate p = null;
-
-        if (edadDesdeFiltro != null && edadDesdeFiltro.length() > 0) {
-            // Busca pacientes que tengan como máximo cierta edad.
-            p = PacienteSpecs.byMayorA(convertirFechaDesde());  
-        }
-        if(edadHastaFiltro != null && edadHastaFiltro.length() > 0){
-            p = PacienteSpecs.byMenorA(convertirFechaHasta()).and(p);
-        }
-        pacientes.addAll((Collection<? extends Paciente>) personaService.findAll(p));
+    public void setAsignaciones(List<AsignacionPaciente> asignaciones) {
+        this.asignaciones = asignaciones;
     }
-    
-    private void buscarTodosLosPacientes(){
-        Predicate p = PersonaSpecs.byClass(Paciente.class);
-        pacientes = (List<Paciente>) personaService.findAll(p);
-    }
-    
-     private Calendar convertirFechaDesde() {
-        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-        int anioDesde = anioActual - Utiles.convertStringToInt(edadDesdeFiltro).intValue();
-
-        return Utiles.convertIntegerToCalendarYear(anioDesde);
-    }
-
-    private Calendar convertirFechaHasta() {
-        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-        int anioHasta = anioActual - Utiles.convertStringToInt(edadHastaFiltro).intValue();
-
-        return Utiles.convertIntegerToCalendarYear(anioHasta);
-    }
-
-    
-    /**
-     * @return the asignacion
-     */
-    public AsignacionPaciente getAsignacion() {
-        return asignacion;
-    }
-
-    /**
-     * @param asignacion the asignacion to set
-     */
-    public void setAsignacion(AsignacionPaciente asignacion) {
-        this.asignacion = asignacion;
-    }
-
-    /**
-     * @return the nroDocumentoBusquedaPaciente
-     */
-    public String getNroDocumentoBusquedaPaciente() {
-        return nroDocumentoBusquedaPaciente;
-    }
-
-    /**
-     * @param nroDocumentoBusquedaPaciente the nroDocumentoBusquedaPaciente to set
-     */
-    public void setNroDocumentoBusquedaPaciente(String nroDocumentoBusquedaPaciente) {
-        this.nroDocumentoBusquedaPaciente = nroDocumentoBusquedaPaciente;
-    }
-    
-    public void buscarAlumno() {
-        Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoAlumnoBuscado);
-        alumnoBuscado = (Alumno) getPersonaService().findOne(p);
-        
-    }
-    
-    //    public void buscarAlumno(){
-//        Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoAlumnoBuscado);
-//        Alumno alu = personaService.findOne(p);
-//        
-//        alumnoBuscado = alu;
-//    }
 
     /**
      * @return the personaService
@@ -363,7 +374,7 @@ public class AsignacionBean {
     public void setAlumnoBuscado(Alumno alumnoBuscado) {
         this.alumnoBuscado = alumnoBuscado;
     }
-    
+
     public Paciente getPacienteBuscado() {
         return pacienteBuscado;
     }
@@ -371,7 +382,6 @@ public class AsignacionBean {
     public void setPacienteBuscado(Paciente pacienteBuscado) {
         this.pacienteBuscado = pacienteBuscado;
     }
-    
 
     /**
      * @return the materiaService
@@ -400,6 +410,4 @@ public class AsignacionBean {
     public void setCatedraService(CatedraService catedraService) {
         this.catedraService = catedraService;
     }
-
- 
 }
