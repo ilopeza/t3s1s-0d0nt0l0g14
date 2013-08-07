@@ -66,6 +66,13 @@ public class Documento implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        return tipoDocumento.toString() + " " + numero;
+    }
+    
+    
+
     public enum TipoDocumento {
 
         DNI {
