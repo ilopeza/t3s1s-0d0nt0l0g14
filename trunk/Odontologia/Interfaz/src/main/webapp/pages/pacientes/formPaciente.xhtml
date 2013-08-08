@@ -7,29 +7,87 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="content">
+
+
+        <h:outputLabel value="REGISTRAR PACIENTE" style="padding: 400px; font-size: 20px; font: " />
         <h:form id="formBusqueda">
-            <p:panel>
-                <h:outputLabel value="Núm. de doc:"/>
-                <p:inputText id="txtDocumentoBusqueda" value="#{formPacienteBean.docBusqueda}"/>
-                <p:commandButton value="Buscar" id="btnBuscar" update=":tabsPaciente" action="#{formPacienteBean.buscarPaciente}"/>
+            <p:panel id="pnlConsultarPaciente" header="CONSULTAR PACIENTE">
+                <h:outputLabel value="Núm. de documento: "/>
+                <p:inputText id="txtDocumentoBusqueda" value="#{formPacienteBean.nroDocumentoFiltro}"/>
+
+                <h:outputLabel value="Nombre: "/>
+                <p:inputText id="txtNombreBusqueda" value="#{formPacienteBean.nombreFiltro}"/>
+
+                <p:commandButton value="Buscar" id="btnBuscar" oncomplete="dlgPacientesEncontrados.show()"  
+                                 update=":formTablaPacientesEncontrados:tablaPacientesEncontrados" 
+                                 action="#{formPacienteBean.buscarPacientes()}" />
             </p:panel>
         </h:form>
 
-        <p:tabView id="tabsPaciente">
-            <p:tab title="Datos personales" id="tabDatosPersonales">
-                <h:form id="formPaciente">
-                    <ui:include src="./tabsFormPaciente/tabDatosPersonales.xhtml"/>
-                </h:form>
-            </p:tab>
-            <p:tab title="Datos de la consulta" id="tabDatosConsulta">
-                <h:form id="formConsulta">
-                    <ui:include src="./tabsFormPaciente/tabDatosConsulta.xhtml"/>
-                </h:form>
-            </p:tab>
-            <p:tab title="Odontograma">
+        <p:panel id="pnlTabsPaciente" header="DATOS PACIENTE">
+            <p:tabView id="tabsPaciente">
+                <p:tab title="Datos personales" id="tabDatosPersonales">
+                    <h:form id="formPaciente">
+                        <ui:include src="./tabsFormPaciente/tabDatosPersonales.xhtml"/>
+                    </h:form>
+                </p:tab>
+                <p:tab title="Datos de la consulta" id="tabDatosConsulta">
+                    <h:form id="formConsulta">
+                        <ui:include src="./tabsFormPaciente/tabDatosConsulta.xhtml"/>
+                    </h:form>
+                </p:tab>
+                <p:tab title="Odontograma">
 
-            </p:tab>
-        </p:tabView>
+                </p:tab>
+            </p:tabView>
+        </p:panel>
+
+        <p:dialog header="Busqueda Pacientes" widgetVar="dlgPacientesEncontrados" resizable="false" appendToBody="true" modal="true" >
+            <h:form id="formTablaPacientesEncontrados">
+                <p:dataTable id="tablaPacientesEncontrados" 
+                             var="paciente" value="#{formPacienteBean.pacientes}"
+                             rowKey="#{formPacienteBean.paciente.documento.numero}"
+                             selectionMode="single"
+                             selection="#{formPacienteBean.pacienteSeleccionado}"
+                             paginator="true"
+                             rows="10">
+
+                    <f:facet name="header" >  
+                        <p:outputPanel>  
+                            <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
+                        </p:outputPanel>  
+                    </f:facet>                                   
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Documento" />
+                        </f:facet>
+                        <p:commandLink value="#{formPacienteBean.paciente.documento.numero}" >
+                            <f:setPropertyActionListener value="#{paciente}" target="#{formPacienteBean.paciente}" />    
+                        </p:commandLink>
+                    </p:column>
+
+                    <p:column id="apellidoColumn" headerText="Apellido y nombre">  
+                        <h:outputText value="#{formPacienteBean.paciente.apellido}" />  
+                    </p:column>
+
+                    <p:column id="documentoColumn" headerText="Nombre">
+                        <h:outputText value="#{formPacienteBean.paciente.nombre}" />
+                    </p:column>
+                    <p:column id="domicilioColumn" headerText="Domicilio"/> 
+
+                </p:dataTable>
+
+                <p:commandButton value="Seleccionar" id="btnAceptar" oncomplete="dlgPacientesEncontrados.hide()" 
+                                 update=":tabsPaciente" />
+
+            </h:form>
+
+
+        </p:dialog>            
+
+
+
 
     </ui:define>
 
