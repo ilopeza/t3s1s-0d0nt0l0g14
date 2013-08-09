@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.interfaces.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -31,4 +32,11 @@ public class Utiles {
         return c;
     }
 
+    public static String fechaConHora(Calendar fecha) {
+        if(fecha == null) {
+            return null;
+        }
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm" );
+        return format.format(fecha.getTime());
+    }
 }

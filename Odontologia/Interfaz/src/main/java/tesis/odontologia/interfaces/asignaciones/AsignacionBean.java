@@ -57,9 +57,10 @@ public class AsignacionBean {
     //Atributos para buscar el alumno.
     private String nroDocumentoAlumnoBuscado;
     private Alumno alumnoBuscado;
+    
+    //Servicio
     @ManagedProperty(value = "#{asignacionPacienteService}")
     private AsignacionPacienteService asignacionPacienteService;
-    //Servicio
     @ManagedProperty(value = "#{personaService}")
     private PersonaService personaService;
     @ManagedProperty(value = "#{materiaService}")
@@ -143,41 +144,7 @@ public class AsignacionBean {
         if(pacientes == null || pacientes.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, 
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
-            return;
         }
-    }
-
-    private void busquedaAvanzada() {
-        pacientes.clear();
-        Predicate p = null;
-
-        if (edadDesdeFiltro != null && edadDesdeFiltro.length() > 0) {
-            // Busca pacientes que tengan como máximo cierta edad.
-            p = PacienteSpecs.byMayorA(convertirFechaDesde());
-        }
-        if (edadHastaFiltro != null && edadHastaFiltro.length() > 0) {
-            p = PacienteSpecs.byMenorA(convertirFechaHasta()).and(p);
-        }
-        pacientes.addAll((Collection<? extends Paciente>) personaService.findAll(p));
-    }
-
-    private void buscarTodosLosPacientes() {
-        Predicate p = PersonaSpecs.byClass(Paciente.class);
-        pacientes = (List<Paciente>) personaService.findAll(p);
-    }
-
-    private Calendar convertirFechaDesde() {
-        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-        int anioDesde = anioActual - Utiles.convertStringToInt(edadDesdeFiltro).intValue();
-
-        return Utiles.convertIntegerToCalendarYear(anioDesde);
-    }
-
-    private Calendar convertirFechaHasta() {
-        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-        int anioHasta = anioActual - Utiles.convertStringToInt(edadHastaFiltro).intValue();
-
-        return Utiles.convertIntegerToCalendarYear(anioHasta);
     }
 
     public void buscarAlumno() {
@@ -196,29 +163,30 @@ public class AsignacionBean {
     }
     
     public void buscarAsignaciones() {
-        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
+        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll
+                (AsignacionPacienteSpecs.byAlumno(alumnoBuscado).and
+                (AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
         if (asignaciones == null || asignaciones.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
-            return;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage
+                    (FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
         }
     }
+    
+    public void setPacienteSeleccionado(Paciente pacienteSeleccionado) {
+        this.pacienteSeleccionado = pacienteSeleccionado;
+        FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Paciente seleccionado: " + pacienteSeleccionado, null));
+    }
+    
+    public String fechaFormateada(Calendar fecha) {
+        return Utiles.fechaConHora(fecha);
+    }
 
-    //    public void buscarAlumno(){
-    //        Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoAlumnoBuscado);
-    //        Alumno alu = personaService.findOne(p);
-    //
-    //        alumnoBuscado = alu;
-    //    }
-    /**
-     * @return the asignacion
-     */
+    
     public AsignacionPaciente getAsignacion() {
         return asignacion;
     }
 
-    /**
-     * @param asignacion the asignacion to set
-     */
     public void setAsignacion(AsignacionPaciente asignacion) {
         this.asignacion = asignacion;
     }
@@ -231,30 +199,18 @@ public class AsignacionBean {
         this.filtroPaciente = filtroPaciente;
     }
 
-    /**
-     * @return the materia
-     */
     public Materia getMateria() {
         return materia;
     }
 
-    /**
-     * @param materia the materia to set
-     */
     public void setMateria(Materia materia) {
         this.materia = materia;
     }
 
-    /**
-     * @return the asignacionPacienteService
-     */
     public AsignacionPacienteService getAsignacionPacienteService() {
         return asignacionPacienteService;
     }
 
-    /**
-     * @param asignacionPacienteService the asignacionPacienteService to set
-     */
     public void setAsignacionPacienteService(AsignacionPacienteService asignacionPacienteService) {
         this.asignacionPacienteService = asignacionPacienteService;
     }
@@ -267,158 +223,86 @@ public class AsignacionBean {
         this.asignaciones = asignaciones;
     }
 
-    /**
-     * @return the personaService
-     */
     public PersonaService getPersonaService() {
         return personaService;
     }
 
-    /**
-     * @param personaService the personaService to set
-     */
     public void setPersonaService(PersonaService personaService) {
         this.personaService = personaService;
     }
 
-    /**
-     * @return the pacientes
-     */
     public List<Paciente> getPacientes() {
         return pacientes;
     }
 
-    /**
-     * @param pacientes the pacientes to set
-     */
     public void setPacientes(List<Paciente> pacientes) {
         this.pacientes = pacientes;
     }
 
-    /**
-     * @return the materias
-     */
     public List<Materia> getMaterias() {
         return materias;
     }
 
-    /**
-     * @param materias the materias to set
-     */
     public void setMaterias(List<Materia> materias) {
         this.materias = materias;
     }
 
-    /**
-     * @return the pacienteSeleccionado
-     */
     public Paciente getPacienteSeleccionado() {
         return pacienteSeleccionado;
     }
 
-    /**
-     * @param pacienteSeleccionado the pacienteSeleccionado to set
-     */
-    public void setPacienteSeleccionado(Paciente pacienteSeleccionado) {
-        this.pacienteSeleccionado = pacienteSeleccionado;
-        FacesContext.getCurrentInstance().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Paciente seleccionado: " + pacienteSeleccionado, null));
-    }
-
-    /**
-     * @return the materiaFiltro
-     */
     public Materia getMateriaFiltro() {
         return materiaFiltro;
     }
 
-    /**
-     * @param materiaFiltro the materiaFiltro to set
-     */
     public void setMateriaFiltro(Materia materiaFiltro) {
         this.materiaFiltro = materiaFiltro;
     }
 
-    /**
-     * @return the edadDesdeFiltro
-     */
     public String getEdadDesdeFiltro() {
         return edadDesdeFiltro;
     }
 
-    /**
-     * @param edadDesdeFiltro the edadDesdeFiltro to set
-     */
     public void setEdadDesdeFiltro(String edadDesdeFiltro) {
         this.edadDesdeFiltro = edadDesdeFiltro;
     }
 
-    /**
-     * @return the edadHastaFiltro
-     */
     public String getEdadHastaFiltro() {
         return edadHastaFiltro;
     }
 
-    /**
-     * @param edadHastaFiltro the edadHastaFiltro to set
-     */
     public void setEdadHastaFiltro(String edadHastaFiltro) {
         this.edadHastaFiltro = edadHastaFiltro;
     }
 
-    /**
-     * @return the nroDocumentoAlumnoBuscado
-     */
     public String getNroDocumentoAlumnoBuscado() {
         return nroDocumentoAlumnoBuscado;
     }
 
-    /**
-     * @param nroDocumentoAlumnoBuscado the nroDocumentoAlumnoBuscado to set
-     */
     public void setNroDocumentoAlumnoBuscado(String nroDocumentoAlumnoBuscado) {
         this.nroDocumentoAlumnoBuscado = nroDocumentoAlumnoBuscado;
     }
 
-    /**
-     * @return the alumnoBuscado
-     */
     public Alumno getAlumnoBuscado() {
         return alumnoBuscado;
     }
 
-    /**
-     * @param alumnoBuscado the alumnoBuscado to set
-     */
     public void setAlumnoBuscado(Alumno alumnoBuscado) {
         this.alumnoBuscado = alumnoBuscado;
     }
     
-    /**
-     * @return the materiaService
-     */
     public MateriaService getMateriaService() {
         return materiaService;
     }
 
-    /**
-     * @param materiaService the materiaService to set
-     */
     public void setMateriaService(MateriaService materiaService) {
         this.materiaService = materiaService;
     }
 
-    /**
-     * @return the catedraService
-     */
     public CatedraService getCatedraService() {
         return catedraService;
     }
 
-    /**
-     * @param catedraService the catedraService to set
-     */
     public void setCatedraService(CatedraService catedraService) {
         this.catedraService = catedraService;
     }
@@ -431,4 +315,39 @@ public class AsignacionBean {
         this.fechaAsignacion = fechaAsignacion;
     }
 
+    
+//      RESPALDO DE CODIGO DE FILTROS
+    
+//    private void busquedaAvanzada() {
+//        pacientes.clear();
+//        Predicate p = null;
+//
+//        if (edadDesdeFiltro != null && edadDesdeFiltro.length() > 0) {
+//            // Busca pacientes que tengan como máximo cierta edad.
+//            p = PacienteSpecs.byMayorA(convertirFechaDesde());
+//        }
+//        if (edadHastaFiltro != null && edadHastaFiltro.length() > 0) {
+//            p = PacienteSpecs.byMenorA(convertirFechaHasta()).and(p);
+//        }
+//        pacientes.addAll((Collection<? extends Paciente>) personaService.findAll(p));
+//    }
+//
+//    private void buscarTodosLosPacientes() {
+//        Predicate p = PersonaSpecs.byClass(Paciente.class);
+//        pacientes = (List<Paciente>) personaService.findAll(p);
+//    }
+//
+//    private Calendar convertirFechaDesde() {
+//        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
+//        int anioDesde = anioActual - Utiles.convertStringToInt(edadDesdeFiltro).intValue();
+//
+//        return Utiles.convertIntegerToCalendarYear(anioDesde);
+//    }
+//
+//    private Calendar convertirFechaHasta() {
+//        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
+//        int anioHasta = anioActual - Utiles.convertStringToInt(edadHastaFiltro).intValue();
+//
+//        return Utiles.convertIntegerToCalendarYear(anioHasta);
+//    }
 }
