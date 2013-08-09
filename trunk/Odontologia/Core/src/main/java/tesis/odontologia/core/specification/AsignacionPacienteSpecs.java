@@ -18,7 +18,7 @@ import tesis.odontologia.core.domain.paciente.Paciente;
  */
 public class AsignacionPacienteSpecs {
     
-    private static final QAsignacionPaciente $ = QAsignacionPaciente.asignacionPaciente;
+    private static final QAsignacionPaciente $ = QAsignacionPaciente.asignacionPaciente.as(QAsignacionPaciente.class);
     
     public static BooleanExpression byAlumno(Alumno a){
         return $.alumno.id.eq(a.getId());

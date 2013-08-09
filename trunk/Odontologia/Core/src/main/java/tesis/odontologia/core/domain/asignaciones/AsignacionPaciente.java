@@ -31,7 +31,7 @@ import tesis.odontologia.core.exception.GenericException;
 public class AsignacionPaciente extends Generic{
     
     @Column(nullable = false)
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @NotNull(message = "La fecha de asignacion no puede ser nula.")
     private Calendar fechaAsignacion;
     

@@ -112,6 +112,29 @@ public abstract class Persona extends Generic {
         return apellido + ", " + nombre;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (this.documento != null ? this.documento.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Persona other = (Persona) obj;
+        if (this.documento != other.documento && (this.documento == null || !this.documento.equals(other.documento))) {
+            return false;
+        }
+        return true;
+    }
+    
+
     //VALIDAR
     @Override
     public void validar() throws GenericException {

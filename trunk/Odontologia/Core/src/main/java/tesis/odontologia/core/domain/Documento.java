@@ -70,9 +70,33 @@ public class Documento implements Serializable {
     public String toString() {
         return tipoDocumento.toString() + " " + numero;
     }
-    
-    
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + (this.numero != null ? this.numero.hashCode() : 0);
+        hash = 97 * hash + (this.tipoDocumento != null ? this.tipoDocumento.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Documento other = (Documento) obj;
+        if ((this.numero == null) ? (other.numero != null) : !this.numero.equals(other.numero)) {
+            return false;
+        }
+        if (this.tipoDocumento != other.tipoDocumento) {
+            return false;
+        }
+        return true;
+    }
+    
     public enum TipoDocumento {
 
         DNI {
