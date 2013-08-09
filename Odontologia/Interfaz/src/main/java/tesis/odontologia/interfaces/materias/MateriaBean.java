@@ -74,7 +74,6 @@ public class MateriaBean {
     }
 
     public List<Materia> getMaterias() {
-        System.out.println("ejecutando getmaterias");
         return materias;
     }
 
