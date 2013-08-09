@@ -8,6 +8,8 @@ import com.mysema.query.types.Predicate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -40,11 +42,11 @@ import tesis.odontologia.interfaces.util.Utiles;
 public class AsignacionBean {
 
     private AsignacionPaciente asignacion;
-    private Paciente pacienteBuscado;
     private List<Paciente> pacientes;
     private Materia materia;
     private List<Materia> materias;
     private List<AsignacionPaciente> asignaciones;
+    private Date fechaAsignacion;
     //Atributos búsqueda tabla.
     private String filtroPaciente;
     private Paciente pacienteSeleccionado;
@@ -78,14 +80,40 @@ public class AsignacionBean {
     }
 
     public String save() {
+        if(alumnoBuscado == null) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un alumno.", null));
+            return null;
+        }
+        if(pacienteSeleccionado == null) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un paciente.", null));
+            return null;
+        }
+        if(materia == null) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono una materia.", null));
+            return null;
+        }
+        if(fechaAsignacion == null) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono una fecha para la asignacion.", null));
+            return null;
+        }
+        
         asignacion = new AsignacionPaciente();
         asignacion.setAlumno(alumnoBuscado);
-        asignacion.setEstado(AsignacionPaciente.EstadoAsignacion.PENDIENTE);
-        asignacion.setPaciente(pacienteBuscado);
-        asignacion.setFechaAsignacion(Calendar.getInstance());
+        asignacion.setPaciente(pacienteSeleccionado);
+        Calendar fecha = new GregorianCalendar();
+        fecha.setTime(fechaAsignacion);
+        asignacion.setFechaAsignacion(fecha);
         asignacion.setMateria(materia);
-        asignacionPacienteService.save(asignacion);
-
+        asignacion = asignacionPacienteService.save(asignacion);
+        
+        if(asignacion != null && !asignacion.isNew()) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Asignacion guardada", null));
+        }
         return "asignacionPaciente";
     }
 
@@ -164,6 +192,10 @@ public class AsignacionBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontro al alumno.", null));
             return;
         }
+        buscarAsignaciones();
+    }
+    
+    public void buscarAsignaciones() {
         asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
         if (asignaciones == null || asignaciones.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
@@ -197,20 +229,6 @@ public class AsignacionBean {
 
     public void setFiltroPaciente(String filtroPaciente) {
         this.filtroPaciente = filtroPaciente;
-    }
-
-    /**
-     * @return the paciente
-     */
-    public Paciente getPaciente() {
-        return pacienteBuscado;
-    }
-
-    /**
-     * @param paciente the paciente to set
-     */
-    public void setPaciente(Paciente paciente) {
-        this.pacienteBuscado = paciente;
     }
 
     /**
@@ -303,6 +321,8 @@ public class AsignacionBean {
      */
     public void setPacienteSeleccionado(Paciente pacienteSeleccionado) {
         this.pacienteSeleccionado = pacienteSeleccionado;
+        FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Paciente seleccionado: " + pacienteSeleccionado, null));
     }
 
     /**
@@ -374,15 +394,7 @@ public class AsignacionBean {
     public void setAlumnoBuscado(Alumno alumnoBuscado) {
         this.alumnoBuscado = alumnoBuscado;
     }
-
-    public Paciente getPacienteBuscado() {
-        return pacienteBuscado;
-    }
-
-    public void setPacienteBuscado(Paciente pacienteBuscado) {
-        this.pacienteBuscado = pacienteBuscado;
-    }
-
+    
     /**
      * @return the materiaService
      */
@@ -410,4 +422,13 @@ public class AsignacionBean {
     public void setCatedraService(CatedraService catedraService) {
         this.catedraService = catedraService;
     }
+
+    public Date getFechaAsignacion() {
+        return fechaAsignacion;
+    }
+
+    public void setFechaAsignacion(Date fechaAsignacion) {
+        this.fechaAsignacion = fechaAsignacion;
+    }
+
 }
