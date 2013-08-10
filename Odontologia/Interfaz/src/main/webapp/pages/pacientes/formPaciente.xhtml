@@ -4,7 +4,8 @@
                 template="./../../templates/commonLayout.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
 
@@ -20,7 +21,12 @@
 
                 <p:commandButton value="Buscar" id="btnBuscar" oncomplete="dlgPacientesEncontrados.show()"  
                                  update=":formTablaPacientesEncontrados:tablaPacientesEncontrados" 
-                                 action="#{formPacienteBean.buscarPacientes()}" />
+                                 actionListener="#{formPacienteBean.buscarPacientes}" />
+                <p:commandButton value="Modificar" id="btnModificar"
+                                 actionListener="#{formPacienteBean.habilitar}"
+                                 rendered="#{formPacienteBean.estaDeshabilitado}"
+                                 update=":formBusqueda:pnlConsultarPaciente, 
+                                 :tabsPaciente:formPaciente"/>
             </p:panel>
         </h:form>
 
@@ -46,10 +52,11 @@
             <h:form id="formTablaPacientesEncontrados">
                 <p:dataTable id="tablaPacientesEncontrados" 
                              var="paciente" value="#{formPacienteBean.pacientes}"
-                             rowKey="#{formPacienteBean.paciente.documento.numero}"
                              selectionMode="single"
                              selection="#{formPacienteBean.pacienteSeleccionado}"
+                             rowKey="#{paciente.documento.numero}"
                              paginator="true"
+                             paginatorAlwaysVisible="false"
                              rows="10">
 
                     <f:facet name="header" >  
@@ -62,9 +69,8 @@
                         <f:facet name="header">
                             <h:outputText value="Documento" />
                         </f:facet>
-                        <p:commandLink value="#{formPacienteBean.paciente.documento.numero}" >
-                            <f:setPropertyActionListener value="#{paciente}" target="#{formPacienteBean.paciente}" />    
-                        </p:commandLink>
+                        <h:outputText value="#{formPacienteBean.paciente.documento.numero}" />
+
                     </p:column>
 
                     <p:column id="apellidoColumn" headerText="Apellido y nombre">  
@@ -77,17 +83,15 @@
                     <p:column id="domicilioColumn" headerText="Domicilio"/> 
 
                 </p:dataTable>
-
-                <p:commandButton value="Seleccionar" id="btnAceptar" oncomplete="dlgPacientesEncontrados.hide()" 
-                                 update=":tabsPaciente" />
-
+                <br/>
+                <p:commandButton value="Seleccionar" id="btnAceptar" 
+                                 oncomplete="dlgPacientesEncontrados.hide()"
+                                 actionListener="#{formPacienteBean.seleccionarPaciente}"
+                                 update=":tabsPaciente :formBusqueda:pnlConsultarPaciente" />
             </h:form>
 
 
         </p:dialog>            
-
-
-
 
     </ui:define>
 

@@ -7,7 +7,6 @@ package tesis.odontologia.interfaces.asignaciones;
 import com.mysema.query.types.Predicate;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -17,10 +16,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
-import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.service.AsignacionPacienteService;
@@ -50,6 +47,7 @@ public class AsignacionBean {
     //Atributos búsqueda tabla.
     private String filtroPaciente;
     private Paciente pacienteSeleccionado;
+    private List<Paciente> pacientesSeleccionados;
     //Atributos búsqueda avanzada.
     private Materia materiaFiltro;
     private String edadDesdeFiltro;
@@ -127,22 +125,21 @@ public class AsignacionBean {
 //                busquedaAvanzada();
 //            }
 //        } else {
-            busquedaSimple();
+        busquedaSimple();
 //        }
     }
 
     //Métodos auxiliares.
     private void busquedaSimple() {
         pacientes.clear();
-        if(filtroPaciente == null || filtroPaciente.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, 
+        if (filtroPaciente == null || filtroPaciente.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "El filtro de busqueda de paciente no puede estar vacio.", null));
             return;
         }
-        pacientes = (List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(filtroPaciente).and
-                (PersonaSpecs.byClass(Paciente.class)));
-        if(pacientes == null || pacientes.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, 
+        pacientes = (List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(filtroPaciente).and(PersonaSpecs.byClass(Paciente.class)));
+        if (pacientes == null || pacientes.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
         }
     }

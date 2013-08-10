@@ -4,7 +4,8 @@
                 template="./../../templates/commonLayout.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
 
@@ -28,7 +29,7 @@
                                #{asignacionBean.alumnoBuscado.documento.toString()}">
                 </h:outputLabel>
             </h:panelGrid>
-
+            <br/>
             <p:dataTable id="tblAsignacionesAlumno" var="asignacion" value="#{asignacionBean.asignaciones}" 
                          emptyMessage="Alumno sin asignaciones">
                 <f:facet name="header">
@@ -72,7 +73,7 @@
                                  icon="ui-icon-search"
                                  process="@this, pnlBusquedaAsignacion"/> 
             </h:panelGrid>
-
+            <br/>
             <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
                          var="p" value="#{asignacionBean.pacientes}"
                          emptyMessage="No se encontraron pacientes.">
@@ -101,8 +102,8 @@
                 <p:outputLabel value="Fecha de asignacion: "></p:outputLabel>
                 <p:calendar value="#{asignacionBean.fechaAsignacion}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" />
                 <p:commandButton id="asignar" value="Asignar" 
-                                 action="#{asignacionBean.save()}"
-                                 update="msg formBusquedaPacientesAsignacion"/> 
+                                 action="#{asignacionBean.save}"
+                                 update="msg formBusquedaPacientesAsignacion, formBusquedaPacientesAsignacion"/> 
             </p:panelGrid>
         </h:form>
 

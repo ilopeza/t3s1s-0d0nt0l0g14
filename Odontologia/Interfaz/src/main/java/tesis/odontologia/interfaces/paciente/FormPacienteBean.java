@@ -59,6 +59,8 @@ public class FormPacienteBean {
     private String edadDesdeFiltro;
     private String edadHastaFiltro;
     private String nombreFiltro;
+    //
+    private boolean estaDeshabilitado;
     @ManagedProperty(value = "#{personaService}")
     private PersonaService personaService;
 
@@ -119,8 +121,6 @@ public class FormPacienteBean {
     }
 
     public void setPaciente(Paciente p) {
-
-
         this.paciente = p;
     }
 
@@ -143,17 +143,39 @@ public class FormPacienteBean {
         return listaEstudioTipo;
     }
 
-    public String save() {
-        if (pacienteEncontrado != null) {
-            paciente = getPersonaService().save(pacienteEncontrado);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
-                    + " actualizado correctamente."));
-        } else {
-            paciente = getPersonaService().save(paciente);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
-                    + " guardado correctamente."));
+    public Paciente getPacienteEncontrado() {
+        return pacienteEncontrado;
+    }
 
+    public void setPacienteEncontrado(Paciente pacienteEncontrado) {
+        this.pacienteEncontrado = pacienteEncontrado;
+    }
+
+    public boolean isEstaDeshabilitado() {
+        return estaDeshabilitado;
+    }
+
+    public void setEstaDeshabilitado(boolean estaDeshabilitado) {
+        this.estaDeshabilitado = estaDeshabilitado;
+    }
+
+    public String save() {
+        try {
+            if (pacienteSeleccionado != null) {
+                getPersonaService().save(paciente);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
+                        + " actualizado correctamente."));
+            } else {
+                getPersonaService().save(paciente);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
+                        + " guardado correctamente."));
+
+            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El paciente " + paciente.toString() + " no fue cargado correctamente", null));
+            System.out.println(ex.getMessage());
         }
+
         return "formPaciente";
     }
 
@@ -199,9 +221,12 @@ public class FormPacienteBean {
         pacientes.clear();
         Predicate p = PacienteSpecs.byNumeroDocumento(getNroDocumentoFiltro());
         paciente = (Paciente) getPersonaService().findOne(p);
-        if (paciente != null) {
-            pacienteEncontrado = paciente;
+
+        if (paciente == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
         }
+
         pacientes.add(paciente);
     }
 
@@ -217,11 +242,17 @@ public class FormPacienteBean {
 //            p = PacienteSpecs.byMenorA(convertirFechaHasta()).and(p);
 //        }
 
-        if (getNombreFiltro() != null && getNombreFiltro().length() > 0) {
-            p = PacienteSpecs.byNombre(nombreFiltro);
+        pacientes.addAll((List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(nombreFiltro).and(PersonaSpecs.byClass(Paciente.class))));
+        if (pacientes == null || pacientes.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
         }
-
-        pacientes.addAll((Collection<? extends Paciente>) getPersonaService().findAll(p));
+//
+//        if (getNombreFiltro() != null && getNombreFiltro().length() > 0) {
+//            p = PacienteSpecs.byNombre(nombreFiltro);
+//        }
+//
+//        pacientes.addAll((Collection<? extends Paciente>) getPersonaService().findAll(p));
     }
 
     private void buscarTodosLosPacientes() {
@@ -328,5 +359,19 @@ public class FormPacienteBean {
      */
     public void setPacienteSeleccionado(Paciente pacienteSeleccionado) {
         this.pacienteSeleccionado = pacienteSeleccionado;
+    }
+
+    /**
+     * Cambia la propiedad disabled a false para que los input queden
+     * habilitados. En el btnModificar, la propiedad rendered queda en false y
+     * no se va a mostrar.
+     */
+    public void habilitar() {
+        estaDeshabilitado = false;
+    }
+
+    public void seleccionarPaciente() {
+        paciente = pacienteSeleccionado;
+        estaDeshabilitado = true;
     }
 }
