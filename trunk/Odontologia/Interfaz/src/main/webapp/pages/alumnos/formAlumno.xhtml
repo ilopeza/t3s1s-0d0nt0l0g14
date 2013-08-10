@@ -8,31 +8,67 @@ and open the template in the editor.
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns="http://www.w3.org/1999/xhtml">
     <ui:composition template="./../../templates/commonLayout.xhtml">
         <ui:define name="content">
 
             <h:form id="formDatosPersonalesAlumno">
+                <p:growl id="msg" sticky="true"/>
+                <h:outputLabel value="REGISTRAR ALUMNO" style="padding: 400px; font-size: 20px; font: " />
+                <p:panel id="pnlAlumno" header="NUEVO ALUMNO">
 
-                <h:panelGrid id="gridDatosPersonalesAlumno" columns="2" cellpadding="3" cellspacing="3" >
 
-                    <h:outputLabel value="Nombre" />
-                    <p:inputText id="txtNombre" value="#{formAlumnoBean.alumno.nombre}" size="50" style=""/>
-                    <h:outputLabel value="Apellido"/>
-                    <p:inputText id="txtApellido" value="#{formAlumnoBean.alumno.apellido}" size="50"/>
-                    <h:outputLabel value="Tipo de documento:"/>
-                    <p:selectOneMenu id="selectedTipoDocumento" value="#{formAlumnoBean.alumno.documento.tipoDocumento}" >
-                        <f:selectItems value="#{formAlumnoBean.listaTipoDocumento}"/>
-                    </p:selectOneMenu>
-                    <h:outputLabel value="Número de documento"/>
-                    <p:inputText id="txtNumero" value="#{formAlumnoBean.alumno.documento.numero}" size="50"/>
-                    <h:outputLabel value="Número de Documento del Alumno tomado del loguin" style="color: brown"/>
-                    <h:outputLabel value="Correo electronico"/>
-
-                    <p:commandButton value="Guardar" actionListener="#{formAlumnoBean.save()}"/>
-
-                </h:panelGrid>
+                    <h:panelGrid id="gridDatosPersonalesAlumno" cellpadding="3" cellspacing="3" >
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Nombre (*): " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="txtNombre" value="#{formAlumnoBean.alumno.nombre}" size="50" style=""/>
+                            </p:column>
+                            <p:column>
+                                <h:outputLabel value="Apellido (*):"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="txtApellido" value="#{formAlumnoBean.alumno.apellido}" size="50"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Tipo de documento (*): "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selectedTipoDocumento" value="#{formAlumnoBean.alumno.documento.tipoDocumento}" >
+                                    <f:selectItems value="#{formAlumnoBean.listaTipoDocumento}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <h:outputLabel value="Número de documento (*):"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="txtNumero" value="#{formAlumnoBean.alumno.documento.numero}" size="50"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Correo electronico (*): "/> 
+                            </p:column>
+                            <p:column colspan="2">
+                                <h:outputLabel value="Número de Documento del Alumno tomado del loguin" style="color: brown"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4">
+                                <p:commandButton value="Guardar" actionListener="#{formAlumnoBean.save()}" update="@form">
+                                    <p:resetInput target="pnlAlumno"/>
+                                </p:commandButton>                            
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                </p:panel>
             </h:form>
+
         </ui:define>
     </ui:composition>
 </html>
