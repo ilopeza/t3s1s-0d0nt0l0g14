@@ -7,36 +7,26 @@
     <p:growl id="msg" sticky="true"/>
     <p:fieldset id="fldsDatosDocum" legend="Datos personales" toggleable="true">
         <h:panelGrid id="gridDatosPersonales" columns="8" cellpadding="3" cellspacing="3" >
-
             <h:outputLabel value="Nombre"/>
             <p:inputText id="txtNombre" value="#{formPacienteBean.paciente.nombre}"/>
             <h:outputLabel value="Apellido"/>
             <p:inputText id="txtApellido" value="#{formPacienteBean.paciente.apellido}" />
-
             <h:outputLabel value="Tipo de documento:"/>
             <p:selectOneMenu id="selectedTipoDocumento" value="#{formPacienteBean.paciente.documento.tipoDocumento}" >
                 <f:selectItems value="#{formPacienteBean.listaTipoDocumento}"/>
             </p:selectOneMenu>
             <h:outputLabel value="Número de documento"/>
             <p:inputText id="txtDocumento" value="#{formPacienteBean.paciente.documento.numero}" />
-
             <h:outputLabel value="Estado Civil:"/>
             <p:selectOneMenu id="selectedEstadoCivil" value="#{formPacienteBean.paciente.estadoCivil}">
                 <f:selectItems value="#{formPacienteBean.listaEstadoCivilTipo}"/>
             </p:selectOneMenu>
             <h:outputLabel value="Nacionalidad"/>
             <p:inputText id="txtNacionalidad" value="#{formPacienteBean.paciente.nacionalidad}"/>
-
             <h:outputLabel value="Lugar de nacimiento:"/>
             <p:inputText id="txtLugarDeNacimiento" value="#{formPacienteBean.paciente.lugarNacimiento}"/>
             <h:outputLabel value="Provincia"/>
-            <p:selectOneMenu id="selectProvincia"> 
-                <f:selectItem itemLabel="Elija uno..." itemValue=""/>
-                <f:selectItem itemLabel="Córdoba" itemValue="1"/>
-                <f:selectItem itemLabel="Buenos Aires" itemValue="2"/>
-                <f:selectItem itemLabel="Santa Fe" itemValue="3"/>
-            </p:selectOneMenu>
-
+            <p:inputText id="txtProvincia" value="#{formPacienteBean.paciente.provincia}"/>
             <h:outputLabel value="Fecha de nac:"/>
             <p:calendar id="cal" value="#{formPacienteBean.fechaNacimiento}" navigator="true"  yearRange="c-100:c"/> 
         </h:panelGrid>
@@ -56,16 +46,14 @@
             <p:inputText id="txtDepartamento" value="#{formPacienteBean.paciente.domicilio.departamento}"/>
             <h:outputLabel value="Ciudad:"/>
             <p:inputText id="txtCiudadActual" value="#{formPacienteBean.paciente.domicilio.ciudadActual}" />
-            
-            <h:outputLabel value="Domicilio anterior:"/>
-            <p:inputText id="txtResidenciaAnterior" value="#{formPacienteBean.paciente.domicilio.residenciaAnterior}"/>
-            <h:outputLabel value="Ciudad domicilio anterior:"/>
-            <p:inputText id="txtCiudadAnterior" value="#{formPacienteBean.paciente.domicilio.ciudadAnterior}" />
-
             <h:outputLabel value="Teléfono:"/>
             <p:inputText id="txtTelefono" value="#{formPacienteBean.paciente.telefono}"/>
             <h:outputLabel value="Celular:"/>
             <p:inputText id="txtCelular" value="#{formPacienteBean.paciente.celular}" />
+            <h:outputLabel value="Domicilio anterior:"/>
+            <p:inputText id="txtResidenciaAnterior" value="#{formPacienteBean.paciente.domicilio.residenciaAnterior}"/>
+            <h:outputLabel value="Ciudad domicilio anterior:"/>
+            <p:inputText id="txtCiudadAnterior" value="#{formPacienteBean.paciente.domicilio.ciudadAnterior}" />
         </h:panelGrid>
     </p:fieldset>
 
@@ -73,7 +61,6 @@
         <h:panelGrid id="gridTrabajoEstudios" columns="8" cellpadding="3" cellspacing="3">
             <p:outputLabel value="Trabajo:"/>
             <p:inputText id="txtTrabajo" value="#{formPacienteBean.paciente.trabajo}"/>
-
             <h:outputLabel value="Estudios: "/>
             <p:selectOneMenu id="selectNivelEstudio" value="#{formPacienteBean.paciente.tipoEstudios}"> 
                 <f:selectItems value="#{formPacienteBean.listaEstudioTipo}"/>   
@@ -85,12 +72,10 @@
         <h:panelGrid id="gridDatosMedicos" columns="10">
             <h:outputLabel value="Obra social"/>
             <p:inputText id="txtObraSocial" value="#{formPacienteBean.paciente.obraSocial}" />
-
             <h:outputLabel value="Médico de cabecera:"/>
             <p:inputText id="txtMedicoCabecera" value="#{formPacienteBean.paciente.medicoCabecera}"/>
             <h:outputLabel value="Teléfono"/>
             <p:inputText id="txtTelefonoMedico" value="#{formPacienteBean.paciente.telefonoMedico}" />
-
             <h:outputLabel value="Serv. de emergencia:"/>
             <p:selectOneRadio id="rdbServicioEmergencia" value="#{formPacienteBean.servicio}">
                 <f:selectItem itemLabel="Sí" itemValue="1" />  
@@ -108,8 +93,8 @@
             <p:inputText id="txtReligion" value="#{formPacienteBean.paciente.religion}" />
             <h:outputLabel value="Privado de libertad:"/>
             <p:selectOneRadio id="rdbPrivadoLibertad" value="#{formPacienteBean.paciente.privadoLibertad}">  
-                <f:selectItem itemLabel="Sí" itemValue="1" />  
-                <f:selectItem itemLabel="No" itemValue="0" />   
+                <f:selectItem itemLabel="Sí" itemValue="true" />  
+                <f:selectItem itemLabel="No" itemValue="false" />   
             </p:selectOneRadio> 
             <h:outputLabel value="Lugar"/>
             <p:inputText id="txtLugar" value="#{formPacienteBean.paciente.lugar}"  />
