@@ -206,7 +206,10 @@ public class FormPacienteBean {
 
         if (getNroDocumentoFiltro() == null || getNroDocumentoFiltro().isEmpty()) {
             if (getNombreFiltro() == null || getNombreFiltro().isEmpty()) {
-                buscarTodosLosPacientes();
+//                buscarTodosLosPacientes();
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se especifico ningun parametro de busqueda.", null));
+                return;
             } else {
                 busquedaAvanzada();
             }
@@ -221,18 +224,16 @@ public class FormPacienteBean {
         pacientes.clear();
         Predicate p = PacienteSpecs.byNumeroDocumento(getNroDocumentoFiltro());
         paciente = (Paciente) getPersonaService().findOne(p);
-
         if (paciente == null) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
+            return;
         }
-
         pacientes.add(paciente);
     }
 
     private void busquedaAvanzada() {
         pacientes.clear();
-        Predicate p = null;
 
 //        if (getEdadDesdeFiltro() != null && getEdadDesdeFiltro().length() > 0) {
 //            // Busca pacientes que tengan como máximo cierta edad.
@@ -242,7 +243,7 @@ public class FormPacienteBean {
 //            p = PacienteSpecs.byMenorA(convertirFechaHasta()).and(p);
 //        }
 
-        pacientes.addAll((List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(nombreFiltro).and(PersonaSpecs.byClass(Paciente.class))));
+        pacientes = (List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(nombreFiltro).and(PersonaSpecs.byClass(Paciente.class)));
         if (pacientes == null || pacientes.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
@@ -255,10 +256,10 @@ public class FormPacienteBean {
 //        pacientes.addAll((Collection<? extends Paciente>) getPersonaService().findAll(p));
     }
 
-    private void buscarTodosLosPacientes() {
-        Predicate p = PersonaSpecs.byClass(Paciente.class);
-        pacientes = (List<Paciente>) getPersonaService().findAll(p);
-    }
+//    private void buscarTodosLosPacientes() {
+//        Predicate p = PersonaSpecs.byClass(Paciente.class);
+//        pacientes = (List<Paciente>) getPersonaService().findAll(p);
+//    }
 
     private Calendar convertirFechaDesde() {
         int anioActual = Calendar.getInstance().get(Calendar.YEAR);
@@ -371,6 +372,7 @@ public class FormPacienteBean {
     }
 
     public void seleccionarPaciente() {
+        if(pacienteSeleccionado == null) return;
         paciente = pacienteSeleccionado;
         estaDeshabilitado = true;
     }
