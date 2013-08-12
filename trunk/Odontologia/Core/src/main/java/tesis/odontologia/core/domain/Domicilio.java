@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tesis.odontologia.core.domain.paciente;
+package tesis.odontologia.core.domain;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -130,4 +130,10 @@ public class Domicilio implements Serializable {
     //VALIDATES
     void validar() throws Exception {
     }
+
+    @Override
+    public String toString() {
+        return (calle + " " + calleNumero + (barrio != null? (" - " + barrio):null));
+    }
+    
 }
