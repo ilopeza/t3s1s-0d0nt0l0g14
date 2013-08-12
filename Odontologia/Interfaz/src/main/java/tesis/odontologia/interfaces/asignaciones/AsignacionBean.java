@@ -171,8 +171,6 @@ public class AsignacionBean {
     
     public void setPacienteSeleccionado(Paciente pacienteSeleccionado) {
         this.pacienteSeleccionado = pacienteSeleccionado;
-        FacesContext.getCurrentInstance().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Paciente seleccionado: " + pacienteSeleccionado, null));
     }
     
     public String fechaFormateada(Calendar fecha) {
