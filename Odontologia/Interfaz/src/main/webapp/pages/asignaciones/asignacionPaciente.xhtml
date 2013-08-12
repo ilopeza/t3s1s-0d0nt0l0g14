@@ -8,9 +8,8 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-
-        <h:outputLabel value="Asignacion de pacientes" style="font-size:18px; font-weight: bold"/> 
-
+        <h:outputLabel value="ASIGNACIÓN PACIENTE" style="padding: 400px; font-size: 20px; font: " />
+        
         <h:form id="formBusquedaPacientesAsignacion">
             <p:growl id="msg" sticky="false" life="5000"/>
 
@@ -52,7 +51,9 @@
                     <h:outputText value="#{asignacion.estado}" />
                 </p:column>
             </p:dataTable>
-
+            <br/>
+            <h:outputLabel value="Filtro de materia" style=" font-size: 15px"/>
+            
             <h:panelGrid id="gridMaterias" columns="8" cellpadding="3" cellspacing="3" >
                 <h:outputLabel value="Materia"/>
                 <p:selectOneMenu id="selectMateria" value="#{asignacionBean.materia}">  
@@ -60,7 +61,7 @@
                     <f:converter converterId="materiaConverter" />
                 </p:selectOneMenu>  
             </h:panelGrid>
-
+            <br/>
             <h:outputLabel value="Datos del paciente" style=" font-size: 15px"/> 
 
             <h:panelGrid id="pnlBusquedaAsignacion" columns="3" cellpadding="3" cellspacing="3">
