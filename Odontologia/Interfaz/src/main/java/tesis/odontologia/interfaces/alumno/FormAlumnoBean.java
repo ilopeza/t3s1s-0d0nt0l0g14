@@ -4,7 +4,6 @@
  */
 package tesis.odontologia.interfaces.alumno;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -14,11 +13,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.alumno.Alumno;
-import tesis.odontologia.core.domain.paciente.Domicilio;
-import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.domain.usuario.Rol;
 import tesis.odontologia.core.domain.usuario.Usuario;
 import tesis.odontologia.core.service.PersonaService;
