@@ -54,7 +54,7 @@
                              var="paciente" value="#{formPacienteBean.pacientes}"
                              selectionMode="single"
                              selection="#{formPacienteBean.pacienteSeleccionado}"
-                             rowKey="#{paciente.documento.numero}"
+                             rowKey="#{paciente.id}"
                              paginator="true"
                              paginatorAlwaysVisible="false"
                              rows="10">
@@ -65,22 +65,17 @@
                         </p:outputPanel>  
                     </f:facet>                                   
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Documento" />
-                        </f:facet>
-                        <h:outputText value="#{formPacienteBean.paciente.documento.numero}" />
-
+                    <p:column headerText="Documento">  
+                        <h:outputText value="#{paciente.documento}" />  
                     </p:column>
 
-                    <p:column id="apellidoColumn" headerText="Apellido y nombre">  
-                        <h:outputText value="#{formPacienteBean.paciente.apellido}" />  
+                    <p:column headerText="Apellido y Nombre">  
+                        <h:outputText value="#{paciente}" />  
                     </p:column>
 
-                    <p:column id="documentoColumn" headerText="Nombre">
-                        <h:outputText value="#{formPacienteBean.paciente.nombre}" />
+                    <p:column headerText="Domicilio">  
+                        <h:outputText value="#{paciente.domicilio}" />  
                     </p:column>
-                    <p:column id="domicilioColumn" headerText="Domicilio"/> 
 
                 </p:dataTable>
                 <br/>
