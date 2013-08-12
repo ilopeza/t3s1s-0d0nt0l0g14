@@ -94,10 +94,10 @@
             <h:outputLabel value="Religión: "/>
             <p:inputText id="txtReligion" value="#{formPacienteBean.paciente.religion}" disabled="#{formPacienteBean.estaDeshabilitado}"/>
             <h:outputLabel value="Privado de libertad: "/>
-           <!-- <p:selectOneRadio id="rdbPrivadoLibertad" value="{formPacienteBean.paciente.privadoLibertad}">  
+           <p:selectOneRadio id="rdbPrivadoLibertad" value="#{formPacienteBean.paciente.privadoLibertad}">  
                 <f:selectItem itemLabel="Sí" itemValue="true" />  
                 <f:selectItem itemLabel="No" itemValue="false" />   
-            </p:selectOneRadio--> 
+            </p:selectOneRadio> 
             <h:outputLabel value="Lugar: "/>
             <p:inputText id="txtLugar" value="#{formPacienteBean.paciente.lugar}"  disabled="#{formPacienteBean.estaDeshabilitado}"/>
         </h:panelGrid>
