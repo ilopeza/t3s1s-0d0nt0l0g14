@@ -55,7 +55,6 @@ public class AsignacionBean {
     //Atributos para buscar el alumno.
     private String nroDocumentoAlumnoBuscado;
     private Alumno alumnoBuscado;
-    
     //Servicio
     @ManagedProperty(value = "#{asignacionPacienteService}")
     private AsignacionPacienteService asignacionPacienteService;
@@ -79,27 +78,27 @@ public class AsignacionBean {
     }
 
     public String save() {
-        if(alumnoBuscado == null) {
-            FacesContext.getCurrentInstance().addMessage(null, 
+        if (alumnoBuscado == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un alumno.", null));
             return null;
         }
-        if(pacienteSeleccionado == null) {
-            FacesContext.getCurrentInstance().addMessage(null, 
+        if (pacienteSeleccionado == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un paciente.", null));
             return null;
         }
-        if(materia == null) {
-            FacesContext.getCurrentInstance().addMessage(null, 
+        if (materia == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono una materia.", null));
             return null;
         }
-        if(fechaAsignacion == null) {
-            FacesContext.getCurrentInstance().addMessage(null, 
+        if (fechaAsignacion == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono una fecha para la asignacion.", null));
             return null;
         }
-        
+
         asignacion = new AsignacionPaciente();
         asignacion.setAlumno(alumnoBuscado);
         asignacion.setPaciente(pacienteSeleccionado);
@@ -107,12 +106,19 @@ public class AsignacionBean {
         fecha.setTime(fechaAsignacion);
         asignacion.setFechaAsignacion(fecha);
         asignacion.setMateria(materia);
-        asignacion = asignacionPacienteService.save(asignacion);
-        
-        if(asignacion != null && !asignacion.isNew()) {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Asignacion guardada", null));
+
+        try {
+            asignacion = asignacionPacienteService.save(asignacion);
+            asignaciones.add(asignacion);
+            if (asignacion != null && !asignacion.isNew()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Asignacion guardada", null));
+            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_FATAL, "La asignacion no ha sido guardada", null));
         }
+
         return "asignacionPaciente";
     }
 
@@ -158,26 +164,22 @@ public class AsignacionBean {
         }
         buscarAsignaciones();
     }
-    
+
     public void buscarAsignaciones() {
-        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll
-                (AsignacionPacienteSpecs.byAlumno(alumnoBuscado).and
-                (AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
+        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
         if (asignaciones == null || asignaciones.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage
-                    (FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
         }
     }
-    
+
     public void setPacienteSeleccionado(Paciente pacienteSeleccionado) {
         this.pacienteSeleccionado = pacienteSeleccionado;
     }
-    
+
     public String fechaFormateada(Calendar fecha) {
         return Utiles.fechaConHora(fecha);
     }
 
-    
     public AsignacionPaciente getAsignacion() {
         return asignacion;
     }
@@ -285,7 +287,7 @@ public class AsignacionBean {
     public void setAlumnoBuscado(Alumno alumnoBuscado) {
         this.alumnoBuscado = alumnoBuscado;
     }
-    
+
     public MateriaService getMateriaService() {
         return materiaService;
     }
@@ -309,10 +311,7 @@ public class AsignacionBean {
     public void setFechaAsignacion(Date fechaAsignacion) {
         this.fechaAsignacion = fechaAsignacion;
     }
-
-    
 //      RESPALDO DE CODIGO DE FILTROS
-    
 //    private void busquedaAvanzada() {
 //        pacientes.clear();
 //        Predicate p = null;
