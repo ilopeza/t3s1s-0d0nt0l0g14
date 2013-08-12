@@ -8,7 +8,7 @@
     <p:growl id="msg" sticky="false" life="5000"/>
     <p:fieldset id="fldsDatosDocum" legend="Datos personales" toggleable="true">
         <h:panelGrid id="gridDatosPersonales" columns="8" cellpadding="3" cellspacing="3" >
-            <h:outputLabel value="Nombre"/>
+            <h:outputLabel value="Nombre (*): "/>
             <p:inputText id="txtNombre" value="#{formPacienteBean.paciente.nombre}" disabled="#{formPacienteBean.estaDeshabilitado}"/>
             <h:outputLabel value="Apellido (*): "/>
             <p:inputText id="txtApellido" value="#{formPacienteBean.paciente.apellido}" disabled="#{formPacienteBean.estaDeshabilitado}"/>
