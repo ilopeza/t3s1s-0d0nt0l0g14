@@ -8,7 +8,9 @@
 
     <ui:define name="content">
         <h:form id="formMaterias">  
-            <p:panel id="pnlMateria" header="NUEVA MATERIA">
+            <p:panel id="pnlMateria">
+                <h:outputLabel value="MATERIAS" style="padding: 400px; font-size: 20px; font: " />
+                <br/>
                 <p:dataTable id="tableMaterias" var="mat" value="#{materiaBean.materias}">  
                     <p:column headerText="Materia">  
                         <h:outputText value="#{mat.nombre}" />  
