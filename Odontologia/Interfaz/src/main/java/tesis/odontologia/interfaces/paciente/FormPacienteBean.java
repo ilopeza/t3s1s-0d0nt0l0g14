@@ -17,7 +17,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import tesis.odontologia.core.domain.Documento;
-import tesis.odontologia.core.domain.paciente.Domicilio;
+import tesis.odontologia.core.domain.Domicilio;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.specification.PacienteSpecs;
