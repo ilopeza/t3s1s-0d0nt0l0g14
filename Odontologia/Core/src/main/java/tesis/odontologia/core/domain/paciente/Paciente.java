@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.core.domain.paciente;
 
+import tesis.odontologia.core.domain.Domicilio;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
