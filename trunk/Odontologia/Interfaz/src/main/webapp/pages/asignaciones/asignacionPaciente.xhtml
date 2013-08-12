@@ -12,18 +12,19 @@
         <h:outputLabel value="Asignacion de pacientes" style="font-size:18px; font-weight: bold"/> 
 
         <h:form id="formBusquedaPacientesAsignacion">
-            <p:growl id="msg" sticky="true"/>
+            <p:growl id="msg" sticky="false" life="5000"/>
 
             <h:outputLabel value="Datos del alumno" style=" font-size: 15px"/> 
 
-            <h:panelGrid id="pnlBusquedaAlumno" columns="4">
+            <h:panelGrid id="pnlBusquedaAlumno" columns="4" cellpadding="3" cellspacing="3">
                 <h:outputLabel value="Nro. Documento:"/>
                 <p:inputText value="#{asignacionBean.nroDocumentoAlumnoBuscado}"/>
                 <p:commandButton  id="btnBuscarAlumnoAsignar" 
                                   value="Buscar" 
                                   actionListener="#{asignacionBean.buscarAlumno()}" 
                                   update="tblAsignacionesAlumno pnlBusquedaAlumno msg"
-                                  process="@this, pnlBusquedaAlumno"/>
+                                  process="@this, pnlBusquedaAlumno"
+                                  icon="ui-icon-search"/>
                 <h:outputLabel id="datosAlumno" rendered="#{asignacionBean.alumnoBuscado ne null}" 
                                value= "Alumno: #{asignacionBean.alumnoBuscado.toString()} 
                                #{asignacionBean.alumnoBuscado.documento.toString()}">
@@ -62,7 +63,7 @@
 
             <h:outputLabel value="Datos del paciente" style=" font-size: 15px"/> 
 
-            <h:panelGrid id="pnlBusquedaAsignacion" columns="3">
+            <h:panelGrid id="pnlBusquedaAsignacion" columns="3" cellpadding="3" cellspacing="3">
 
 
                 <h:outputLabel value="Nombre o apellido: "/>
@@ -79,7 +80,7 @@
                          emptyMessage="No se encontraron pacientes."
                          selectionMode="single"
                          selection="#{asignacionBean.pacienteSeleccionado}"
-                         rowKey="#{p.documento.numero}">
+                         rowKey="#{p.id}">
                 <f:facet name="header" >  
                     <p:outputPanel>  
                         <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
@@ -101,13 +102,14 @@
                 </p:column>
             </p:dataTable>
             <p:spacer width="10px"/>
-            <p:panelGrid columns="3">
+            <h:panelGrid columns="3" cellpadding="3" cellspacing="3">
                 <p:outputLabel value="Fecha de asignacion: "></p:outputLabel>
                 <p:calendar value="#{asignacionBean.fechaAsignacion}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" />
                 <p:commandButton id="asignar" value="Asignar" 
                                  action="#{asignacionBean.save}"
-                                 update="msg formBusquedaPacientesAsignacion, formBusquedaPacientesAsignacion"/> 
-            </p:panelGrid>
+                                 update="msg formBusquedaPacientesAsignacion, formBusquedaPacientesAsignacion"
+                                 icon="ui-icon-circle-check"/> 
+            </h:panelGrid>
         </h:form>
 
     </ui:define>

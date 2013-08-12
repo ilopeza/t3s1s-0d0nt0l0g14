@@ -14,7 +14,7 @@ and open the template in the editor.
         <ui:define name="content">
 
             <h:form id="formDatosPersonalesAlumno">
-                <p:growl id="msg" sticky="true"/>
+                <p:growl id="msg" sticky="false" life="5000"/>
                 <h:outputLabel value="REGISTRAR ALUMNO" style="padding: 400px; font-size: 20px; font: " />
                 <p:panel id="pnlAlumno" header="NUEVO ALUMNO">
                     <h:panelGrid id="gridDatosPersonalesAlumno" cellpadding="3" cellspacing="3" columns="4">
@@ -55,7 +55,8 @@ and open the template in the editor.
                         </p:column-->
                         <p:column/>
                         <p:column>
-                            <p:commandButton value="Guardar" actionListener="#{formAlumnoBean.save()}" update="@form">
+                            <p:commandButton value="Guardar" actionListener="#{formAlumnoBean.save()}" update="@form"
+                                             icon="ui-icon-plusthick">
                                 <p:resetInput target="pnlAlumno"/>
                             </p:commandButton>                            
                         </p:column>

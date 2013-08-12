@@ -8,7 +8,6 @@ import com.mysema.query.types.Predicate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -17,16 +16,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.print.attribute.standard.Severity;
 import tesis.odontologia.core.domain.Documento;
-import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.paciente.Domicilio;
 import tesis.odontologia.core.domain.paciente.Paciente;
-import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.specification.PacienteSpecs;
 import tesis.odontologia.core.specification.PersonaSpecs;
-import tesis.odontologia.interfaces.util.Utiles;
 
 /**
  *
@@ -194,42 +189,55 @@ public class FormPacienteBean {
 
     // Métodos de la interfaz.
     public void buscarPacientes() {
-//        if (getNroDocumentoFiltro() == null || getNroDocumentoFiltro().isEmpty()) {
-//            if ((getEdadDesdeFiltro() == null || getEdadDesdeFiltro().isEmpty()) && (getEdadHastaFiltro().isEmpty() || getEdadHastaFiltro() == null)) {
+        pacientes.clear();
+        if ((getNroDocumentoFiltro() == null || getNroDocumentoFiltro().isEmpty()) && (getNombreFiltro() == null || getNombreFiltro().isEmpty())) {
 //                buscarTodosLosPacientes();
-//            } else {
-//                busquedaAvanzada();
-//            }
-//        } else {
-//            busquedaSimple();
-//        }
-
-        if (getNroDocumentoFiltro() == null || getNroDocumentoFiltro().isEmpty()) {
-            if (getNombreFiltro() == null || getNombreFiltro().isEmpty()) {
-//                buscarTodosLosPacientes();
-                FacesContext.getCurrentInstance().addMessage(null,
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se especifico ningun parametro de busqueda.", null));
-                return;
-            } else {
-                busquedaAvanzada();
-            }
         } else {
             busquedaSimple();
         }
-
     }
 
     //Métodos auxiliares.
     private void busquedaSimple() {
-        pacientes.clear();
-        Predicate p = PacienteSpecs.byNumeroDocumento(getNroDocumentoFiltro());
-        paciente = (Paciente) getPersonaService().findOne(p);
-        if (paciente == null) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
-            return;
+        Predicate p = null;
+        String docFiltro;
+        docFiltro = this.getNroDocumentoFiltro();
+        String nomFiltro;
+        nomFiltro = this.getNombreFiltro();
+        if (docFiltro != null && docFiltro.isEmpty()==false) {
+            buscarPorDocumento(p, getNroDocumentoFiltro());
+        } else {
+            if (nomFiltro != null && nomFiltro.isEmpty()== false) {
+                buscarPorNombreYApellido(p, nomFiltro);
+            }
         }
-        pacientes.add(paciente);
+    }
+
+    private FacesMessage buscarPorDocumento(Predicate p, String numDocFiltro) {
+        
+        p = PacienteSpecs.byNumeroDocumento(numDocFiltro);
+        Paciente pac = (Paciente) getPersonaService().findOne(p);
+
+        if (pac == null) {
+            
+            return new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes con documento " + numDocFiltro, null);
+        } else {
+            pacientes.add(pac);
+        }
+        return null;
+    }
+
+    private FacesMessage buscarPorNombreYApellido(Predicate p, String nomFiltro) {
+        //p = PacienteSpecs.byNombreOApellido(nomFiltro);
+        pacientes = (List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(nomFiltro).and(PersonaSpecs.byClass(Paciente.class)));
+
+        if (pacientes == null || pacientes.isEmpty()) {
+            
+            return new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encotraron pacientes con nombre " + nombreFiltro, null);
+        }
+        return null;
     }
 
     private void busquedaAvanzada() {
@@ -260,21 +268,19 @@ public class FormPacienteBean {
 //        Predicate p = PersonaSpecs.byClass(Paciente.class);
 //        pacientes = (List<Paciente>) getPersonaService().findAll(p);
 //    }
-
-    private Calendar convertirFechaDesde() {
-        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-        int anioDesde = anioActual - Utiles.convertStringToInt(getEdadDesdeFiltro()).intValue();
-
-        return Utiles.convertIntegerToCalendarYear(anioDesde);
-    }
-
-    private Calendar convertirFechaHasta() {
-        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-        int anioHasta = anioActual - Utiles.convertStringToInt(getEdadHastaFiltro()).intValue();
-
-        return Utiles.convertIntegerToCalendarYear(anioHasta);
-    }
-
+//    private Calendar convertirFechaDesde() {
+//        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
+//        int anioDesde = anioActual - Utiles.convertStringToInt(getEdadDesdeFiltro()).intValue();
+//
+//        return Utiles.convertIntegerToCalendarYear(anioDesde);
+//    }
+//
+//    private Calendar convertirFechaHasta() {
+//        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
+//        int anioHasta = anioActual - Utiles.convertStringToInt(getEdadHastaFiltro()).intValue();
+//
+//        return Utiles.convertIntegerToCalendarYear(anioHasta);
+//    }
     /**
      * Creates a new instance of FormPacienteBean
      */
@@ -372,7 +378,9 @@ public class FormPacienteBean {
     }
 
     public void seleccionarPaciente() {
-        if(pacienteSeleccionado == null) return;
+        if (pacienteSeleccionado == null) {
+            return;
+        }
         paciente = pacienteSeleccionado;
         estaDeshabilitado = true;
     }
