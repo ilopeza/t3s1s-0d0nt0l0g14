@@ -76,18 +76,21 @@
             <br/>
             <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
                          var="p" value="#{asignacionBean.pacientes}"
-                         emptyMessage="No se encontraron pacientes.">
+                         emptyMessage="No se encontraron pacientes."
+                         selectionMode="single"
+                         selection="#{asignacionBean.pacienteSeleccionado}"
+                         rowKey="#{p.documento.numero}">
                 <f:facet name="header" >  
                     <p:outputPanel>  
                         <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
                     </p:outputPanel>  
                 </f:facet>                                   
 
-                <p:column style="width:5%"> 
+                <!--p:column style="width:5%"> 
                     <p:commandButton id="selectButton" update="tblResultadosBusquedaPacienteAsignacion :formBusquedaPacientesAsignacion:msg" icon="ui-icon-arrowthick-1-e" title="View">  
-                        <f:setPropertyActionListener id="selector" value="#{p}" target="#{asignacionBean.pacienteSeleccionado}"/>  
+                        <f:setPropertyActionListener id="selector" value="{p}" target="{asignacionBean.pacienteSeleccionado}"/>  
                     </p:commandButton>  
-                </p:column> 
+                </p:column--> 
                 <p:column id="Documento" headerText="Documento" style="width:15%">  
                     <h:outputText value="#{p.documento}" />  
                 </p:column>
