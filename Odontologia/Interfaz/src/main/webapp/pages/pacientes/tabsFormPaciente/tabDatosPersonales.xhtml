@@ -105,9 +105,14 @@
 
 
     <h:panelGrid id="gridBotones" columns="3" cellpadding="3" cellspacing="3" >
-        <p:commandButton value="Guardar" action="#{formPacienteBean.save}" update="@form" rendered="#{!formPacienteBean.estaDeshabilitado}"
+        <p:commandButton value="Guardar" 
+                         action="#{formPacienteBean.save}" 
+                         update="@form" 
+                         disabled="#{formPacienteBean.estaDeshabilitado}"
                          icon="ui-icon-plusthick"/>
-        <p:commandButton value="Guardar y asignar" ajax="false" action="#{buscarTableBeanAlumnos.navigate}" rendered="#{!formPacienteBean.estaDeshabilitado}"
+        <p:commandButton value="Guardar y asignar" ajax="false" 
+                         action="#{buscarTableBeanAlumnos.navigate}" 
+                         disabled="#{formPacienteBean.estaDeshabilitado}"
                          icon="ui-icon-plusthick"/>        
     </h:panelGrid>
 </html>

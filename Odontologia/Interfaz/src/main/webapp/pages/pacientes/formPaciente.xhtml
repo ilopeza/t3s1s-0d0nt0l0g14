@@ -9,7 +9,7 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
     
     <ui:define name="content">
-        <h:outputLabel value="REGISTRAR PACIENTE" style="padding: 400px; font-size: 20px; font: " />
+        <h:outputLabel value="NUEVO USUARIO" style="padding: 400px; font-size: 20px; font: " />
         <h:form id="formBusqueda">
             <p:panel id="pnlConsultarPaciente" header="CONSULTAR PACIENTE" >
                 <h:outputLabel value="Núm. de documento: "/>
@@ -24,7 +24,7 @@
                                  icon="ui-icon-search"/>
                 <p:commandButton value="Modificar" id="btnModificar"
                                  actionListener="#{formPacienteBean.habilitar}"
-                                 rendered="#{formPacienteBean.estaDeshabilitado}"
+                                 disabled="#{!formPacienteBean.estaDeshabilitado}"
                                  update=":formBusqueda:pnlConsultarPaciente, 
                                  :tabsPaciente:formPaciente"/>
             </p:panel>
