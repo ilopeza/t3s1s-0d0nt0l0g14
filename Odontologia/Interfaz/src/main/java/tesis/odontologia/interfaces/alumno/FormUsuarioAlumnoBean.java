@@ -57,14 +57,12 @@ public class FormUsuarioAlumnoBean {
     }
 
     public void saveUsuarioAlumno() {
-        //AlumnoService.create(nuevoAlumno); hacer try y catch.
         try{
-            String randomPass = "pass";
-            SMTPConfig.sendMail("Registro en SAPO", "Te has registrado en el sistema SAPO, que te permite buscar pacientes para tus practicas. Tus datos de inicio de sesión son los siguientes: Usuario, Contraseña. Hace click en el siguiente enlace para completar tu registro.", usuario.getEmail());
+            String randomPass = "PASSWORD";
             usuario.setContraseña(randomPass);
+            SMTPConfig.sendMail(true, "Registro en SAPO", "Te has registrado en el sistema SAPO, que te permite buscar pacientes para tus practicas. Tus datos de inicio de sesión son los siguientes: Usuario: "+ usuario.getNombreUsuario()+" , Contraseña "+ usuario.getContraseña()+" .", usuario.getEmail());
             usuarioService.save(usuario);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El usuario" + usuario.getNombreUsuario() +" fue cargado correctamente", null));
-            datosUsuarioAlumnoRegistrado = "Se registró el usuario del alumno con los siguientes datos: --->" + "\nUsuario: " + usuario.getNombreUsuario() + "\nContraseña: " + usuario.getContraseña();
         }catch(Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El alumno no fue cargado correctamente", null));
             System.out.println(ex.getMessage());
