@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.core;
 
+import javax.mail.MessagingException;
 import org.testng.annotations.Test;
 import tesis.odontologia.core.mail.SMTPConfig;
 
@@ -14,8 +15,8 @@ import tesis.odontologia.core.mail.SMTPConfig;
 public class MailTest extends AbstractTest {
 
     @Test
-    public void crearsmtpConfig() {
-        if (SMTPConfig.sendMail("Probando envío de correo", " Cuerpo del Mensaje.", "mau.g.sistemas@gmail.com,enzo.biancato@hotmail.com")) {
+    public void crearsmtpConfig() throws MessagingException {
+        if (SMTPConfig.sendMail(false,"Probando envío de correo", " Cuerpo del Mensaje.", "mau.g.sistemas@gmail.com,enzo.biancato@hotmail.com")) {
 
             System.out.println("envío Correcto");
 
