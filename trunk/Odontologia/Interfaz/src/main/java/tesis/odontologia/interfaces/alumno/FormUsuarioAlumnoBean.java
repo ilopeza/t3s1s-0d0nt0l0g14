@@ -5,9 +5,11 @@
 package tesis.odontologia.interfaces.alumno;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import tesis.odontologia.core.domain.usuario.Rol;
 import tesis.odontologia.core.domain.usuario.Usuario;
 import tesis.odontologia.core.mail.SMTPConfig;
@@ -51,16 +53,7 @@ public class FormUsuarioAlumnoBean {
     @PostConstruct
     public void init() {
 
-        usuario = new Usuario();
-        Rol rolUsuario = new Rol("Alumno");
-        if(rolService.count(RolSpecs.byNombre(rolUsuario.getNombre())) == 0)
-        {
-            rolUsuario = rolService.save(rolUsuario);
-        } else
-        {
-            rolUsuario = rolService.findOne(RolSpecs.byNombre(rolUsuario.getNombre()));
-        }
-        usuario.setRol(rolUsuario);
+       createUsuario();
     }
 
     public void saveUsuarioAlumno() {
@@ -70,9 +63,11 @@ public class FormUsuarioAlumnoBean {
             SMTPConfig.sendMail("Registro en SAPO", "Te has registrado en el sistema SAPO, que te permite buscar pacientes para tus practicas. Tus datos de inicio de sesión son los siguientes: Usuario, Contraseña. Hace click en el siguiente enlace para completar tu registro.", usuario.getEmail());
             usuario.setContraseña(randomPass);
             usuarioService.save(usuario);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El usuario" + usuario.getNombreUsuario() +" fue cargado correctamente", null));
             datosUsuarioAlumnoRegistrado = "Se registró el usuario del alumno con los siguientes datos: --->" + "\nUsuario: " + usuario.getNombreUsuario() + "\nContraseña: " + usuario.getContraseña();
-        }catch(Exception e) {
-        
+        }catch(Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El alumno no fue cargado correctamente", null));
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -107,6 +102,19 @@ public class FormUsuarioAlumnoBean {
 
     public void setRolService(RolService rolService) {
         this.rolService = rolService;
+    }
+
+    private void createUsuario() {
+         usuario = new Usuario();
+        Rol rolUsuario = new Rol("Alumno");
+        if(rolService.count(RolSpecs.byNombre(rolUsuario.getNombre())) == 0)
+        {
+            rolUsuario = rolService.save(rolUsuario);
+        } else
+        {
+            rolUsuario = rolService.findOne(RolSpecs.byNombre(rolUsuario.getNombre()));
+        }
+        usuario.setRol(rolUsuario);
     }
     
 }

@@ -4,37 +4,42 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns="http://www.w3.org/1999/xhtml">
     <ui:composition template="./../../templates/commonLayout.xhtml">
         <ui:define name="content">
+            <p:growl id="msgs" life="5000"/>
             <h:form id="formAlumno">
-                <h:outputLabel value="NUEVO USUARIO" style="padding: 400px; font-size: 20px; font: " />
-
-                <p:panelGrid id="grid" columns="2">
-
-                    <h:outputLabel value="Número de documento"/>
-                    <h:inputText id="txtDocumento" value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}" />
-                    <h:outputLabel value="E-mail"/>
-                    <h:inputText id="txtEmail" value="#{formUsuarioAlumnoBean.usuario.email}"/>
-
-                    <p:commandButton value="Guardar" ajax="true" action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
-                                     oncomplete="dialogWidget.show()" update=":formdisplay:display"/>
-                </p:panelGrid>
-            </h:form>
-            
-            
-            <p:dialog header="Registro Usuario(Alumno)" widgetVar="dialogWidget" resizable="false" appendToBody="true" modal="true" >
-                <h:form id="formdisplay">
-                    <h:panelGrid id="display" columns="1" cellpadding="4" style="margin:0 auto;">
-                        <h3>Datos de registro</h3>
-                        <p>
-                            <h:outputText value="#{formUsuarioAlumnoBean.datosUsuarioRegistrado()}"/>
-                            <h:button id="aceptarButton" value="Aceptar"/>
-                        </p>
+                <p:panel id="grid" header="NUEVO USUARIO ALUMNO">
+                    <h:panelGrid>
+                        <p:row>
+                            <p:column id="colNumDocAlumno">
+                                <h:outputLabel value="Número de documento (*): "/>
+                            </p:column>
+                            <p:column id="colTxtNumDocAlumno">
+                                <h:inputText id="txtDocumento" value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column id="colEmailDocAlumno">
+                                <h:outputLabel value="E-mail (*):"/>
+                            </p:column>
+                            <p:column id="colEmailAlumno">
+                                <h:inputText id="txtEmail" value="#{formUsuarioAlumnoBean.usuario.email}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column id="colBtnGuardarUsuario" colspan="2">
+                                <p:commandButton value="Guardar" 
+                                                 ajax="true" 
+                                                 action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
+                                                 update=":msgs"
+                                                 icon="ui-icon-plusthick"/>
+                            </p:column>
+                        </p:row>
                     </h:panelGrid>
-                </h:form>       
-            </p:dialog>
-
+                </p:panel>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>
