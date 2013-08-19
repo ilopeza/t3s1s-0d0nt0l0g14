@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-	<proj ListSeperator="," DefaultDurationUnits="hours" DefaultWorkUnits="hours" HoursPerDay="12" HoursPerWeek="60" DaysPerMonth="20" DefaultStartTime="08:00" DefaultFinishTime="17:00" NADate="NA">
+	<proj ListSeperator=";" DefaultDurationUnits="hours" DefaultWorkUnits="hours" HoursPerDay="12" HoursPerWeek="60" DaysPerMonth="20" DefaultStartTime="08:00" DefaultFinishTime="17:00" NADate="NA">
 		<calendar>
 			<normalhours s1="08:00" f1="12:00" s2="13:00" f2="17:00"/>
 			<dow day="sun" working="no"/>
@@ -14,7 +14,7 @@
 		</calendar>
 		<currency symbol="$" digits="2" positiveOrder="2" negativeOrder="2"/>
 		<summary ScheduleFromStart="yes" CalculateCostProgress="no" MultipleCriticalPaths="no" CriticalSlack="0d" Name="Cronograma_Proyecto" Title="WBS ENZO Y ALEXIS" Work="-0.0167h" Duration="3222.5h" Start="2013-04-03T08:00" Finish="2014-04-15T14:30"/>
-		<DataSource path="D:\t3s1s-0d0nt0l0g14\repository\S.A.P.O\Proyecto\02_Tiempo\Cronograma\Cronograma_Proyecto.mpp" type="14.0"/>
+		<DataSource path="D:\S.A.P.O\Proyecto\02_Tiempo\Cronograma\Cronograma_Proyecto.mpp" type="14.0"/>
 	</proj>
 	<printInfo mode="scale" orient="landscape" pagesWide="1" pagesHigh="1" scale="100%" bw="no" enlarge="no" byColumn="no" adjustPageBreaks="no" marginTop="36pt" marginLeft="36pt" marginBottom="36pt" marginRight="36pt"/>
 	<pageLayouts>
@@ -1229,6 +1229,9 @@
 		<item calign="branch_nearest" listmode="stemleft"/>
 		<border style="null" shdir="none" shdepth="0pt"/>
 	</treediff>
+	<treediff id="229">
+		<item palign="topleft"/>
+	</treediff>
 	<treediff id="230">
 		<item calign="branch_nearest" listmode="stemleft"/>
 	</treediff>
@@ -1272,6 +1275,29 @@
 	</treediff>
 	<treediff id="241">
 		<item listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="269">
+		<item listmode="stemleft"/>
+	</treediff>
+	<treediff id="280">
+		<item calign="branch_nearest" listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="279">
+		<item calign="branch_nearest" listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="278">
+		<item calign="branch_nearest" listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="276">
+		<item calign="branch_nearest" listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="271">
+		<item calign="branch_nearest" listmode="stemleft"/>
 		<border style="null" shdir="none" shdepth="0pt"/>
 	</treediff>
 </wbs_diff>
