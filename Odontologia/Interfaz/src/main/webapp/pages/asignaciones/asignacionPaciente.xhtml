@@ -9,10 +9,6 @@
 
     <ui:define name="content">
         <h:outputLabel value="ASIGNACIÓN PACIENTE" style="padding: 400px; font-size: 20px; font: " />
-        
-        <h:form id="formBusquedaPacientesAsignacion">
-            <p:growl id="msg" sticky="false" life="5000"/>
-
             <h:outputLabel value="Datos del alumno" style=" font-size: 15px"/> 
 
             <h:panelGrid id="pnlBusquedaAlumno" columns="4" cellpadding="3" cellspacing="3">
@@ -88,11 +84,6 @@
                     </p:outputPanel>  
                 </f:facet>                                   
 
-                <!--p:column style="width:5%"> 
-                    <p:commandButton id="selectButton" update="tblResultadosBusquedaPacienteAsignacion :formBusquedaPacientesAsignacion:msg" icon="ui-icon-arrowthick-1-e" title="View">  
-                        <f:setPropertyActionListener id="selector" value="{p}" target="{asignacionBean.pacienteSeleccionado}"/>  
-                    </p:commandButton>  
-                </p:column--> 
                 <p:column id="Documento" headerText="Documento" style="width:15%">  
                     <h:outputText value="#{p.documento}" />  
                 </p:column>
@@ -108,10 +99,9 @@
                 <p:calendar value="#{asignacionBean.fechaAsignacion}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" />
                 <p:commandButton id="asignar" value="Asignar" 
                                  action="#{asignacionBean.save}"
-                                 update="msg formBusquedaPacientesAsignacion, formBusquedaPacientesAsignacion"
+                                 update="msg primaryForm"
                                  icon="ui-icon-circle-check"/> 
             </h:panelGrid>
-        </h:form>
 
     </ui:define>
 </ui:composition>

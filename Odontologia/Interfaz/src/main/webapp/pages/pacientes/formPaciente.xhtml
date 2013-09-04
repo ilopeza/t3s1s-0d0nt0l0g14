@@ -10,7 +10,6 @@
     
     <ui:define name="content">
         <h:outputLabel value="REGISTRO DE PACIENTE" style="padding: 400px; font-size: 20px; font: " />
-        <h:form id="formBusqueda">
             <p:panel id="pnlConsultarPaciente" header="CONSULTAR PACIENTE" >
                 <h:outputLabel value="Núm. de documento: "/>
                 <p:inputText id="txtDocumentoBusqueda" value="#{formPacienteBean.nroDocumentoFiltro}"/>
@@ -19,28 +18,23 @@
                 <p:inputText id="txtNombreBusqueda" value="#{formPacienteBean.nombreFiltro}"/>
 
                 <p:commandButton value="Buscar" id="btnBuscar" oncomplete="dlgPacientesEncontrados.show()"  
-                                 update=":formTablaPacientesEncontrados:tablaPacientesEncontrados" 
+                                 update=":primaryForm:secondaryForm:tablaPacientesEncontrados" 
                                  actionListener="#{formPacienteBean.buscarPacientes}" 
                                  icon="ui-icon-search"/>
                 <p:commandButton value="Modificar" id="btnModificar"
                                  actionListener="#{formPacienteBean.habilitar}"
                                  disabled="#{!formPacienteBean.estaDeshabilitado}"
-                                 update=":formBusqueda:pnlConsultarPaciente, 
-                                 :tabsPaciente:formPaciente"/>
+                                 update=":primaryForm:pnlConsultarPaciente, 
+                                 :primaryForm:tabsPaciente"/>
             </p:panel>
-        </h:form>
 
         <p:panel id="pnlTabsPaciente" header="DATOS PACIENTE">
             <p:tabView id="tabsPaciente">
                 <p:tab title="Datos personales" id="tabDatosPersonales">
-                    <h:form id="formPaciente">
                         <ui:include src="./tabsFormPaciente/tabDatosPersonales.xhtml"/>
-                    </h:form>
                 </p:tab>
                 <p:tab title="Datos de la consulta" id="tabDatosConsulta">
-                    <h:form id="formConsulta">
                         <ui:include src="./tabsFormPaciente/tabDatosConsulta.xhtml"/>
-                    </h:form>
                 </p:tab>
                 <p:tab title="Odontograma">
 
@@ -49,7 +43,7 @@
         </p:panel>
 
         <p:dialog header="Busqueda Pacientes" widgetVar="dlgPacientesEncontrados" resizable="false" appendToBody="true" modal="true" >
-            <h:form id="formTablaPacientesEncontrados">
+            <h:form id="secondaryForm">
                 <p:dataTable id="tablaPacientesEncontrados" 
                              var="paciente" value="#{formPacienteBean.pacientes}"
                              selectionMode="single"
@@ -82,14 +76,11 @@
                 <p:commandButton value="Seleccionar" id="btnAceptar" 
                                  oncomplete="dlgPacientesEncontrados.hide()"
                                  actionListener="#{formPacienteBean.seleccionarPaciente}"
-                                 update=":tabsPaciente :formBusqueda:pnlConsultarPaciente" />
+                                 update=":primaryForm:tabsPaciente,
+                                 :primaryForm:pnlConsultarPaciente" />
             </h:form>
-
-
         </p:dialog>            
-
     </ui:define>
-
 </ui:composition>
 
 
