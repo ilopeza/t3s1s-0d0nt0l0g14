@@ -1,47 +1,44 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html 
+<ui:composition 
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns="http://www.w3.org/1999/xhtml">
-    <ui:composition template="./../../templates/commonLayout.xhtml">
-        <ui:define name="content">
-            <p:growl id="msgs" life="5000"/>
-            <h:form id="formAlumno">
-                <p:panel id="grid" header="NUEVO USUARIO ALUMNO">
-                    <h:panelGrid>
-                        <p:row>
-                            <p:column id="colNumDocAlumno">
-                                <h:outputLabel value="Número de documento (*): "/>
-                            </p:column>
-                            <p:column id="colTxtNumDocAlumno">
-                                <h:inputText id="txtDocumento" value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column id="colEmailDocAlumno">
-                                <h:outputLabel value="E-mail (*):"/>
-                            </p:column>
-                            <p:column id="colEmailAlumno">
-                                <h:inputText id="txtEmail" value="#{formUsuarioAlumnoBean.usuario.email}"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column id="colBtnGuardarUsuario" colspan="2">
-                                <p:commandButton value="Guardar" 
-                                                 ajax="true" 
-                                                 action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
-                                                 update=":msgs"
-                                                 icon="ui-icon-plusthick"/>
-                            </p:column>
-                        </p:row>
-                    </h:panelGrid>
-                </p:panel>
-            </h:form>
-        </ui:define>
-    </ui:composition>
-</html>
+    xmlns="http://www.w3.org/1999/xhtml"
+    template="./../../templates/commonLayout.xhtml">
+
+    <ui:define name="content">
+        <p:panel id="grid" header="NUEVO USUARIO ALUMNO">
+            <h:panelGrid>
+                <p:row>
+                    <p:column id="colNumDocAlumno">
+                        <h:outputLabel value="Número de documento (*): "/>
+                    </p:column>
+                    <p:column id="colTxtNumDocAlumno">
+                        <h:inputText id="txtDocumento" value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column id="colEmailDocAlumno">
+                        <h:outputLabel value="E-mail (*):"/>
+                    </p:column>
+                    <p:column id="colEmailAlumno">
+                        <h:inputText id="txtEmail" value="#{formUsuarioAlumnoBean.usuario.email}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column id="colBtnGuardarUsuario" colspan="2">
+                        <p:commandButton value="Guardar" 
+                                         ajax="true" 
+                                         action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
+                                         update="msg"
+                                         icon="ui-icon-plusthick"/>
+                    </p:column>
+                </p:row>
+            </h:panelGrid>
+        </p:panel>
+    </ui:define>
+</ui:composition>
 
 

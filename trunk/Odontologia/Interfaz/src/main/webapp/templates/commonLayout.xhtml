@@ -43,11 +43,14 @@
                     <ui:include src="commonLeftMenu.xhtml"/>
                 </p:layoutUnit>
                 <p:layoutUnit id="center" position="center">
-                        <p:outputPanel id="mainContent">
+                    <p:outputPanel id="mainContent">
+                        <h:form id="primaryForm" > 
+                            <p:growl id="msg" sticky="false" life="5000"/>
                             <ui:insert name="content">
                                 Insertar contenido acá.
                             </ui:insert>
-                        </p:outputPanel>
+                        </h:form>
+                    </p:outputPanel>
                 </p:layoutUnit>
             </p:layout>
         </h:body>
