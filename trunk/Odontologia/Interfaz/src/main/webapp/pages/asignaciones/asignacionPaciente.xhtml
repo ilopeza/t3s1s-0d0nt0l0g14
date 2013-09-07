@@ -5,13 +5,40 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <ui:define name="content">
-        <h:outputLabel value="ASIGNACIÓN PACIENTE" style="padding: 400px; font-size: 20px; font: " />
-            <h:outputLabel value="Datos del alumno" style=" font-size: 15px"/> 
+        <h:outputLabel value="REGISTRAR ASIGNACIÓN PACIENTE" style="padding: 400px; font-size: 20px; font: " />
+        <p:panel id="pnlMateria" header="Materia">
+            <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
+                                    
+                <p:outputLabel value="Materia: "/>
+                <p:selectOneMenu id="selectMateriaBusqueda">
+                    <f:selectItem itemLabel="Materia1" />
+                    <f:selectItem itemLabel="Materia1" />
+                    <f:selectItem itemLabel="Materia1" />
+                </p:selectOneMenu>   
+                <p:outputLabel value="Cátedra: "/>
+                <p:selectOneMenu id="selectCatedraBusqueda">
+                    <f:selectItem itemLabel="Cátedra_1" />
+                    <f:selectItem itemLabel="Cátedra_2" />
+                    <f:selectItem itemLabel="Cátedra_3" />
+                </p:selectOneMenu>
+                <p:outputLabel value="Trabajo práctico: "/>
+                <p:selectOneMenu id="selectTrabajoPracticoBusqueda">
+                    <f:selectItem itemLabel="Trabajo_1" />
+                    <f:selectItem itemLabel="Trabajo_2" />
+                    <f:selectItem itemLabel="Trabajo_3" />
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <h:outputText value="La cátedra atiende en los siguientes horarios: [lunes 18:00] [martes 20:00]"/>
+        </p:panel>
 
-            <h:panelGrid id="pnlBusquedaAlumno" columns="4" cellpadding="3" cellspacing="3">
+        <p:panel id="pnlBusquedaAlumno" header="Alumno">
+
+            <h:panelGrid columns="3" cellpadding="3" cellspacing="3">
+
                 <h:outputLabel value="Nro. Documento:"/>
                 <p:inputText value="#{asignacionBean.nroDocumentoAlumnoBuscado}"/>
                 <p:commandButton  id="btnBuscarAlumnoAsignar" 
@@ -20,12 +47,12 @@
                                   update="tblAsignacionesAlumno pnlBusquedaAlumno msg"
                                   process="@this, pnlBusquedaAlumno"
                                   icon="ui-icon-search"/>
+
                 <h:outputLabel id="datosAlumno" rendered="#{asignacionBean.alumnoBuscado ne null}" 
                                value= "Alumno: #{asignacionBean.alumnoBuscado.toString()} 
                                #{asignacionBean.alumnoBuscado.documento.toString()}">
                 </h:outputLabel>
             </h:panelGrid>
-            <br/>
             <p:dataTable id="tblAsignacionesAlumno" var="asignacion" value="#{asignacionBean.asignaciones}" 
                          emptyMessage="Alumno sin asignaciones">
                 <f:facet name="header">
@@ -37,9 +64,6 @@
                 <p:column id="Alumno" headerText="Alumno">
                     <h:outputText value="#{asignacion.alumno}" />
                 </p:column>
-                <p:column id="Materia" headerText="Materia">
-                    <h:outputText value="#{asignacion.materia}" />
-                </p:column>
                 <p:column id="FechaAsignacion" headerText="Fecha Asignacion">
                     <h:outputText value="#{asignacionBean.fechaFormateada(asignacion.fechaAsignacion)}" />
                 </p:column>
@@ -47,53 +71,71 @@
                     <h:outputText value="#{asignacion.estado}" />
                 </p:column>
             </p:dataTable>
-            <br/>
-            <h:outputLabel value="Filtro de materia" style=" font-size: 15px"/>
+        </p:panel> 
+
+        <!--
+        <h:outputLabel value="Filtro de materia" style=" font-size: 15px"/>
+
+        <h:panelGrid id="gridMaterias" columns="8" cellpadding="3" cellspacing="3" >
+            <h:outputLabel value="Materia"/>
+            <p:selectOneMenu id="selectMateria" value="{asignacionBean.materia}">  
+                <f:selectItems value="{asignacionBean.materias}" />  
+                <f:converter converterId="materiaConverter" />
+            </p:selectOneMenu>  
+        </h:panelGrid>
+        <br/>-->
+
+        <p:panel id="pnlBusquedaPaciente" header="Búsqueda de paciente">
+            <h:panelGrid id="pnlBusquedaAsignacion" cellpadding="3" cellspacing="3" columns="5">
+                
+                    <p:column>
+                        <p:outputLabel value="Nombre o apellido: "/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{asignacionBean.filtroPaciente}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="Documento: "/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtDocumentoPacienteBusqueda"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton id="btnBuscar" value="Buscar" 
+                                         actionListener="#{asignacionBean.buscarPacientes()}" 
+                                         update="tblResultadosBusquedaPacienteAsignacion msg" 
+                                         icon="ui-icon-search"
+                                         process="@this, pnlBusquedaAsignacion"/> 
+                    </p:column>
+                </h:panelGrid>
+                        <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
+                                     var="p" value="#{asignacionBean.pacientes}"
+                                     emptyMessage="No se encontraron pacientes."
+                                     selectionMode="single"
+                                     selection="#{asignacionBean.pacienteSeleccionado}"
+                                     rowKey="#{p.id}">
+                            <f:facet name="header" >  
+                                <p:outputPanel>  
+                                    <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
+                                </p:outputPanel>  
+                            </f:facet>                                   
+                            <p:column id="NombYApellido" headerText="Apellido y nombre">  
+                                <h:outputText value="#{p}" />  
+                            </p:column>
+                            <p:column id="Documento" headerText="Documento" style="width:15%">  
+                                <h:outputText value="#{p.documento}" />  
+                            </p:column>
+                            <p:column id="colTelFijo" headerText="Teléfono fijo">
+                                
+                            </p:column>
+                            <p:column id="colTelCelular" headerText="Celular">
+                                
+                            </p:column>
+                            <p:column id="colDomicilio" headerText="Domicilio">
+                                
+                            </p:column>
+                        </p:dataTable>
             
-            <h:panelGrid id="gridMaterias" columns="8" cellpadding="3" cellspacing="3" >
-                <h:outputLabel value="Materia"/>
-                <p:selectOneMenu id="selectMateria" value="#{asignacionBean.materia}">  
-                    <f:selectItems value="#{asignacionBean.materias}" />  
-                    <f:converter converterId="materiaConverter" />
-                </p:selectOneMenu>  
-            </h:panelGrid>
-            <br/>
-            <h:outputLabel value="Datos del paciente" style=" font-size: 15px"/> 
-
-            <h:panelGrid id="pnlBusquedaAsignacion" columns="3" cellpadding="3" cellspacing="3">
-
-
-                <h:outputLabel value="Nombre o apellido: "/>
-                <p:inputText value="#{asignacionBean.filtroPaciente}"/>
-                <p:commandButton id="btnBuscar" value="Buscar" 
-                                 actionListener="#{asignacionBean.buscarPacientes()}" 
-                                 update="tblResultadosBusquedaPacienteAsignacion msg" 
-                                 icon="ui-icon-search"
-                                 process="@this, pnlBusquedaAsignacion"/> 
-            </h:panelGrid>
-            <br/>
-            <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
-                         var="p" value="#{asignacionBean.pacientes}"
-                         emptyMessage="No se encontraron pacientes."
-                         selectionMode="single"
-                         selection="#{asignacionBean.pacienteSeleccionado}"
-                         rowKey="#{p.id}">
-                <f:facet name="header" >  
-                    <p:outputPanel>  
-                        <h:outputText value="Busqueda de Pacientes Odontológicos" />                  
-                    </p:outputPanel>  
-                </f:facet>                                   
-
-                <p:column id="Documento" headerText="Documento" style="width:15%">  
-                    <h:outputText value="#{p.documento}" />  
-                </p:column>
-                <p:column id="NombYApellido" headerText="Apellido y nombre">  
-                    <h:outputText value="#{p}" />  
-                </p:column>
-                <p:column id="MateriasDiagnosticadas" headerText="Materias a las que aplica">  
-                </p:column>
-            </p:dataTable>
-            <p:spacer width="10px"/>
             <h:panelGrid columns="3" cellpadding="3" cellspacing="3">
                 <p:outputLabel value="Fecha de asignacion: "></p:outputLabel>
                 <p:calendar value="#{asignacionBean.fechaAsignacion}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" />
@@ -102,6 +144,11 @@
                                  update="msg primaryForm"
                                  icon="ui-icon-circle-check"/> 
             </h:panelGrid>
+        </p:panel>
+
+
+        <p:spacer width="10px"/>
+
 
     </ui:define>
 </ui:composition>
