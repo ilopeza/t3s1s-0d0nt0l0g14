@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:outputLabel value="CONSULTAR ASIGNACIONES DE PACIENTES" style="padding: 400px; font-size: 20px; font: " />
+        <p:panel id="pnlAlumno" header="BUSCAR ALUMNO">
+            <h:panelGrid id="gridBusquedaAlumno" cellpadding="3" cellspacing="3" columns="5">
+                <p:column>
+                    <h:outputLabel value="Nombre o apellido: " />
+                </p:column>
+                <p:column>
+                    <p:inputText id="txtNombreAlumno" value="" size="50" style=""/>
+                </p:column>
+                <p:column>
+                    <h:outputLabel value="Número de documento: " />
+                </p:column>
+                <p:column>
+                    <p:inputText id="txtNumDocumentoAlumno" value="" size="50"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Buscar" icon="ui-icon-search" id="btnBuscarAlumno"/>
+                </p:column>
+                <p:column colspan="5">
+                    <h:outputLabel value="[Apellido, Nombre] "/>
+                </p:column>
+                <p:column colspan="5">
+                    <h:outputLabel value="[35054738] "/>
+                </p:column>
+            </h:panelGrid>
+        </p:panel>
+        <p:panel id="pnlAsignaciones" header="ASIGNACIONES">
+            <h:panelGrid id="gridBusquedaAsignaciones" cellpadding="3" cellspacing="3" columns="4">
+
+                <p:column>
+                    <h:outputLabel value="Materia: " />
+                </p:column>
+                <p:column>
+                    <p:selectOneMenu id="selectMateria">
+                        <f:selectItem itemLabel="Materia_1"/>
+                        <f:selectItem itemLabel="Materia_2"/>
+                        <f:selectItem itemLabel="Materia_3"/>
+                    </p:selectOneMenu>
+                </p:column>
+                <p:column>
+                    <h:outputLabel value="Estado de asignación: " />
+                </p:column>
+                <p:column>
+                    <p:selectOneMenu id="selectEstadoAsignacion">
+                        <f:selectItem itemLabel="Estado_1"/>
+                        <f:selectItem itemLabel="Estado_2"/>
+                        <f:selectItem itemLabel="Estado_3"/>
+                    </p:selectOneMenu>
+                </p:column>
+
+                <p:column>
+                    <h:outputLabel value="Paciente: " />
+                </p:column>
+                <p:column>
+                    <p:inputText id="txtNombrePaciente" value=""/>
+                </p:column>
+                <p:column>
+                    <h:outputLabel value="Fecha de asignación: " />
+                </p:column>
+                <p:column>
+                    <p:calendar id="calFechaAsignación"/>
+                </p:column>
+
+                    <p:commandButton id="btnFiltrarAsignaciones" value="Filtrar"/>
+
+                <!--
+                -->
+            </h:panelGrid>
+            
+                    <p:dataTable id="tblResultadoAsignaciones" 
+                                 emptyMessage="Alumno sin asignaciones"
+                                 paginator="true" 
+                                 selectionMode="single">
+                        <f:facet name="header">
+                            <h:outputText value="Asignaciones del alumno [Apellido, Nombre]" />
+                        </f:facet>
+                        <p:column id="colPaciente" headerText="Paciente">
+                            <h:outputText value="[Apellido, Nombre]" />
+                        </p:column>
+                        <p:column id="colDocumento" headerText="Documento">
+                            <h:outputText value="[32265795]" />
+                        </p:column>
+                        <p:column id="colMateria" headerText="Materia">
+                            <h:outputText value="[Materia]" />
+                        </p:column>
+                        <p:column id="colTrabajoPractico" headerText="Trabajo Práctico">
+                            <h:outputText value="[Trabajo_Práctico_Uno]" />
+                        </p:column>
+                        <p:column id="colFechaAsignacion" headerText="Fecha Asignacion">
+                            <h:outputText value="01/01/01" />
+                        </p:column>
+                        <p:column id="colEstado" headerText="Estado Asignacion">
+                            <h:outputText value="[Pendiente|Confirmado]" />
+                        </p:column>
+                        <p:column id="colAcciones" headerText="Acciones">
+                            <h:panelGrid columns="3">
+                                <p:commandButton id="btnConfirmar" value="Confirmar" icon="ui-icon-check"/>
+                                <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-cancel"/>
+                                <p:commandButton id="btnModificar" value="Modificar" icon="ui-icon-gear"/>
+                            </h:panelGrid> 
+                        </p:column>
+                    </p:dataTable>
+        </p:panel>
+    </ui:define>
+</ui:composition>
