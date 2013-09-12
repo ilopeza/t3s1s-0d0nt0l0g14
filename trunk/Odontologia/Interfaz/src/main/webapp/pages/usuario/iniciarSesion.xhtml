@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:outputLabel value="Iniciar sesión" style="padding: 400px; font-size: 20px; font: " />
+        <p:panel id="pnlAlumno" header="Iniciar sesión">
+            <h:panelGrid id="gridIniciarSeson" cellpadding="3" cellspacing="3" columns="2">
+                <p:column>
+                    <p:outputLabel value="Número de documento (*):"/>
+                </p:column>
+                <p:column>
+                    <p:inputText id="txtNumero" value="" size="50"/>
+                </p:column>
+
+                <p:column>
+                    <p:outputLabel value="Contraseña (*): " />
+                </p:column>
+                <p:column>
+                    <p:inputText id="txtContraseña" value="" size="50" style=""/>
+                </p:column>
+                <p:column>
+                    <p:commandLink value="Olvidé mi contraseña" id="linkRecuperarContraseña"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Iniciar sesión" />
+                </p:column>
+            </h:panelGrid>
+        </p:panel>
+    </ui:define>
+</ui:composition>
