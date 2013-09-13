@@ -14,6 +14,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Persona;
 import tesis.odontologia.core.domain.historiaclinica.HistoriaClinica;
@@ -88,8 +89,12 @@ public class Paciente extends Persona {
     @Size(min = 1, max = 75, message = "El lugar de privacion de libertad debe tener entre 1 y 75 caracteres.")
     private String lugar;
     
+    @NotNull
+    private boolean sexoFemenino;
+    
     @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)
     @JoinColumn(name="historiaclinica_id")
+    @NotNull(message = "La historia clinica del paciente no puede ser nula.")
     private HistoriaClinica historiaClinica;
 
     //CONSTRUCTORS
@@ -101,6 +106,14 @@ public class Paciente extends Persona {
     }
 
     //GETTERS AND SETTERS
+    public boolean isSexoFemenino() {
+        return sexoFemenino;
+    }
+
+    public void setSexoFemenino(boolean sexoFemenino) {
+        this.sexoFemenino = sexoFemenino;
+    }
+    
     public EstudiosTipo getTipoEstudios() {
         return tipoEstudios;
     }

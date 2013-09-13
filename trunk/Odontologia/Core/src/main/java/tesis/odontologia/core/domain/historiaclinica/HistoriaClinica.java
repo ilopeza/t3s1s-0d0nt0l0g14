@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.core.domain.historiaclinica;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -37,7 +38,7 @@ public class HistoriaClinica extends Generic {
     private Calendar fechaApertura;
     
     //se tiene que definir la persona que va  aca.
-    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "persona_id")
     @Valid
     private Persona realizoHistoriaClinica;
@@ -54,35 +55,32 @@ public class HistoriaClinica extends Generic {
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @Valid
-    @NotNull
+    @NotNull(message = "Error en generacion de historia clinica. Imposible guardar historia clinica vacia.")
     @JoinColumn(name = "historiaClinica_id")
     private List<DetalleHistoriaClinica> detallesHC;
-    
-    @NotNull
-    private boolean sexoFemenino;
 
     //CONSTRUCTORS
     public HistoriaClinica() {
+        fechaApertura = Calendar.getInstance();
+        atencion = new ArrayList<Atencion>();
+        diagnostico = new ArrayList<Diagnostico>();
+        detallesHC = new ArrayList<DetalleHistoriaClinica>();
     }
 
     public HistoriaClinica(int numero, Calendar fechaApertura, Persona realizoHistoriaClinica,
-            List<Atencion> atencion, List<Diagnostico> diagnostico, boolean sexoFemenino) {
+            List<Atencion> atencion, List<Diagnostico> diagnostico) {
+        fechaApertura = Calendar.getInstance();
+        atencion = new ArrayList<Atencion>();
+        diagnostico = new ArrayList<Diagnostico>();
+        detallesHC = new ArrayList<DetalleHistoriaClinica>();
         this.numero = numero;
         this.fechaApertura = fechaApertura;
         this.realizoHistoriaClinica = realizoHistoriaClinica;
         this.atencion = atencion;
         this.diagnostico = diagnostico;
-        this.sexoFemenino = sexoFemenino;
     }
 
     //GETTERS AND SETTERS
-    public boolean isSexoFemenino() {
-        return sexoFemenino;
-    }
-
-    public void setSexoFemenino(boolean sexoFemenino) {
-        this.sexoFemenino = sexoFemenino;
-    }
     
     public int getNumero() {
         return numero;
@@ -278,22 +276,22 @@ public class HistoriaClinica extends Generic {
         hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G19P8, 19));
         hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G19P9, 19));
         
-        if(hc.isSexoFemenino()) {
-            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P1, 20));
-            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P2, 20));
-            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P3, 20));
-            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P4, 20));
-            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P5, 20));
-            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P6, 20));
-            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P7, 20));
-            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P8, 20));
-            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P9, 20));
-            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P10, 20));
-            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P11, 20));
-            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P12, 20));
-            hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P13, 20));
-            hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P14, 20));
-        }
+        //Preguntas para mujeres
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P1, 20));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P2, 20));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P3, 20));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P4, 20));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P5, 20));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P6, 20));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P7, 20));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P8, 20));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P9, 20));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P10, 20));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P11, 20));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P12, 20));
+        hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G20P13, 20));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G20P14, 20));
+        //Fin de preguntas para mujeres
         
         hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G21P1, 21));
         hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G21P2, 21));
