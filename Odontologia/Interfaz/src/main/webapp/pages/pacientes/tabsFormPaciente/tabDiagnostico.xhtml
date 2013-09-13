@@ -24,27 +24,23 @@
                 <p:outputLabel id="lblMateria" value="Materia: "/>
             </p:column>
             <p:column>
-                <p:selectOneMenu id="selectMateria">
-                    <f:selectItem itemLabel="Materia_1"/>
-                    <f:selectItem itemLabel="Materia_2"/>
-                    <f:selectItem itemLabel="Materia_3"/>
+                <p:selectOneMenu id="selectMateria" value="#{nuevoDiagnosticoBean.diagnostico.materia}" filterMatchMode="startsWith" >
+                    <f:selectItems value="#{nuevoDiagnosticoBean.materias}"/>
                 </p:selectOneMenu>
             </p:column>          
             <p:column>
                 <p:outputLabel id="lblTrabajoPractico" value="Trabajo práctico: "/>
             </p:column>          
             <p:column>
-                <p:selectOneMenu id="selectTrabajoPráctico">
-                    <f:selectItem itemLabel="Trabajo_Práctico_1"/>
-                    <f:selectItem itemLabel="Trabajo_Práctico_2"/>
-                    <f:selectItem itemLabel="Trabajo_Práctico_3"/>
+                <p:selectOneMenu id="selectTrabajoPráctico" value="#{nuevoDiagnosticoBean.diagnostico.trabajoPractico}">
+                    <f:selectItems value="#{nuevoDiagnosticoBean.trabajosPracticos}"/>
                 </p:selectOneMenu>
             </p:column>
             <p:column>
                 <p:outputLabel id="lblDescripcion" value="Descripción del diagnóstico: "/>
             </p:column>
             <p:column>
-                <p:inputTextarea autoResize="true" id="txtDescripcionDiagnostico" rows="3" cols="99"/>
+                <p:inputTextarea autoResize="true" id="txtDescripcionDiagnostico" rows="3" cols="99" value="#{nuevoDiagnosticoBean.diagnostico.descripcion}"/>
             </p:column>
         </h:panelGrid>
 
