@@ -14,7 +14,7 @@ import tesis.odontologia.core.domain.usuario.QRol;
  */
 public class MateriaSpecs {
 
-    private static final QMateria $ = QMateria.materia.as(QMateria.class);
+    private static final QMateria $ = QMateria.materia;
 
     public static BooleanExpression byNombre(String nombre) {
         return $.nombre.equalsIgnoreCase(nombre);

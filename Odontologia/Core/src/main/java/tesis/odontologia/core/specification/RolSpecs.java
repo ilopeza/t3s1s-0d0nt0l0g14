@@ -13,7 +13,7 @@ import tesis.odontologia.core.domain.usuario.QRol;
  */
 public class RolSpecs {
 
-    private static final QRol $ = QRol.rol.as(QRol.class);
+    private static final QRol $ = QRol.rol;
 
     public static BooleanExpression byNombre(String nombre) {
         return $.nombre.containsIgnoreCase(nombre);
