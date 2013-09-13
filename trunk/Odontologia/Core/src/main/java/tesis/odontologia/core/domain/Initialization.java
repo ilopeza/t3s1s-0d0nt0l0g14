@@ -26,7 +26,7 @@ public class Initialization {
     }
     
     private void cargarMateria() {
-        Materia m = new Materia("Endodoncia", null);
+        Materia m = new Materia("Endodoncia");
         materiaService.save(m);
     }
     
