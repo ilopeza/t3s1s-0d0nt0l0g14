@@ -11,12 +11,14 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.materia.Materia;
+import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.exception.AsignacionPacienteException;
 import tesis.odontologia.core.exception.GenericException;
@@ -47,7 +49,13 @@ public class AsignacionPaciente extends Generic{
     
     @OneToOne
     @JoinColumn(name = "materia_id")
+    @NotNull(message = "La materia de asignacion no puede ser nula.")
     private Materia materia;
+    
+    @ManyToOne
+    @JoinColumn(name = "trabajoPractico_id")
+    @NotNull(message = "El trabajo práctico de la asignacion no puede ser nulo.")
+    private TrabajoPractico trabajoPractico;
     
     @Enumerated(EnumType.STRING)
     private EstadoAsignacion estado = EstadoAsignacion.PENDIENTE;
@@ -55,14 +63,23 @@ public class AsignacionPaciente extends Generic{
     public AsignacionPaciente() {
     }
 
-    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, EstadoAsignacion estado, Materia materia) {
+    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, EstadoAsignacion estado, Materia materia, TrabajoPractico tp) {
         this.fechaAsignacion = fechaAsignacion;
         this.paciente = paciente;
         this.alumno = alumno;
         this.estado = estado;
         this.materia = materia;
+        this.trabajoPractico = tp;
     }
 
+    public TrabajoPractico getTrabajoPractico() {
+        return trabajoPractico;
+    }
+
+    public void setTrabajoPractico(TrabajoPractico trabajoPractico) {
+        this.trabajoPractico = trabajoPractico;
+    }
+    
     public Calendar getFechaAsignacion() {
         return fechaAsignacion;
     }
