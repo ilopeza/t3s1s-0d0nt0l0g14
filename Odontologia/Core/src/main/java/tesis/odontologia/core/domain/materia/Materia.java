@@ -28,21 +28,69 @@ public class Materia extends Generic {
     @NotNull(message = "El nombre de la materia no puede ser nulo.")
     private String nombre;
     
-    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "materia_id")
     private List<Catedra> catedra;
     
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "materia_id")
+    private List<TrabajoPractico> trabajoPractico;
+
     public Materia() {
     }
 
-    @Override
-    public String toString() {
-        return nombre;
+    public Materia(String nombre) {
+        this.nombre = nombre;
     }
 
-    public Materia(String nombre, List<Catedra> catedra) {
-        this.nombre = nombre;
-        this.catedra = catedra;
+    public List<TrabajoPractico> getTrabajoPractico() {
+        return trabajoPractico;
+    }
+
+    public void setTrabajoPractico(List<TrabajoPractico> trabajoPractico) {
+        this.trabajoPractico = trabajoPractico;
+    }
+
+    public boolean addCatedra(Catedra ca) {
+        if (ca == null) {
+            return false;
+        }
+        return catedra.add(ca);
+    }
+
+    public boolean removeCatedra(Catedra ca) {
+        if (ca == null) {
+            return false;
+        }
+        return catedra.remove(ca);
+    }
+
+    public void removeAllCatedras() {
+        if (catedra == null) {
+            return;
+        }
+        catedra.clear();
+    }
+
+    public boolean addTrabajoPractico(TrabajoPractico tp) {
+        if (tp == null) {
+            return false;
+        }
+        return trabajoPractico.add(tp);
+    }
+
+    public boolean removeTrabajoPractico(TrabajoPractico tp) {
+        if (tp == null) {
+            return false;
+        }
+        return trabajoPractico.remove(tp);
+    }
+
+    public void removeAllTrabajosPracticos() {
+        if (trabajoPractico == null) {
+            return;
+        }
+        trabajoPractico.clear();
     }
 
     public String getNombre() {
@@ -52,14 +100,14 @@ public class Materia extends Generic {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-        public List<Catedra> getCatedra() {
+
+    public List<Catedra> getCatedra() {
         return catedra;
     }
 
     public void setCatedra(List<Catedra> catedra) {
         this.catedra = catedra;
     }
-    
 
     @Override
     public void validar() throws GenericException {
@@ -69,8 +117,7 @@ public class Materia extends Generic {
         if (catedra == null) {
             throw new MateriaException("El nombre de la catedra no puede ser nulo o vacio.");
         }
-        
-        for(Catedra c : catedra){
+        for (Catedra c : catedra) {
             c.validar();
         }
     }
@@ -96,5 +143,9 @@ public class Materia extends Generic {
         }
         return true;
     }
-    
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }
