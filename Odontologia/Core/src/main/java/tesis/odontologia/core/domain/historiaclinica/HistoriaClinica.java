@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -53,7 +54,7 @@ public class HistoriaClinica extends Generic {
     @Valid
     private List<Diagnostico> diagnostico;
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Valid
     @NotNull(message = "Error en generacion de historia clinica. Imposible guardar historia clinica vacia.")
     @JoinColumn(name = "historiaClinica_id")
