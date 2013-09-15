@@ -36,9 +36,9 @@ public class NuevoDiagnosticoBean {
     private Diagnostico selectedDiagnostico;
     
     //Servicios
-    @ManagedProperty(value="#materiaService")
+    @ManagedProperty(value="#{materiaService}")
     private MateriaService materiaService;
-    @ManagedProperty(value="#trabajoPracticoService")
+    @ManagedProperty(value="#{trabajoPracticoService}")
     private TrabajoPracticoService trabajoPracticoService;
     
     /**
@@ -48,6 +48,22 @@ public class NuevoDiagnosticoBean {
     }
     
     //GETTERS Y SETTERS
+    public MateriaService getMateriaService() {
+        return materiaService;
+    }
+
+    public void setMateriaService(MateriaService materiaService) {
+        this.materiaService = materiaService;
+    }
+
+    public TrabajoPracticoService getTrabajoPracticoService() {
+        return trabajoPracticoService;
+    }
+
+    public void setTrabajoPracticoService(TrabajoPracticoService trabajoPracticoService) {
+        this.trabajoPracticoService = trabajoPracticoService;
+    }
+    
     public List<Materia> getMaterias() {
         return materias;
     }
