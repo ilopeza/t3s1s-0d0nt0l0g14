@@ -18,6 +18,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
+import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
 import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
@@ -44,6 +45,7 @@ public class AsignacionBean {
     private AsignacionPaciente asignacion;
    
     private Materia materia;
+    private Diagnostico diagnostico;
 
     private Date fechaAsignacion;
     //Listas para cargar combos.
@@ -118,7 +120,9 @@ public class AsignacionBean {
         Calendar fecha = new GregorianCalendar();
         fecha.setTime(fechaAsignacion);
         asignacion.setFechaAsignacion(fecha);
-        asignacion.setMateria(materia);
+        asignacion.setDiagnostico(diagnostico);
+        asignacion.setCatedra(catedraFiltro);
+        //asignacion.setMateria(materia);
 
         try {
             asignacion = asignacionPacienteService.save(asignacion);
@@ -186,9 +190,10 @@ public class AsignacionBean {
         
         asignaciones = (List<AsignacionPaciente>) 
                 asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
-                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)).
-                and(AsignacionPacienteSpecs.byMateria(materiaFiltro)).
-                and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro)));
+                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE))//.
+                //and(AsignacionPacienteSpecs.byMateria(materiaFiltro)).
+                //and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro))
+                );
         
         if (asignaciones == null || asignaciones.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
