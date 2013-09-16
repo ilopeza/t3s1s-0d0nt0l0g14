@@ -14,7 +14,7 @@
             <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
                                     
                 <p:outputLabel value="Materia: "/>
-                <p:selectOneMenu id="selectMateriaBusqueda" value="#{asignacionBean.materiaFiltro}">
+                <p:selectOneMenu id="selectMateriaBusqueda" value="#{asignacionBean.materiaFiltro}" converter="materiaConverter">
                     <f:selectItems value="#{asignacionBean.materias}"/>
                 </p:selectOneMenu>   
                 <p:outputLabel value="Cátedra: " />
