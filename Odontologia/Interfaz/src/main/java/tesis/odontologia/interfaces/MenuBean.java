@@ -64,6 +64,9 @@ public class MenuBean {
         menuItem = menuItem("Consultar Asignacion Paciente","/pages/asignaciones/consultarAsignacionesPaciente.xhtml");
         submenu.getChildren().add(menuItem);
         menu.addSubmenu(submenu);
+        menuItem = menuItem("Consultar Asignaciones Confirmadas","/pages/asignaciones/consultarAsignacionesConfirmadas.xhtml");
+        submenu.getChildren().add(menuItem);
+        menu.addSubmenu(submenu);
         //Menu
         submenu = subMenu("Cuenta");
         //Opciones
