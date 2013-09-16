@@ -17,8 +17,9 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.domain.alumno.Alumno;
-import tesis.odontologia.core.domain.materia.Materia;
-import tesis.odontologia.core.domain.materia.TrabajoPractico;
+import tesis.odontologia.core.domain.profesor.Profesor;
+import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
+import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.exception.AsignacionPacienteException;
 import tesis.odontologia.core.exception.GenericException;
@@ -48,14 +49,19 @@ public class AsignacionPaciente extends Generic{
     private Alumno alumno;
     
     @OneToOne
-    @JoinColumn(name = "materia_id")
+    @JoinColumn(name = "profesor_id")
     @NotNull(message = "La materia de asignacion no puede ser nula.")
-    private Materia materia;
+    private Profesor profesor;
     
     @ManyToOne
-    @JoinColumn(name = "trabajoPractico_id")
+    @JoinColumn(name = "diagnostico_id")
     @NotNull(message = "El trabajo práctico de la asignacion no puede ser nulo.")
-    private TrabajoPractico trabajoPractico;
+    private Diagnostico diagnostico;
+    
+    @ManyToOne
+    @JoinColumn(name = "catedra_id")
+    @NotNull(message = "El trabajo práctico de la asignacion no puede ser nulo.")
+    private Catedra catedra;
     
     @Enumerated(EnumType.STRING)
     private EstadoAsignacion estado = EstadoAsignacion.PENDIENTE;
@@ -63,22 +69,31 @@ public class AsignacionPaciente extends Generic{
     public AsignacionPaciente() {
     }
 
-    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, EstadoAsignacion estado, Materia materia, TrabajoPractico tp) {
+    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, Profesor profesor, Diagnostico diagnostico, Catedra catedra) {
         this.fechaAsignacion = fechaAsignacion;
         this.paciente = paciente;
         this.alumno = alumno;
-        this.estado = estado;
-        this.materia = materia;
-        this.trabajoPractico = tp;
+        this.profesor = profesor;
+        this.diagnostico = diagnostico;
+        this.catedra = catedra;
     }
 
-    public TrabajoPractico getTrabajoPractico() {
-        return trabajoPractico;
+    public Diagnostico getDiagnostico() {
+        return diagnostico;
     }
 
-    public void setTrabajoPractico(TrabajoPractico trabajoPractico) {
-        this.trabajoPractico = trabajoPractico;
+    public void setDiagnostico(Diagnostico diagnostico) {
+        this.diagnostico = diagnostico;
     }
+
+    public Catedra getCatedra() {
+        return catedra;
+    }
+
+    public void setCatedra(Catedra catedra) {
+        this.catedra = catedra;
+    }
+
     
     public Calendar getFechaAsignacion() {
         return fechaAsignacion;
@@ -121,22 +136,15 @@ public class AsignacionPaciente extends Generic{
         }
     }
 
-    /**
-     * @return the materia
-     */
-    public Materia getMateria() {
-        return materia;
+    public Profesor getProfesor() {
+        return profesor;
     }
 
-    /**
-     * @param materia the materia to set
-     */
-    public void setMateria(Materia materia) {
-        this.materia = materia;
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
     }
-    
-    
-    
+
+   
     public enum EstadoAsignacion {
 
     ANULADO {
