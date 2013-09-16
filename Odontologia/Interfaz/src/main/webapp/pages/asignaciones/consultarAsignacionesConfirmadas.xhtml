@@ -1,0 +1,78 @@
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:outputLabel value="CONSULTAR ASIGNACIONES CONFIRMADAS" style="padding: 400px; font-size: 20px; font: " />
+        
+        <p:panel id="pnlConsultarAsignacionesConfirmadas" header="Parámetros de búsqueda">
+            <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
+                                    
+                <p:outputLabel value="Materia: "/>
+                <p:selectOneMenu id="selectMateriaBusqueda" value="#{asignacionBean.materiaFiltro}">
+                    <f:selectItems value="#{asignacionBean.materias}"/>
+                </p:selectOneMenu>   
+                <p:outputLabel value="Cátedra: " />
+                <p:selectOneMenu id="selectCatedraBusqueda" value="#{asignacionBean.catedraFiltro}">
+                    <f:selectItems value="#{asignacionBean.catedras}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Trabajo práctico: "/>
+                <p:selectOneMenu id="selectTrabajoPracticoBusqueda" value="#{asignacionBean.trabajoPracticoFiltro}">
+                    <f:selectItems value="#{asignacionBean.trabajosPracticos}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <h:outputText value="La cátedra atiende en los siguientes horarios: [lunes 18:00] [martes 20:00]"/>
+        </p:panel>
+        
+        <p:dataTable id="tblResultadosAsignacionesConfirmadas" var="car" value="#{tableBean.cars}" paginator="true" rows="10">  
+            <p:column>  
+                <f:facet name="header">  
+                    <h:outputText value="Model" />  
+                </f:facet>  
+                <h:outputText value="#{car.model}" />  
+            </p:column>  
+
+            <p:column>  
+                <f:facet name="header">  
+                    <h:outputText value="Year" />  
+                </f:facet>  
+                <h:outputText value="#{car.year}"/>  
+            </p:column>  
+
+            <p:column>  
+                <f:facet name="header">  
+                    <h:outputText value="Manufacturer" />  
+                </f:facet>  
+                <h:outputText value="#{car.manufacturer}" />  
+            </p:column>  
+
+            <p:column>  
+                <f:facet name="header">  
+                    <h:outputText value="Color" />  
+                </f:facet>  
+                <h:outputText value="#{car.color}" />  
+            </p:column>  
+        </p:dataTable>
+
+        <h:panelGrid columns="2">  
+            <p:panel header="Exportar Resultados de la busqueda de alumnos">  
+
+                <h:commandLink>
+                    <p:graphicImage value="/pages/Other Sources/src/main/resources/Images/pdf.jpg" />  
+                    <p:dataExporter type="pdf" target="tblResultadosAsignacionesConfirmadas" fileName="Busqueda de Alumnos"/>  
+                </h:commandLink>  
+
+
+            </p:panel>  
+
+
+        </h:panelGrid>  
+
+
+    </ui:define>
+</ui:composition>
+
+
