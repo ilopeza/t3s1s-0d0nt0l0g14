@@ -18,12 +18,15 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
+import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
+import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.service.AsignacionPacienteService;
 import tesis.odontologia.core.service.CatedraService;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
+import tesis.odontologia.core.service.TrabajoPracticoService;
 import tesis.odontologia.core.specification.AlumnoSpecs;
 import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
 import tesis.odontologia.core.specification.PacienteSpecs;
@@ -39,19 +42,24 @@ import tesis.odontologia.interfaces.util.Utiles;
 public class AsignacionBean {
 
     private AsignacionPaciente asignacion;
-    private List<Paciente> pacientes;
+   
     private Materia materia;
-    private List<Materia> materias;
-    private List<AsignacionPaciente> asignaciones;
+
     private Date fechaAsignacion;
+    //Listas para cargar combos.
+    private List<TrabajoPractico> trabajosPracticos;
+    private List<Catedra> catedras;
+    private List<Materia> materias;
+    //Listas para cargar tablas
+    private List<AsignacionPaciente> asignaciones;
+    private List<Paciente> pacientes;
     //Atributos búsqueda tabla.
     private String filtroPaciente;
     private Paciente pacienteSeleccionado;
-    private List<Paciente> pacientesSeleccionados;
     //Atributos búsqueda avanzada.
     private Materia materiaFiltro;
-    private String edadDesdeFiltro;
-    private String edadHastaFiltro;
+    private Catedra catedraFiltro;
+    private TrabajoPractico trabajoPracticoFiltro;
     //Atributos para buscar el alumno.
     private String nroDocumentoAlumnoBuscado;
     private Alumno alumnoBuscado;
@@ -64,6 +72,10 @@ public class AsignacionBean {
     private MateriaService materiaService;
     @ManagedProperty(value = "#{catedraService}")
     private CatedraService catedraService;
+    @ManagedProperty(value="#{trabajoPracticoService}")
+    private TrabajoPracticoService trabajoPracticoService;
+
+   
 
     /**
      * Creates a new instance of AsignacionBean
@@ -73,7 +85,8 @@ public class AsignacionBean {
 
     @PostConstruct
     public void init() {
-        materias = materiaService.findAll();
+        //Se cargan los combos.
+        cargarCombos();
         pacientes = new ArrayList<Paciente>();
     }
 
@@ -143,7 +156,9 @@ public class AsignacionBean {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "El filtro de busqueda de paciente no puede estar vacio.", null));
             return;
         }
-        pacientes = (List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(filtroPaciente).and(PersonaSpecs.byClass(Paciente.class)));
+        pacientes = (List<Paciente>) personaService
+                .findAll(PacienteSpecs.byNombreOApellido(filtroPaciente).
+                and(PersonaSpecs.byClass(Paciente.class)));
         if (pacientes == null || pacientes.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
@@ -164,14 +179,43 @@ public class AsignacionBean {
         }
         buscarAsignaciones();
     }
-
+    /**
+     * Busca las asignaciones PENDIENTES de un paciente para una materia y TP seleccionados.
+     */
     public void buscarAsignaciones() {
-        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
+        
+        asignaciones = (List<AsignacionPaciente>) 
+                asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
+                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)).
+                and(AsignacionPacienteSpecs.byMateria(materiaFiltro)).
+                and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro)));
+        
         if (asignaciones == null || asignaciones.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
         }
     }
 
+    //MÉTODOS AUXILIARES
+    
+    private void cargarCombos(){
+        materias = buscarMaterias();
+        catedras = buscarCatedras();
+        trabajosPracticos = buscarTrabajosPracticos();
+    } 
+    private  List<Materia> buscarMaterias(){
+        return materiaService.findAll();
+    }
+    
+    private List<Catedra> buscarCatedras(){
+        return catedraService.findAll();
+    }
+    
+    private List<TrabajoPractico> buscarTrabajosPracticos(){
+        return trabajoPracticoService.findAll();
+    }
+    
+    
+    // GETTERS Y SETTERS
     public void setPacienteSeleccionado(Paciente pacienteSeleccionado) {
         this.pacienteSeleccionado = pacienteSeleccionado;
     }
@@ -256,22 +300,6 @@ public class AsignacionBean {
         this.materiaFiltro = materiaFiltro;
     }
 
-    public String getEdadDesdeFiltro() {
-        return edadDesdeFiltro;
-    }
-
-    public void setEdadDesdeFiltro(String edadDesdeFiltro) {
-        this.edadDesdeFiltro = edadDesdeFiltro;
-    }
-
-    public String getEdadHastaFiltro() {
-        return edadHastaFiltro;
-    }
-
-    public void setEdadHastaFiltro(String edadHastaFiltro) {
-        this.edadHastaFiltro = edadHastaFiltro;
-    }
-
     public String getNroDocumentoAlumnoBuscado() {
         return nroDocumentoAlumnoBuscado;
     }
@@ -310,6 +338,47 @@ public class AsignacionBean {
 
     public void setFechaAsignacion(Date fechaAsignacion) {
         this.fechaAsignacion = fechaAsignacion;
+    }
+    
+    
+    public List<TrabajoPractico> getTrabajosPracticos() {
+        return trabajosPracticos;
+    }
+
+    public void setTrabajosPracticos(List<TrabajoPractico> trabajosPracticos) {
+        this.trabajosPracticos = trabajosPracticos;
+    }
+
+    public List<Catedra> getCatedras() {
+        return catedras;
+    }
+
+    public void setCatedras(List<Catedra> catedras) {
+        this.catedras = catedras;
+    }
+
+    public Catedra getCatedraFiltro() {
+        return catedraFiltro;
+    }
+
+    public void setCatedraFiltro(Catedra catedraFiltro) {
+        this.catedraFiltro = catedraFiltro;
+    }
+
+    public TrabajoPractico getTrabajoPracticoFiltro() {
+        return trabajoPracticoFiltro;
+    }
+
+    public void setTrabajoPracticoFiltro(TrabajoPractico trabajoPracticoFiltro) {
+        this.trabajoPracticoFiltro = trabajoPracticoFiltro;
+    }
+    
+     public TrabajoPracticoService getTrabajoPracticoService() {
+        return trabajoPracticoService;
+    }
+
+    public void setTrabajoPracticoService(TrabajoPracticoService trabajoPracticoService) {
+        this.trabajoPracticoService = trabajoPracticoService;
     }
 //      RESPALDO DE CODIGO DE FILTROS
 //    private void busquedaAvanzada() {

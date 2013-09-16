@@ -19,22 +19,22 @@ and open the template in the editor.
                     <h:outputLabel value="Nombre o apellido: " />
                 </p:column>
                 <p:column>
-                    <p:inputText id="txtNombreAlumno" value="" size="50" style=""/>
+                    <p:inputText id="txtNombreAlumno" value="#{consultarAsignacionesBean.alumno.apellido}" size="50" style=""/>
                 </p:column>
                 <p:column>
                     <h:outputLabel value="Número de documento: " />
                 </p:column>
                 <p:column>
-                    <p:inputText id="txtNumDocumentoAlumno" value="" size="50"/>
+                    <p:inputText id="txtNumDocumentoAlumno" value="#{consultarAsignacionesBean.alumno.documento.numero}" size="50"/>
                 </p:column>
                 <p:column>
-                    <p:commandButton value="Buscar" icon="ui-icon-search" id="btnBuscarAlumno"/>
+                    <p:commandButton value="Buscar" icon="ui-icon-search" id="btnBuscarAlumno" actionListener="#{consultarAsignacionesBean.cargarAlumno}"/>
                 </p:column>
                 <p:column colspan="5">
-                    <h:outputLabel value="[Apellido, Nombre] "/>
+                    <h:outputLabel value="#{consultarAsignacionesBean.alumno.toString} "/>
                 </p:column>
                 <p:column colspan="5">
-                    <h:outputLabel value="[35054738] "/>
+                    <h:outputLabel value="#{consultarAsignacionesBean.alumno.documento.numero} "/>
                 </p:column>
             </h:panelGrid>
         </p:panel>
@@ -45,20 +45,16 @@ and open the template in the editor.
                     <h:outputLabel value="Materia: " />
                 </p:column>
                 <p:column>
-                    <p:selectOneMenu id="selectMateria">
-                        <f:selectItem itemLabel="Materia_1"/>
-                        <f:selectItem itemLabel="Materia_2"/>
-                        <f:selectItem itemLabel="Materia_3"/>
+                    <p:selectOneMenu id="selectMateria" value="#{consultarAsignacionesBean.materiaFiltro}">
+                        <f:selectItems value="#{consultarAsignacionesBean.materias}"/>
                     </p:selectOneMenu>
                 </p:column>
                 <p:column>
                     <h:outputLabel value="Estado de asignación: " />
                 </p:column>
                 <p:column>
-                    <p:selectOneMenu id="selectEstadoAsignacion">
-                        <f:selectItem itemLabel="Estado_1"/>
-                        <f:selectItem itemLabel="Estado_2"/>
-                        <f:selectItem itemLabel="Estado_3"/>
+                    <p:selectOneMenu id="selectEstadoAsignacion" value="#{consultarAsignacionesBean.estadoFiltro}">
+                        <f:selectItems value="#{consultarAsignacionesBean.estados}"/>
                     </p:selectOneMenu>
                 </p:column>
 
@@ -66,45 +62,49 @@ and open the template in the editor.
                     <h:outputLabel value="Paciente: " />
                 </p:column>
                 <p:column>
-                    <p:inputText id="txtNombrePaciente" value=""/>
+                    <p:inputText id="txtNombrePaciente" value="#{consultarAsignacionesBean.pacienteFiltro.apellido}"/>
                 </p:column>
                 <p:column>
                     <h:outputLabel value="Fecha de asignación: " />
                 </p:column>
                 <p:column>
-                    <p:calendar id="calFechaAsignación"/>
+                    <p:calendar id="calFechaAsignación" value="#{consultarAsignacionesBean.fechaFiltro}"/>
                 </p:column>
 
-                    <p:commandButton id="btnFiltrarAsignaciones" value="Filtrar"/>
+                <p:commandButton id="btnFiltrarAsignaciones" value="Filtrar" actionListener="#{consultarAsignacionesBean.cargarAsignacionesFiltradas}"/>
 
                 <!--
                 -->
             </h:panelGrid>
             
                     <p:dataTable id="tblResultadoAsignaciones" 
+                                 value="#{consultarAsignacionesBean.asignaciones}"
                                  emptyMessage="Alumno sin asignaciones"
                                  paginator="true" 
-                                 selectionMode="single">
+                                 selectionMode="single"
+                                 selection="#{consultarAsignacionesBean.asignacionSeleccionada}"
+                                 var="a"
+                                 rowKey="#{a.id}">
                         <f:facet name="header">
                             <h:outputText value="Asignaciones del alumno [Apellido, Nombre]" />
                         </f:facet>
                         <p:column id="colPaciente" headerText="Paciente">
-                            <h:outputText value="[Apellido, Nombre]" />
+                            <h:outputText value="#{a.paciente.toString}" />
                         </p:column>
                         <p:column id="colDocumento" headerText="Documento">
-                            <h:outputText value="[32265795]" />
+                            <h:outputText value="#{a.paciente.documento.numero}" />
                         </p:column>
                         <p:column id="colMateria" headerText="Materia">
-                            <h:outputText value="[Materia]" />
+                            <h:outputText value="#{a.materia.nombre}" />
                         </p:column>
                         <p:column id="colTrabajoPractico" headerText="Trabajo Práctico">
-                            <h:outputText value="[Trabajo_Práctico_Uno]" />
+                            <h:outputText value="#{a.trabajoPractico.nombre}" />
                         </p:column>
                         <p:column id="colFechaAsignacion" headerText="Fecha Asignacion">
-                            <h:outputText value="01/01/01" />
+                            <h:outputText value="#{a.fechaAsignacion}" />
                         </p:column>
                         <p:column id="colEstado" headerText="Estado Asignacion">
-                            <h:outputText value="[Pendiente|Confirmado]" />
+                            <h:outputText value="#{a.estado}" />
                         </p:column>
                         <p:column id="colAcciones" headerText="Acciones">
                             <h:panelGrid columns="3">
