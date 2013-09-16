@@ -109,8 +109,8 @@ public class ConsultarAsignacionesBean {
 
     //MÉTODOS AUXILIARES
     private void cargarCombos() {
-        buscarMaterias();
-        buscarEstadosDeAsignacion();
+        this.setMaterias(buscarMaterias());
+        this.setEstados(buscarEstadosDeAsignacion());
     }
 
     private List<Materia> buscarMaterias() {

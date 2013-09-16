@@ -18,6 +18,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.Domicilio;
+import tesis.odontologia.core.domain.historiaclinica.HistoriaClinica;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.specification.PacienteSpecs;
@@ -163,6 +164,7 @@ public class FormPacienteBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
                         + " actualizado correctamente."));
             } else {
+                paciente.setHistoriaClinica(new HistoriaClinica());
                 getPersonaService().save(paciente);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
                         + " guardado correctamente."));

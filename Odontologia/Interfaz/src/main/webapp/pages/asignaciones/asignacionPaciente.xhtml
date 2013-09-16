@@ -18,11 +18,13 @@
                     <f:selectItems value="#{asignacionBean.materias}"/>
                 </p:selectOneMenu>   
                 <p:outputLabel value="Cátedra: " />
-                <p:selectOneMenu id="selectCatedraBusqueda" value="#{asignacionBean.catedraFiltro}">
+                <p:selectOneMenu id="selectCatedraBusqueda" value="#{asignacionBean.catedraFiltro}"
+                                 converter="catedraConverter">
                     <f:selectItems value="#{asignacionBean.catedras}"/>
                 </p:selectOneMenu>
                 <p:outputLabel value="Trabajo práctico: "/>
-                <p:selectOneMenu id="selectTrabajoPracticoBusqueda" value="#{asignacionBean.trabajoPracticoFiltro}">
+                <p:selectOneMenu id="selectTrabajoPracticoBusqueda" value="#{asignacionBean.trabajoPracticoFiltro}"
+                                 converter="trabajoPracticoConverter">
                     <f:selectItems value="#{asignacionBean.trabajosPracticos}"/>
                 </p:selectOneMenu>
             </h:panelGrid>

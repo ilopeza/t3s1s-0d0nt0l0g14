@@ -17,9 +17,11 @@
                 <h:outputLabel value="Nombre: "/>
                 <p:inputText id="txtNombreBusqueda" value="#{formPacienteBean.nombreFiltro}"/>
 
-                <p:commandButton value="Buscar" id="btnBuscar" oncomplete="dlgPacientesEncontrados.show()"  
+                <p:commandButton value="Buscar" id="btnBuscar"
+                                 process="txtNombreBusqueda, txtDocumentoBusqueda"
+                                 oncomplete="dlgPacientesEncontrados.show()"
                                  update=":primaryForm:secondaryForm:tablaPacientesEncontrados" 
-                                 actionListener="#{formPacienteBean.buscarPacientes}" 
+                                 actionListener="#{formPacienteBean.buscarPacientes()}" 
                                  icon="ui-icon-search"/>
                 <p:commandButton value="Modificar" id="btnModificar"
                                  actionListener="#{formPacienteBean.habilitar}"
@@ -37,7 +39,7 @@
                         <ui:include src="./tabsFormPaciente/tabDatosConsulta.xhtml"/>
                 </p:tab>
                 <p:tab title="Diagnóstico" id="tabDiagnostico">
-                    <ui:include src="./tabsFormPaciente/tabDiagnostico.xhtml"/>
+                    <!--ui:include src="./tabsFormPaciente/tabDiagnostico.xhtml"/-->
                 </p:tab>
             </p:tabView>
         </p:panel>
