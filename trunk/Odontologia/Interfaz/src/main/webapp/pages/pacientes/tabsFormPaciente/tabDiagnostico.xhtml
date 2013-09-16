@@ -24,7 +24,8 @@
                 <p:outputLabel id="lblMateria" value="Materia: "/>
             </p:column>
             <p:column>
-                <p:selectOneMenu id="selectMateria" value="#{nuevoDiagnosticoBean.diagnostico.materia}" filterMatchMode="startsWith" >
+                <p:selectOneMenu id="selectMateria" value="#{nuevoDiagnosticoBean.diagnostico.materia}" filterMatchMode="startsWith"
+                                 converter="materiaConverter" >
                     <f:selectItems value="#{nuevoDiagnosticoBean.materias}"/>
                 </p:selectOneMenu>
             </p:column>          
@@ -44,7 +45,7 @@
             </p:column>
         </h:panelGrid>
 
-        <p:commandButton value="Agregar" icon="ui-icon-circle-plus"/>
+        <p:commandButton value="Agregar" icon="ui-icon-circle-plus" process="fldsNuevoDiagnóstico"/>
 
     </p:fieldset>
     <br/>
