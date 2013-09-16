@@ -28,7 +28,7 @@ and open the template in the editor.
                     <p:inputText id="txtNumDocumentoAlumno" value="#{consultarAsignacionesBean.alumno.documento.numero}" size="50"/>
                 </p:column>
                 <p:column>
-                    <p:commandButton value="Buscar" icon="ui-icon-search" id="btnBuscarAlumno" actionListener="#{consultarAsignacionesBean.cargarAlumno}"/>
+                    <p:commandButton value="Buscar" icon="ui-icon-search" id="btnBuscarAlumno" actionListener="#{consultarAsignacionesBean.cargarAlumno}" update="pnlAlumno"/>
                 </p:column>
                 <p:column colspan="5">
                     <h:outputLabel value="#{consultarAsignacionesBean.alumno.toString} "/>
@@ -71,7 +71,8 @@ and open the template in the editor.
                     <p:calendar id="calFechaAsignación" value="#{consultarAsignacionesBean.fechaFiltro}"/>
                 </p:column>
 
-                <p:commandButton id="btnFiltrarAsignaciones" value="Filtrar" actionListener="#{consultarAsignacionesBean.cargarAsignacionesFiltradas}"/>
+                <p:commandButton id="btnFiltrarAsignaciones" value="Filtrar" 
+                                 actionListener="#{consultarAsignacionesBean.cargarAsignacionesFiltradas}"/>
 
                 <!--
                 -->
