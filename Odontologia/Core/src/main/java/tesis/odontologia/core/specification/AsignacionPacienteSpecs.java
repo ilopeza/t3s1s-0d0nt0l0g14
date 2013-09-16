@@ -5,6 +5,7 @@
 package tesis.odontologia.core.specification;
 
 import com.mysema.query.types.expr.BooleanExpression;
+import java.util.Calendar;
 import tesis.odontologia.core.domain.QPersona;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
@@ -39,5 +40,9 @@ public class AsignacionPacienteSpecs {
     
     public static BooleanExpression byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion ea){
         return $.estado.eq(ea);
+    }
+    
+    public static BooleanExpression byFecha(Calendar cal){
+        return $.fechaAsignacion.eq(cal);
     }
 }

@@ -4,7 +4,6 @@
  */
 package tesis.odontologia.core.domain.historiaclinica;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -36,7 +35,6 @@ public class Diagnostico extends Generic{
     @JoinColumn(name = "materia_id")
     @NotNull(message = "La materia del diagnostico no puede ser nulo.")
     private Materia materia;
-    
     /**
      * esto es para saber con que asignacion se resolvio el diagnostico.
      * Si este campo es nulo, el diagnostico deberia estar en estado pendiente o cancelado.
@@ -49,13 +47,13 @@ public class Diagnostico extends Generic{
     @Column(length = 255)
     @Size(min = 1, max = 255, message = "La descripcion del medico debe tener entre 1 y 255 caracteres.")
     private String descripcion;
-
     @Enumerated(EnumType.STRING)
     private EstadoDiagnostico estado = EstadoDiagnostico.PENDIENTE;
 
     public Diagnostico() {
     }
 // CONSTRUCTOR
+
     public Diagnostico(TrabajoPractico trabajoPractico, String descripcion, EstadoDiagnostico estado) {
         this.trabajoPractico = trabajoPractico;
         this.descripcion = descripcion;
@@ -111,8 +109,8 @@ public class Diagnostico extends Generic{
              throw new DiagnosticoticoException("El trabajo practico no debe ser nulo");
         }
     }
-    
-public enum EstadoDiagnostico {
+
+    public enum EstadoDiagnostico {
 
     CANCELADO {
         @Override
