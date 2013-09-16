@@ -6,7 +6,6 @@ package tesis.odontologia.core.specification;
 
 import com.mysema.query.types.expr.BooleanExpression;
 import java.util.Calendar;
-import tesis.odontologia.core.domain.QPersona;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.asignaciones.QAsignacionPaciente;
