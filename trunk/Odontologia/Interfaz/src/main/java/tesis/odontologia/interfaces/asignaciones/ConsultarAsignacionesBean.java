@@ -96,9 +96,10 @@ public class ConsultarAsignacionesBean {
      */
     private List<AsignacionPaciente> buscarAsignaciones() {
 
-        List<AsignacionPaciente> listaAsignaciones = (List<AsignacionPaciente>) asignacionService.findAll(AsignacionPacienteSpecs.byAlumno(alumno).
-                and(AsignacionPacienteSpecs.byMateria(materiaFiltro).
-                and(AsignacionPacienteSpecs.byPaciente(pacienteFiltro))));
+        List<AsignacionPaciente> listaAsignaciones = (List<AsignacionPaciente>) asignacionService.findAll(AsignacionPacienteSpecs.byAlumno(alumno)//.
+                //and(AsignacionPacienteSpecs.byMateria(materiaFiltro).
+                //and(AsignacionPacienteSpecs.byPaciente(pacienteFiltro)))
+                );
         
         if (listaAsignaciones.isEmpty()) {
  
