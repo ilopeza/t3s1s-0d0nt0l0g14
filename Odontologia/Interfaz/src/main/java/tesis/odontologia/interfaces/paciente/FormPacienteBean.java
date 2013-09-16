@@ -95,6 +95,8 @@ public class FormPacienteBean {
 
     public void setFechaNacimiento(Date fechaNacimiento) {
         if (fechaNacimiento == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "La fecha de nacimiento no puede ser nula.", null));
             return;
         }
         this.fechaNacimiento = fechaNacimiento;
