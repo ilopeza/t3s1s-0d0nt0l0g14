@@ -29,14 +29,6 @@ public class AsignacionPacienteSpecs {
         return $.paciente.id.eq(p.getId());
     }
     
-    public static BooleanExpression byMateria(Materia m){
-        return $.materia.id.eq(m.getId());
-    }
-    
-    public static BooleanExpression byTrabajoPractico(TrabajoPractico tp){
-        return $.trabajoPractico.id.eq(tp.getId());
-    }
-    
     public static BooleanExpression byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion ea){
         return $.estado.eq(ea);
     }
