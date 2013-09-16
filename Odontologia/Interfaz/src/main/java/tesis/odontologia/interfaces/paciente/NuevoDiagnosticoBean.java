@@ -4,7 +4,6 @@
  */
 package tesis.odontologia.interfaces.paciente;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -45,6 +44,15 @@ public class NuevoDiagnosticoBean {
      * Creates a new instance of NuevoDiagnosticoBean
      */
     public NuevoDiagnosticoBean() {
+    }
+    
+    @PostConstruct
+    public void init(){
+        //cargar materias
+        materias = materiaService.findAll();
+        trabajosPracticos = trabajoPracticoService.findAll();
+        
+        diagnostico = new Diagnostico();
     }
     
     //GETTERS Y SETTERS
@@ -110,16 +118,5 @@ public class NuevoDiagnosticoBean {
 
     public void setSelectedDiagnostico(Diagnostico selectedDiagnostico) {
         this.selectedDiagnostico = selectedDiagnostico;
-    }
-    
-    @PostConstruct
-    public void init(){
-        //cargar materias
-        materias = materiaService.findAll();
-        trabajosPracticos = trabajoPracticoService.findAll();
-        
-        diagnostico = new Diagnostico();
-    }
-    
-    
+    }   
 }

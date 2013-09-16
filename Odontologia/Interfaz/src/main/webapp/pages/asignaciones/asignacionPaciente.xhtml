@@ -10,26 +10,20 @@
 
     <ui:define name="content">
         <h:outputLabel value="REGISTRAR ASIGNACIÓN PACIENTE" style="padding: 400px; font-size: 20px; font: " />
-        <p:panel id="pnlMateria" header="Materia">
+        <p:panel id="pnlMateria" header="Parámetros de búsqueda">
             <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
                                     
                 <p:outputLabel value="Materia: "/>
-                <p:selectOneMenu id="selectMateriaBusqueda">
-                    <f:selectItem itemLabel="Materia1" />
-                    <f:selectItem itemLabel="Materia1" />
-                    <f:selectItem itemLabel="Materia1" />
+                <p:selectOneMenu id="selectMateriaBusqueda" value="#{asignacionBean.materiaFiltro}">
+                    <f:selectItems value="#{asignacionBean.materias}"/>
                 </p:selectOneMenu>   
-                <p:outputLabel value="Cátedra: "/>
-                <p:selectOneMenu id="selectCatedraBusqueda">
-                    <f:selectItem itemLabel="Cátedra_1" />
-                    <f:selectItem itemLabel="Cátedra_2" />
-                    <f:selectItem itemLabel="Cátedra_3" />
+                <p:outputLabel value="Cátedra: " />
+                <p:selectOneMenu id="selectCatedraBusqueda" value="#{asignacionBean.catedraFiltro}">
+                    <f:selectItems value="#{asignacionBean.catedras}"/>
                 </p:selectOneMenu>
                 <p:outputLabel value="Trabajo práctico: "/>
-                <p:selectOneMenu id="selectTrabajoPracticoBusqueda">
-                    <f:selectItem itemLabel="Trabajo_1" />
-                    <f:selectItem itemLabel="Trabajo_2" />
-                    <f:selectItem itemLabel="Trabajo_3" />
+                <p:selectOneMenu id="selectTrabajoPracticoBusqueda" value="#{asignacionBean.trabajoPracticoFiltro}">
+                    <f:selectItems value="#{asignacionBean.trabajosPracticos}"/>
                 </p:selectOneMenu>
             </h:panelGrid>
             <h:outputText value="La cátedra atiende en los siguientes horarios: [lunes 18:00] [martes 20:00]"/>
@@ -53,7 +47,9 @@
                                #{asignacionBean.alumnoBuscado.documento.toString()}">
                 </h:outputLabel>
             </h:panelGrid>
-            <p:dataTable id="tblAsignacionesAlumno" var="asignacion" value="#{asignacionBean.asignaciones}" 
+            <p:dataTable id="tblAsignacionesAlumno" 
+                         var="asignacion" 
+                         value="#{asignacionBean.asignaciones}" 
                          emptyMessage="Alumno sin asignaciones">
                 <f:facet name="header">
                     <h:outputText value="Asignaciones del alumno #{asignacionBean.alumnoBuscado.toString()}" />
