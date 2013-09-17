@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.core.domain.materia;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,9 +38,12 @@ public class Materia extends Generic {
     private List<TrabajoPractico> trabajoPractico;
 
     public Materia() {
+        catedra = new ArrayList<Catedra>();
+        trabajoPractico = new ArrayList<TrabajoPractico>();
     }
 
     public Materia(String nombre) {
+        this();
         this.nombre = nombre;
     }
 
