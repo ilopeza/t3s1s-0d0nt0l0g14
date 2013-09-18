@@ -13,7 +13,8 @@ and open the template in the editor.
 
     <ui:define name="content">
         <h:outputLabel value="Iniciar sesión" style="padding: 400px; font-size: 20px; font: " />
-        <p:panel id="pnlAlumno" header="Iniciar sesión">
+        <p:panel id="pnlIniciarSesion" header="Iniciar sesión">
+            <h:form id="iniciarSesionForm">
             <h:panelGrid id="gridIniciarSeson" cellpadding="3" cellspacing="3" columns="2">
                 <p:column>
                     <p:outputLabel value="Número de documento (*):"/>
@@ -35,6 +36,7 @@ and open the template in the editor.
                     <p:commandButton value="Iniciar sesión" />
                 </p:column>
             </h:panelGrid>
+            </h:form>
         </p:panel>
     </ui:define>
 </ui:composition>

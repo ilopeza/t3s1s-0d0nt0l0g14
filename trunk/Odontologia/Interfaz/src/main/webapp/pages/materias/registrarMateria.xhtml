@@ -8,7 +8,8 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-            <p:panel id="pnlMateria">
+        <p:panel id="pnlMateria">
+            <h:form id="primaryForm">
                 <h:outputLabel value="MATERIAS" style="padding: 400px; font-size: 20px; font: " />
                 <br/>
                 <p:dataTable id="tableMaterias" var="mat" value="#{materiaBean.materias}">  
@@ -16,18 +17,19 @@
                         <h:outputText value="#{mat.nombre}" />  
                     </p:column>  
                     <p:column headerText="Acciones">  
-                        <p:commandButton id="editarMateria" update=":primaryForm:secondaryForm:display" oncomplete="materia.show()"
+                        <p:commandButton id="editarMateria" update=":secondaryForm:display" oncomplete="materia.show()"
                                          icon="ui-icon-pencil" title="Editar">  
                             <f:setPropertyActionListener value="#{mat}" target="#{materiaBean.materia}" />  
                         </p:commandButton>
                     </p:column>  
                 </p:dataTable>
-            
-                <p:commandButton id="nuevaMateria" value ="Nueva Materia" update="secondaryForm:display" 
+
+                <p:commandButton id="nuevaMateria" value ="Nueva Materia" update=":secondaryForm:display" 
                                  oncomplete="materia.show()"
                                  icon="ui-icon-plusthick"> 
                 </p:commandButton>
-            </p:panel>
+            </h:form>
+        </p:panel>
 
         <p:dialog header="Materia" widgetVar="materia" resizable="false" appendToBody="true" modal="true" closable="false" >  
             <h:form id="secondaryForm">  
@@ -35,7 +37,8 @@
                     <h:outputLabel for="nombre" value="Nombre: " />  
                     <p:inputText id="nombre" value="#{materiaBean.materia.nombre}" />    
                 </h:panelGrid>
-                <p:commandButton update=":primaryForm:tableMaterias" oncomplete="materia.hide()" value="Cancelar"
+                <p:commandButton update=":primaryForm:tableMaterias" 
+                                 oncomplete="materia.hide()" value="Cancelar"
                                  actionListener="#{materiaBean.resetFields()}">
                 </p:commandButton>
                 <p:commandButton update=":primaryForm:tableMaterias" oncomplete="materia.hide()" value="Aceptar" 

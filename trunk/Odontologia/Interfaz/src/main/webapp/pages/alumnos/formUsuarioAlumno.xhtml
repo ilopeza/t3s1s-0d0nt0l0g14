@@ -9,34 +9,38 @@
     template="./../../templates/commonLayout.xhtml">
 
     <ui:define name="content">
+
         <p:panel id="grid" header="NUEVO USUARIO ALUMNO">
-            <h:panelGrid>
-                <p:row>
-                    <p:column id="colNumDocAlumno">
-                        <h:outputLabel value="Número de documento (*): "/>
-                    </p:column>
-                    <p:column id="colTxtNumDocAlumno">
-                        <h:inputText id="txtDocumento" value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column id="colEmailDocAlumno">
-                        <h:outputLabel value="E-mail (*):"/>
-                    </p:column>
-                    <p:column id="colEmailAlumno">
-                        <h:inputText id="txtEmail" value="#{formUsuarioAlumnoBean.usuario.email}"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column id="colBtnGuardarUsuario" colspan="2">
-                        <p:commandButton value="Guardar" 
-                                         ajax="true" 
-                                         action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
-                                         update="msg"
-                                         icon="ui-icon-plusthick"/>
-                    </p:column>
-                </p:row>
-            </h:panelGrid>
+            <h:form id="primaryForm">
+                <h:panelGrid>
+                    <p:row>
+                        <p:column id="colNumDocAlumno">
+                            <h:outputLabel value="Número de documento (*): "/>
+                        </p:column>
+                        <p:column id="colTxtNumDocAlumno">
+                            <h:inputText id="txtDocumento" value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column id="colEmailDocAlumno">
+                            <h:outputLabel value="E-mail (*):"/>
+                        </p:column>
+                        <p:column id="colEmailAlumno">
+                            <h:inputText id="txtEmail" value="#{formUsuarioAlumnoBean.usuario.email}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column id="colBtnGuardarUsuario" colspan="2">
+                            <p:commandButton value="Guardar" 
+                                             ajax="true" 
+                                             action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
+                                             update=":msg"
+                                             icon="ui-icon-plusthick"/>
+                        </p:column>
+                    </p:row>
+                </h:panelGrid>
+            </h:form>
+
         </p:panel>
     </ui:define>
 </ui:composition>

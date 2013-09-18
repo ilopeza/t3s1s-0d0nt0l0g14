@@ -7,11 +7,13 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
-    
+
     <ui:define name="content">
         <h:outputLabel value="REGISTRO DE PACIENTE" style="padding: 400px; font-size: 20px; font: " />
+        <h:form id="consultarPacienteForm">
             <p:panel id="pnlConsultarPaciente" header="CONSULTAR PACIENTE" >
-                <h:outputLabel value="Núm. de documento: "/>
+
+                <h:outputLabel value="Número de documento: "/>
                 <p:inputText id="txtDocumentoBusqueda" value="#{formPacienteBean.nroDocumentoFiltro}"/>
 
                 <h:outputLabel value="Nombre o apellido: "/>
@@ -20,27 +22,35 @@
                 <p:commandButton value="Buscar" id="btnBuscar"
                                  process="txtNombreBusqueda, txtDocumentoBusqueda"
                                  oncomplete="dlgPacientesEncontrados.show()"
-                                 update=":primaryForm:secondaryForm:tablaPacientesEncontrados" 
+                                 update=":secondaryForm:tablaPacientesEncontrados" 
                                  actionListener="#{formPacienteBean.buscarPacientes()}" 
                                  icon="ui-icon-search"/>
-               
+
                 <p:commandButton value="Modificar" id="btnModificar"
                                  actionListener="#{formPacienteBean.habilitar}"
                                  disabled="#{!formPacienteBean.estaDeshabilitado}"
-                                 update=":primaryForm:pnlConsultarPaciente, 
-                                 :primaryForm:tabsPaciente"/>
-            </p:panel>
+                                 update="pnlConsultarPaciente, 
+                                 :tabsPaciente"/>
 
+            </p:panel>
+        </h:form>
         <p:panel id="pnlTabsPaciente" header="DATOS PACIENTE">
             <p:tabView id="tabsPaciente">
                 <p:tab title="Datos personales" id="tabDatosPersonales">
-                    <ui:include src="./tabsFormPaciente/tabDatosPersonales.xhtml"/>
+                    <h:form id="datosPersonalesForm">
+                        <ui:include src="./tabsFormPaciente/tabDatosPersonales.xhtml"/>
+                    </h:form>
                 </p:tab>
                 <p:tab title="Datos de la consulta" id="tabDatosConsulta">
+                    <h:form id="datosConsultaForm">
                         <ui:include src="./tabsFormPaciente/tabDatosConsulta.xhtml"/>
+                    </h:form>
                 </p:tab>
                 <p:tab title="Diagnóstico" id="tabDiagnostico">
-                    <!--ui:include src="./tabsFormPaciente/tabDiagnostico.xhtml"/-->
+                    <h:form id="diagnosticoForm">
+                        <!--ui:include src="./tabsFormPaciente/tabDiagnostico.xhtml"/-->
+                    </h:form>
+
                 </p:tab>
             </p:tabView>
         </p:panel>
@@ -79,8 +89,8 @@
                 <p:commandButton value="Seleccionar" id="btnAceptar" 
                                  oncomplete="dlgPacientesEncontrados.hide()"
                                  actionListener="#{formPacienteBean.seleccionarPaciente}"
-                                 update=":primaryForm:tabsPaciente,
-                                 :primaryForm:pnlConsultarPaciente" />
+                                 update=":tabsPaciente,
+                                 :consultarPacienteForm:pnlConsultarPaciente" />
             </h:form>
         </p:dialog>            
     </ui:define>
