@@ -54,12 +54,12 @@ public class AsignacionPaciente extends Generic{
     
     @ManyToOne
     @JoinColumn(name = "diagnostico_id")
-    @NotNull(message = "El trabajo práctico de la asignacion no puede ser nulo.")
+    @NotNull(message = "El diagnóstico de la asignacion no puede ser nulo.")
     private Diagnostico diagnostico;
     
     @ManyToOne
     @JoinColumn(name = "catedra_id")
-    @NotNull(message = "El trabajo práctico de la asignacion no puede ser nulo.")
+    @NotNull(message = "La cátedra de la asignacion no puede ser nulo.")
     private Catedra catedra;
     
     @Enumerated(EnumType.STRING)

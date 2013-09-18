@@ -10,7 +10,6 @@ import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.asignaciones.QAsignacionPaciente;
 import tesis.odontologia.core.domain.materia.Materia;
-import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
 
 /**
@@ -35,5 +34,9 @@ public class AsignacionPacienteSpecs {
     
     public static BooleanExpression byFecha(Calendar cal){
         return $.fechaAsignacion.eq(cal);
+    }
+    
+    public static BooleanExpression byMateria(Materia m){
+        return $.diagnostico.materia.eq(m);
     }
 }
