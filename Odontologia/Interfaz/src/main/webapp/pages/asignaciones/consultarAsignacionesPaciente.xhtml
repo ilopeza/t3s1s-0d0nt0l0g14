@@ -45,7 +45,8 @@ and open the template in the editor.
                     <h:outputLabel value="Materia: " />
                 </p:column>
                 <p:column>
-                    <p:selectOneMenu id="selectMateria" value="#{consultarAsignacionesBean.materiaFiltro}">
+                    <p:selectOneMenu id="selectMateria" value="#{consultarAsignacionesBean.materiaFiltro}"
+                                     converter="materiaConverter">
                         <f:selectItems value="#{consultarAsignacionesBean.materias}"/>
                     </p:selectOneMenu>
                 </p:column>
@@ -96,10 +97,10 @@ and open the template in the editor.
                             <h:outputText value="#{a.paciente.documento.numero}" />
                         </p:column>
                         <p:column id="colMateria" headerText="Materia">
-                            <h:outputText value="#{a.materia.nombre}" />
+                            <h:outputText value="#{a.diagnostico.materia.nombre}" />
                         </p:column>
                         <p:column id="colTrabajoPractico" headerText="Trabajo Práctico">
-                            <h:outputText value="#{a.trabajoPractico.nombre}" />
+                            <h:outputText value="#{a.diagnostico.trabajoPractico.nombre}" />
                         </p:column>
                         <p:column id="colFechaAsignacion" headerText="Fecha Asignacion">
                             <h:outputText value="#{a.fechaAsignacion}" />
