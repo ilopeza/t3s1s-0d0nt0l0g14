@@ -50,6 +50,9 @@ public class TrabajoPractico extends Generic {
         }
     }
     
-    
+    @Override
+    public String toString() {
+        return nombre;
+    }
     
 }
