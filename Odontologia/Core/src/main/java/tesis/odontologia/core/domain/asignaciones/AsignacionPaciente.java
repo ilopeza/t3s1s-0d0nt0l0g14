@@ -49,7 +49,6 @@ public class AsignacionPaciente extends Generic{
     
     @OneToOne
     @JoinColumn(name = "profesor_id")
-    @NotNull(message = "La materia de asignacion no puede ser nula.")
     private Profesor profesor;
     
     @ManyToOne
@@ -158,10 +157,10 @@ public class AsignacionPaciente extends Generic{
             return "Pendiente";
         }
     },
-    EN_PROCESO {
+    CONFIRMADA {
         @Override
         public String toString() {
-            return "En Proceso";
+            return "Confirmada";
         }
     },
     REALIZADO {
