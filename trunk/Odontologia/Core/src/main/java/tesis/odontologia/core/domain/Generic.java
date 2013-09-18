@@ -49,4 +49,34 @@ public abstract class Generic implements Serializable, Validator {
         }
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 73 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 73 * hash + (this.version != null ? this.version.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Generic other = (Generic) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
+        if (this.version != other.version && (this.version == null || !this.version.equals(other.version))) {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
+    
 }

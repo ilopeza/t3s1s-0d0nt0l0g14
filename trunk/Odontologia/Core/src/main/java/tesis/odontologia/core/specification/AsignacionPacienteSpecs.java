@@ -10,6 +10,7 @@ import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.asignaciones.QAsignacionPaciente;
 import tesis.odontologia.core.domain.materia.Materia;
+import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
 
 /**
@@ -37,6 +38,10 @@ public class AsignacionPacienteSpecs {
     }
     
     public static BooleanExpression byMateria(Materia m){
-        return $.diagnostico.materia.eq(m);
+        return $.diagnostico.materia.id.eq(m.getId());
+    }
+    
+    public static BooleanExpression byTrabajoPractico(TrabajoPractico tp){
+        return $.diagnostico.trabajoPractico.id.eq(tp.getId());
     }
 }
