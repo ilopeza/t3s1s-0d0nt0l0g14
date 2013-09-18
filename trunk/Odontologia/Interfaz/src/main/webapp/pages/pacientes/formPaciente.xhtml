@@ -14,7 +14,7 @@
                 <h:outputLabel value="Núm. de documento: "/>
                 <p:inputText id="txtDocumentoBusqueda" value="#{formPacienteBean.nroDocumentoFiltro}"/>
 
-                <h:outputLabel value="Nombre: "/>
+                <h:outputLabel value="Nombre o apellido: "/>
                 <p:inputText id="txtNombreBusqueda" value="#{formPacienteBean.nombreFiltro}"/>
 
                 <p:commandButton value="Buscar" id="btnBuscar"
@@ -23,6 +23,7 @@
                                  update=":primaryForm:secondaryForm:tablaPacientesEncontrados" 
                                  actionListener="#{formPacienteBean.buscarPacientes()}" 
                                  icon="ui-icon-search"/>
+               
                 <p:commandButton value="Modificar" id="btnModificar"
                                  actionListener="#{formPacienteBean.habilitar}"
                                  disabled="#{!formPacienteBean.estaDeshabilitado}"

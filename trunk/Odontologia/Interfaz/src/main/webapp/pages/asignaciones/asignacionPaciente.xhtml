@@ -14,7 +14,8 @@
             <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
                                     
                 <p:outputLabel value="Materia: "/>
-                <p:selectOneMenu id="selectMateriaBusqueda" value="#{asignacionBean.materiaFiltro}" converter="materiaConverter">
+                <p:selectOneMenu id="selectMateriaBusqueda" value="#{asignacionBean.materiaFiltro}" 
+                                 converter="materiaConverter">
                     <f:selectItems value="#{asignacionBean.materias}"/>
                 </p:selectOneMenu>   
                 <p:outputLabel value="Cátedra: " />
@@ -24,7 +25,7 @@
                 </p:selectOneMenu>
                 <p:outputLabel value="Trabajo práctico: "/>
                 <p:selectOneMenu id="selectTrabajoPracticoBusqueda" value="#{asignacionBean.trabajoPracticoFiltro}"
-                                 converter="trabajoPracticoConverter">
+                                 >
                     <f:selectItems value="#{asignacionBean.trabajosPracticos}"/>
                 </p:selectOneMenu>
             </h:panelGrid>
@@ -60,7 +61,7 @@
                     <h:outputText value="#{asignacion.paciente}" />
                 </p:column>
                 <p:column id="Alumno" headerText="Alumno">
-                    <h:outputText value="#{asignacion.alumno}" />
+                    <h:outputText value="#{asignacion.alumno.toString}" />
                 </p:column>
                 <p:column id="FechaAsignacion" headerText="Fecha Asignacion">
                     <h:outputText value="#{asignacionBean.fechaFormateada(asignacion.fechaAsignacion)}" />
