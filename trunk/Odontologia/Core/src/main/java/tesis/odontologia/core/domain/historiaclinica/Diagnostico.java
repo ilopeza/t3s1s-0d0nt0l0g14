@@ -61,6 +61,7 @@ public class Diagnostico extends Generic{
     }
 //GETTER AND SETTER
     
+    
     public TrabajoPractico getTrabajoPractico() {
         return trabajoPractico;
     }
