@@ -22,4 +22,6 @@ public class TrabajoPracticoSpecs {
     public static BooleanExpression byId(Long id) {
         return $.id.eq(id);
     }
+    
+    
 }
