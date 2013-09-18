@@ -39,4 +39,9 @@ public class Catedra extends Generic {
             throw new CatedraException("El nombre de la cátedra no puede ser nulo o vacio.");
         }
     }
+    
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

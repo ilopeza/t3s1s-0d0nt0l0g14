@@ -47,6 +47,8 @@ public class Materia extends Generic {
         this.nombre = nombre;
     }
 
+    
+
     public List<TrabajoPractico> getTrabajoPractico() {
         return trabajoPractico;
     }
@@ -59,6 +61,7 @@ public class Materia extends Generic {
         if (ca == null) {
             return false;
         }
+        
         return catedra.add(ca);
     }
 
@@ -77,7 +80,7 @@ public class Materia extends Generic {
     }
 
     public boolean addTrabajoPractico(TrabajoPractico tp) {
-        if (tp == null) {
+        if (tp.getNombre() == null) {
             return false;
         }
         return trabajoPractico.add(tp);
