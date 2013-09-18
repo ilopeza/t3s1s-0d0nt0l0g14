@@ -49,6 +49,28 @@ public class TrabajoPractico extends Generic {
             throw new TrabajoPracticoException("El nombre del trabajo práctico no puede estar vacio o nulo");
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + (this.nombre != null ? this.nombre.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TrabajoPractico other = (TrabajoPractico) obj;
+        if ((this.nombre == null) ? (other.nombre != null) : !this.nombre.equals(other.nombre)) {
+            return false;
+        }
+        return true;
+    }
     
     @Override
     public String toString() {
