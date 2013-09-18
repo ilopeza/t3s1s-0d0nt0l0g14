@@ -13,109 +13,115 @@ and open the template in the editor.
 
     <ui:define name="content">
         <h:outputLabel value="CONSULTAR ASIGNACIONES DE PACIENTES" style="padding: 400px; font-size: 20px; font: " />
-        <p:panel id="pnlAlumno" header="BUSCAR ALUMNO">
-            <h:panelGrid id="gridBusquedaAlumno" cellpadding="3" cellspacing="3" columns="5">
-                <p:column>
-                    <h:outputLabel value="Nombre o apellido: " />
-                </p:column>
-                <p:column>
-                    <p:inputText id="txtNombreAlumno" value="#{consultarAsignacionesBean.alumno.apellido}" size="50" style=""/>
-                </p:column>
-                <p:column>
-                    <h:outputLabel value="Número de documento: " />
-                </p:column>
-                <p:column>
-                    <p:inputText id="txtNumDocumentoAlumno" value="#{consultarAsignacionesBean.alumno.documento.numero}" size="50"/>
-                </p:column>
-                <p:column>
-                    <p:commandButton value="Buscar" icon="ui-icon-search" id="btnBuscarAlumno" actionListener="#{consultarAsignacionesBean.cargarAlumno}" update="pnlAlumno"/>
-                </p:column>
-                <p:column colspan="5">
-                    <h:outputLabel value="#{consultarAsignacionesBean.alumno.toString} "/>
-                </p:column>
-                <p:column colspan="5">
-                    <h:outputLabel value="#{consultarAsignacionesBean.alumno.documento.numero} "/>
-                </p:column>
-            </h:panelGrid>
+        <p:panel id="pnlBuscarAlumno" header="Buscar alumno">
+            <h:form id="buscarAlumnoForm">
+                <h:panelGrid id="gridBusquedaAlumno" cellpadding="3" cellspacing="3" columns="5">
+                    <p:column>
+                        <h:outputLabel value="Nombre o apellido: " />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtNombreAlumno" value="#{consultarAsignacionesBean.alumno.apellido}" size="50" style=""/>
+                    </p:column>
+                    <p:column>
+                        <h:outputLabel value="Número de documento: " />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtNumDocumentoAlumno" value="#{consultarAsignacionesBean.alumno.documento.numero}" size="50"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Buscar" icon="ui-icon-search" id="btnBuscarAlumno" 
+                                         actionListener="#{consultarAsignacionesBean.cargarAlumno}" 
+                                         update="@form"/>
+                    </p:column>
+                    <p:column colspan="5">
+                        <h:outputLabel value="#{consultarAsignacionesBean.alumno.toString} "/>
+                    </p:column>
+                    <p:column colspan="5">
+                        <h:outputLabel value="#{consultarAsignacionesBean.alumno.documento.numero} "/>
+                    </p:column>
+                </h:panelGrid>
+            </h:form>
         </p:panel>
-        <p:panel id="pnlAsignaciones" header="ASIGNACIONES">
-            <h:panelGrid id="gridBusquedaAsignaciones" cellpadding="3" cellspacing="3" columns="4">
+        <p:panel id="pnlAsignaciones" header="Asignaciones">
+            <h:form id="asignacionesForm">
+                <h:panelGrid id="gridBusquedaAsignaciones" cellpadding="3" cellspacing="3" columns="4">
 
-                <p:column>
-                    <h:outputLabel value="Materia: " />
-                </p:column>
-                <p:column>
-                    <p:selectOneMenu id="selectMateria" value="#{consultarAsignacionesBean.materiaFiltro}"
-                                     converter="materiaConverter">
-                        <f:selectItems value="#{consultarAsignacionesBean.materias}"/>
-                    </p:selectOneMenu>
-                </p:column>
-                <p:column>
-                    <h:outputLabel value="Estado de asignación: " />
-                </p:column>
-                <p:column>
-                    <p:selectOneMenu id="selectEstadoAsignacion" value="#{consultarAsignacionesBean.estadoFiltro}">
-                        <f:selectItems value="#{consultarAsignacionesBean.estados}"/>
-                    </p:selectOneMenu>
-                </p:column>
+                    <p:column>
+                        <h:outputLabel value="Materia: " />
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="selectMateria" value="#{consultarAsignacionesBean.materiaFiltro}"
+                                         converter="materiaConverter">
+                            <f:selectItems value="#{consultarAsignacionesBean.materias}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <h:outputLabel value="Estado de asignación: " />
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="selectEstadoAsignacion" value="#{consultarAsignacionesBean.estadoFiltro}">
+                            <f:selectItems value="#{consultarAsignacionesBean.estados}"/>
+                        </p:selectOneMenu>
+                    </p:column>
 
-                <p:column>
-                    <h:outputLabel value="Paciente: " />
-                </p:column>
-                <p:column>
-                    <p:inputText id="txtNombrePaciente" value="#{consultarAsignacionesBean.pacienteFiltro.apellido}"/>
-                </p:column>
-                <p:column>
-                    <h:outputLabel value="Fecha de asignación: " />
-                </p:column>
-                <p:column>
-                    <p:calendar id="calFechaAsignación" value="#{consultarAsignacionesBean.fechaFiltro}"/>
-                </p:column>
+                    <p:column>
+                        <h:outputLabel value="Paciente: " />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtNombrePaciente" value="#{consultarAsignacionesBean.pacienteFiltro.apellido}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputLabel value="Fecha de asignación: " />
+                    </p:column>
+                    <p:column>
+                        <p:calendar id="calFechaAsignación" value="#{consultarAsignacionesBean.fechaFiltro}"/>
+                    </p:column>
 
-                <p:commandButton id="btnFiltrarAsignaciones" value="Filtrar" 
-                                 actionListener="#{consultarAsignacionesBean.cargarAsignacionesFiltradas}"/>
+                    <p:commandButton id="btnFiltrarAsignaciones" value="Filtrar" 
+                                     actionListener="#{consultarAsignacionesBean.cargarAsignacionesFiltradas}"/>
 
-                <!--
-                -->
-            </h:panelGrid>
-            
-                    <p:dataTable id="tblResultadoAsignaciones" 
-                                 value="#{consultarAsignacionesBean.asignaciones}"
-                                 emptyMessage="Alumno sin asignaciones"
-                                 paginator="true" 
-                                 selectionMode="single"
-                                 selection="#{consultarAsignacionesBean.asignacionSeleccionada}"
-                                 var="a"
-                                 rowKey="#{a.id}">
-                        <f:facet name="header">
-                            <h:outputText value="Asignaciones del alumno [Apellido, Nombre]" />
-                        </f:facet>
-                        <p:column id="colPaciente" headerText="Paciente">
-                            <h:outputText value="#{a.paciente.toString}" />
-                        </p:column>
-                        <p:column id="colDocumento" headerText="Documento">
-                            <h:outputText value="#{a.paciente.documento.numero}" />
-                        </p:column>
-                        <p:column id="colMateria" headerText="Materia">
-                            <h:outputText value="#{a.diagnostico.materia.nombre}" />
-                        </p:column>
-                        <p:column id="colTrabajoPractico" headerText="Trabajo Práctico">
-                            <h:outputText value="#{a.diagnostico.trabajoPractico.nombre}" />
-                        </p:column>
-                        <p:column id="colFechaAsignacion" headerText="Fecha Asignacion">
-                            <h:outputText value="#{a.fechaAsignacion}" />
-                        </p:column>
-                        <p:column id="colEstado" headerText="Estado Asignacion">
-                            <h:outputText value="#{a.estado}" />
-                        </p:column>
-                        <p:column id="colAcciones" headerText="Acciones">
-                            <h:panelGrid columns="3">
-                                <p:commandButton id="btnConfirmar" value="Confirmar" icon="ui-icon-check"/>
-                                <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-cancel"/>
-                                <p:commandButton id="btnModificar" value="Modificar" icon="ui-icon-gear"/>
-                            </h:panelGrid> 
-                        </p:column>
-                    </p:dataTable>
+                    <!--
+                    -->
+                </h:panelGrid>
+
+                <p:dataTable id="tblResultadoAsignaciones" 
+                             value="#{consultarAsignacionesBean.asignaciones}"
+                             emptyMessage="Alumno sin asignaciones"
+                             paginator="true" 
+                             selectionMode="single"
+                             selection="#{consultarAsignacionesBean.asignacionSeleccionada}"
+                             var="a"
+                             rowKey="#{a.id}">
+                    <f:facet name="header">
+                        <h:outputText value="Asignaciones del alumno [Apellido, Nombre]" />
+                    </f:facet>
+                    <p:column id="colPaciente" headerText="Paciente">
+                        <h:outputText value="#{a.paciente.toString}" />
+                    </p:column>
+                    <p:column id="colDocumento" headerText="Documento">
+                        <h:outputText value="#{a.paciente.documento.numero}" />
+                    </p:column>
+                    <p:column id="colMateria" headerText="Materia">
+                        <h:outputText value="#{a.diagnostico.materia.nombre}" />
+                    </p:column>
+                    <p:column id="colTrabajoPractico" headerText="Trabajo Práctico">
+                        <h:outputText value="#{a.diagnostico.trabajoPractico.nombre}" />
+                    </p:column>
+                    <p:column id="colFechaAsignacion" headerText="Fecha Asignacion">
+                        <h:outputText value="#{a.fechaAsignacion}" />
+                    </p:column>
+                    <p:column id="colEstado" headerText="Estado Asignacion">
+                        <h:outputText value="#{a.estado}" />
+                    </p:column>
+                    <p:column id="colAcciones" headerText="Acciones">
+                        <h:panelGrid columns="3">
+                            <p:commandButton id="btnConfirmar" value="Confirmar" icon="ui-icon-check"/>
+                            <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-cancel"/>
+                            <p:commandButton id="btnModificar" value="Modificar" icon="ui-icon-gear"/>
+                        </h:panelGrid> 
+                    </p:column>
+                </p:dataTable>
+            </h:form>
         </p:panel>
     </ui:define>
 </ui:composition>
