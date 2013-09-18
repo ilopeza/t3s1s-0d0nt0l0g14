@@ -44,7 +44,6 @@ public class AsignacionBean {
 
     private AsignacionPaciente asignacion;
    
-    private Materia materia;
     private Diagnostico diagnostico;
 
     private Date fechaAsignacion;
@@ -103,7 +102,7 @@ public class AsignacionBean {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un paciente.", null));
             return null;
         }
-        if (materia == null) {
+        if (materiaFiltro == null) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono una materia.", null));
             return null;
@@ -189,11 +188,10 @@ public class AsignacionBean {
     public void buscarAsignaciones() {
         
         asignaciones = (List<AsignacionPaciente>) 
-                asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
-                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE))//.
-                //and(AsignacionPacienteSpecs.byMateria(materiaFiltro)).
-                //and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro))
-                );
+                asignacionPacienteService.findAll();
+//        AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
+//                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE).
+//                and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro))));
         
         if (asignaciones == null || asignaciones.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
@@ -244,15 +242,7 @@ public class AsignacionBean {
     public void setFiltroPaciente(String filtroPaciente) {
         this.filtroPaciente = filtroPaciente;
     }
-
-    public Materia getMateria() {
-        return materia;
-    }
-
-    public void setMateria(Materia materia) {
-        this.materia = materia;
-    }
-
+    
     public AsignacionPacienteService getAsignacionPacienteService() {
         return asignacionPacienteService;
     }

@@ -38,7 +38,7 @@ public class MenuBean {
         //Menu
         submenu = subMenu("Gestión de Materias");
         //Opciones
-        menuItem = menuItem("Registrar Materia","/pages/materias/formMaterias.xhtml");
+        menuItem = menuItem("Registrar Materia","/pages/materias/registrarMateria.xhtml");
         submenu.getChildren().add(menuItem);
         menu.addSubmenu(submenu);
         
@@ -59,7 +59,7 @@ public class MenuBean {
         //Menu
         submenu = subMenu("Asignaciones de Pacientes");
         //Opciones
-        menuItem = menuItem("Asignacion Paciente","/pages/asignaciones/asignacionPaciente.xhtml");
+        menuItem = menuItem("Asignacion Paciente","/pages/asignaciones/registrarAsignacionPaciente.xhtml");
         submenu.getChildren().add(menuItem);
         menuItem = menuItem("Consultar Asignacion Paciente","/pages/asignaciones/consultarAsignacionesPaciente.xhtml");
         submenu.getChildren().add(menuItem);
