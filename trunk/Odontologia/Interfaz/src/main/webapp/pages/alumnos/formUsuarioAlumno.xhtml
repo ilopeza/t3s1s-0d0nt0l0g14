@@ -18,7 +18,13 @@
                             <h:outputLabel value="Número de documento (*): "/>
                         </p:column>
                         <p:column id="colTxtNumDocAlumno">
-                            <h:inputText id="txtDocumento" value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}" />
+                            <h:inputText id="txtDocumento"
+                                     required="true"
+                                     value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}"
+                                     validator="#{formUsuarioAlumnoBean.validate}"
+                                     
+                                     >
+                        </h:inputText>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -26,7 +32,13 @@
                             <h:outputLabel value="E-mail (*):"/>
                         </p:column>
                         <p:column id="colEmailAlumno">
-                            <h:inputText id="txtEmail" value="#{formUsuarioAlumnoBean.usuario.email}"/>
+                            <h:inputText id="txtEmail" 
+                                     required="true"
+                                     validatorMessage="El formato de e-mail es incorrecto"
+                                     value="#{formUsuarioAlumnoBean.usuario.email}">
+                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </h:inputText>
                         </p:column>
                     </p:row>
                     <p:row>
