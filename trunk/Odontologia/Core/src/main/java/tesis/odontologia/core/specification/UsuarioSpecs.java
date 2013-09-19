@@ -18,4 +18,8 @@ public class UsuarioSpecs {
     public static BooleanExpression byNombreOrEmail(String nombEmail) {
          return $.nombreUsuario.containsIgnoreCase(nombEmail).or($.email.containsIgnoreCase(nombEmail));
     }
+    
+    public static BooleanExpression byNombreUsuario(String nombre) {
+        return $.nombreUsuario.eq(nombre);
+    }
 }
