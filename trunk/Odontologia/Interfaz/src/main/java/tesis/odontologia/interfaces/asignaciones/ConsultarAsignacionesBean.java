@@ -17,7 +17,9 @@ import javax.faces.context.FacesContext;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente.EstadoAsignacion;
+import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
+import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.service.AsignacionPacienteService;
 import tesis.odontologia.core.service.MateriaService;
@@ -41,6 +43,10 @@ public class ConsultarAsignacionesBean {
     private List<AsignacionPaciente.EstadoAsignacion> estadosAsignacion;
     //Atributos para la búsqueda.
     private Materia materiaFiltro;
+    private Catedra catedraFiltro;
+    private TrabajoPractico trabajoPracticoFiltro;
+    
+    
     private EstadoAsignacion estadoFiltro;
     private Paciente pacienteFiltro;
     private Calendar fechaFiltro;
@@ -100,8 +106,10 @@ public class ConsultarAsignacionesBean {
                 asignacionService.findAll(AsignacionPacienteSpecs.byAlumno(alumno).
                 and(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro)).
                 and(AsignacionPacienteSpecs.byFecha(fechaFiltro).
-                and(AsignacionPacienteSpecs.byPaciente(pacienteFiltro).
-                and(AsignacionPacienteSpecs.byMateria(materiaFiltro)))));
+                and(AsignacionPacienteSpecs.byPaciente(pacienteFiltro)//.
+                //and(AsignacionPacienteSpecs.byMateria(materiaFiltro))
+                ))
+                );
                 
         
         if (listaAsignaciones.isEmpty()) {
@@ -109,6 +117,13 @@ public class ConsultarAsignacionesBean {
             return null;
         }
         return listaAsignaciones;
+    }
+    
+    public void buscarAsignacionesConfirmadas() {
+        estadoFiltro = EstadoAsignacion.CONFIRMADA;
+        /*asignaciones = (List<AsignacionPaciente>) asignacionService.findAll(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro) );*/
+         asignaciones = (List<AsignacionPaciente>) asignacionService.findAll();
+        
     }
 
     //MÉTODOS AUXILIARES
@@ -126,6 +141,39 @@ public class ConsultarAsignacionesBean {
     }
 
     //GETTERS Y SETTERS
+    
+    public List<EstadoAsignacion> getEstadosAsignacion() {
+        return estadosAsignacion;
+    }
+
+    public void setEstadosAsignacion(List<EstadoAsignacion> estadosAsignacion) {
+        this.estadosAsignacion = estadosAsignacion;
+    }
+
+    public Catedra getCatedraFiltro() {
+        return catedraFiltro;
+    }
+
+    public void setCatedraFiltro(Catedra catedraFiltro) {
+        this.catedraFiltro = catedraFiltro;
+    }
+
+    public TrabajoPractico getTrabajoPracticoFiltro() {
+        return trabajoPracticoFiltro;
+    }
+
+    public void setTrabajoPracticoFiltro(TrabajoPractico trabajoPracticoFiltro) {
+        this.trabajoPracticoFiltro = trabajoPracticoFiltro;
+    }
+
+    public String getNroDocumentoFiltro() {
+        return nroDocumentoFiltro;
+    }
+
+    public void setNroDocumentoFiltro(String nroDocumentoFiltro) {
+        this.nroDocumentoFiltro = nroDocumentoFiltro;
+    }
+    
     public AsignacionPaciente getAsignacion() {
         return asignacion;
     }
