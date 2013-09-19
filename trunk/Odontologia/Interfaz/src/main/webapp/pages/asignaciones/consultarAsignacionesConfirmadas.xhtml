@@ -7,67 +7,84 @@
 
     <ui:define name="content">
         <h:outputLabel value="CONSULTAR ASIGNACIONES CONFIRMADAS" style="padding: 400px; font-size: 20px; font: " />
-        
+
         <p:panel id="pnlConsultarAsignacionesConfirmadas" header="Parámetros de búsqueda">
-            
-            <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
-                                    
-                <p:outputLabel value="Materia: "/>
-                <p:selectOneMenu id="selectMateriaBusqueda" value="#{asignacionBean.materiaFiltro}">
-                    <f:selectItems value="#{asignacionBean.materias}"/>
-                </p:selectOneMenu>   
-                <p:outputLabel value="Cátedra: " />
-                <p:selectOneMenu id="selectCatedraBusqueda" value="#{asignacionBean.catedraFiltro}">
-                    <f:selectItems value="#{asignacionBean.catedras}"/>
-                </p:selectOneMenu>
-                <p:outputLabel value="Trabajo práctico: "/>
-                <p:selectOneMenu id="selectTrabajoPracticoBusqueda" value="#{asignacionBean.trabajoPracticoFiltro}">
-                    <f:selectItems value="#{asignacionBean.trabajosPracticos}"/>
-                </p:selectOneMenu>
-            </h:panelGrid>
-            <h:outputText value="La cátedra atiende en los siguientes horarios: [lunes 18:00] [martes 20:00]"/>
+            <h:form id="consultarAsignacionesConfirmadasForm">
+                <h:panelGrid id="paramentros" columns="6" cellpadding="3" cellspacing="3">
+
+                    <p:outputLabel value="Materia: "/>
+                    <p:selectOneMenu id="selecciontMateriaBusqueda" value="#{consultarAsignacionesConfirmadasBean.materiaFiltro}" converter="materiaConverter">
+                        <f:selectItems value="#{consultarAsignacionesConfirmadasBean.materias}"/>
+                    </p:selectOneMenu>   
+                    <p:outputLabel value="Cátedra: " />
+                    <p:selectOneMenu id="seleccionCatedraBusqueda" value="#{consultarAsignacionesConfirmadasBean.catedraFiltro}" converter="catedraConverter">
+                        <f:selectItems value="#{consultarAsignacionesConfirmadasBean.catedras}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Trabajo práctico: "/>
+                    <p:selectOneMenu id="selecciontTrabajoPracticoBusqueda" value="#{consultarAsignacionesConfirmadasBean.trabajoPracticoFiltro}">
+                        <f:selectItems value="#{consultarAsignacionesConfirmadasBean.trabajosPracticos}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:commandButton  id="btnBuscarAsignacionesConfirmadas" value="Buscar Asignaciones Confirmadas" 
+                                  action="#{consultarAsignacionesConfirmadasBean.buscarAsignacionesConfirmadas()}" 
+                                  update=":exportarForm:tblResultadosAsignacionesConfirmadas"/>
+            </h:form>
+
         </p:panel>
-        
-        <p:dataTable id="tblResultadosAsignacionesConfirmadas" var="car" 
-                     value="#{tableBean.cars}" paginator="true" rows="10">  
-            <p:column>  
-                <f:facet name="header">  
-                    <h:outputText value="Model" />  
-                </f:facet>  
-                <h:outputText value="#{car.model}" />  
-            </p:column>  
 
-            <p:column>  
-                <f:facet name="header">  
-                    <h:outputText value="Year" />  
-                </f:facet>  
-                <h:outputText value="#{car.year}"/>  
-            </p:column>  
+        <p:panel id="pnlExportar" header="Exportar Resultados de la busqueda de alumnos">  
+            <h:form id="exportarForm">
+                <p:dataTable id="tblResultadosAsignacionesConfirmadas" var="asignaciones" value="#{consultarAsignacionesConfirmadasBean.asignacionesConfirmadas}" paginator="true" rows="10">  
 
-            <p:column>  
-                <f:facet name="header">  
-                    <h:outputText value="Manufacturer" />  
-                </f:facet>  
-                <h:outputText value="#{car.manufacturer}" />  
-            </p:column>  
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Resultado de la Busqueda" />
+                        </p:outputPanel>
+                    </f:facet>
 
-            <p:column>  
-                <f:facet name="header">  
-                    <h:outputText value="Color" />  
-                </f:facet>  
-                <h:outputText value="#{car.color}" />  
-            </p:column>  
-        </p:dataTable>
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Nombre Paciente" />  
+                        </f:facet>  
+                        <h:outputText value="#{asignaciones.paciente.nombre}" />  
+                    </p:column>  
 
-        <h:panelGrid columns="2">  
-            <p:panel header="Exportar Resultados de la busqueda de alumnos">  
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Apellido Paciente" />  
+                        </f:facet>  
+                        <h:outputText value="#{asignaciones.paciente.apellido}"/>  
+                    </p:column>  
 
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Nombre Alumno" />  
+                        </f:facet>  
+                        <h:outputText value="#{asignaciones.alumno.nombre}" />  
+                    </p:column>  
+
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Apellido Alumno" />  
+                        </f:facet>  
+                        <h:outputText value="#{asignaciones.alumno.apellido}" />  
+                    </p:column>
+
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Fecha de Atención" />  
+                        </f:facet>  
+                        <h:outputText value="#{asignaciones.fechaAsignacion}" />  
+                    </p:column>
+
+                </p:dataTable>
                 <h:commandLink>
-                    <p:graphicImage value="/pages/Other Sources/src/main/resources/Images/pdf.jpg" />  
-                    <p:dataExporter type="pdf" target="tblResultadosAsignacionesConfirmadas" fileName="Busqueda de Alumnos"/>  
+                    <p:graphicImage value="/Images/pdf.jpg" />  
+                    <p:dataExporter type="pdf" target="tblResultadosAsignacionesConfirmadas" fileName="Busqueda Paciente Confirmados"/>  
                 </h:commandLink>  
-            </p:panel>  
-        </h:panelGrid>  
+            </h:form>
+        </p:panel>  
+
     </ui:define>
 </ui:composition>
 
