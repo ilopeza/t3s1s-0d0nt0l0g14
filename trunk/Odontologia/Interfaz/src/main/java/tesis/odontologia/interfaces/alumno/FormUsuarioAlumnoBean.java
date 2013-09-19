@@ -4,18 +4,23 @@
  */
 package tesis.odontologia.interfaces.alumno;
 
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import tesis.odontologia.core.domain.usuario.Rol;
 import tesis.odontologia.core.domain.usuario.Usuario;
 import tesis.odontologia.core.mail.SMTPConfig;
 import tesis.odontologia.core.service.RolService;
 import tesis.odontologia.core.service.UsuarioService;
 import tesis.odontologia.core.specification.RolSpecs;
+import tesis.odontologia.core.specification.UsuarioSpecs;
 
 /**
  *
@@ -68,6 +73,15 @@ public class FormUsuarioAlumnoBean {
             System.out.println(ex.getMessage());
         }
     }
+    
+    public void validate(FacesContext arg0, UIComponent arg1, Object arg2)
+         throws ValidatorException {
+        Predicate p = UsuarioSpecs.byNombreUsuario((String)arg2);
+        Usuario u = usuarioService.findOne(p);
+      if (u != null) {
+         throw new ValidatorException(new FacesMessage("El usuario " + usuario.getNombreUsuario() + " ya se encuentra registrado"));
+      }
+   }
 
     public void updateUsuarioAlumno() {
         //AlumnoService.update(nuevoAlumno);
