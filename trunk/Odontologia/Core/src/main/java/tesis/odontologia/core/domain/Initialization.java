@@ -108,6 +108,8 @@ public class Initialization {
         p.setHistoriaClinica(hc);
         p.setFechaNacimiento(Calendar.getInstance());
         
+        p.setDomicilio(new Domicilio("Ituzaingó", "1066", "Córdoba"));
+        
         pacientes.add(personaService.save(p));
         
         
@@ -117,6 +119,7 @@ public class Initialization {
         hc1.setNumero(1);
         p1.setHistoriaClinica(hc1);
         p1.setFechaNacimiento(Calendar.getInstance());
+        p1.setDomicilio(new Domicilio("Obispo Salguero", "444", "Córdoba"));
         pacientes.add(personaService.save(p1));
         
         Paciente p2 = new Paciente("Miguel", "Romero");
@@ -125,6 +128,7 @@ public class Initialization {
         hc.setNumero(1);
         p2.setHistoriaClinica(hc2);
         p2.setFechaNacimiento(Calendar.getInstance());
+        p2.setDomicilio(new Domicilio("Gral. Manuel Belgrano", "745", "Córdoba"));
         pacientes.add(personaService.save(p2));
         
     }
