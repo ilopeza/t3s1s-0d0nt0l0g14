@@ -26,5 +26,9 @@ public class UsuarioSpecs {
     public static BooleanExpression byPassword(String password) {
          return $.contraseña.equalsIgnoreCase(password);
     }
+    
+    public static BooleanExpression byEmail(String email) {
+        return $.email.equalsIgnoreCase(email);
+    }
 
 }
