@@ -19,9 +19,12 @@ import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.domain.profesor.Profesor;
+import tesis.odontologia.core.domain.usuario.Rol;
+import tesis.odontologia.core.domain.usuario.Usuario;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.AsignacionPacienteService;
+import tesis.odontologia.core.service.RolService;
 /**
  *
  * @author Maxi
@@ -36,6 +39,9 @@ public class Initialization {
     private PersonaService personaService;
     
     @Autowired
+    private RolService rolService;
+    
+    @Autowired
     private AsignacionPacienteService asignacionPacienteService;
     
     private List<Materia> materias = new ArrayList<Materia>();
@@ -46,13 +52,25 @@ public class Initialization {
     
     private List<Alumno> alumnos = new ArrayList<Alumno>();
     
+    private List<Rol> roles = new ArrayList<Rol>();
+    
     @PostConstruct
     public void setUp() {
+        cargarRoles();
         cargarMaterias();
         cargarPacientes();
         cargarAlumnos();
         cargarProfesores();
         cargarAsignaciones();
+    }
+    
+    
+    private void cargarRoles() {
+        roles.add(rolService.save(new Rol(Rol.ALUMNO)));
+        roles.add(rolService.save(new Rol(Rol.PROFESOR)));
+        roles.add(rolService.save(new Rol(Rol.PACIENTE)));
+        roles.add(rolService.save(new Rol(Rol.RESPONSABLE)));
+        roles.add(rolService.save(new Rol(Rol.ADMINACADEMICO)));
     }
     
     private void cargarMaterias() {
@@ -138,16 +156,22 @@ public class Initialization {
         Alumno a = new Alumno("Lucas", "Carrario");
         a.setDocumento(new Documento("34345545", Documento.TipoDocumento.DNI));
         a.setFechaNacimiento(Calendar.getInstance());
+        Usuario usuario1 = new Usuario("34345545", "34345545",roles.get(0), "Lucas@gmail.com");
+        a.setUsuario(usuario1);
         alumnos.add(personaService.save(a));
         
         Alumno a1 = new Alumno("Roberto", "Carrario");
         a1.setDocumento(new Documento("34767767", Documento.TipoDocumento.DNI));
         a1.setFechaNacimiento(Calendar.getInstance());
+        Usuario usuario2 = new Usuario("34767767", "34767767",roles.get(0), "Roberto@gmail.com");
+        a1.setUsuario(usuario2);
         alumnos.add(personaService.save(a1));
         
         Alumno a2 = new Alumno("Emiliano", "Franzoia");
         a2.setDocumento(new Documento("34787787", Documento.TipoDocumento.DNI));
         a2.setFechaNacimiento(Calendar.getInstance());
+        Usuario usuario3 = new Usuario("34787787", "34787787",roles.get(0), "Emiliano@gmail.com");
+        a2.setUsuario(usuario3);
         alumnos.add(personaService.save(a2));
         
     }
@@ -157,16 +181,22 @@ public class Initialization {
         Profesor p = new Profesor("Lucas", "Rimoldi");
         p.setDocumento(new Documento("34342245", Documento.TipoDocumento.DNI));
         p.setFechaNacimiento(Calendar.getInstance());
+        Usuario usuario1 = new Usuario("34342245", "34342245",roles.get(1), "Lucas@gmail.com");
+        p.setUsuario(usuario1);
         personaService.save(p);
         
         Profesor p1 = new Profesor("Lorenzo", "Diaz");
         p1.setDocumento(new Documento("34442245", Documento.TipoDocumento.DNI));
         p1.setFechaNacimiento(Calendar.getInstance());
+        Usuario usuario2 = new Usuario("34442245", "34442245",roles.get(1), "Lorenzo@gmail.com");
+        p1.setUsuario(usuario2);
         personaService.save(p1);
         
         Profesor p2 = new Profesor("Lucia", "Roma");
         p2.setDocumento(new Documento("34332245", Documento.TipoDocumento.DNI));
         p2.setFechaNacimiento(Calendar.getInstance());
+        Usuario usuario3 = new Usuario("34332245", "34332245",roles.get(1), "Lucia@gmail.com");
+        p2.setUsuario(usuario3);
         personaService.save(p2);
         
     }
@@ -198,6 +228,7 @@ public class Initialization {
           ap2.setFechaAsignacion(Calendar.getInstance());
           asignacionPacienteService.save(ap2);
       }
+
 
     
       
