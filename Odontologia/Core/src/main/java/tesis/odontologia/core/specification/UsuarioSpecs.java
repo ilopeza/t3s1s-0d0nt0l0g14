@@ -19,7 +19,12 @@ public class UsuarioSpecs {
          return $.nombreUsuario.containsIgnoreCase(nombEmail).or($.email.containsIgnoreCase(nombEmail));
     }
     
-    public static BooleanExpression byNombreUsuario(String nombre) {
-        return $.nombreUsuario.eq(nombre);
+    public static BooleanExpression byUsuario(String usuario) {
+         return $.nombreUsuario.equalsIgnoreCase(usuario);
     }
+    
+    public static BooleanExpression byPassword(String password) {
+         return $.contraseña.equalsIgnoreCase(password);
+    }
+
 }
