@@ -6,6 +6,7 @@ package tesis.odontologia.core.specification;
 
 import com.mysema.query.types.expr.BooleanExpression;
 import tesis.odontologia.core.domain.QPersona;
+import tesis.odontologia.core.domain.usuario.Usuario;
 
 /**
  *
@@ -18,4 +19,9 @@ public class PersonaSpecs {
     public static BooleanExpression byClass(Class clazz){
         return $.instanceOf(clazz);
     }
+
+    public static BooleanExpression byUsuario(Usuario us){
+        return $.usuario.id.eq(us.getId());
+    }
+    
 }
