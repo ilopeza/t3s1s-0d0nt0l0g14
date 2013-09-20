@@ -12,44 +12,29 @@
 
         <p:panel id="grid" header="NUEVO USUARIO ALUMNO">
             <h:form id="primaryForm">
-                <h:panelGrid>
-                    <p:row>
-                        <p:column id="colNumDocAlumno">
+                <h:panelGrid columns="2" style="text-align: right">
                             <h:outputLabel value="Número de documento (*): "/>
-                        </p:column>
-                        <p:column id="colTxtNumDocAlumno">
-                            <h:inputText id="txtDocumento"
+                            <h:inputText id="txtDocumento" size="50"
                                      required="true"
                                      value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}"
                                      validator="#{formUsuarioAlumnoBean.validate}"
                                      
                                      >
                         </h:inputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column id="colEmailDocAlumno">
-                            <h:outputLabel value="E-mail (*):"/>
-                        </p:column>
-                        <p:column id="colEmailAlumno">
-                            <h:inputText id="txtEmail" 
+                            <h:outputLabel value="E-mail (*):" />
+                            <h:inputText id="txtEmail"  size="50"
                                      required="true"
                                      validatorMessage="El formato de e-mail es incorrecto"
                                      value="#{formUsuarioAlumnoBean.usuario.email}">
                             <f:validateRegex
                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </h:inputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column id="colBtnGuardarUsuario" colspan="2">
+                            <h:outputLabel/>
                             <p:commandButton value="Guardar" 
                                              ajax="true" 
                                              action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
                                              update=":msg"
                                              icon="ui-icon-plusthick"/>
-                        </p:column>
-                    </p:row>
                 </h:panelGrid>
             </h:form>
 
