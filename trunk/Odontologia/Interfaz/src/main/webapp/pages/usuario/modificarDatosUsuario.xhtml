@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <h:outputLabel value="Modificar datos de usuario" style="padding: 400px; font-size: 20px; " />
+        <h:form id="formModificarDatosUsuario">
+            <p:panel id="pnlModificarDatosUsuario" header="Datos de usuario">
+            <h:panelGrid id="gridModificarDatosUsuario" cellpadding="3" cellspacing="3" columns="2">
+
+                <p:column>
+                    <h:outputLabel value="Nombre: "/>
+                </p:column>
+                <p:column>
+                    <p:inputText id="txtModificarNombre" />
+                </p:column>
+
+                <p:column>
+                    <h:outputLabel value="Apellido: "/>
+                </p:column>
+
+                <p:column>
+                    <p:inputText id="txtModificarApellido"/>
+                </p:column>
+
+                <p:column>
+                    <h:outputLabel value="E-mail: "/>
+                </p:column>
+
+                <p:column>
+                    <p:inputText id="txtModificarEmail" />
+                </p:column>
+
+                <p:column>
+                    <h:outputLabel value="Fecha Nacimiento: "/>
+                </p:column>
+
+                <p:column>
+                    <p:inputText id="txtModificarFechaNacimiento" />
+                </p:column>
+
+                <p:column>
+                    <h:outputLabel value="Tipo de documento: "/>
+                </p:column>
+
+                <p:column>
+                    <h:outputLabel id="txtModificarTipoDocumento" />
+                </p:column>
+
+                <p:column>
+                    <h:outputLabel value="N° de documento: "/>
+                </p:column>
+
+                <p:column>
+                    <h:outputLabel id="txtModificarDocumento" />
+                </p:column>
+
+                <p:column>
+                    <p:commandButton value="Guardar" id="btnAceptarModificacionDatosUsuario"/>
+                    <p:commandButton value="Cancelar" id="btnCancelarModificacionDatosUsuario"/>
+                </p:column>
+
+            </h:panelGrid>
+
+            <p:dialog id="messages" widgetVar="dlgConfirmarModificacionUsuario" modal="true" closable="true" appendToBody="true"
+                      header="Confirmar modificacion de usuario">
+
+                <h:panelGrid id="pnlConfirmacionDatosUsuario" cellpadding="3" cellspacing="3" columns="5">
+                    <h:column>
+                        <h:outputLabel value="Nombre: "/>
+                    </h:column>                    
+                    <h:column>
+                        <h:outputLabel value="Apellido: "/>
+                    </h:column>                    
+                    
+                </h:panelGrid>
+
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+                                 oncomplete="dlgConfirmarModificacionUsuario.hide()"/>
+            </p:dialog>
+
+        </p:panel>
+        </h:form>        
+    </ui:define>
+
+</ui:composition>
