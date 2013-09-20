@@ -69,17 +69,17 @@ public class FormUsuarioAlumnoBean {
             usuarioService.save(usuario);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El usuario" + usuario.getNombreUsuario() +" fue cargado correctamente", null));
         }catch(Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El alumno no fue cargado correctamente", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "El alumno no fue cargado correctamente", null));
             System.out.println(ex.getMessage());
         }
     }
     
     public void validate(FacesContext arg0, UIComponent arg1, Object arg2)
          throws ValidatorException {
-        Predicate p = UsuarioSpecs.byNombreUsuario((String)arg2);
-        Usuario u = usuarioService.findOne(p);
-      if (u != null) {
-         throw new ValidatorException(new FacesMessage("El usuario " + usuario.getNombreUsuario() + " ya se encuentra registrado"));
+        Predicate p = UsuarioSpecs.byUsuario((String)arg2);
+        
+      if (usuarioService.count(p) != 0) {
+         throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,"El usuario " + (String)arg2 + " ya se encuentra registrado", null));
       }
    }
 
