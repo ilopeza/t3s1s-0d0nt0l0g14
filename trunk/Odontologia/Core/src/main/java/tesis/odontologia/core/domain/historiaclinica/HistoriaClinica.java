@@ -49,12 +49,12 @@ public class HistoriaClinica extends Generic {
     @Valid
     private List<Atencion> atencion;
     
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "historiaclinica_id")
     @Valid
     private List<Diagnostico> diagnostico;
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @Valid
     @NotNull(message = "Error en generacion de historia clinica. Imposible guardar historia clinica vacia.")
     @JoinColumn(name = "historiaClinica_id")
