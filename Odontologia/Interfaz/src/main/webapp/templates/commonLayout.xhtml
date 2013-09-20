@@ -31,7 +31,10 @@
 
             <p:layout fullPage="true" >
 
-                <p:layoutUnit position="north" size="70" header="Facultad de Odontología - S.A.P.O." style="text-align: center">  
+                <p:layoutUnit  position="north" size="70" header="Facultad de Odontología - S.A.P.O." style="text-align: center">  
+                    <p:commandLink id="ajax" action="#{loginBean.logout()}" style="text-align: right">  
+                        <h:outputText value="#{loginBean.persona}" />  
+                    </p:commandLink>  
                     <ui:include src="commonHeader.xhtml"/>
                 </p:layoutUnit>
 

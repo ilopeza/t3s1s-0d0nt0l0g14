@@ -31,7 +31,7 @@ import tesis.odontologia.core.exception.PersonaException;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"numero", "tipoDocumento"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"dtype","numero", "tipoDocumento"})})
 public abstract class Persona extends Generic {
 
     @Column(length = 150)

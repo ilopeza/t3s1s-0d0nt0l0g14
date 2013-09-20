@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>S.A.P.O</title>
+        </f:facet>
+
+        <style type="text/css">
+            .ui-layout-north {
+                z-index:20 !important;
+                overflow:visible !important;;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:visible !important;
+            }
+        </style>
+    </h:head>
+
+    <body>
+        <h:form id="form">  
+
+            <p:growl id="growl" showDetail="true" life="3000" />  
+
+            <p:dialog id="dialog" header="Login" widgetVar="dlg" resizable="false" visible="true" draggable="false"
+                      closable="false" height="130"  width="300" modal="true">  
+
+                <h:panelGrid columns="2" cellpadding="5">  
+                    <h:outputLabel for="username" value="Username:" />  
+                    <p:inputText value="#{loginBean.username}"   
+                                 id="username" required="true" label="username" />  
+
+                    <h:outputLabel for="password" value="Password:" />  
+                    <h:inputSecret value="#{loginBean.password}"   
+                                   id="password" required="true" label="password" />  
+
+                    <f:facet name="footer">  
+                        <p:commandButton id="loginButton" value="Login" update="growl"   
+                                         action="#{loginBean.login}"/>  
+                    </f:facet>  
+                </h:panelGrid>  
+
+            </p:dialog>  
+        </h:form>  
+    </body>
+</html>

@@ -19,6 +19,12 @@ import tesis.odontologia.core.exception.RolException;
 @Entity
 public class Rol extends Generic{
     
+    public static String ALUMNO = "Alumno";
+    public static String PACIENTE = "Paciente";
+    public static String PROFESOR = "Profesor";
+    public static String RESPONSABLE = "Responsable";
+    public static String ADMINACADEMICO = "AdminAcademico";
+        
     @Column(length = 50)
     @Size(min = 1, max = 50, message = "El rol debe tener entre 1 y 50 caracteres.")
     @NotNull(message = "El nombre del rol no puede ser nulo.")
@@ -46,9 +52,30 @@ public class Rol extends Generic{
         }
     }
 
+    public boolean is(String nombreRol) {
+        return this.equals(new Rol(nombreRol));
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 43 * hash + (this.nombre != null ? this.nombre.hashCode() : 0);
+        return hash;
+    }
 
-    
-    
-    
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Rol other = (Rol) obj;
+        if ((this.nombre == null) ? (other.nombre != null) : !this.nombre.equals(other.nombre)) {
+            return false;
+        }
+        return true;
+    }
+
 }
