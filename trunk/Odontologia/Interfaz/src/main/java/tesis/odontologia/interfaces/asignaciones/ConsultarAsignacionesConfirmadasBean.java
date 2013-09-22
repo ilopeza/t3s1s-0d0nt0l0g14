@@ -5,11 +5,14 @@
 package tesis.odontologia.interfaces.asignaciones;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
@@ -20,6 +23,9 @@ import tesis.odontologia.core.service.CatedraService;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.TrabajoPracticoService;
+import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
+import tesis.odontologia.core.utils.FechaUtils;
+
 
 /**
  *
@@ -28,9 +34,8 @@ import tesis.odontologia.core.service.TrabajoPracticoService;
 @ManagedBean(name = "consultarAsignacionesConfirmadasBean")
 @ViewScoped
 public class ConsultarAsignacionesConfirmadasBean {
-    //Listas para cargar tablas
-    private List<AsignacionPaciente> asignacionesConfirmadas;
-    
+    //Lista para cargar Tablas
+    private List<AsignacionPacienteAux> asignacionesConfirmadas;
     //Atributos búsqueda avanzada.
     private Materia materiaFiltro;
     private Catedra catedraFiltro;
@@ -49,49 +54,81 @@ public class ConsultarAsignacionesConfirmadasBean {
     private MateriaService materiaService;
     @ManagedProperty(value = "#{catedraService}")
     private CatedraService catedraService;
-    @ManagedProperty(value="#{trabajoPracticoService}")
+    @ManagedProperty(value = "#{trabajoPracticoService}")
     private TrabajoPracticoService trabajoPracticoService;
-    
+
     public ConsultarAsignacionesConfirmadasBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         //Se cargan los combos.
         cargarCombos();
-        asignacionesConfirmadas = new ArrayList<AsignacionPaciente>();
+         asignacionesConfirmadas = new ArrayList<AsignacionPacienteAux>();
     }
-    
-    public void buscarAsignacionesConfirmadas() {
-        estadoFiltro = AsignacionPaciente.EstadoAsignacion.CONFIRMADA;
-        /*asignaciones = (List<AsignacionPaciente>) asignacionService.findAll(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro) );*/
-         asignacionesConfirmadas = (List<AsignacionPaciente>) asignacionPacienteService.findAll();
+
+    public List<AsignacionPacienteAux> buscarAsignacionesConfirmadas() {
         
+        List<AsignacionPaciente> asignaciones;
+        
+        estadoFiltro = AsignacionPaciente.EstadoAsignacion.CONFIRMADA;
+        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro));
+        for(AsignacionPaciente a: asignaciones){
+            asignacionesConfirmadas.add(new AsignacionPacienteAux(a));
+        }
+        
+        if (asignacionesConfirmadas == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No existen Asignaciones Confirmadas Actualmente.", null));
+            return null;
+        }
+        return asignacionesConfirmadas;
+
     }
 
     
     //MÉTODOS AUXILIARES
-    
-    private void cargarCombos(){
+
+    private void cargarCombos() {
         materias = buscarMaterias();
         catedras = buscarCatedras();
         trabajosPracticos = buscarTrabajosPracticos();
-    } 
-    private  List<Materia> buscarMaterias(){
+    }
+
+    private List<Materia> buscarMaterias() {
         return materiaService.findAll();
     }
-    
-    private List<Catedra> buscarCatedras(){
-        return catedraService.findAll();
+
+    public List<Catedra> buscarCatedras() {
+
+        if (materiaFiltro == null) {
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe seleccionar una materia", null));
+            return null;
+        } else {
+            catedras = materiaFiltro.getCatedra();
+            return catedras;
+        }
     }
-    
-    private List<TrabajoPractico> buscarTrabajosPracticos(){
-        return trabajoPracticoService.findAll();
+
+    public List<TrabajoPractico> buscarTrabajosPracticos() {
+         if (materiaFiltro == null) {
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe seleccionar una materia", null));
+            return null;
+        } else {
+            trabajosPracticos = materiaFiltro.getTrabajoPractico();
+            return trabajosPracticos;
+        }
     }
-    
-    
+
     // GETTERS Y SETTERS
-    
+    public List<AsignacionPacienteAux> getAsignacionesConfirmadas() {
+        return asignacionesConfirmadas;
+    }
+
+    public void setAsignacionesConfirmadas(List<AsignacionPacienteAux> asignacionesConfirmadas) {
+        this.asignacionesConfirmadas = asignacionesConfirmadas;
+    }
+   
     public AsignacionPaciente.EstadoAsignacion getEstadoFiltro() {
         return estadoFiltro;
     }
@@ -122,14 +159,6 @@ public class ConsultarAsignacionesConfirmadasBean {
 
     public void setMaterias(List<Materia> materias) {
         this.materias = materias;
-    }
-    
-    public List<AsignacionPaciente> getAsignacionesConfirmadas() {
-        return asignacionesConfirmadas;
-    }
-
-    public void setAsignacionesConfirmadas(List<AsignacionPaciente> asignacionesConfirmadas) {
-        this.asignacionesConfirmadas = asignacionesConfirmadas;
     }
 
     public Materia getMateriaFiltro() {
@@ -195,7 +224,45 @@ public class ConsultarAsignacionesConfirmadasBean {
     public void setTrabajoPracticoService(TrabajoPracticoService trabajoPracticoService) {
         this.trabajoPracticoService = trabajoPracticoService;
     }
+    // Clase Auxiliar
+    public class AsignacionPacienteAux {
+
+    private String paciente;
+    private String alumno;
+    private String fecha;
+
+    public AsignacionPacienteAux(AsignacionPaciente asignacionPaciente) {
+    this.paciente=asignacionPaciente.getPaciente().toString();
+    this.alumno=asignacionPaciente.getAlumno().toString();
+    this.fecha= FechaUtils.fechaMaskFormat(asignacionPaciente.getFechaAsignacion(),"dd/MM/yyyy HH:mm");
+    }
     
-    
-    
+
+    public String getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(String paciente) {
+        this.paciente = paciente;
+    }
+
+    public String getAlumno() {
+        return alumno;
+    }
+
+    public void setAlumno(String alumno) {
+        this.alumno = alumno;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
 }
+}
+
+
