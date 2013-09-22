@@ -96,8 +96,10 @@ public class MenuBean {
         submenu.getChildren().add(menuItem);
         menuItem = menuItem("Consultar Asignacion Paciente", "/pages/asignaciones/consultarAsignacionesPaciente.xhtml");
         submenu.getChildren().add(menuItem);
+        if (rol.is(Rol.PROFESOR)) {
         menuItem = menuItem("Consultar Asignaciones Confirmadas", "/pages/asignaciones/consultarAsignacionesConfirmadas.xhtml");
         submenu.getChildren().add(menuItem);
+        }
         menu.addSubmenu(submenu);
         }
         
