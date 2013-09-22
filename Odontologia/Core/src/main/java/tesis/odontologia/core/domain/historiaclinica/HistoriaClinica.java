@@ -70,10 +70,7 @@ public class HistoriaClinica extends Generic {
 
     public HistoriaClinica(int numero, Calendar fechaApertura, Persona realizoHistoriaClinica,
             List<Atencion> atencion, List<Diagnostico> diagnostico) {
-        fechaApertura = Calendar.getInstance();
-        atencion = new ArrayList<Atencion>();
-        diagnostico = new ArrayList<Diagnostico>();
-        detallesHC = new ArrayList<DetalleHistoriaClinica>();
+        this();
         this.numero = numero;
         this.fechaApertura = fechaApertura;
         this.realizoHistoriaClinica = realizoHistoriaClinica;
