@@ -6,34 +6,42 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:outputLabel value="CONSULTAR ASIGNACIONES CONFIRMADAS" style="padding: 400px; font-size: 20px; font: " />
+        <h:outputLabel value="CONSULTAR ASIGNACIONES DE PACIENTES CONFIRMADAS" style="padding: 400px; font-size: 20px; font: " />
 
-        <p:panel id="pnlConsultarAsignacionesConfirmadas" header="Parámetros de búsqueda">
-            <h:form id="consultarAsignacionesConfirmadasForm">
-                <h:panelGrid id="paramentros" columns="6" cellpadding="3" cellspacing="3">
-
+        <h:form id="consultarAsignacionesConfirmadasForm">
+            <p:panel id="pnlConsultarAsignacionesConfirmadas" header="Parámetros de búsqueda">
+                <h:panelGrid id="paramentros" columns="6" cellpadding="3" cellspacing="3">                 
+                    
                     <p:outputLabel value="Materia: "/>
                     <p:selectOneMenu id="selecciontMateriaBusqueda" value="#{consultarAsignacionesConfirmadasBean.materiaFiltro}" converter="materiaConverter">
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.materias}"/>
-                    </p:selectOneMenu>   
+                    
+                    <f:ajax event="change" render="seleccionCatedraBusqueda" execute="selecciontMateriaBusqueda"
+                              listener="#{consultarAsignacionesConfirmadasBean.buscarCatedras()}" />
+                    </p:selectOneMenu>
+                      
                     <p:outputLabel value="Cátedra: " />
                     <p:selectOneMenu id="seleccionCatedraBusqueda" value="#{consultarAsignacionesConfirmadasBean.catedraFiltro}" converter="catedraConverter">
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.catedras}"/>
                     </p:selectOneMenu>
+                    
                     <p:outputLabel value="Trabajo práctico: "/>
-                    <p:selectOneMenu id="selecciontTrabajoPracticoBusqueda" value="#{consultarAsignacionesConfirmadasBean.trabajoPracticoFiltro}">
+                    <p:selectOneMenu id="selecciontTrabajoPracticoBusqueda" value="#{consultarAsignacionesConfirmadasBean.trabajoPracticoFiltro}" converter="trabajoPracticoConverter">
+                       
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.trabajosPracticos}"/>
                     </p:selectOneMenu>
                 </h:panelGrid>
+                <br/>
+
                 <p:commandButton  id="btnBuscarAsignacionesConfirmadas" value="Buscar Asignaciones Confirmadas" 
                                   action="#{consultarAsignacionesConfirmadasBean.buscarAsignacionesConfirmadas()}" 
-                                  update=":exportarForm:tblResultadosAsignacionesConfirmadas"/>
-            </h:form>
-
-        </p:panel>
-
-        <p:panel id="pnlExportar" header="Exportar Resultados de la busqueda de alumnos">  
-            <h:form id="exportarForm">
+                                  process="@form"
+                                  update="tblResultadosAsignacionesConfirmadas">
+                </p:commandButton>
+            </p:panel>
+            <br/>
+            <br/>
+            <p:panel  id="pnlResultadosConsultarAsignacionesConfirmadas" header="Resultados de Búsqueda">
                 <p:dataTable id="tblResultadosAsignacionesConfirmadas" var="asignaciones" value="#{consultarAsignacionesConfirmadasBean.asignacionesConfirmadas}" paginator="true" rows="10">  
 
                     <f:facet name="header">
@@ -44,46 +52,41 @@
 
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Nombre Paciente" />  
+                            <h:outputText value="Paciente" />  
                         </f:facet>  
-                        <h:outputText value="#{asignaciones.paciente.nombre}" />  
+                        <h:outputText value="#{asignaciones.paciente}" />  
                     </p:column>  
 
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Apellido Paciente" />  
+                            <h:outputText value="Alumno" />  
                         </f:facet>  
-                        <h:outputText value="#{asignaciones.paciente.apellido}"/>  
+                        <h:outputText value="#{asignaciones.alumno}" />  
                     </p:column>  
 
-                    <p:column>  
-                        <f:facet name="header">  
-                            <h:outputText value="Nombre Alumno" />  
-                        </f:facet>  
-                        <h:outputText value="#{asignaciones.alumno.nombre}" />  
-                    </p:column>  
-
-                    <p:column>  
-                        <f:facet name="header">  
-                            <h:outputText value="Apellido Alumno" />  
-                        </f:facet>  
-                        <h:outputText value="#{asignaciones.alumno.apellido}" />  
-                    </p:column>
 
                     <p:column>  
                         <f:facet name="header">  
                             <h:outputText value="Fecha de Atención" />  
                         </f:facet>  
-                        <h:outputText value="#{asignaciones.fechaAsignacion}" />  
+                        <h:outputText value="#{asignaciones.fecha}"/>
                     </p:column>
-
+                    
                 </p:dataTable>
+            </p:panel>
+            <br/>
+            <br/>
+            <p:panel id="pnlExportarAsignacionesConfirmadas" header="Exportar Datos">
+                <h:commandLink>  
+                    <p:graphicImage library="images" name ="Excel.png" />  
+                    <p:dataExporter type="xls" target="tblResultadosAsignacionesConfirmadas" fileName="Busqueda Paciente Confirmados"/>  
+                </h:commandLink>
                 <h:commandLink>
-                    <p:graphicImage value="/Images/pdf.jpg" />  
+                    <p:graphicImage library="images" name ="pdf.png" />  
                     <p:dataExporter type="pdf" target="tblResultadosAsignacionesConfirmadas" fileName="Busqueda Paciente Confirmados"/>  
-                </h:commandLink>  
-            </h:form>
-        </p:panel>  
+                </h:commandLink> 
+            </p:panel>
+        </h:form>
 
     </ui:define>
 </ui:composition>
