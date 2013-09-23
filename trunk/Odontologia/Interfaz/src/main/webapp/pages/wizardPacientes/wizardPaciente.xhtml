@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:outputLabel value="REGISTRO DE PACIENTE" style="padding: 400px; font-size: 20px; font: " />
+        <h:form id="consultarPacienteForm">
+            <p:panel id="pnlConsultarPaciente" header="CONSULTAR PACIENTE" >
+
+                <h:outputLabel value="Número de documento: "/>
+                <p:inputText id="txtDocumentoBusqueda" value="#{pacienteWizardBean.numDocumentoBusqueda}"/>
+
+                <h:outputLabel value="Nombre o apellido: "/>
+                <p:inputText id="txtNombreBusqueda" value="#{pacienteWizardBean.nombreApellidoBusqueda}"/>
+
+                <p:commandButton value="Buscar" id="btnBuscar"
+                                 process="@form"
+                                 oncomplete="dlgPacientesEncontrados.show()"
+                                 update=":secondaryForm:tablaPacientesEncontrados" 
+                                 actionListener="#{pacienteWizardBean.buscarPacientes()}" 
+                                 icon="ui-icon-search"/>
+
+                <p:commandButton value="Modificar" id="btnModificar"
+                                 actionListener="#{pacienteWizardBean.habilitar}"
+                                 disabled="#{!pacienteWizardBean.estaDeshabilitado}"
+                                 update="pnlConsultarPaciente, 
+                                 :formWizard"/>
+
+            </p:panel>
+        </h:form>
+        <p:panel id="pnlTabsPaciente" header="DATOS PACIENTE">
+            <h:form id="formWizard">
+                <p:wizard id="wizardPaciente">
+                    <p:tab title="Datos personales" id="tabDatosPersonales">
+                        <ui:include src="./tabsWizardPaciente/tabDatosPersonales.xhtml"/>
+                    </p:tab>
+                    <p:tab title="Datos de la consulta" id="tabDatosConsulta">
+                        <ui:include src="./tabsWizardPaciente/tabDatosConsulta.xhtml"/>
+                    </p:tab>
+                    <p:tab title="Diagnóstico" id="tabDatosDiagnostico">
+                        <ui:include src="./tabsWizardPaciente/tabDiagnostico.xhtml"/>
+                    </p:tab>
+                </p:wizard>
+            </h:form>
+        </p:panel>
+
+        <p:dialog header="Busqueda Pacientes" widgetVar="dlgPacientesEncontrados" resizable="false" appendToBody="true" modal="true" >
+            <h:form id="secondaryForm">
+                <p:dataTable id="tablaPacientesEncontrados" 
+                             var="paciente" value="#{pacienteWizardBean.pacientesEncontrados}"
+                             selectionMode="single"
+                             selection="#{pacienteWizardBean.selectedPaciente}"
+                             rowKey="#{paciente.id}"
+                             paginator="true"
+                             paginatorAlwaysVisible="false"
+                             rows="10">
+
+                    <f:facet name="header" >  
+                        <p:outputPanel>  
+                            <h:outputText value="Busqueda de Pacientes" />                  
+                        </p:outputPanel>  
+                    </f:facet>                                   
+
+                    <p:column headerText="Documento">  
+                        <h:outputText value="#{paciente.documento}" />  
+                    </p:column>
+
+                    <p:column headerText="Apellido y Nombre">  
+                        <h:outputText value="#{paciente}" />  
+                    </p:column>
+
+                    <p:column headerText="Domicilio">  
+                        <h:outputText value="#{paciente.domicilio}" />  
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                <p:commandButton value="Seleccionar" id="btnAceptar" 
+                                 oncomplete="dlgPacientesEncontrados.hide()"
+                                 actionListener="#{pacienteWizardBean.mostrarPacienteSeleccionado()}"
+                                 update=":formWizard:wizardPaciente,
+                                 :consultarPacienteForm:pnlConsultarPaciente" />
+            </h:form>
+            
+        </p:dialog>            
+    </ui:define>
+</ui:composition>
+
+
