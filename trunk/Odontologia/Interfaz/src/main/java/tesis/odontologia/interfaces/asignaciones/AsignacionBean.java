@@ -31,7 +31,6 @@ import tesis.odontologia.core.service.TrabajoPracticoService;
 import tesis.odontologia.core.specification.AlumnoSpecs;
 import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
 import tesis.odontologia.core.specification.PacienteSpecs;
-import tesis.odontologia.core.specification.PersonaSpecs;
 import tesis.odontologia.interfaces.util.Utiles;
 
 /**
@@ -43,8 +42,6 @@ import tesis.odontologia.interfaces.util.Utiles;
 public class AsignacionBean {
 
     private AsignacionPaciente asignacion;
-   
-    private Diagnostico diagnostico;
 
     private Date fechaAsignacion;
     //Listas para cargar combos.
@@ -89,6 +86,7 @@ public class AsignacionBean {
         //Se cargan los combos.
         cargarCombos();
         pacientes = new ArrayList<Paciente>();
+        
     }
 
     public String save() {
@@ -102,9 +100,9 @@ public class AsignacionBean {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un paciente.", null));
             return null;
         }
-        if (materiaFiltro == null) {
+        if (trabajoPracticoFiltro == null) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono una materia.", null));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un trabajo práctico.", null));
             return null;
         }
         if (fechaAsignacion == null) {
@@ -113,16 +111,9 @@ public class AsignacionBean {
             return null;
         }
 
-        asignacion = new AsignacionPaciente();
-        asignacion.setAlumno(alumnoBuscado);
-        asignacion.setPaciente(pacienteSeleccionado);
-        Calendar fecha = new GregorianCalendar();
-        fecha.setTime(fechaAsignacion);
-        asignacion.setFechaAsignacion(fecha);
-        asignacion.setDiagnostico(diagnostico);
-        asignacion.setCatedra(catedraFiltro);
-        //asignacion.setMateria(materia);
-
+        //Crea la asinación y le setea los atributos.
+        this.createAsignacionPaciente(alumnoBuscado, pacienteSeleccionado, catedraFiltro, pacienteSeleccionado.getHistoriaClinica().getDiagnosticoByTrabajoPractico(trabajoPracticoFiltro));
+        
         try {
             asignacion = asignacionPacienteService.save(asignacion);
             asignaciones.add(asignacion);
@@ -159,13 +150,24 @@ public class AsignacionBean {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "El filtro de busqueda de paciente no puede estar vacio.", null));
             return;
         }
-        pacientes = (List<Paciente>) personaService
-                .findAll(PacienteSpecs.byNombreOApellido(filtroPaciente).
-                and(PersonaSpecs.byClass(Paciente.class)));
+        pacientes = (List<Paciente>) personaService.findAll(PacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro).and(PacienteSpecs.byNombreOApellido(filtroPaciente)));
+//                .findAll(PacienteSpecs.byNombreOApellido(filtroPaciente).
+//                and(PersonaSpecs.byClass(Paciente.class).and(PacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro))));
         if (pacientes == null || pacientes.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
         }
+    }
+    
+    public void createAsignacionPaciente(Alumno a, Paciente p, Catedra c, Diagnostico d){
+        asignacion = new AsignacionPaciente();
+        asignacion.setAlumno(a);
+        asignacion.setPaciente(p);
+        Calendar fecha = new GregorianCalendar();
+        fecha.setTime(fechaAsignacion);
+        asignacion.setFechaAsignacion(fecha);
+        asignacion.setCatedra(c);
+        asignacion.setDiagnostico(d);
     }
 
     public void buscarAlumno() {
@@ -186,10 +188,12 @@ public class AsignacionBean {
      * Busca las asignaciones PENDIENTES de un paciente para una materia y TP seleccionados.
      */
     public void buscarAsignaciones() {
-        
+        asignaciones = new ArrayList<AsignacionPaciente>();
         asignaciones = (List<AsignacionPaciente>) 
-                asignacionPacienteService.findAll();
-//        AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
+                asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
+                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
+//        .AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
+                //and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE))
 //                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE).
 //                and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro))));
         
