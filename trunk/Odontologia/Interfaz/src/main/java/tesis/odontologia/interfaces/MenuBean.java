@@ -54,7 +54,7 @@ public class MenuBean {
         }
         //Opciones
         if (rol.is(Rol.ALUMNO) || rol.is(Rol.RESPONSABLE)) {
-            menuItem = menuItem("Registrar Paciente", "/pages/pacientesPrueba/wizardPaciente.xhtml");
+            menuItem = menuItem("Registrar Paciente", "/pages/wizardPacientes/wizardPaciente.xhtml");
             submenu.getChildren().add(menuItem);
             menu.addSubmenu(submenu);
         }
