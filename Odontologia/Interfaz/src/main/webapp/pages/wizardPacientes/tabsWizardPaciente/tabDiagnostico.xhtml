@@ -48,41 +48,54 @@
 
         <p:commandButton value="Agregar" icon="ui-icon-circle-plus" 
                          process="@parent"
-                         update="fldsNuevoDiagnóstico"
+                         update="pnlDiagnosticosCargados"
                          actionListener="#{pacienteWizardBean.agregarDiagnostico()}"/>
-        
-        <p:dataTable id="tblVerDiagnosticosCargados" 
-                     emptyMessage="Paciente sin diagnósticos cargados"
-                     paginator="true" 
-                     selectionMode="single"
-                     value="#{pacienteWizardBean.paciente.historiaClinica.diagnostico}"
-                     selection="#{pacienteWizardBean.selectedDiagnostico}"
-                     var="d"
-                     rowKey="#{d.id}">
-            <f:facet name="header">
-                <h:outputText value="Diagnósticos del paciente #{pacienteWizardBean.paciente}" />
-            </f:facet>
-            <p:column id="colMateria" headerText="Materia">
-                <h:outputText value="#{d.materia}" />
-            </p:column>
-            <p:column id="colTrabajoPractico" headerText="Trabajo práctico">
-                <h:outputText value="#{d.trabajoPractico}" />
-            </p:column>
-            <p:column id="colDescripcion" headerText="Descripción">
-                <h:outputText value="#{d.descripcion}" />
-            </p:column>
-            <p:column id="colEstado" headerText="Estado del diagnóstico">
-                <h:outputText value="#{d.estado}" />
-            </p:column>
-            <p:column id="colAcciones" headerText="Acciones">
-                <h:panelGrid columns="3">
-                    <p:commandButton id="btnVer"  icon="ui-icon-check"/>
-                    <p:commandButton id="btnCancelar" icon="ui-icon-cancel"/>
-                    <p:commandButton id="btnModificar" icon="ui-icon-gear"/>
-                </h:panelGrid> 
-            </p:column>
-        </p:dataTable>
-  
+
+        <p:panel id="pnlDiagnosticosCargados" header="Diagnósticos cargados">
+
+            <p:dataTable id="tblVerDiagnosticosCargados" 
+                         emptyMessage="Paciente sin diagnósticos cargados"
+                         paginator="true" 
+                         value="#{pacienteWizardBean.paciente.historiaClinica.diagnostico}"
+                         var="d">
+                <f:facet name="header">
+                    <h:outputText value="Diagnósticos del paciente #{pacienteWizardBean.paciente}" />
+                </f:facet>
+                <p:column id="colMateria" headerText="Materia">
+                    <h:outputText value="#{d.materia}" />
+                </p:column>
+                <p:column id="colTrabajoPractico" headerText="Trabajo práctico">
+                    <h:outputText value="#{d.trabajoPractico}" />
+                </p:column>
+                <p:column id="colDescripcion" headerText="Descripción">
+                    <h:outputText value="#{d.descripcion}" />
+                </p:column>
+                <p:column id="colEstado" headerText="Estado del diagnóstico">
+                    <h:outputText value="#{d.estado}" />
+                </p:column>
+                <p:column id="colAcciones" headerText="Acciones">
+                    <h:panelGrid columns="3" cellpadding="1" cellspacing="1">
+                        <p:commandButton id="btnVer" icon="ui-icon-check">
+                            <f:setPropertyActionListener value="#{d}"
+                                                         target="#{pacienteWizardBean.selectedDiagnostico}" />
+
+                        </p:commandButton>
+                        <p:commandButton id="btnCancelar" icon="ui-icon-cancel" 
+                                         oncomplete="dlgCancDiag.show()">
+                            <f:setPropertyActionListener value="#{d}"
+                                                         target="#{pacienteWizardBean.selectedDiagnostico}" />
+
+                        </p:commandButton>
+                        <p:commandButton id="btnModificar" icon="ui-icon-gear" 
+                                         actionListener="#{pacienteWizardBean.modificarDiagnostico()}"
+                                         update="@form">
+                            <f:setPropertyActionListener value="#{d}"
+                                                         target="#{pacienteWizardBean.selectedDiagnostico}" />
+                        </p:commandButton>
+                    </h:panelGrid> 
+                </p:column>
+            </p:dataTable>
+        </p:panel>
 
     </p:fieldset>
     <br/>
@@ -94,5 +107,8 @@
                          update=":msg"
                          value="Guardar"/>
     </p:fieldset>
+
+    
+    
 </html>
 

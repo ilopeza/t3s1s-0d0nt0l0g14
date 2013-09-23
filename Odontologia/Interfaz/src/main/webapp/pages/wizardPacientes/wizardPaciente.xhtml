@@ -87,8 +87,29 @@
                                  update=":formWizard:wizardPaciente,
                                  :consultarPacienteForm:pnlConsultarPaciente" />
             </h:form>
-            
-        </p:dialog>            
+
+        </p:dialog>  
+
+        <!--p:confirmDialog id="dlgCancelarDiagnostico" widgetVar="dlgCancDiag"
+                         message="¿Realmente desea cancelar el diagnóstico?" header="Confirmar cancelación de diagnóstico"
+                         closable="false" >
+            <p:commandButton value="Sí" actionListener="{pacienteWizardBean.cancelarDiagnostico()}"
+                             update="formWizard:tblVerDiagnosticosCargados" oncomplete="dlgCancDiag.hide()"/>
+            <p:commandButton value="No" onclick="dlgCancDiag.hide();" type="button" />
+        </p:confirmDialog-->
+
+        <p:dialog id="dlgCancelarDiagnostico" header="Confirmar" widgetVar="dlgCancDiag" 
+                  resizable="false" draggable="false"
+                  closable="false" height="130"  width="300" modal="false">  
+
+            <h:panelGrid columns="2" cellpadding="5"> 
+                
+                <p:commandButton value="Sí" actionListener="#{pacienteWizardBean.cancelarDiagnostico()}"
+                                 update="formWizard:tblVerDiagnosticosCargados" oncomplete="dlgCancDiag.hide()"/>
+                <p:commandButton value="No" onclick="dlgCancDiag.hide();" type="button" />
+            </h:panelGrid>  
+
+        </p:dialog>
     </ui:define>
 </ui:composition>
 
