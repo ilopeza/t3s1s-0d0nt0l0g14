@@ -9,7 +9,9 @@ import java.util.Calendar;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.asignaciones.QAsignacionPaciente;
+import tesis.odontologia.core.domain.historiaclinica.QDiagnostico;
 import tesis.odontologia.core.domain.materia.Materia;
+import tesis.odontologia.core.domain.materia.QTrabajoPractico;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
 
@@ -42,6 +44,14 @@ public class AsignacionPacienteSpecs {
     }
     
     public static BooleanExpression byTrabajoPractico(TrabajoPractico tp){
-        return $.diagnostico.trabajoPractico.id.eq(tp.getId());
+//        Long id = tp.getId();
+//        QDiagnostico di = getDiagnostico();
+//        return di.trabajoPractico.id.eq(id);
+        QTrabajoPractico qtp = getTrabajoPractico();
+        return qtp.id.eq(tp.getId());
+    }
+    
+    public static QTrabajoPractico getTrabajoPractico(){
+        return $.diagnostico.trabajoPractico;
     }
 }

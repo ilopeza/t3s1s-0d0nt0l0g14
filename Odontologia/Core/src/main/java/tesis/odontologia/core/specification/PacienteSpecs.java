@@ -12,6 +12,7 @@ import java.util.List;
 import tesis.odontologia.core.domain.QPersona;
 import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
 import tesis.odontologia.core.domain.materia.Materia;
+import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.domain.paciente.QPaciente;
 
@@ -59,6 +60,10 @@ public class PacienteSpecs {
     
     public static BooleanExpression byTipoPersona(Object t){
         return $.instanceOf(Paciente.class); 
+    }
+    
+    public static BooleanExpression byTrabajoPractico(TrabajoPractico tp){
+        return $.historiaClinica.diagnostico.any().trabajoPractico.eq(tp);
     }
             
 
