@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.event.FlowEvent;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.Domicilio;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
@@ -202,7 +203,7 @@ public class PacienteWizardBean {
                         + " actualizado correctamente."));
             } else {
                 HistoriaClinica hc = HistoriaClinica.createDefault();
-                hc.setDiagnostico(diagnosticos);
+                hc.setDiagnostico(paciente.getHistoriaClinica().getDiagnostico());
                 paciente.setHistoriaClinica(hc);
 
                 getPersonaService().save(paciente);
@@ -226,6 +227,20 @@ public class PacienteWizardBean {
         paciente.getHistoriaClinica().getDiagnostico().add(diagnostico);
         //diagnosticos.add(diagnostico);
         diagnostico = new Diagnostico();
+    }
+    
+    public void cancelarDiagnostico(){
+        //selectedDiagnostico.setEstado(Diagnostico.EstadoDiagnostico.CANCELADO);
+        for(Diagnostico d: paciente.getHistoriaClinica().getDiagnostico()){
+            if(d.equals(selectedDiagnostico)){
+                d.setEstado(Diagnostico.EstadoDiagnostico.CANCELADO);
+                break;
+            }
+        }
+    }
+    
+    public void modificarDiagnostico(){
+        diagnostico = selectedDiagnostico;
     }
 
 
