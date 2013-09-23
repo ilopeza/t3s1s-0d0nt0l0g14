@@ -6,8 +6,9 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        <h:outputLabel value="Modificar datos de usuario" style="padding: 400px; font-size: 20px; " />
+        
         <h:form id="formModificarDatosUsuario">
+            <h:outputLabel value="Modificar datos de usuario" style="padding: 400px; font-size: 20px; " />
             <p:panel id="pnlModificarDatosUsuario" header="Datos de usuario">
             <h:panelGrid id="gridModificarDatosUsuario" cellpadding="3" cellspacing="3" columns="2">
 
@@ -15,7 +16,7 @@
                     <h:outputLabel value="Nombre: "/>
                 </p:column>
                 <p:column>
-                    <p:inputText id="txtModificarNombre" />
+                    <p:inputText id="txtModificarNombre" value="#{modificarDatosUsuarioBean.persona.nombre}" />
                 </p:column>
 
                 <p:column>
@@ -23,7 +24,7 @@
                 </p:column>
 
                 <p:column>
-                    <p:inputText id="txtModificarApellido"/>
+                    <p:inputText id="txtModificarApellido" value="#{modificarDatosUsuarioBean.persona.apellido}"/>
                 </p:column>
 
                 <p:column>
@@ -31,7 +32,7 @@
                 </p:column>
 
                 <p:column>
-                    <p:inputText id="txtModificarEmail" />
+                    <p:inputText id="txtModificarEmail" value="#{modificarDatosUsuarioBean.usuario.email}"/>
                 </p:column>
 
                 <p:column>
@@ -39,23 +40,15 @@
                 </p:column>
 
                 <p:column>
-                    <p:inputText id="txtModificarFechaNacimiento" />
+                    <p:calendar id="txtModificarFechaNacimiento" value="#{modificarDatosUsuarioBean.persona.fechaNacimiento.time}"/>
                 </p:column>
 
                 <p:column>
-                    <h:outputLabel value="Tipo de documento: "/>
+                    <h:outputLabel value="Documento: "/>
                 </p:column>
 
                 <p:column>
-                    <h:outputLabel id="txtModificarTipoDocumento" />
-                </p:column>
-
-                <p:column>
-                    <h:outputLabel value="N° de documento: "/>
-                </p:column>
-
-                <p:column>
-                    <h:outputLabel id="txtModificarDocumento" />
+                    <p:inputText id="txtModificarDocumento" disabled="true" value="#{modificarDatosUsuarioBean.persona.documento}"/>
                 </p:column>
 
                 <p:column>
@@ -65,8 +58,12 @@
 
             </h:panelGrid>
 
-            <p:dialog id="messages" widgetVar="dlgConfirmarModificacionUsuario" modal="true" closable="true" appendToBody="true"
+            
+        </p:panel>
+        </h:form>   
+        <p:dialog id="messages" widgetVar="dlgConfirmarModificacionUsuario" modal="true" closable="true" appendToBody="true"
                       header="Confirmar modificacion de usuario">
+            <h:form>
 
                 <h:panelGrid id="pnlConfirmacionDatosUsuario" cellpadding="3" cellspacing="3" columns="5">
                     <h:column>
@@ -81,10 +78,9 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"
                                  oncomplete="dlgConfirmarModificacionUsuario.hide()"/>
+                </h:form>
             </p:dialog>
 
-        </p:panel>
-        </h:form>        
     </ui:define>
 
 </ui:composition>
