@@ -104,7 +104,7 @@ public class Paciente extends Persona {
     public Paciente(String nombre, String apellido) {
         super(nombre, apellido);
     }
-
+    
     //GETTERS AND SETTERS
     public boolean isSexoFemenino() {
         return sexoFemenino;

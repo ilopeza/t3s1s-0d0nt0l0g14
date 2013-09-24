@@ -163,6 +163,12 @@ public class AsignacionPaciente extends Generic{
             return "Confirmada";
         }
     },
+    CANCELADO {
+        @Override
+        public String toString() {
+            return "Cancelado";
+        }
+    },
     REALIZADO {
         @Override
         public String toString() {
