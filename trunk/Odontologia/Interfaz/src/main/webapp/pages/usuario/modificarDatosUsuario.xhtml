@@ -6,63 +6,92 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        
+
         <h:form id="formModificarDatosUsuario">
             <h:outputLabel value="Modificar datos de usuario" style="padding: 400px; font-size: 20px; " />
             <p:panel id="pnlModificarDatosUsuario" header="Datos de usuario">
-            <h:panelGrid id="gridModificarDatosUsuario" cellpadding="3" cellspacing="3" columns="2">
+                <h:panelGrid id="gridModificarDatosUsuario" cellpadding="3" cellspacing="3" columns="2">
 
-                <p:column>
-                    <h:outputLabel value="Nombre: "/>
-                </p:column>
-                <p:column>
-                    <p:inputText id="txtModificarNombre" value="#{modificarDatosUsuarioBean.persona.nombre}" />
-                </p:column>
+                    <p:column>
+                        <h:outputLabel value="Nombre: "/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtModificarNombre" value="#{modificarDatosUsuarioBean.persona.nombre}" />
+                    </p:column>
 
-                <p:column>
-                    <h:outputLabel value="Apellido: "/>
-                </p:column>
+                    <p:column>
+                        <h:outputLabel value="Apellido: "/>
+                    </p:column>
 
-                <p:column>
-                    <p:inputText id="txtModificarApellido" value="#{modificarDatosUsuarioBean.persona.apellido}"/>
-                </p:column>
+                    <p:column>
+                        <p:inputText id="txtModificarApellido" value="#{modificarDatosUsuarioBean.persona.apellido}"/>
+                    </p:column>
 
-                <p:column>
-                    <h:outputLabel value="E-mail: "/>
-                </p:column>
+                    <p:column>
+                        <h:outputLabel value="E-mail: "/>
+                    </p:column>
 
-                <p:column>
-                    <p:inputText id="txtModificarEmail" value="#{modificarDatosUsuarioBean.usuario.email}"/>
-                </p:column>
+                    <p:column>
+                        <p:inputText id="txtModificarEmail" value="#{modificarDatosUsuarioBean.usuario.email}"/>
+                    </p:column>
 
-                <p:column>
-                    <h:outputLabel value="Fecha Nacimiento: "/>
-                </p:column>
+                    <p:column>
+                        <h:outputLabel value="Fecha Nacimiento: "/>
+                    </p:column>
 
-                <p:column>
-                    <p:calendar id="txtModificarFechaNacimiento" value="#{modificarDatosUsuarioBean.persona.fechaNacimiento.time}"/>
-                </p:column>
+                    <p:column>
+                        <p:calendar id="txtModificarFechaNacimiento" value="#{modificarDatosUsuarioBean.persona.fechaNacimiento.time}"/>
+                    </p:column>
 
-                <p:column>
-                    <h:outputLabel value="Documento: "/>
-                </p:column>
+                    <p:column>
+                        <h:outputLabel value="Documento: "/>
+                    </p:column>
 
-                <p:column>
-                    <p:inputText id="txtModificarDocumento" disabled="true" value="#{modificarDatosUsuarioBean.persona.documento}"/>
-                </p:column>
+                    <p:column>
+                        <p:inputText id="txtModificarDocumento" disabled="true" value="#{modificarDatosUsuarioBean.persona.documento}"/>
+                    </p:column>
 
-                <p:column>
-                    <p:commandButton value="Guardar" id="btnAceptarModificacionDatosUsuario"/>
-                    <p:commandButton value="Cancelar" id="btnCancelarModificacionDatosUsuario"/>
-                </p:column>
+                </h:panelGrid>            
+            </p:panel>
+            <p:panel id="pnlCambiarContraseña" header="Cambiar contraseña">
+                <h:panelGrid id="gridModificarPassword" cellpadding="3" cellspacing="3" columns="1">
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Contraseña actual: "/>
+                        </p:column>
+                        <p:column>
+                            <h:inputSecret id="txtContraseñaActual" value="#{modificarDatosUsuarioBean.contraseñaActual}" required="true"/>
+                        </p:column>
+                    </p:row>
 
-            </h:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Nueva contraseña: "/>
+                        </p:column>
+                        <p:column>
+                            <h:inputSecret id="txtNuevaContraseña" value="#{modificarDatosUsuarioBean.nuevaContraseña}" required="true"/>
+                        </p:column>
+                    </p:row>
 
-            
-        </p:panel>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Repetir contraseña: "/>
+                        </p:column>
+                        <p:column>
+                            <h:inputSecret id="txtRepetirContraseña" value="#{modificarDatosUsuarioBean.repetirContraseña}" required="true"/>
+                        </p:column>
+                    </p:row>
+                </h:panelGrid>
+
+            </p:panel>
+
+            <p:commandButton value="Guardar" id="btnAceptarModificacionDatosUsuario" 
+                             action="#{modificarDatosUsuarioBean.cambiarContraseña()}"/>
+            <p:commandButton value="Cancelar" id="btnCancelarModificacionDatosUsuario"/>
+
         </h:form>   
         <p:dialog id="messages" widgetVar="dlgConfirmarModificacionUsuario" modal="true" closable="true" appendToBody="true"
-                      header="Confirmar modificacion de usuario">
+                  header="Confirmar modificacion de usuario">
             <h:form>
 
                 <h:panelGrid id="pnlConfirmacionDatosUsuario" cellpadding="3" cellspacing="3" columns="5">
@@ -72,14 +101,14 @@
                     <h:column>
                         <h:outputLabel value="Apellido: "/>
                     </h:column>                    
-                    
+
                 </h:panelGrid>
 
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"
                                  oncomplete="dlgConfirmarModificacionUsuario.hide()"/>
-                </h:form>
-            </p:dialog>
+            </h:form>
+        </p:dialog>
 
     </ui:define>
 
