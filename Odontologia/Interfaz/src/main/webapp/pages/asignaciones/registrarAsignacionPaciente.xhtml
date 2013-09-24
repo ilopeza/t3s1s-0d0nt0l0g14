@@ -54,7 +54,8 @@
                 <p:dataTable id="tblAsignacionesAlumno" 
                              var="asignacion" 
                              value="#{asignacionBean.asignaciones}" 
-                             emptyMessage="Alumno sin asignaciones">
+                             emptyMessage="Alumno sin asignaciones"
+                             rowKey="#{asignacion.id}">
                     <f:facet name="header">
                         <h:outputText value="Asignaciones del alumno #{asignacionBean.alumnoBuscado.toString()}" />
                     </f:facet>
@@ -62,7 +63,7 @@
                         <h:outputText value="#{asignacion.paciente}" />
                     </p:column>
                     <p:column id="Alumno" headerText="Alumno">
-                        <h:outputText value="#{asignacion.alumno.toString}" />
+                        <h:outputText value="#{asignacion.alumno}" />
                     </p:column>
                     <p:column id="FechaAsignacion" headerText="Fecha Asignacion">
                         <h:outputText value="#{asignacionBean.fechaFormateada(asignacion.fechaAsignacion)}" />
@@ -74,27 +75,16 @@
 
             </p:panel> 
         </h:form>
-        <!--
-        <h:outputLabel value="Filtro de materia" style=" font-size: 15px"/>
+        <h:form id="busquedaPacienteForm">
+            <p:panel id="pnlBusquedaPaciente" header="Búscar paciente">
 
-        <h:panelGrid id="gridMaterias" columns="8" cellpadding="3" cellspacing="3" >
-            <h:outputLabel value="Materia"/>
-            <p:selectOneMenu id="selectMateria" value="{asignacionBean.materia}">  
-                <f:selectItems value="{asignacionBean.materias}" />  
-                <f:converter converterId="materiaConverter" />
-            </p:selectOneMenu>  
-        </h:panelGrid>
-        <br/>-->
-
-        <p:panel id="pnlBusquedaPaciente" header="Búscar paciente">
-            <h:form id="busquedaPacienteForm">
                 <h:panelGrid id="pnlBusquedaAsignacion" cellpadding="3" cellspacing="3" columns="5">
 
                     <p:column>
                         <p:outputLabel value="Nombre o apellido: "/>
                     </p:column>
                     <p:column>
-                        <p:inputText value="#{asignacionBean.filtroPaciente}"/>
+                        <p:inputText value="#{asignacionBean.filtroPaciente}" id="txtFiltroPaciente"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel value="Número de documento: "/>
@@ -107,7 +97,7 @@
                                          actionListener="#{asignacionBean.buscarPacientes()}" 
                                          update="tblResultadosBusquedaPacienteAsignacion, :msg" 
                                          icon="ui-icon-search"
-                                         process="@this, pnlBusquedaAsignacion"/> 
+                                         process="@this, :busquedaAlumnoForm, txtFiltroPaciente"/> 
                     </p:column>
                 </h:panelGrid>
                 <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
@@ -140,16 +130,15 @@
 
                 <h:panelGrid columns="3" cellpadding="3" cellspacing="3">
                     <p:outputLabel value="Fecha de asignacion: "></p:outputLabel>
-                    <p:calendar value="#{asignacionBean.fechaAsignacion}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" />
+                    <p:calendar value="#{asignacionBean.fechaAsignacion}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" id="txtFechaAsignacion"/>
                     <p:commandButton id="asignar" value="Asignar" 
                                      action="#{asignacionBean.save}"
                                      update=":msg"
-                                     process="@this, :busquedaAlumnoForm:pnlParametrosBusqueda "
+                                     process="@this, :busquedaAlumnoForm, tblResultadosBusquedaPacienteAsignacion, txtFechaAsignacion "
                                      icon="ui-icon-circle-check"/> 
                 </h:panelGrid>
-            </h:form>
-        </p:panel>
-
+            </p:panel>
+        </h:form>
 
         <p:spacer width="10px"/>
 
