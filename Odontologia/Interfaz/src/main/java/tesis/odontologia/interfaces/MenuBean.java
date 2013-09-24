@@ -109,10 +109,10 @@ public class MenuBean {
         //Opciones
         menuItem = menuItem("Recuperar contraseña", "/pages/usuario/recuperarPassword.xhtml");
         submenu.getChildren().add(menuItem);
-        menuItem = menuItem("Caducar sesión", "/pages/usuario/caducarSesion.xhtml");
-        submenu.getChildren().add(menuItem);
-        menuItem = menuItem("Iniciar sesión", "/pages/usuario/iniciarSesion.xhtml");
-        submenu.getChildren().add(menuItem);
+//        menuItem = menuItem("Caducar sesión", "/pages/usuario/caducarSesion.xhtml");
+//        submenu.getChildren().add(menuItem);
+//        menuItem = menuItem("Iniciar sesión", "/pages/usuario/iniciarSesion.xhtml");
+//        submenu.getChildren().add(menuItem);
         menu.addSubmenu(submenu);
         }
     }
