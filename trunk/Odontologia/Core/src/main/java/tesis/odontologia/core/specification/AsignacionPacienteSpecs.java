@@ -54,4 +54,8 @@ public class AsignacionPacienteSpecs {
     public static QTrabajoPractico getTrabajoPractico(){
         return $.diagnostico.trabajoPractico;
     }
+ 
+    public static BooleanExpression byNombreOApellido(String nombApp) {
+        return $.paciente.nombre.containsIgnoreCase(nombApp).or($.paciente.apellido.containsIgnoreCase(nombApp));
+    }
 }
