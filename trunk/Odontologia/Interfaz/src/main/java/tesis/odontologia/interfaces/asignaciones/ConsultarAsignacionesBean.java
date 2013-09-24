@@ -5,6 +5,7 @@
 package tesis.odontologia.interfaces.asignaciones;
 
 import com.mysema.query.types.Predicate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -12,8 +13,10 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente.EstadoAsignacion;
@@ -21,18 +24,21 @@ import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
+import tesis.odontologia.core.domain.usuario.Rol;
 import tesis.odontologia.core.service.AsignacionPacienteService;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.specification.AlumnoSpecs;
 import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
+import tesis.odontologia.core.utils.FechaUtils;
+import tesis.odontologia.interfaces.login.LoginBean;
 
 /**
  *
  * @author Ignacio
  */
 @ManagedBean(name = "consultarAsignacionesBean")
-@RequestScoped
+@ViewScoped
 public class ConsultarAsignacionesBean {
 
     //Atributo a manejar.
@@ -45,49 +51,92 @@ public class ConsultarAsignacionesBean {
     private Materia materiaFiltro;
     private Catedra catedraFiltro;
     private TrabajoPractico trabajoPracticoFiltro;
-    
-    
     private EstadoAsignacion estadoFiltro;
-    private Paciente pacienteFiltro;
+    private String pacienteFiltro;
     private Calendar fechaFiltro;
     private String nroDocumentoFiltro;
     //Atributos para llenar la tabla.
     private List<AsignacionPaciente> asignaciones;
     private AsignacionPaciente asignacionSeleccionada;
+    private List<Paciente> pacientes;
+    //Sesión
+    private Rol rol;
+    private boolean rendered = true;
     //Servicios usados.
-    @ManagedProperty(value = "#{asignacionService}")
-    private AsignacionPacienteService asignacionService;
-    @ManagedProperty(value = "#{alumnoService}")
-    private PersonaService alumnoService;
+    @ManagedProperty(value = "#{asignacionPacienteService}")
+    private AsignacionPacienteService asignacionPacienteService;
+    @ManagedProperty(value = "#{personaService}")
+    private PersonaService personaService;
     @ManagedProperty(value = "#{materiaService}")
     private MateriaService materiaService;
+
+    /**
+     * Creates a new instance of ConsultarAsignacionesBean
+     */
+    public ConsultarAsignacionesBean() {
+    }
 
     // MÉTODOS.
     @PostConstruct
     private void init() {
+        if (getAlumno()==null) {
+            setAlumno(new Alumno());
+            getAlumno().setDocumento(new Documento());
+        }
+        if (getAsignacion()==null) {
+            setAsignacion(new AsignacionPaciente());
+        }
         cargarCombos();
+        
+        
+        setPacientes(new ArrayList<Paciente>());
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        LoginBean login = (LoginBean) session.getAttribute("loginBean");
+
+        setRol(login.getUsuario().getRol());
+        if (getRol().is(Rol.ALUMNO)) {
+            setRendered(false);
+            //buscarAsignacionesPendientes();
+
+        }
+        if (getRol().is(Rol.PROFESOR)) {
+            setRendered(true);
+        }
     }
 
-    public void cargarAlumno(){
+    public void cargarAlumno() {
         this.setAlumno(buscarAlumno());
     }
-    
-    public void cargarAsignacionesFiltradas(){
+
+    public void cargarAsignacionesFiltradas() {
         this.setAsignaciones(this.buscarAsignaciones());
     }
+    
+    public String formatFecha(Calendar c) {
+        return FechaUtils.fechaMaskFormat(c, "dd/MM/yyyy HH:mm");
+    }
+
     /**
-     * Método para buscar un alumno sobre el cual se quiere consultar. 
-     * POR AHORA SOLO SE USA EL NÚM DE DOC PARA BUSCAR
+     * Método para buscar un alumno sobre el cual se quiere consultar. POR AHORA
+     * SOLO SE USA EL NÚM DE DOC PARA BUSCAR
+     *
      * @return alumno buscado
      */
     private Alumno buscarAlumno() {
+        Alumno alu = new Alumno();
         if (nroDocumentoFiltro == null || nroDocumentoFiltro.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Numero de documento del alumno nulo o vacio.", null));
             return null;
         }
 
         Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoFiltro);
-        Alumno alu = (Alumno) alumnoService.findOne(p);
+        try{
+            alu = (Alumno) personaService.findOne(p);
+        }catch(Exception ex){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontro al alumno.", null));
+        }
         if (alu == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontro al alumno.", null));
             return null;
@@ -97,33 +146,62 @@ public class ConsultarAsignacionesBean {
     }
 
     /**
-     * Busca las asignaciones de un alumno determinado, cumpliendo ciertos filtros.
+     * Busca las asignaciones de un alumno determinado, cumpliendo ciertos
+     * filtros.
+     *
      * @return lista de asignaciones filtradas.
      */
     private List<AsignacionPaciente> buscarAsignaciones() {
 
         List<AsignacionPaciente> listaAsignaciones = (List<AsignacionPaciente>) 
-                asignacionService.findAll(AsignacionPacienteSpecs.byAlumno(alumno).
+                asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumno).
                 and(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro)).
-                and(AsignacionPacienteSpecs.byFecha(fechaFiltro).
-                and(AsignacionPacienteSpecs.byPaciente(pacienteFiltro)//.
-                //and(AsignacionPacienteSpecs.byMateria(materiaFiltro))
-                ))
-                );
-                
-        
+                and(AsignacionPacienteSpecs.byNombreOApellido(pacienteFiltro)));
+//                and(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro)).
+//                and(AsignacionPacienteSpecs.byFecha(fechaFiltro).
+//                //.
+//                //and(AsignacionPacienteSpecs.byMateria(materiaFiltro))
+//                )));
+
+
         if (listaAsignaciones.isEmpty()) {
- 
+
             return null;
         }
         return listaAsignaciones;
     }
-    
+
     public void buscarAsignacionesConfirmadas() {
         estadoFiltro = EstadoAsignacion.CONFIRMADA;
         /*asignaciones = (List<AsignacionPaciente>) asignacionService.findAll(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro) );*/
-         asignaciones = (List<AsignacionPaciente>) asignacionService.findAll();
-        
+        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll();
+
+    }
+    
+    /**
+     * Para cambiar el estado de una asignación seleccionada de la tabla.
+     * @param estado al cual se debe cambiar.
+     */
+    public void cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion estado){
+        try {
+            if (asignacionSeleccionada != null) {
+                asignacionSeleccionada.setEstado(estado);
+                getAsignacionPacienteService().save(asignacionSeleccionada);             
+                
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Asignación actualizada correctamente"));
+            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "La asignacion no fue actualizada correctamente", null));
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void confirmarAsignacion(){
+        cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
+    }
+    
+    public void cancelarAsignacion(){
+        cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CANCELADO);
     }
 
     //MÉTODOS AUXILIARES
@@ -141,7 +219,6 @@ public class ConsultarAsignacionesBean {
     }
 
     //GETTERS Y SETTERS
-    
     public List<EstadoAsignacion> getEstadosAsignacion() {
         return estadosAsignacion;
     }
@@ -173,7 +250,7 @@ public class ConsultarAsignacionesBean {
     public void setNroDocumentoFiltro(String nroDocumentoFiltro) {
         this.nroDocumentoFiltro = nroDocumentoFiltro;
     }
-    
+
     public AsignacionPaciente getAsignacion() {
         return asignacion;
     }
@@ -222,11 +299,11 @@ public class ConsultarAsignacionesBean {
         this.estadoFiltro = estadoFiltro;
     }
 
-    public Paciente getPacienteFiltro() {
+    public String getPacienteFiltro() {
         return pacienteFiltro;
     }
 
-    public void setPacienteFiltro(Paciente pacienteFiltro) {
+    public void setPacienteFiltro(String pacienteFiltro) {
         this.pacienteFiltro = pacienteFiltro;
     }
 
@@ -254,22 +331,22 @@ public class ConsultarAsignacionesBean {
         this.asignacionSeleccionada = asignacionSeleccionada;
     }
 
-    public AsignacionPacienteService getAsignacionService() {
-        return asignacionService;
+    public AsignacionPacienteService getAsignacionPacienteService() {
+        return asignacionPacienteService;
     }
 
-    public void setAsignacionService(AsignacionPacienteService asignacionService) {
-        this.asignacionService = asignacionService;
+    public void setAsignacionPacienteService(AsignacionPacienteService asignacionService) {
+        this.asignacionPacienteService = asignacionService;
     }
 
-    public PersonaService getAlumnoService() {
-        return alumnoService;
+    public PersonaService getPersonaService() {
+        return personaService;
     }
 
-    public void setAlumnoService(PersonaService alumnoService) {
-        this.alumnoService = alumnoService;
+    public void setPersonaService(PersonaService personaService) {
+        this.personaService = personaService;
     }
-
+    
     public MateriaService getMateriaService() {
         return materiaService;
     }
@@ -278,9 +355,27 @@ public class ConsultarAsignacionesBean {
         this.materiaService = materiaService;
     }
 
-    /**
-     * Creates a new instance of ConsultarAsignacionesBean
-     */
-    public ConsultarAsignacionesBean() {
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    public boolean isRendered() {
+        return rendered;
+    }
+
+    public void setRendered(boolean rendered) {
+        this.rendered = rendered;
+    }
+
+    public List<Paciente> getPacientes() {
+        return pacientes;
+    }
+
+    public void setPacientes(List<Paciente> pacientes) {
+        this.pacientes = pacientes;
     }
 }
