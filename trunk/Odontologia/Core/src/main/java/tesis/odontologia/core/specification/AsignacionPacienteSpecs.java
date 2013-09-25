@@ -10,6 +10,7 @@ import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.asignaciones.QAsignacionPaciente;
 import tesis.odontologia.core.domain.historiaclinica.QDiagnostico;
+import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.QTrabajoPractico;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
@@ -38,7 +39,8 @@ public class AsignacionPacienteSpecs {
     public static BooleanExpression byFecha(Calendar cal){
         return $.fechaAsignacion.eq(cal);
     }
-    
+
+    //PENDING: (MAXI) revisar especificacion
     public static BooleanExpression byMateria(Materia m){
         return $.diagnostico.materia.id.eq(m.getId());
     }
@@ -57,5 +59,9 @@ public class AsignacionPacienteSpecs {
  
     public static BooleanExpression byNombreOApellido(String nombApp) {
         return $.paciente.nombre.containsIgnoreCase(nombApp).or($.paciente.apellido.containsIgnoreCase(nombApp));
+    }
+    
+     public static BooleanExpression byCatedra(Catedra c){
+        return $.catedra.id.eq(c.getId());
     }
 }
