@@ -13,15 +13,24 @@ import tesis.odontologia.core.domain.usuario.Usuario;
  * @author Ignacio
  */
 public class PersonaSpecs {
-    
+
     private static final QPersona $ = QPersona.persona.as(QPersona.class);
-    
-    public static BooleanExpression byClass(Class clazz){
+
+    public static BooleanExpression byClass(Class clazz) {
         return $.instanceOf(clazz);
     }
 
-    public static BooleanExpression byUsuario(Usuario us){
+    public static BooleanExpression byUsuario(Usuario us) {
         return $.usuario.id.eq(us.getId());
     }
-    
-}
+
+    //NO BORRAR
+//    public static BooleanExpression byLast(BooleanExpression be) {
+//        if (be == null) {
+//            return $.fecha.eq(new JPASubQuery().from($).unique($.fecha.max()));
+//        } else {
+//            return $.fecha.eq(new JPASubQuery().from($).where(be).unique($.fecha.max()));
+//        }
+//    }
+
+    }
