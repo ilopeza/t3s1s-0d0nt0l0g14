@@ -75,7 +75,7 @@
                 </p:column>
                 <p:column id="colAcciones" headerText="Acciones">
                     <h:panelGrid columns="3" cellpadding="1" cellspacing="1">
-                        <p:commandButton id="btnVer" icon="ui-icon-check">
+                        <p:commandButton id="btnVer" icon="ui-icon-search">
                             <f:setPropertyActionListener value="#{d}"
                                                          target="#{pacienteWizardBean.selectedDiagnostico}" />
 
@@ -86,7 +86,7 @@
                                                          target="#{pacienteWizardBean.selectedDiagnostico}" />
 
                         </p:commandButton>
-                        <p:commandButton id="btnModificar" icon="ui-icon-gear" 
+                        <p:commandButton id="btnModificar" icon="ui-icon-pencil" 
                                          actionListener="#{pacienteWizardBean.modificarDiagnostico()}"
                                          update="@form">
                             <f:setPropertyActionListener value="#{d}"
@@ -96,11 +96,6 @@
                 </p:column>
             </p:dataTable>
         </p:panel>
-
-    </p:fieldset>
-    <br/>
-    <p:fieldset id="fldsVerDiagnosticosCargados" legend="Diagnósticos cargados" toggleable="true" toggleSpeed="150">
-
         <p:commandButton id="btnSave" 
                          actionListener="#{pacienteWizardBean.savePaciente()}" 
                          process="@form"
@@ -108,7 +103,5 @@
                          value="Guardar"/>
     </p:fieldset>
 
-    
-    
 </html>
 

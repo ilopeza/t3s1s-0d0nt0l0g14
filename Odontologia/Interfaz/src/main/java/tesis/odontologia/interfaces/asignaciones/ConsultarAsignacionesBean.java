@@ -5,6 +5,7 @@
 package tesis.odontologia.interfaces.asignaciones;
 
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -79,31 +80,31 @@ public class ConsultarAsignacionesBean {
     // MÉTODOS.
     @PostConstruct
     private void init() {
-        if (getAlumno()==null) {
-            setAlumno(new Alumno());
-            getAlumno().setDocumento(new Documento());
+        if (alumno == null) {
+            alumno = new Alumno();
+            alumno.setDocumento(new Documento());
         }
-        if (getAsignacion()==null) {
-            setAsignacion(new AsignacionPaciente());
+        if (asignacion == null) {
+            asignacion = new AsignacionPaciente();
         }
         cargarCombos();
         
         
-        setPacientes(new ArrayList<Paciente>());
+        pacientes = new ArrayList<Paciente>();
 
         FacesContext context = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
         LoginBean login = (LoginBean) session.getAttribute("loginBean");
 
-        setRol(login.getUsuario().getRol());
-        if (getRol().is(Rol.ALUMNO)) {
-            setRendered(false);
+        if (login.getUsuario().getRol().is(Rol.ALUMNO)) {
+            rendered = false;
+            alumno = (Alumno) login.getPersona();
             alumno = (Alumno) login.getPersona();
             //buscarAsignacionesPendientes();
 
         }
         if (getRol().is(Rol.PROFESOR) || getRol().is(Rol.RESPONSABLE)) {
-            setRendered(true);
+            rendered = true;
         }
     }
 
@@ -153,16 +154,19 @@ public class ConsultarAsignacionesBean {
      * @return lista de asignaciones filtradas.
      */
     private List<AsignacionPaciente> buscarAsignaciones() {
-
+        BooleanExpression predicate = AsignacionPacienteSpecs.byAlumno(alumno);
+        if(estadoFiltro != null) {
+            predicate = predicate.and(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro));
+        }
+        if(pacienteFiltro != null) {
+            predicate = predicate.and(AsignacionPacienteSpecs.byNombreOApellido(pacienteFiltro));
+        }
+        //NO EXISTIA FILTRO DE MATERIA
+//        if(materiaFiltro != null) {
+//            predicate = predicate.and(AsignacionPacienteSpecs.byMateria(materiaFiltro));
+//        }
         List<AsignacionPaciente> listaAsignaciones = (List<AsignacionPaciente>) 
-                asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumno).
-                and(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro)).
-                and(AsignacionPacienteSpecs.byNombreOApellido(pacienteFiltro)));
-//                and(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro)).
-//                and(AsignacionPacienteSpecs.byFecha(fechaFiltro).
-//                //.
-//                //and(AsignacionPacienteSpecs.byMateria(materiaFiltro))
-//                )));
+                asignacionPacienteService.findAll(predicate);
 
 
         if (listaAsignaciones.isEmpty()) {

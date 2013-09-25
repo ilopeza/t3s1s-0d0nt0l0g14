@@ -15,7 +15,6 @@
                     <p:outputLabel value="Materia: "/>
                     <p:selectOneMenu id="selecciontMateriaBusqueda" value="#{consultarAsignacionesConfirmadasBean.materiaFiltro}" converter="materiaConverter">
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.materias}"/>
-                    
                     <f:ajax event="change" render="seleccionCatedraBusqueda" execute="selecciontMateriaBusqueda"
                               listener="#{consultarAsignacionesConfirmadasBean.buscarCatedras()}" />
                     </p:selectOneMenu>
@@ -25,11 +24,12 @@
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.catedras}"/>
                     </p:selectOneMenu>
                     
-                    <p:outputLabel value="Trabajo práctico: "/>
-                    <p:selectOneMenu id="selecciontTrabajoPracticoBusqueda" value="#{consultarAsignacionesConfirmadasBean.trabajoPracticoFiltro}" converter="trabajoPracticoConverter">
+                    <!--p:outputLabel value="Trabajo práctico: "/>
+                    <p:selectOneMenu id="selecciontTrabajoPracticoBusqueda" value="{consultarAsignacionesConfirmadasBean.trabajoPracticoFiltro}"
+                                     converter="trabajoPracticoConverter">
                        
-                        <f:selectItems value="#{consultarAsignacionesConfirmadasBean.trabajosPracticos}"/>
-                    </p:selectOneMenu>
+                        <f:selectItems value="{consultarAsignacionesConfirmadasBean.trabajosPracticos}"/>
+                    </p:selectOneMenu-->
                 </h:panelGrid>
                 <br/>
 

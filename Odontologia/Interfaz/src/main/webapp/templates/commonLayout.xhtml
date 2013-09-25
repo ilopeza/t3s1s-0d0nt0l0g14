@@ -29,12 +29,22 @@
 
         <h:body>
 
-            <p:layout fullPage="true" >
+            <p:layout fullPage="true">
 
                 <p:layoutUnit  position="north" size="70" header="Facultad de Odontología - S.A.P.O." style="text-align: center">  
-                    <p:commandLink id="ajax" action="#{loginBean.logout()}" style="text-align: right">  
-                        <h:outputText value="#{loginBean.persona}" />  
-                    </p:commandLink>  
+                    <h:form id="loginForm">    
+                        <p:spacer width="45%" height="10" />
+                        #{loginBean.persona} 
+                        <p:commandLink value=" (Logout)" action="#{loginBean.redirectLogin()}"
+                                       style="text-align: right" ajax="false">  
+                            <h:outputText value="(Logout)"/> 
+                        </p:commandLink> 
+                        <p:spacer width="42%" height="10" />
+                        <p:commandLink value="Inicio" action="index"
+                                       style="text-align: right" ajax="false">  
+                            <h:outputText value="(Logout)"/> 
+                        </p:commandLink>
+                    </h:form>
                     <ui:include src="commonHeader.xhtml"/>
                 </p:layoutUnit>
 
