@@ -103,7 +103,7 @@ public class ConsultarAsignacionesBean {
             //buscarAsignacionesPendientes();
 
         }
-        if (getRol().is(Rol.PROFESOR) || getRol().is(Rol.RESPONSABLE)) {
+        if (login.getUsuario().getRol().is(Rol.PROFESOR) || login.getUsuario().getRol().is(Rol.RESPONSABLE)) {
             rendered = true;
         }
     }
@@ -161,10 +161,10 @@ public class ConsultarAsignacionesBean {
         if(pacienteFiltro != null) {
             predicate = predicate.and(AsignacionPacienteSpecs.byNombreOApellido(pacienteFiltro));
         }
-        //NO EXISTIA FILTRO DE MATERIA
-//        if(materiaFiltro != null) {
-//            predicate = predicate.and(AsignacionPacienteSpecs.byMateria(materiaFiltro));
-//        }
+//        NO EXISTIA FILTRO DE MATERIA
+        if(materiaFiltro != null) {
+            predicate = predicate.and(AsignacionPacienteSpecs.byMateria(materiaFiltro));
+        }
         List<AsignacionPaciente> listaAsignaciones = (List<AsignacionPaciente>) 
                 asignacionPacienteService.findAll(predicate);
 
