@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.core.specification;
 
+import com.mysema.query.jpa.impl.JPASubQuery;
 import com.mysema.query.types.expr.BooleanExpression;
 import java.util.Calendar;
 import tesis.odontologia.core.domain.alumno.Alumno;
@@ -42,7 +43,8 @@ public class AsignacionPacienteSpecs {
 
     //PENDING: (MAXI) revisar especificacion
     public static BooleanExpression byMateria(Materia m){
-        return $.diagnostico.materia.id.eq(m.getId());
+        QDiagnostico d = QDiagnostico.diagnostico;
+        return new JPASubQuery().from(d).where($.diagnostico.eq(d).and(d.materia.eq(m))).exists();
     }
     
     public static BooleanExpression byTrabajoPractico(TrabajoPractico tp){
