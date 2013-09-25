@@ -161,7 +161,6 @@ public class ConsultarAsignacionesBean {
         if(pacienteFiltro != null) {
             predicate = predicate.and(AsignacionPacienteSpecs.byNombreOApellido(pacienteFiltro));
         }
-//        NO EXISTIA FILTRO DE MATERIA
         if(materiaFiltro != null) {
             predicate = predicate.and(AsignacionPacienteSpecs.byMateria(materiaFiltro));
         }
