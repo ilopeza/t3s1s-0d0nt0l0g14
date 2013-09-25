@@ -6,7 +6,6 @@ package tesis.odontologia.core.service;
 
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
-import java.io.Serializable;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,4 +56,7 @@ public interface GenericService<E extends Object> {
 
     long count(Predicate predicate);
     
+    <S extends E> S reload(S entity, int depth);
+    
+    <S extends E> S findOne(Long id);
 }
