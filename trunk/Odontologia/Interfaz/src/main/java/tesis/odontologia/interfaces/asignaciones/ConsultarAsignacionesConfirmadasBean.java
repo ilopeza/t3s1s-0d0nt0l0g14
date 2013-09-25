@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.interfaces.asignaciones;
 
+import com.mysema.query.types.expr.BooleanExpression;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -70,9 +71,13 @@ public class ConsultarAsignacionesConfirmadasBean {
     public List<AsignacionPacienteAux> buscarAsignacionesConfirmadas() {
         
         List<AsignacionPaciente> asignaciones;
+        asignacionesConfirmadas = new ArrayList<AsignacionPacienteAux>();
         
-        estadoFiltro = AsignacionPaciente.EstadoAsignacion.CONFIRMADA;
-        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro));
+        BooleanExpression predicate = AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);        
+        if(catedraFiltro != null) {
+            predicate = predicate.and(AsignacionPacienteSpecs.byCatedra(catedraFiltro));
+        }
+        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(predicate);
         for(AsignacionPaciente a: asignaciones){
             asignacionesConfirmadas.add(new AsignacionPacienteAux(a));
         }

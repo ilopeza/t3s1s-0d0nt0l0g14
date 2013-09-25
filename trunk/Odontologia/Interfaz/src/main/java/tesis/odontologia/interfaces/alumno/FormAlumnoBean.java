@@ -5,7 +5,6 @@
 package tesis.odontologia.interfaces.alumno;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -13,14 +12,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.alumno.Alumno;
-import tesis.odontologia.core.domain.usuario.Rol;
 import tesis.odontologia.core.domain.usuario.Usuario;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.RolService;
 import tesis.odontologia.core.service.UsuarioService;
-import tesis.odontologia.core.specification.RolSpecs;
+import tesis.odontologia.interfaces.login.LoginBean;
 
 /**
  *
@@ -45,42 +44,32 @@ public class FormAlumnoBean {
 
     @PostConstruct
     public void init() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        LoginBean login = (LoginBean) session.getAttribute("loginBean");
 
         alumno = new Alumno();
-        alumno.setDocumento(new Documento());
+        alumno = (Alumno) login.getPersona();
 
     }
 
     public String save() {
 
         try {
-            usuario = new Usuario();
-            Rol rolUsuario = new Rol("Alumno");
-            if (rolService.count(RolSpecs.byNombre(rolUsuario.getNombre())) == 0) {
-                rolUsuario = rolService.save(rolUsuario);
-            } else {
-                rolUsuario = rolService.findOne(RolSpecs.byNombre(rolUsuario.getNombre()));
-            }
-            usuario.setRol(rolUsuario);
-            usuario.setNombreUsuario("35018118");
-            usuario.setContraseña("pass");
-            usuario.setEmail("mau.g.sistemas");
-            //usuario = usuarioService.findOne(UsuarioSpecs.byNombreUsuario("35018118"));
-            alumno.setUsuario(usuario);
-            alumno.setFechaNacimiento(Calendar.getInstance());
-            personaService.save(alumno);
+            alumno = personaService.save(alumno);
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+            LoginBean login = (LoginBean) session.getAttribute("loginBean");
+            login.setPersona(alumno);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alumno " + alumno.toString()
                     + " guardado correctamente."));
 
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El alumno no fue cargado correctamente", null));
             System.out.println(ex.getMessage());
-            
-        }
-        
-        this.reset();
-        return "formAlumno";
 
+        }
+        return "formAlumno";
     }
 
     public void setPersonaService(PersonaService personaService) {
@@ -100,7 +89,7 @@ public class FormAlumnoBean {
     public void setAlumno(Alumno alumno) {
         this.alumno = alumno;
     }
-    
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -127,10 +116,5 @@ public class FormAlumnoBean {
         listaTipoDocumento = Arrays.asList(Documento.TipoDocumento.values());
         return listaTipoDocumento;
     }
-    
-    public void reset(){
-        alumno = new Alumno();
-        alumno.setDocumento(new Documento());
-        usuario = new Usuario();
-    }
+
 }

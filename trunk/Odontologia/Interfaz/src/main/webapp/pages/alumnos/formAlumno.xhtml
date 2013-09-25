@@ -13,8 +13,8 @@ and open the template in the editor.
 
     <ui:define name="content">
         <h:form id="primaryForm">
-            <h:outputLabel value="REGISTRAR ALUMNO" style="padding: 400px; font-size: 20px; font: " />
-            <p:panel id="pnlAlumno" header="NUEVO ALUMNO">
+            <h:outputLabel value="DATOS ALUMNO" style="padding: 400px; font-size: 20px; font: " />
+            <p:panel id="pnlAlumno" header="ALUMNO">
                 <h:panelGrid id="gridDatosPersonalesAlumno" cellpadding="3" cellspacing="3" columns="4">
                     <p:column>
                         <h:outputLabel value="Nombre (*): " />
@@ -32,7 +32,7 @@ and open the template in the editor.
                         <h:outputLabel value="Tipo de documento (*): "/>
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu id="selectedTipoDocumento" value="#{formAlumnoBean.alumno.documento.tipoDocumento}" >
+                        <p:selectOneMenu id="selectedTipoDocumento" value="#{formAlumnoBean.alumno.documento.tipoDocumento}" disabled="true">
                             <f:selectItems value="#{formAlumnoBean.listaTipoDocumento}"/>
                         </p:selectOneMenu>
                     </p:column>
@@ -40,22 +40,17 @@ and open the template in the editor.
                         <h:outputLabel value="Número de documento (*):"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtNumero" value="#{formAlumnoBean.alumno.documento.numero}" size="50"/>
+                        <p:inputText id="txtNumero" value="#{formAlumnoBean.alumno.documento.numero}" size="50" disabled="true"/>
                     </p:column>
                     <p:column>
                         <h:outputLabel value="Correo electronico (*): "/> 
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtEmail" size="50"/>
+                        <p:inputText id="txtEmail" value="#{formAlumnoBean.alumno.usuario.email}" size="50"/>
                     </p:column>
-                    <!--p:column>
-                        <p:inputText id="txtEmail" value="{formAlumnoBean.alumno.usuario.email}" size="50"/>
-                    </p:column-->
-
                     <p:column>
-                        <p:commandButton value="Guardar" actionListener="#{formAlumnoBean.save()}" update="@form"
+                        <p:commandButton value="Guardar" actionListener="#{formAlumnoBean.save()}" update="primaryForm :loginForm"
                                          icon="ui-icon-plusthick">
-                            <p:resetInput target="pnlAlumno"/>
                         </p:commandButton>                            
                     </p:column>
                 </h:panelGrid>

@@ -85,9 +85,9 @@ public class LoginBean {
         this.persona = persona;
     }
 
-    public String logout() {
+    public String redirectLogin() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpSession httpSession = (HttpSession) facesContext.getExternalContext().getSession(false);
+        HttpSession httpSession = (HttpSession) facesContext.getExternalContext().getSession(true);
         httpSession.invalidate();
         return "login";
     }

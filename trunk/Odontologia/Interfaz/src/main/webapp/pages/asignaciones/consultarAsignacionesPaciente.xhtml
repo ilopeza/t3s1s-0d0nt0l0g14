@@ -14,7 +14,7 @@ and open the template in the editor.
     <ui:define name="content">
         <h:outputLabel value="CONSULTAR ASIGNACIONES DE PACIENTES" style="padding: 400px; font-size: 20px; font: " />
         <p:panel id="pnlBuscarAlumno" header="Buscar alumno" rendered="#{consultarAsignacionesBean.rendered}">
-            <h:form id="buscarAlumnoForm" >
+            <h:form id="buscarAlumnoForm">
                 <h:panelGrid id="gridBusquedaAlumno" cellpadding="3" cellspacing="3" columns="5">
                     <!--p:column>
                         <h:outputLabel value="Nombre o apellido: " />
@@ -99,7 +99,7 @@ and open the template in the editor.
                         <h:outputText value="Asignaciones del alumno #{consultarAsignacionesBean.alumno}" />
                     </f:facet>
                     <p:column id="colPaciente" headerText="Paciente">
-                        <h:outputText value="#{a.paciente.apellido}" />
+                        <h:outputText value="#{a.paciente}" />
                     </p:column>
                     <p:column id="colDocumento" headerText="Documento">
                         <h:outputText value="#{a.paciente.documento.numero}" />
