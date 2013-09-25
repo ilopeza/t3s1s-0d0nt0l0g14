@@ -7,11 +7,13 @@ package tesis.odontologia.core.service.impl;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
 import java.util.List;
-import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import tesis.odontologia.core.dao.GenericDao;
+import tesis.odontologia.core.domain.Collections;
+import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.service.GenericService;
 
 /**
@@ -25,12 +27,12 @@ public abstract class GenericServiceImpl<E extends Object, DAO extends GenericDa
     public void setDao(DAO dao) {
         this.dao = dao;
     }
-    
+
     @Override
     public DAO getDao() {
         return dao;
     }
-    
+
     @Override
     public <S extends E> S save(S entity) {
         return (S) dao.save(entity);
@@ -102,6 +104,11 @@ public abstract class GenericServiceImpl<E extends Object, DAO extends GenericDa
     }
 
     @Override
+    public <S extends E> S findOne(Long id) {
+        return (S) dao.findOne(id);
+    }
+
+    @Override
     public Iterable findAll(Predicate predicate) {
         return dao.findAll(predicate);
     }
@@ -120,5 +127,15 @@ public abstract class GenericServiceImpl<E extends Object, DAO extends GenericDa
     public long count(Predicate predicate) {
         return dao.count(predicate);
     }
-    
+
+    @Override
+    @Transactional
+    public <S extends E> S reload(S entity, int depth) {
+        if (entity instanceof Generic) {
+            entity = (S) findOne(((Generic) entity).getId());
+        } else {
+            entity = save(entity);
+        }
+        return Collections.reload(entity, depth);
+    }
 }
