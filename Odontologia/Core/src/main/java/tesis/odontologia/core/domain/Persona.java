@@ -36,19 +36,19 @@ public abstract class Persona extends Generic {
 
     @Column(length = 150)
     @Size(min = 1, max = 150, message = "El apellido debe tener entre 1 y 150 caracteres.")
-    @NotNull(message = "El apellido no puede ser nulo.")
+    @NotNull(message = "El apellido no puede estar vacío.")
     private String apellido;
     
     @Column(length = 150)
     @Size(min = 1, max = 150, message = "El nombre debe tener entre 1 y 150 caracteres")
-    @NotNull(message = "El nombre no puede ser nulo.")
+    @NotNull(message = "El nombre no puede estar vacío.")
     private String nombre;
     
     @Embedded
     private Documento documento;
     
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "La fecha de nacimiento no puede ser nula.")
+    @NotNull(message = "La fecha de nacimiento no puede estar vacío.")
     private Calendar fechaNacimiento;
     
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
