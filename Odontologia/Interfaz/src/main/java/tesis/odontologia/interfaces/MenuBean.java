@@ -103,13 +103,15 @@ public class MenuBean {
         menu.addSubmenu(submenu);
         }
         
-        if (rol.is(Rol.ALUMNO)) {
+        if (rol.is(Rol.ALUMNO) || rol.is(Rol.PROFESOR) || rol.is(Rol.RESPONSABLE) ) {
         //Menu
         submenu = subMenu("Cuenta");
         //Opciones
         menuItem = menuItem("Datos Alumno", "/pages/alumnos/formAlumno.xhtml");
         submenu.getChildren().add(menuItem);
         menuItem = menuItem("Recuperar contraseña", "/pages/usuario/recuperarPassword.xhtml");
+        submenu.getChildren().add(menuItem);
+        menuItem = menuItem("Modificar mis datos","/pages/usuario/modificarDatosUsuario.xhtml");
         submenu.getChildren().add(menuItem);
 //        menuItem = menuItem("Caducar sesión", "/pages/usuario/caducarSesion.xhtml");
 //        submenu.getChildren().add(menuItem);
