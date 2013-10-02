@@ -23,6 +23,10 @@ public class PersonaSpecs {
     public static BooleanExpression byUsuario(Usuario us) {
         return $.usuario.id.eq(us.getId());
     }
+    
+    public static BooleanExpression byId(Long id) {
+        return $.id.eq(id);
+    }
 
     //NO BORRAR
 //    public static BooleanExpression byLast(BooleanExpression be) {
