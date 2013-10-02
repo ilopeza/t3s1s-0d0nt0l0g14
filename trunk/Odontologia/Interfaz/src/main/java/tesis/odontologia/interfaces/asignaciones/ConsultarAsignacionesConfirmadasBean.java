@@ -75,7 +75,7 @@ public class ConsultarAsignacionesConfirmadasBean {
         
         BooleanExpression predicate = AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);        
         if(catedraFiltro != null) {
-            predicate = predicate.and(AsignacionPacienteSpecs.byCatedra(catedraFiltro));
+            //predicate = predicate.and(AsignacionPacienteSpecs.byCatedra(catedraFiltro));
         }
         asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(predicate);
         for(AsignacionPaciente a: asignaciones){

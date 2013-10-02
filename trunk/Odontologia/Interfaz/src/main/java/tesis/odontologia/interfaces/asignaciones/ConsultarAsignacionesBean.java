@@ -63,6 +63,8 @@ public class ConsultarAsignacionesBean {
     //Sesión
     private Rol rol;
     private boolean rendered = true;
+    //Atributos extras.
+    private String motivoCancelacion;
     //Servicios usados.
     @ManagedProperty(value = "#{asignacionPacienteService}")
     private AsignacionPacienteService asignacionPacienteService;
@@ -88,8 +90,8 @@ public class ConsultarAsignacionesBean {
             asignacion = new AsignacionPaciente();
         }
         cargarCombos();
-        
-        
+
+
         pacientes = new ArrayList<Paciente>();
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -115,7 +117,7 @@ public class ConsultarAsignacionesBean {
     public void cargarAsignacionesFiltradas() {
         this.setAsignaciones(this.buscarAsignaciones());
     }
-    
+
     public String formatFecha(Calendar c) {
         return FechaUtils.fechaMaskFormat(c, "dd/MM/yyyy HH:mm");
     }
@@ -134,9 +136,9 @@ public class ConsultarAsignacionesBean {
         }
 
         Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoFiltro);
-        try{
+        try {
             alu = (Alumno) personaService.findOne(p);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontro al alumno.", null));
         }
         if (alu == null) {
@@ -155,17 +157,16 @@ public class ConsultarAsignacionesBean {
      */
     private List<AsignacionPaciente> buscarAsignaciones() {
         BooleanExpression predicate = AsignacionPacienteSpecs.byAlumno(alumno);
-        if(estadoFiltro != null) {
+        if (estadoFiltro != null) {
             predicate = predicate.and(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro));
         }
-        if(pacienteFiltro != null) {
+        if (pacienteFiltro != null) {
             predicate = predicate.and(AsignacionPacienteSpecs.byNombreOApellido(pacienteFiltro));
         }
-        if(materiaFiltro != null) {
+        if (materiaFiltro != null) {
             predicate = predicate.and(AsignacionPacienteSpecs.byMateria(materiaFiltro));
         }
-        List<AsignacionPaciente> listaAsignaciones = (List<AsignacionPaciente>) 
-                asignacionPacienteService.findAll(predicate);
+        List<AsignacionPaciente> listaAsignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(predicate);
 
 
         if (listaAsignaciones.isEmpty()) {
@@ -181,17 +182,18 @@ public class ConsultarAsignacionesBean {
         asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll();
 
     }
-    
+
     /**
      * Para cambiar el estado de una asignación seleccionada de la tabla.
+     *
      * @param estado al cual se debe cambiar.
      */
-    public void cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion estado){
+    public void cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion estado) {
         try {
             if (asignacionSeleccionada != null) {
                 asignacionSeleccionada.setEstado(estado);
-                getAsignacionPacienteService().save(asignacionSeleccionada);             
-                
+                getAsignacionPacienteService().save(asignacionSeleccionada);
+
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Asignación actualizada correctamente"));
             }
         } catch (Exception ex) {
@@ -199,13 +201,41 @@ public class ConsultarAsignacionesBean {
             System.out.println(ex.getMessage());
         }
     }
-    
-    public void confirmarAsignacion(){
+
+    public void confirmarAsignacion() {
+        if (motivoCancelacion != null && !motivoCancelacion.isEmpty()) {
+            asignacionSeleccionada.setMotivoCancelación(motivoCancelacion);
+        }
+
         cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
     }
-    
-    public void cancelarAsignacion(){
+
+    public void cancelarAsignacion() {
         cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CANCELADO);
+        motivoCancelacion = "";
+    }
+    
+    
+    
+    public boolean deshabilitarBtnConfirmarAsignacion(AsignacionPaciente a){
+        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO)==0 || a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CONFIRMADA)==0 ) {
+            return true;
+        }
+        return false;   
+    }
+    
+    public boolean deshabilitarBtnCancelarAsignacion(AsignacionPaciente a){
+        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO)==0) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean deshabilitarBtnModificarAsignacion(AsignacionPaciente a){
+        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO)==0) {
+            return true;
+        }
+        return false;
     }
 
     //MÉTODOS AUXILIARES
@@ -350,7 +380,7 @@ public class ConsultarAsignacionesBean {
     public void setPersonaService(PersonaService personaService) {
         this.personaService = personaService;
     }
-    
+
     public MateriaService getMateriaService() {
         return materiaService;
     }
@@ -381,5 +411,13 @@ public class ConsultarAsignacionesBean {
 
     public void setPacientes(List<Paciente> pacientes) {
         this.pacientes = pacientes;
+    }
+
+    public String getMotivoCancelacion() {
+        return motivoCancelacion;
+    }
+
+    public void setMotivoCancelacion(String motivoCancelacion) {
+        this.motivoCancelacion = motivoCancelacion;
     }
 }
