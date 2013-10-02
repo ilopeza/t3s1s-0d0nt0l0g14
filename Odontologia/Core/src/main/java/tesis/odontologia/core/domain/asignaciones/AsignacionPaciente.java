@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Generic;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.profesor.Profesor;
@@ -36,6 +37,10 @@ public class AsignacionPaciente extends Generic{
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @NotNull(message = "La fecha de asignacion no puede ser nula.")
     private Calendar fechaAsignacion;
+    
+    @Column(length = 100)
+    @Size(min = 1, max = 100, message = "La descripción de la cancelación debe tener entre 1 y 100 caracteres.")
+    private String motivoCancelación;
     
     @OneToOne
     @JoinColumn(name = "paciente_id")
@@ -67,13 +72,14 @@ public class AsignacionPaciente extends Generic{
     public AsignacionPaciente() {
     }
 
-    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, Profesor profesor, Diagnostico diagnostico, Catedra catedra) {
+    public AsignacionPaciente(Calendar fechaAsignacion, Paciente paciente, Alumno alumno, Profesor profesor, Diagnostico diagnostico, Catedra catedra, String motivoCancelacion) {
         this.fechaAsignacion = fechaAsignacion;
         this.paciente = paciente;
         this.alumno = alumno;
         this.profesor = profesor;
         this.diagnostico = diagnostico;
         this.catedra = catedra;
+        this.motivoCancelación = motivoCancelacion;
     }
 
     public Diagnostico getDiagnostico() {
@@ -140,6 +146,14 @@ public class AsignacionPaciente extends Generic{
 
     public void setProfesor(Profesor profesor) {
         this.profesor = profesor;
+    }
+    
+    public String getMotivoCancelación() {
+        return motivoCancelación;
+    }
+
+    public void setMotivoCancelación(String motivoCancelación) {
+        this.motivoCancelación = motivoCancelación;
     }
 
    
