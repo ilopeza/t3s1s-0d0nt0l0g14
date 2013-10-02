@@ -43,9 +43,11 @@ and open the template in the editor.
                     <p:inputText value="#{loginBean.username}"   
                                  id="username" required="true" label="username" />  
 
-                    <h:outputLabel for="password" value="Password:" />  
-                    <h:inputSecret value="#{loginBean.password}"   
-                                   id="password" required="true" label="password" />  
+                    <h:outputLabel for="password" value="Password:" /> 
+                    <p:password value="#{loginBean.password}"   
+                                   id="password" required="true" label="password" />
+                    <!--h:inputSecret value="{loginBean.password}"   
+                                   id="password" required="true" label="password" /-->  
 
                     <f:facet name="footer">  
                         <p:commandButton id="loginButton" value="Login" update="growl"   

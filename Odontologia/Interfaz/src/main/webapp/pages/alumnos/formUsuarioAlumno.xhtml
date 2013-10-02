@@ -13,28 +13,28 @@
         <p:panel id="grid" header="NUEVO USUARIO ALUMNO">
             <h:form id="primaryForm">
                 <h:panelGrid columns="2" style="text-align: right">
-                            <h:outputLabel value="Número de documento (*): "/>
-                            <h:inputText id="txtDocumento" size="50"
-                                     required="true"
-                                     value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}"
-                                     validator="#{formUsuarioAlumnoBean.validate}"
-                                     
-                                     >
-                        </h:inputText>
-                            <h:outputLabel value="E-mail (*):" />
-                            <h:inputText id="txtEmail"  size="50"
-                                     required="true"
-                                     validatorMessage="El formato de e-mail es incorrecto"
-                                     value="#{formUsuarioAlumnoBean.usuario.email}">
-                            <f:validateRegex
-                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                        </h:inputText>
-                            <h:outputLabel/>
-                            <p:commandButton value="Guardar" 
-                                             ajax="true" 
-                                             action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
-                                             update=":msg"
-                                             icon="ui-icon-plusthick"/>
+                    <h:outputLabel value="Número de documento (*): "/>
+                    <h:inputText id="txtDocumento" size="50"
+                                 required="true"
+                                 value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}"
+                                 validator="#{formUsuarioAlumnoBean.validate}"
+
+                                 >
+                    </h:inputText>
+                    <h:outputLabel value="E-mail (*):" />
+                    <h:inputText id="txtEmail"  size="50"
+                                 required="true"
+                                 validatorMessage="El formato de e-mail es incorrecto"
+                                 value="#{formUsuarioAlumnoBean.usuario.email}">
+                        <f:validateRegex
+                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </h:inputText>
+                    <h:outputLabel/>
+                    <p:commandButton value="Guardar" 
+                                     ajax="true" 
+                                     action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
+                                     update=":msg"
+                                     icon="ui-icon-plusthick"/>
                 </h:panelGrid>
             </h:form>
 
