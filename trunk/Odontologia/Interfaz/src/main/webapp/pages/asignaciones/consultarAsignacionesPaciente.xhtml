@@ -140,7 +140,7 @@ and open the template in the editor.
             <p:commandButton value="No" onclick="dlgConfirmar.hide();" type="button" />
         </p:confirmDialog>
 
-        <p:confirmDialog message="¿Realmente desea cancelar la asignación?"
+        <!--p:confirmDialog message="¿Realmente desea cancelar la asignación?"
                          header="Cancelación de asignación" severity="alert"
                          widgetVar="dlgCancelarAsignacion" appendToBody="true">
             <p:commandButton value="Sí" actionListener="#{consultarAsignacionesBean.cancelarAsignacion()}"
@@ -148,7 +148,17 @@ and open the template in the editor.
                              update=":asignacionesForm:tblResultadoAsignaciones"/>
             <p:commandButton value="No" onclick="dlgCancelarAsignacion.hide();" type="button"/>
                              
-        </p:confirmDialog>
+        </p:confirmDialog-->
+        
+        <p:dialog id="dlgCancelarAsignacion" header="Cancelación de asignación" appendToBody="true"
+                  widgetVar="dlgCancelarAsignacion" closeOnEscape="true">
+            <h:panelGrid columns="2">
+                <p:column>
+                    <h:outputText value="¿Realmente desea cancelar?"
+                </p:column>
+                
+            </h:panelGrid>
+        </p:dialog>
 
         <!--p:dialog header="Confirmar asignación" widgetVar="dlgConfirmarAsignacion" resizable="false" appendToBody="true" modal="true" >
             <h:form id="secondaryForm">
