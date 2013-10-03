@@ -38,8 +38,8 @@ public class Usuario extends Bajeable{
     private Rol rol;
     
     @Column(length = 75, nullable = false)
-    @Size(min = 1, max = 75, message = "El email debe tener entre 1 y 75 caracteres.")
-    @NotNull(message = "El email del usuario no puede ser nulo")
+    @Size(min = 1, max = 75, message = "El correo electrónico debe tener entre 1 y 75 caracteres.")
+    @NotNull(message = "El correo electrónico del usuario no puede estar vacío.")
     private String email;
 
     public Usuario() {
