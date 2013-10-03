@@ -103,6 +103,8 @@ public class Initialization {
 
         Paciente p = new Paciente("Maximiliano", "Barros");
         p.setDocumento(new Documento("34688417", Documento.TipoDocumento.DNI));
+        p.setSexo(Paciente.SexoTipo.MASCULIN0);
+        p.setEmail("enzo.biancato@gmail.com");
         HistoriaClinica hc = HistoriaClinica.createDefault();
         hc.setNumero(1);
 
@@ -127,6 +129,8 @@ public class Initialization {
 
         Paciente p1 = new Paciente("Enzo", "Biancato");
         p1.setDocumento(new Documento("34677666", Documento.TipoDocumento.DNI));
+        p1.setSexo(Paciente.SexoTipo.MASCULIN0);
+        p1.setEmail("enzo.biancato@gmail.com");
         HistoriaClinica hc1 = HistoriaClinica.createDefault();
         hc1.setNumero(1);
         p1.setHistoriaClinica(hc1);
@@ -136,6 +140,8 @@ public class Initialization {
 
         Paciente p2 = new Paciente("Miguel", "Romero");
         p2.setDocumento(new Documento("34234545", Documento.TipoDocumento.DNI));
+        p2.setSexo(Paciente.SexoTipo.MASCULIN0);
+        p2.setEmail("romeritodelvalle@gmail.com");
         HistoriaClinica hc2 = HistoriaClinica.createDefault();
         hc.setNumero(1);
         p2.setHistoriaClinica(hc2);
