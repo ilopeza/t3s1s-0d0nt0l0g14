@@ -48,6 +48,7 @@ public class PacienteWizardBean {
     private List<Documento.TipoDocumento> listaTipoDocumento;
     private List<Paciente.EstadoCivilTipo> listaEstadoCivilTipo;
     private List<Paciente.EstudiosTipo> listaEstudioTipo;
+    private List<Paciente.SexoTipo> listaSexo;
     private List<Materia> materias;
     private List<TrabajoPractico> trabajosPracticos;
     //Atributos para las tablas.
@@ -92,6 +93,8 @@ public class PacienteWizardBean {
             paciente.setDomicilio(new Domicilio());
             paciente.setDocumento(new Documento());
             paciente.setHistoriaClinica(HistoriaClinica.createDefault());
+            paciente.setSexo(Paciente.SexoTipo.MASCULIN0);
+            paciente.setEmail("");
             //diagnosticos = new ArrayList<Diagnostico>();
             paciente.getHistoriaClinica().setDiagnostico(new ArrayList<Diagnostico>());
         }
@@ -431,5 +434,20 @@ public class PacienteWizardBean {
         Calendar cal = Calendar.getInstance();
         cal.setTime(fechaNacimiento);
         paciente.setFechaNacimiento(cal);
+    }
+
+    /**
+     * @return the listaSexo
+     */
+    public List<Paciente.SexoTipo> getListaSexo() {
+        listaSexo = Arrays.asList(Paciente.SexoTipo.values());
+        return listaSexo;
+    }
+
+    /**
+     * @param listaSexo the listaSexo to set
+     */
+    public void setListaSexo(List<Paciente.SexoTipo> listaSexo) {
+        this.listaSexo = listaSexo;
     }
 }

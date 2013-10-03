@@ -18,6 +18,12 @@
             <h:outputLabel value="Número de documento (*):"/>
             <p:inputText id="txtDocumento" value="#{pacienteWizardBean.paciente.documento.numero}" disabled="#{pacienteWizardBean.estaDeshabilitado}"
                          />
+            <h:outputLabel value="Sexo: "/>
+            <p:selectOneMenu id="selectedSexo" value="#{pacienteWizardBean.paciente.sexo}" disabled="#{pacienteWizardBean.estaDeshabilitado}">
+                <f:selectItems value="#{pacienteWizardBean.listaSexo}"/>
+            </p:selectOneMenu>
+            <h:outputLabel value="Correo electrónico (*): "/>
+            <p:inputText id="txtEmail" value="#{pacienteWizardBean.paciente.email}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
             <h:outputLabel value="Estado Civil: "/>
             <p:selectOneMenu id="selectedEstadoCivil" value="#{pacienteWizardBean.paciente.estadoCivil}" disabled="#{pacienteWizardBean.estaDeshabilitado}">
                 <f:selectItems value="#{pacienteWizardBean.listaEstadoCivilTipo}"/>
