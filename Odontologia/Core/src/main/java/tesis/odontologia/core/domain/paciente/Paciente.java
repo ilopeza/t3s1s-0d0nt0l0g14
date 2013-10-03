@@ -89,8 +89,13 @@ public class Paciente extends Persona {
     @Size(min = 1, max = 75, message = "El lugar de privacion de libertad debe tener entre 1 y 75 caracteres.")
     private String lugar;
     
-    @NotNull
-    private boolean sexoFemenino;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private SexoTipo sexo;
+    
+    @Column(length = 75)
+    @Size(min = 1, max = 75, message = "El correo electrónico debe tener entre 1 y 75 caracteres.")
+    private String email;
     
     @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL)
     @JoinColumn(name="historiaclinica_id")
@@ -103,15 +108,6 @@ public class Paciente extends Persona {
 
     public Paciente(String nombre, String apellido) {
         super(nombre, apellido);
-    }
-    
-    //GETTERS AND SETTERS
-    public boolean isSexoFemenino() {
-        return sexoFemenino;
-    }
-
-    public void setSexoFemenino(boolean sexoFemenino) {
-        this.sexoFemenino = sexoFemenino;
     }
     
     public EstudiosTipo getTipoEstudios() {
@@ -261,6 +257,34 @@ public class Paciente extends Persona {
     public void validar() throws GenericException {
         super.validar();
     }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @return the sexo
+     */
+    public SexoTipo getSexo() {
+        return sexo;
+    }
+
+    /**
+     * @param sexo the sexo to set
+     */
+    public void setSexo(SexoTipo sexo) {
+        this.sexo = sexo;
+    }
     
 
 public enum EstudiosTipo {
@@ -322,6 +346,22 @@ public enum EstadoCivilTipo {
         @Override
         public String toString() {
             return "Viudo/a";
+        }
+    };
+}
+
+public enum SexoTipo {
+
+    MASCULIN0 {
+        @Override
+        public String toString() {
+            return "Masculino";
+        }
+    },
+    FEMENINO {
+        @Override
+        public String toString() {
+            return "Femenino";
         }
     };
 }
