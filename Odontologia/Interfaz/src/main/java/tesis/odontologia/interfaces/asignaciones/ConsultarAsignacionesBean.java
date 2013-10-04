@@ -101,9 +101,6 @@ public class ConsultarAsignacionesBean {
         if (login.getUsuario().getRol().is(Rol.ALUMNO)) {
             rendered = false;
             alumno = (Alumno) login.getPersona();
-            alumno = (Alumno) login.getPersona();
-            //buscarAsignacionesPendientes();
-
         }
         if (login.getUsuario().getRol().is(Rol.PROFESOR) || login.getUsuario().getRol().is(Rol.RESPONSABLE)) {
             rendered = true;
