@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.alumno.Alumno;
@@ -26,6 +29,7 @@ import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.domain.usuario.Rol;
+import tesis.odontologia.core.mail.SMTPConfig;
 import tesis.odontologia.core.service.AsignacionPacienteService;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
@@ -190,7 +194,7 @@ public class ConsultarAsignacionesBean {
             if (asignacionSeleccionada != null) {
                 asignacionSeleccionada.setEstado(estado);
                 getAsignacionPacienteService().save(asignacionSeleccionada);
-
+                notificarPaciente(asignacionSeleccionada);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Asignación actualizada correctamente"));
             }
         } catch (Exception ex) {
@@ -205,6 +209,31 @@ public class ConsultarAsignacionesBean {
         }
 
         cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
+    }
+
+    private void notificarPaciente(AsignacionPaciente asignacion) {
+        String textoEmail;
+
+        if (asignacion.getEstado() == EstadoAsignacion.CONFIRMADA) {
+            if (asignacion.getPaciente().getEmail() != null && !asignacion.getPaciente().getEmail().isEmpty()) {
+                textoEmail = "Estimado " + asignacion.getPaciente().getNombre() + ":\n" + System.getProperty("line.separator");
+                textoEmail += "   Se ha confirmado tu asistencia a una práctica odontológica en la facultad de Odontología de la UNC. A continuación te mostramos algunos datos que te serán de utilidad:\n";
+                textoEmail += "" + System.getProperty("line.separator");
+                textoEmail += "Cátedra donde se te atenderá: " + asignacion.getDiagnostico().getMateria().getNombre() + " " + asignacion.getCatedra().getNombre() + "\n";
+                textoEmail += "Práctica a desarrollar: " + asignacion.getDiagnostico().getTrabajoPractico().getNombre() + "\n";
+                textoEmail += "Alumno que te atenderá: " + asignacion.getAlumno().getApellido() + ", " + asignacion.getAlumno().getNombre() + "\n";
+                textoEmail += "Fecha y hora: " + formatFecha(asignacion.getFechaAsignacion()) + "\n";
+                textoEmail += " " + System.getProperty("line.separator");
+                textoEmail += "Saludos.";
+                try {
+                    SMTPConfig.sendMail(true, "Confirmación de asistencia a práctica odontológica", textoEmail, asignacion.getPaciente().getEmail());
+                } catch (MessagingException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No se ha podido notificar al paciente"));
+                }
+            }
+
+        } else if (asignacion.getEstado() == EstadoAsignacion.CANCELADO) {
+        }
     }
 
     public void cancelarAsignacion() {
