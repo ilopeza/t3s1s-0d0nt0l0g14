@@ -13,8 +13,8 @@
 			<dow day="sat" working="no"/>
 		</calendar>
 		<currency symbol="$" digits="2" positiveOrder="2" negativeOrder="2"/>
-		<summary ScheduleFromStart="yes" CalculateCostProgress="no" MultipleCriticalPaths="no" CriticalSlack="0d" Name="Cronograma_Proyecto" Title="WBS ENZO Y ALEXIS" Work="-0.0167h" Duration="3222.5h" Start="2013-04-03T08:00" Finish="2014-04-15T14:30"/>
-		<DataSource path="D:\S.A.P.O\Proyecto\02_Tiempo\Cronograma\Cronograma_Proyecto.mpp" type="14.0"/>
+		<summary ScheduleFromStart="yes" CalculateCostProgress="no" MultipleCriticalPaths="no" CriticalSlack="0d" Name="Cronograma_Proyecto" Title="WBS ENZO Y ALEXIS" Work="-0.0167h" Duration="3209.5h" Start="2013-04-03T08:00" Finish="2014-04-12T13:30" ActualStart="NA"/>
+		<DataSource path="C:\Users\Mau\Desktop\Proyecto Odontologia\Proyecto\02_Tiempo\Cronograma\Cronograma_Proyecto.mpp" type="14.0"/>
 	</proj>
 	<printInfo mode="scale" orient="landscape" pagesWide="1" pagesHigh="1" scale="100%" bw="no" enlarge="no" byColumn="no" adjustPageBreaks="no" marginTop="36pt" marginLeft="36pt" marginBottom="36pt" marginRight="36pt"/>
 	<pageLayouts>
@@ -763,6 +763,33 @@
 		<border style="null" shdir="none" shdepth="0pt"/>
 	</treediff>
 	<treediff id="95">
+		<item listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="308">
+		<item calign="branch_nearest" listmode="stemleft"/>
+	</treediff>
+	<treediff id="309">
+		<item listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="310">
+		<item listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="311">
+		<item listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="312">
+		<item listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="313">
+		<item listmode="stemleft"/>
+		<border style="null" shdir="none" shdepth="0pt"/>
+	</treediff>
+	<treediff id="314">
 		<item listmode="stemleft"/>
 		<border style="null" shdir="none" shdepth="0pt"/>
 	</treediff>
