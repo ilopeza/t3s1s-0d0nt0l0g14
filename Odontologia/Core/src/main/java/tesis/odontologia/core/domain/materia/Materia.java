@@ -30,7 +30,7 @@ public class Materia extends Generic {
     @NotNull(message = "El nombre de la materia no puede ser nulo.")
     private String nombre;
     
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "materia_id")
     private List<Catedra> catedra;
     
@@ -110,6 +110,7 @@ public class Materia extends Generic {
     }
 
     public List<Catedra> getCatedra() {
+        
         return catedra;
     }
 
