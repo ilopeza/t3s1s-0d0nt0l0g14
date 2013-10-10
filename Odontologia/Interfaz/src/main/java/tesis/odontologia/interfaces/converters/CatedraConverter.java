@@ -35,13 +35,21 @@ public class CatedraConverter implements Converter {
         if(string == null || string.isEmpty()) {
             return null;
         }
-        Catedra c =  catedraService.findOne(CatedraSpecs.byId(Long.parseLong(string)));
+        Catedra c;
+        try{
+            c=  catedraService.findOne(CatedraSpecs.byId(Long.parseLong(string)));
+        } catch(NumberFormatException e){
+            return null;
+        }
+                
         
         return c;
     }
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object o) {
+        if(o==null){
+            return null;}
         return ((Catedra) o).getId().toString();
     }
 }

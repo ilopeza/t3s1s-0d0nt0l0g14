@@ -34,13 +34,22 @@ public class TrabajoPracticoConverter implements Converter {
         if(string == null || string.isEmpty()) {
             return null;
         }
-        TrabajoPractico tp  =  trabajoPracticoService.findOne(TrabajoPracticoSpecs.byId(Long.parseLong(string)));
+        
+        TrabajoPractico tp;
+        try{
+           tp=  trabajoPracticoService.findOne(TrabajoPracticoSpecs.byId(Long.parseLong(string))); 
+        }catch(NumberFormatException e){
+            return null;
+        }
+        
         
         return tp;
     }
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object o) {
+        if(o==null){
+            return null;}
         return ((TrabajoPractico) o).getId().toString();
     }
 }
