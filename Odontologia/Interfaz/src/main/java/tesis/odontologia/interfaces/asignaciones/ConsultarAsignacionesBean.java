@@ -69,6 +69,7 @@ public class ConsultarAsignacionesBean {
     private boolean rendered = true;
     //Atributos extras.
     private String motivoCancelacion;
+    private boolean campoEditable;
     //Servicios usados.
     @ManagedProperty(value = "#{asignacionPacienteService}")
     private AsignacionPacienteService asignacionPacienteService;
@@ -116,7 +117,7 @@ public class ConsultarAsignacionesBean {
     }
 
     public void cargarAsignacionesFiltradas() {
-        this.setAsignaciones(this.buscarAsignaciones());
+        asignaciones = buscarAsignaciones();     
     }
 
     public String formatFecha(Calendar c) {
@@ -177,13 +178,6 @@ public class ConsultarAsignacionesBean {
         return listaAsignaciones;
     }
 
-    public void buscarAsignacionesConfirmadas() {
-        estadoFiltro = EstadoAsignacion.CONFIRMADA;
-        /*asignaciones = (List<AsignacionPaciente>) asignacionService.findAll(AsignacionPacienteSpecs.byEstadoAsignacion(estadoFiltro) );*/
-        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll();
-
-    }
-
     /**
      * Para cambiar el estado de una asignación seleccionada de la tabla.
      *
@@ -193,9 +187,15 @@ public class ConsultarAsignacionesBean {
         try {
             if (asignacionSeleccionada != null) {
                 asignacionSeleccionada.setEstado(estado);
-                getAsignacionPacienteService().save(asignacionSeleccionada);
+                asignacionSeleccionada = asignacionPacienteService.save(asignacionSeleccionada);
+                asignaciones = buscarAsignaciones();
                 notificarPaciente(asignacionSeleccionada);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Asignación actualizada correctamente"));
+                if (asignacionSeleccionada.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO)== 0) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("La asignación ha sido cancelada correctamente."));
+                }
+                if (asignacionSeleccionada.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CONFIRMADA)== 0) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("La asignación ha sido confirmada correctamente."));
+                }          
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "La asignacion no fue actualizada correctamente", null));
@@ -204,10 +204,6 @@ public class ConsultarAsignacionesBean {
     }
 
     public void confirmarAsignacion() {
-        if (motivoCancelacion != null && !motivoCancelacion.isEmpty()) {
-            asignacionSeleccionada.setMotivoCancelación(motivoCancelacion);
-        }
-
         cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
     }
 
@@ -237,31 +233,46 @@ public class ConsultarAsignacionesBean {
     }
 
     public void cancelarAsignacion() {
+        asignacionSeleccionada.setMotivoCancelación(motivoCancelacion);
         cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CANCELADO);
         motivoCancelacion = "";
     }
-    
-    
-    
-    public boolean deshabilitarBtnConfirmarAsignacion(AsignacionPaciente a){
-        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO)==0 || a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CONFIRMADA)==0 ) {
-            return true;
-        }
-        return false;   
-    }
-    
-    public boolean deshabilitarBtnCancelarAsignacion(AsignacionPaciente a){
-        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO)==0) {
+
+    public boolean deshabilitarBtnConfirmarAsignacion(AsignacionPaciente a) {
+        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO) == 0 || a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CONFIRMADA) == 0) {
             return true;
         }
         return false;
     }
-    
-    public boolean deshabilitarBtnModificarAsignacion(AsignacionPaciente a){
-        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO)==0) {
+
+    public boolean deshabilitarBtnCancelarAsignacion(AsignacionPaciente a) {
+        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO) == 0) {
             return true;
         }
         return false;
+    }
+
+    public boolean deshabilitarBtnModificarAsignacion(AsignacionPaciente a) {
+        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO) == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public void modificar() {
+        if (this.asignacionSeleccionada != null) {
+            campoEditable = true;
+            rendered = false;
+        }
+    }
+    
+    public void confirmarModificacion(AsignacionPaciente a){
+        if (this.asignacionSeleccionada != null) {
+            asignacionSeleccionada = a;
+            this.asignacionPacienteService.save(asignacionSeleccionada);
+            this.campoEditable=false;
+            rendered = true;
+        }
     }
 
     //MÉTODOS AUXILIARES
@@ -445,5 +456,13 @@ public class ConsultarAsignacionesBean {
 
     public void setMotivoCancelacion(String motivoCancelacion) {
         this.motivoCancelacion = motivoCancelacion;
+    }
+
+    public boolean isCampoEditable() {
+        return campoEditable;
+    }
+
+    public void setCampoEditable(boolean campoEditable) {
+        this.campoEditable = campoEditable;
     }
 }
