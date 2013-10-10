@@ -53,6 +53,7 @@ and open the template in the editor.
                     <p:column>
                         <p:selectOneMenu id="selectMateria" value="#{consultarAsignacionesBean.materiaFiltro}"
                                          converter="materiaConverter">
+                            <f:selectItem itemLabel="Todas" noSelectionOption="true"/>
                             <f:selectItems value="#{consultarAsignacionesBean.materias}"/>
                         </p:selectOneMenu>
                     </p:column>
@@ -61,6 +62,7 @@ and open the template in the editor.
                     </p:column>
                     <p:column>
                         <p:selectOneMenu id="selectEstadoAsignacion" value="#{consultarAsignacionesBean.estadoFiltro}">
+                            <f:selectItem itemLabel="Todas" itemValue="#{null}"/>
                             <f:selectItems value="#{consultarAsignacionesBean.estados}"/>
                         </p:selectOneMenu>
                     </p:column>
@@ -94,7 +96,8 @@ and open the template in the editor.
                              selectionMode="single"
                              selection="#{consultarAsignacionesBean.asignacionSeleccionada}"
                              var="a"
-                             rowKey="#{a.id}" >
+                             rowKey="#{a.id}" 
+                             editable="#{consultarAsignacionesBean.campoEditable}" editMode="cell">
                     <f:facet name="header">
                         <h:outputText value="Asignaciones del alumno #{consultarAsignacionesBean.alumno}" />
                     </f:facet>
@@ -119,12 +122,16 @@ and open the template in the editor.
                     <p:column id="colAcciones" headerText="Acciones">
                         <h:panelGrid columns="3">
                             <p:commandButton id="btnConfirmar" value="Confirmar" icon="ui-icon-check"
-                                             onclick="dlgConfirmar.show();" disabled="#{consultarAsignacionesBean.deshabilitarBtnConfirmarAsignacion(a)}"/>
+                                             oncomplete="dlgConfirmar.show();" 
+                                             update="tblResultadoAsignaciones"
+                                             disabled="#{consultarAsignacionesBean.deshabilitarBtnConfirmarAsignacion(a)}"/>
                             <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-cancel"
-                                             onclick="dlgCancelarAsignacion.show();"
-                                             disabled="#{consultarAsignacionesBean.deshabilitarBtnCancelarAsignacion(a)}"/>
+                                             oncomplete="dlgCancelarAsignacion.show();"
+                                             disabled="#{consultarAsignacionesBean.deshabilitarBtnCancelarAsignacion(a)}"
+                                             update="tblResultadoAsignaciones"/>
                             <p:commandButton id="btnModificar" value="Modificar" icon="ui-icon-gear"
-                                             disabled="#{consultarAsignacionesBean.deshabilitarBtnModificarAsignacion(a)}"/>
+                                             disabled="#{consultarAsignacionesBean.deshabilitarBtnModificarAsignacion(a)}"
+                                             rendered="#{consultarAsignacionesBean.rendered}"/>
                         </h:panelGrid> 
                     </p:column>
                 </p:dataTable>
@@ -151,31 +158,33 @@ and open the template in the editor.
 
         <p:dialog  header="Cancelación de asignación" appendToBody="true"
                    widgetVar="dlgCancelarAsignacion" closeOnEscape="true" modal="true">
-            <h:panelGrid>
-                <p:row>
-                    <h:outputText value="¿Realmente desea cancelar la asignación?"/>
-                </p:row>
-                <p:row>
-                    <h:outputText value="Ingrese una descripción del motivo de la cancelación:"/>
-                </p:row>
-                <p:row>
-                    <p:inputTextarea id="txtMotivoCancelacion" value="#{consultarAsignacionesBean.motivoCancelacion}" 
-                                     maxlength="100" rows="5" cols="35"/>                     
-                </p:row>
-                <p:row>
-                    <p:column>
-                        <p:commandButton value="Sí" actionListener="#{consultarAsignacionesBean.cancelarAsignacion()}"
-                                         oncomplete="dlgCancelarAsignacion.hide();"
-                                         update=":asignacionesForm:tblResultadoAsignaciones"/>
-                    </p:column>
-                    <p:column> 
-                        <p:commandButton value="No" onclick="dlgCancelarAsignacion.hide();" type="button"/> 
-                    </p:column>
-                </p:row>
+            <h:form id="formCancelar">
+                <h:panelGrid>
 
+                    <p:row>
+                        <h:outputText value="¿Realmente desea cancelar la asignación?"/>
+                    </p:row>
+                    <p:row>
+                        <h:outputText value="Ingrese una descripción del motivo de la cancelación:"/>
+                    </p:row>
+                    <p:row>
+                        <p:inputTextarea id="txtMotivoCancelacion" value="#{consultarAsignacionesBean.motivoCancelacion}" 
+                                         maxlength="100" rows="5" cols="35"/>                     
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:commandButton value="Sí" actionListener="#{consultarAsignacionesBean.cancelarAsignacion()}"
+                                             oncomplete="dlgCancelarAsignacion.hide();"
+                                             process="@form"
+                                             update=":asignacionesForm:tblResultadoAsignaciones"/>
+                        </p:column>
+                        <p:column> 
+                            <p:commandButton value="No" onclick="dlgCancelarAsignacion.hide();" type="button"/> 
+                        </p:column>
+                    </p:row>
 
-
-            </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
         </p:dialog>
 
         <!--p:dialog header="Confirmar asignación" widgetVar="dlgConfirmarAsignacion" resizable="false" appendToBody="true" modal="true" >
