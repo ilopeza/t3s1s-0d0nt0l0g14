@@ -51,8 +51,10 @@ public class AsignacionPacienteSpecs {
 //        Long id = tp.getId();
 //        QDiagnostico di = getDiagnostico();
 //        return di.trabajoPractico.id.eq(id);
-        QTrabajoPractico qtp = getTrabajoPractico();
-        return qtp.id.eq(tp.getId());
+//        QTrabajoPractico qtp = getTrabajoPractico();
+//        return qtp.id.eq(tp.getId());
+        QDiagnostico d = QDiagnostico.diagnostico;
+        return new JPASubQuery().from(d).where($.diagnostico.eq(d).and(d.trabajoPractico.eq(tp))).exists();
     }
     
     public static QTrabajoPractico getTrabajoPractico(){
