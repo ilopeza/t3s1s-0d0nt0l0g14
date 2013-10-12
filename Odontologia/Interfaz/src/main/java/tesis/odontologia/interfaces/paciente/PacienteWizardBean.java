@@ -54,7 +54,7 @@ public class PacienteWizardBean {
     //Atributos para las tablas.
     private List<Paciente> pacientesEncontrados;
     private Paciente selectedPaciente;
-    private List<Diagnostico> diagnosticos;
+    private List<Diagnostico> nuevosDiagnosticos;
     private Diagnostico diagnostico;
     private Diagnostico selectedDiagnostico;
     //Atributos seleccionados para los combos.
@@ -101,6 +101,7 @@ public class PacienteWizardBean {
         if (diagnostico == null) {
             diagnostico = new Diagnostico();
         }
+        nuevosDiagnosticos = new ArrayList<Diagnostico>();
         cargarCombos();
 
     }
@@ -201,7 +202,9 @@ public class PacienteWizardBean {
     public void savePaciente() {
         try {
             if (selectedPaciente != null) {
-                getPersonaService().save(paciente);
+                this.setearIdNuevosDiagosticos();
+                paciente = personaService.save(paciente);
+                nuevosDiagnosticos.clear();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
                         + " actualizado correctamente."));
             } else {
@@ -226,10 +229,16 @@ public class PacienteWizardBean {
      * Agrega un diagnostico a la lista de diagnósticos
      */
     public void agregarDiagnostico() {
+        
         diagnostico.setEstado(Diagnostico.EstadoDiagnostico.PENDIENTE);
+        long idAux = paciente.getHistoriaClinica().getDiagnostico().size();
+        diagnostico.setId(Long.valueOf(idAux));
+        nuevosDiagnosticos.add(diagnostico);
         paciente.getHistoriaClinica().getDiagnostico().add(diagnostico);
         //diagnosticos.add(diagnostico);
+        //this.savePaciente();
         diagnostico = new Diagnostico();
+        
     }
     
     public void cancelarDiagnostico(){
@@ -237,6 +246,8 @@ public class PacienteWizardBean {
         for(Diagnostico d: paciente.getHistoriaClinica().getDiagnostico()){
             if(d.equals(selectedDiagnostico)){
                 d.setEstado(Diagnostico.EstadoDiagnostico.CANCELADO);
+                //this.savePaciente();
+                selectedDiagnostico = null;
                 break;
             }
         }
@@ -244,6 +255,13 @@ public class PacienteWizardBean {
     
     public void modificarDiagnostico(){
         diagnostico = selectedDiagnostico;
+    }
+    
+    public void setearIdNuevosDiagosticos(){
+        for (Diagnostico d: paciente.getHistoriaClinica().getDiagnostico()) {
+            if(nuevosDiagnosticos.contains(d))
+                d.setId(null);
+        }
     }
 
 
@@ -316,12 +334,12 @@ public class PacienteWizardBean {
         this.selectedPaciente = selectedPaciente;
     }
 
-    public List<Diagnostico> getDiagnosticos() {
-        return diagnosticos;
+    public List<Diagnostico> getNuevosDiagnosticos() {
+        return nuevosDiagnosticos;
     }
 
-    public void setDiagnosticos(List<Diagnostico> diagnosticos) {
-        this.diagnosticos = diagnosticos;
+    public void setNuevosDiagnosticos(List<Diagnostico> diagnosticos) {
+        this.nuevosDiagnosticos = diagnosticos;
     }
 
     public Diagnostico getDiagnostico() {
