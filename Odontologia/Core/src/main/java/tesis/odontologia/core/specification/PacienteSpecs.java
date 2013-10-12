@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.core.specification;
 
+import com.mysema.query.jpa.impl.JPASubQuery;
 import com.mysema.query.types.expr.BooleanExpression;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,7 +52,7 @@ public class PacienteSpecs {
       
     public static BooleanExpression byDiagnosticoMateria(Materia materia){
         List<Diagnostico.EstadoDiagnostico> estados = new ArrayList<Diagnostico.EstadoDiagnostico>();
-        estados.add(Diagnostico.EstadoDiagnostico.EN_PROCESO);
+        //estados.add(Diagnostico.EstadoDiagnostico.EN_PROCESO);
         estados.add(Diagnostico.EstadoDiagnostico.PENDIENTE);
         
         return $.historiaClinica.diagnostico.any().estado.in(estados)
