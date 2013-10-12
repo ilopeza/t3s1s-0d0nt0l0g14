@@ -6,6 +6,7 @@ package tesis.odontologia.interfaces.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -38,5 +39,12 @@ public class Utiles {
         }
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm" );
         return format.format(fecha.getTime());
+    }
+    
+     public static Calendar convertDateToCalendar(Date d1){
+        Calendar c = Calendar.getInstance();
+        c.setTime(d1);
+        
+        return c;
     }
 }
