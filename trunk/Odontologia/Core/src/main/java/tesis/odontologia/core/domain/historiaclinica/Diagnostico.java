@@ -44,7 +44,8 @@ public class Diagnostico extends Generic{
     @JoinColumn(name = "asignacion_id")
     private AsignacionPaciente asignacion;
     
-    @Column(length = 255)
+    @Column(length = 255) 
+    @NotNull(message = "La descripcion del diagnóstico no puede estar vacío.")
     @Size(min = 1, max = 255, message = "La descripcion del medico debe tener entre 1 y 255 caracteres.")
     private String descripcion;
     @Enumerated(EnumType.STRING)
@@ -125,16 +126,22 @@ public class Diagnostico extends Generic{
             return "Pendiente";
         }
     },
-    EN_PROCESO {
+    NO_SOLUCIONADO {
         @Override
         public String toString() {
-            return "En Proceso";
+            return "No solucionado";
         }
     },
-    REALIZADO {
+    SOLUCIONADO_FUERA {
         @Override
         public String toString() {
-            return "Realizado";
+            return "Solucionado afuera de la facultad";
+        }
+    },
+    SOLUCIONADO_EN_FACULTAD {
+        @Override
+        public String toString() {
+            return "Solucionado en la facultad";
         }
     };
 }    
