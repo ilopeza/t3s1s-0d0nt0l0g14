@@ -5,8 +5,8 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
-    <p:fieldset id="fldsOdontograma" legend="Odontograma" toggleable="true">
-        <h:panelGrid id="gridOdontograma" columns="1" cellpadding="3" cellspacing="3" >
+    <p:fieldset id="fldsOdontograma" legend="Odontograma" toggleable="true" collapsed="true">
+        <h:panelGrid id="gridOdontograma" columns="1" cellpadding="3" cellspacing="3">
             <p:column>
                 <h:outputLabel value="Complete el odontograma con los datos correspondientes"/>
             </p:column>
@@ -16,7 +16,7 @@
         </h:panelGrid>
     </p:fieldset>
     <br/>
-    <p:fieldset id="fldsNuevoDiagnóstico" legend="Nuevo diagnóstico" toggleable="true" toggleSpeed="150">
+    <p:fieldset id="fldsNuevoDiagnóstico" legend="Nuevo diagnóstico" toggleable="true" toggleSpeed="150" collapsed="false">
         <h:outputLabel value="Para agregar un nuevo diagnóstico, seleccione la materia correspondiente y luego el trabajo práctico que trata el problema."/>
         <h:panelGrid id="gridNuevoDiagnóstico" columns="2" cellpadding="3" cellspacing="3" >
             <p:column>
@@ -47,23 +47,17 @@
         </h:panelGrid>
 
         <p:commandButton value="Agregar" icon="ui-icon-circle-plus" 
-                         process="@parent"
-                         update="pnlDiagnosticosCargados"
+                         process="@form"
+                         update="tblResultadoDiagnosticos"
                          actionListener="#{pacienteWizardBean.agregarDiagnostico()}"/>
 
         <p:panel id="pnlDiagnosticosCargados" header="Diagnósticos cargados">
-
-            <p:dataTable id="tblVerDiagnosticosCargados" 
+            <p:dataTable id="tblResultadoDiagnosticos" 
                          emptyMessage="Paciente sin diagnósticos cargados"
                          paginator="true" 
                          value="#{pacienteWizardBean.paciente.historiaClinica.diagnostico}"
-                         var="d">
-                <f:facet name="header">
-                    <h:outputText value="Diagnósticos del paciente #{pacienteWizardBean.paciente}" />
-                </f:facet>
-                <p:column id="colMateria" headerText="Materia">
-                    <h:outputText value="#{d.materia}" />
-                </p:column>
+                         var="d" selection="#{pacienteWizardBean.selectedDiagnostico}" selectionMode="single"
+                         rowKey="#{d.id}">
                 <p:column id="colTrabajoPractico" headerText="Trabajo práctico">
                     <h:outputText value="#{d.trabajoPractico}" />
                 </p:column>
@@ -75,23 +69,9 @@
                 </p:column>
                 <p:column id="colAcciones" headerText="Acciones">
                     <h:panelGrid columns="3" cellpadding="1" cellspacing="1">
-                        <p:commandButton id="btnVer" icon="ui-icon-search">
-                            <f:setPropertyActionListener value="#{d}"
-                                                         target="#{pacienteWizardBean.selectedDiagnostico}" />
-
-                        </p:commandButton>
-                        <p:commandButton id="btnCancelar" icon="ui-icon-cancel" 
-                                         oncomplete="dlgCancDiag.show()">
-                            <f:setPropertyActionListener value="#{d}"
-                                                         target="#{pacienteWizardBean.selectedDiagnostico}" />
-
-                        </p:commandButton>
-                        <p:commandButton id="btnModificar" icon="ui-icon-pencil" 
-                                         actionListener="#{pacienteWizardBean.modificarDiagnostico()}"
-                                         update="@form">
-                            <f:setPropertyActionListener value="#{d}"
-                                                         target="#{pacienteWizardBean.selectedDiagnostico}" />
-                        </p:commandButton>
+                        <p:commandButton id="btnCancelar" icon="ui-icon-cancel"
+                                         oncomplete="dlgCancelarDianostico.show();"
+                                         process="tblResultadoDiagnosticos"/>
                     </h:panelGrid> 
                 </p:column>
             </p:dataTable>
