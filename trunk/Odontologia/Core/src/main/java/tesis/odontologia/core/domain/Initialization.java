@@ -6,6 +6,7 @@ package tesis.odontologia.core.domain;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,11 +115,12 @@ public class Initialization {
         Diagnostico d1 = new Diagnostico(materias.get(0).getTrabajoPractico().get(1), "Descripcion TP", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d1.setMateria(materias.get(1));
         diagnosticos.add(d1);
-        Diagnostico d2 = new Diagnostico(materias.get(1).getTrabajoPractico().get(0), "Descripcion TP", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        Diagnostico d2 = new Diagnostico(materias.get(1).getTrabajoPractico().get(0), "Descripcion TP: Se le realizará una extracción del 7mo molar premeditado pro el raavi shankar", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d2.setMateria(materias.get(1));
         diagnosticos.add(d2);
 
         hc.setDiagnostico(diagnosticos);
+       
         p.setHistoriaClinica(hc);
         p.setFechaNacimiento(Calendar.getInstance());
 
@@ -126,13 +128,37 @@ public class Initialization {
 
         pacientes.add(personaService.save(p));
 
+        Paciente p3 = new Paciente("Ponzio", "Leonardo");
+        p3.setDocumento(new Documento("34686666", Documento.TipoDocumento.DNI));
+        p3.setSexo(Paciente.SexoTipo.MASCULIN0);
+        p3.setEmail("ponzio.leonardo@gmail.com");
+        HistoriaClinica hc3 = HistoriaClinica.createDefault();
+        hc3.setNumero(4);
+        List<Diagnostico> diagnosticos2 = new ArrayList<Diagnostico>();
+        Diagnostico d3 = new Diagnostico(materias.get(0).getTrabajoPractico().get(0), "Tratar Encias jsj", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d3.setMateria(materias.get(1));
+        diagnosticos2.add(d3);
+        Diagnostico d4 = new Diagnostico(materias.get(0).getTrabajoPractico().get(1), "Descripcion TP hola", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d4.setMateria(materias.get(1));
+        diagnosticos2.add(d4);
+        Diagnostico d5 = new Diagnostico(materias.get(1).getTrabajoPractico().get(0), "Descripcion TP: Se le realizará una extracción del 7mo molar premeditado pro el raavi shankar", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d5.setMateria(materias.get(1));
+        diagnosticos2.add(d5);
+
+        hc3.setDiagnostico(diagnosticos2);
+        p3.setHistoriaClinica(hc3);
+        p3.setFechaNacimiento(Calendar.getInstance());
+
+        p3.setDomicilio(new Domicilio("Ituzaingó", "1000", "Córdoba"));
+
+        pacientes.add(personaService.save(p3));
 
         Paciente p1 = new Paciente("Enzo", "Biancato");
         p1.setDocumento(new Documento("34677666", Documento.TipoDocumento.DNI));
         p1.setSexo(Paciente.SexoTipo.MASCULIN0);
         p1.setEmail("enzo.biancato@gmail.com");
         HistoriaClinica hc1 = HistoriaClinica.createDefault();
-        hc1.setNumero(1);
+        hc1.setNumero(2);
         p1.setHistoriaClinica(hc1);
         p1.setFechaNacimiento(Calendar.getInstance());
         p1.setDomicilio(new Domicilio("Obispo Salguero", "444", "Córdoba"));
@@ -143,7 +169,7 @@ public class Initialization {
         p2.setSexo(Paciente.SexoTipo.MASCULIN0);
         p2.setEmail("romeritodelvalle@gmail.com");
         HistoriaClinica hc2 = HistoriaClinica.createDefault();
-        hc.setNumero(1);
+        hc2.setNumero(3);
         p2.setHistoriaClinica(hc2);
         p2.setFechaNacimiento(Calendar.getInstance());
         p2.setDomicilio(new Domicilio("Gral. Manuel Belgrano", "745", "Córdoba"));
@@ -190,6 +216,7 @@ public class Initialization {
         Profesor p = new Profesor("Lucas", "Rimoldi");
         p.setDocumento(new Documento("34342245", Documento.TipoDocumento.DNI));
         p.setFechaNacimiento(Calendar.getInstance());
+        p.setMateria(materias);
         Usuario usuario1 = new Usuario("34342245", "34342245", roles.get(1), "Lucas@gmail.com");
         p.setUsuario(usuario1);
         personaService.save(p);
@@ -224,9 +251,11 @@ public class Initialization {
         ap1.setAlumno(alumnos.get(1));
         ap1.setCatedra(materias.get(0).getCatedra().get(0));
         ap1.setDiagnostico(pacientes.get(0).getHistoriaClinica().getDiagnostico().get(1));
-        ap1.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
+        ap1.setEstado(AsignacionPaciente.EstadoAsignacion.AUTORIZADA);
         ap1.setPaciente(pacientes.get(0));
-        ap1.setFechaAsignacion(Calendar.getInstance());
+        Calendar c1 = GregorianCalendar.getInstance();
+        c1.set(2013, 10, 9);
+        ap1.setFechaAsignacion(c1);
         asignacionPacienteService.save(ap1);
 
         AsignacionPaciente ap2 = new AsignacionPaciente();
@@ -237,5 +266,36 @@ public class Initialization {
         ap2.setPaciente(pacientes.get(0));
         ap2.setFechaAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap2);
+        
+        AsignacionPaciente ap4 = new AsignacionPaciente();
+        ap4.setAlumno(alumnos.get(0));
+        ap4.setCatedra(materias.get(0).getCatedra().get(0));
+        ap4.setDiagnostico(pacientes.get(1).getHistoriaClinica().getDiagnostico().get(0));
+        ap4.setEstado(AsignacionPaciente.EstadoAsignacion.PENDIENTE);
+        ap4.setPaciente(pacientes.get(1));
+        ap4.setFechaAsignacion(Calendar.getInstance());
+        asignacionPacienteService.save(ap4);
+
+        AsignacionPaciente ap5 = new AsignacionPaciente();
+        ap5.setAlumno(alumnos.get(1));
+        ap5.setCatedra(materias.get(0).getCatedra().get(0));
+        ap5.setDiagnostico(pacientes.get(1).getHistoriaClinica().getDiagnostico().get(1));
+        ap5.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
+        ap5.setPaciente(pacientes.get(1));
+        Calendar c2 = GregorianCalendar.getInstance();
+        c2.set(2013, 11, 30);
+        ap5.setFechaAsignacion(c2);
+        asignacionPacienteService.save(ap5);
+
+        AsignacionPaciente ap6 = new AsignacionPaciente();
+        ap6.setAlumno(alumnos.get(2));
+        ap6.setCatedra(materias.get(1).getCatedra().get(0));
+        ap6.setDiagnostico(pacientes.get(1).getHistoriaClinica().getDiagnostico().get(2));
+        ap6.setEstado(AsignacionPaciente.EstadoAsignacion.AUTORIZADA);
+        ap6.setPaciente(pacientes.get(1));
+        Calendar c3 = GregorianCalendar.getInstance();
+        c3.set(2013, 06, 30);
+        ap6.setFechaAsignacion(c3);
+        asignacionPacienteService.save(ap6);
     }
 }

@@ -24,7 +24,7 @@ import tesis.odontologia.core.domain.paciente.Paciente;
 public class AsignacionPacienteSpecs {
     
     private static final QAsignacionPaciente $ = QAsignacionPaciente.asignacionPaciente;
-    
+
     public static BooleanExpression byAlumno(Alumno a){
         return $.alumno.id.eq(a.getId());
     }
@@ -40,11 +40,16 @@ public class AsignacionPacienteSpecs {
     public static BooleanExpression byFecha(Calendar cal){
         return $.fechaAsignacion.eq(cal);
     }
-
+    
+    public static BooleanExpression byFechaDesdeHasta(Calendar calDesde, Calendar calHasta){
+        return $.fechaAsignacion.between(calDesde, calHasta);
+    }
+    
     //PENDING: (MAXI) revisar especificacion
     public static BooleanExpression byMateria(Materia m){
         QDiagnostico d = QDiagnostico.diagnostico;
-        return new JPASubQuery().from(d).where($.diagnostico.eq(d).and(d.materia.eq(m))).exists();
+        QTrabajoPractico tp = QTrabajoPractico.trabajoPractico;
+        return new JPASubQuery().from(d).where($.diagnostico.eq(d).and(new JPASubQuery().from(tp).where(d.trabajoPractico.eq(tp).and(d.trabajoPractico.in(m.getTrabajoPractico()))).exists())).exists();
     }
     
     public static BooleanExpression byTrabajoPractico(TrabajoPractico tp){

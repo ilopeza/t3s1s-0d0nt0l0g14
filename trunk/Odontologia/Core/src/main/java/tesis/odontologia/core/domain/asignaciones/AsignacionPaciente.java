@@ -159,10 +159,10 @@ public class AsignacionPaciente extends Generic{
    
     public enum EstadoAsignacion {
 
-    ANULADO {
+    ANULADA {
         @Override
         public String toString() {
-            return "Anulado";
+            return "Anulada";
         }
     },
     PENDIENTE {
@@ -177,18 +177,30 @@ public class AsignacionPaciente extends Generic{
             return "Confirmada";
         }
     },
-    CANCELADO {
+    CANCELADA {
         @Override
         public String toString() {
-            return "Cancelado";
+            return "Cancelada";
         }
     },
-    REALIZADO {
+    AUTORIZADA {
         @Override
         public String toString() {
-            return "Realizado";
+            return "Autorizada";
         }
-    };
+        },
+    REGISTRADA {
+        @Override
+        public String toString() {
+            return "Atención Registrada";
+        }
+        },
+    NOREGISTRADA {
+        @Override
+        public String toString() {
+            return "Atención no Registrada";
+        }
+        }
+    }; 
     
-    }
 }
