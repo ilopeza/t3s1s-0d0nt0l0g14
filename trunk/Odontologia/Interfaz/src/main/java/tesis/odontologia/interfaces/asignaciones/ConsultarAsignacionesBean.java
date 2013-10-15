@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -190,7 +188,7 @@ public class ConsultarAsignacionesBean {
                 asignacionSeleccionada = asignacionPacienteService.save(asignacionSeleccionada);
                 asignaciones = buscarAsignaciones();
                 notificarPaciente(asignacionSeleccionada);
-                if (asignacionSeleccionada.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO)== 0) {
+                if (asignacionSeleccionada.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADA)== 0) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("La asignación ha sido cancelada correctamente."));
                 }
                 if (asignacionSeleccionada.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CONFIRMADA)== 0) {
@@ -228,32 +226,32 @@ public class ConsultarAsignacionesBean {
                 }
             }
 
-        } else if (asignacion.getEstado() == EstadoAsignacion.CANCELADO) {
+        } else if (asignacion.getEstado() == EstadoAsignacion.CANCELADA) {
         }
     }
 
     public void cancelarAsignacion() {
         asignacionSeleccionada.setMotivoCancelación(motivoCancelacion);
-        cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CANCELADO);
+        cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CANCELADA);
         motivoCancelacion = "";
     }
 
     public boolean deshabilitarBtnConfirmarAsignacion(AsignacionPaciente a) {
-        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO) == 0 || a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CONFIRMADA) == 0) {
+        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADA) == 0 || a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CONFIRMADA) == 0) {
             return true;
         }
         return false;
     }
 
     public boolean deshabilitarBtnCancelarAsignacion(AsignacionPaciente a) {
-        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO) == 0) {
+        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADA) == 0) {
             return true;
         }
         return false;
     }
 
     public boolean deshabilitarBtnModificarAsignacion(AsignacionPaciente a) {
-        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADO) == 0) {
+        if (a.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADA) == 0) {
             return true;
         }
         return false;
