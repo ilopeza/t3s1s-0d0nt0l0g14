@@ -46,7 +46,7 @@ public class HistoriaClinica extends Generic {
     @JoinColumn(name = "historiaclinica_id")
     @Valid
     private List<Atencion> atencion;
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "historiaclinica_id")
     @Valid
     private List<Diagnostico> diagnostico;
@@ -181,14 +181,14 @@ public class HistoriaClinica extends Generic {
         hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G4P4, 4));
 
         hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G5P1, 5));
-        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P2, 4));
-        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P3, 4));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P2, 5));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P3, 5));
         hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G5P4, 5));
         hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G5P5, 5));
-        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P6, 4));
-        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P7, 4));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P6, 5));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P7, 5));
         hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G5P8, 5));
-        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P9, 4));
+        hc.addDetalle(new CampoDetalle(DetalleHistoriaClinica.G5P9, 5));
 
         hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G6P1, 6));
         hc.addDetalle(new CampoSiNo(DetalleHistoriaClinica.G6P2, 6));
