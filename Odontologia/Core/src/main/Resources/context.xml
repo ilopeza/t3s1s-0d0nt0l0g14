@@ -21,6 +21,9 @@
     <!-- SI AGREGO INTERCEPTORES SUBIR A .core -->
     <context:component-scan base-package="tesis.odontologia.core" />
     
+    <task:annotation-driven />
+    <bean id="demoServiceBasicUsageCron" class="tesis.odontologia.core.service.impl.AsignacionPacienteServiceImpl"></bean>
+    
     <bean class ="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
     
     
