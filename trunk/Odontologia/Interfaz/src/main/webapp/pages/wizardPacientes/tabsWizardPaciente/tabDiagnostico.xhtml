@@ -17,45 +17,73 @@
     </p:fieldset>
     <br/>
     <p:fieldset id="fldsNuevoDiagnóstico" legend="Nuevo diagnóstico" toggleable="true" toggleSpeed="150" collapsed="false">
-        <h:outputLabel value="Para agregar un nuevo diagnóstico, seleccione la materia correspondiente y luego el trabajo práctico que trata el problema."/>
-        <h:panelGrid id="gridNuevoDiagnóstico" columns="2" cellpadding="3" cellspacing="3" >
-            <p:column>
-                <p:outputLabel id="lblMateria" value="Materia: "/>
-            </p:column>
-            <p:column>
-                <p:selectOneMenu id="selectMateria" value="#{pacienteWizardBean.diagnostico.materia}" filterMatchMode="startsWith"
-                                 converter="materiaConverter" >
-                    <f:selectItems value="#{pacienteWizardBean.materias}"/>
+        <p:panel id="pnlNuevoDiagnostico">
+            <h:outputLabel value="Para agregar un nuevo diagnóstico, seleccione la materia correspondiente y luego el trabajo práctico que trata el problema."/>
+            <h:panelGrid id="gridNuevoDiagnóstico" columns="2" cellpadding="3" cellspacing="3" >
+                <p:column>
+                    <p:outputLabel id="lblMateria" value="Materia: "/>
+                </p:column>
+                <p:column>
+                    <p:selectOneMenu id="selectMateria" value="#{pacienteWizardBean.diagnostico.materia}" filterMatchMode="startsWith"
+                                     converter="materiaConverter" >
+                        <f:selectItems value="#{pacienteWizardBean.materias}"/>
+                    </p:selectOneMenu>
+                </p:column>          
+                <p:column>
+                    <p:outputLabel id="lblTrabajoPractico" value="Trabajo práctico: "/>
+                </p:column>          
+                <p:column>
+                    <p:selectOneMenu id="selectTrabajoPráctico" value="#{pacienteWizardBean.diagnostico.trabajoPractico}"
+                                     converter="trabajoPracticoConverter">
+                        <f:selectItems value="#{pacienteWizardBean.trabajosPracticos}"/>
+                    </p:selectOneMenu>
+                </p:column>
+                <p:column>
+                    <p:outputLabel id="lblDescripcion" value="Descripción del diagnóstico: "/>
+                </p:column>
+                <p:column>
+                    <p:inputTextarea autoResize="true" id="txtDescripcionDiagnostico" rows="3" cols="99" 
+                                     value="#{pacienteWizardBean.diagnostico.descripcion}"/>
+                </p:column>
+            </h:panelGrid>
+
+            <p:commandButton value="Agregar" icon="ui-icon-circle-plus" 
+                             process="@form"
+                             update="pnlDiagnosticosCargados"
+                             actionListener="#{pacienteWizardBean.agregarDiagnostico()}"/>
+        </p:panel>
+        
+        <p:panel id="pnlDiagnosticosCargados" header="Diagnósticos cargados">
+            <h:panelGrid columns="7" cellpadding="3" cellspacing="3">
+                <h:outputText value="Ver por: "/>
+                
+                <h:outputText value="Estado: "/>
+                <p:selectOneMenu id="selectEstadoDiagnostico" value="#{pacienteWizardBean.estadoDiagnosticoFiltro}">
+                    <f:selectItem itemLabel="Seleccione una estado"/>
+                    <f:selectItems value="#{pacienteWizardBean.estadosDiagnostico}"/>
                 </p:selectOneMenu>
-            </p:column>          
-            <p:column>
-                <p:outputLabel id="lblTrabajoPractico" value="Trabajo práctico: "/>
-            </p:column>          
-            <p:column>
-                <p:selectOneMenu id="selectTrabajoPráctico" value="#{pacienteWizardBean.diagnostico.trabajoPractico}"
-                                 converter="trabajoPracticoConverter">
+                
+                <h:outputText value="Trabajo Práctico:"/>
+                <p:selectOneMenu id="selectTrabajoPrácticoDiagnostico" converter="trabajoPracticoConverter" value="#{pacienteWizardBean.trabajoPracticoFiltro}">
+                    <f:selectItem itemLabel="Seleccione un trabajo práctico"/>
                     <f:selectItems value="#{pacienteWizardBean.trabajosPracticos}"/>
                 </p:selectOneMenu>
-            </p:column>
-            <p:column>
-                <p:outputLabel id="lblDescripcion" value="Descripción del diagnóstico: "/>
-            </p:column>
-            <p:column>
-                <p:inputTextarea autoResize="true" id="txtDescripcionDiagnostico" rows="3" cols="99" 
-                                 value="#{pacienteWizardBean.diagnostico.descripcion}"/>
-            </p:column>
-        </h:panelGrid>
-
-        <p:commandButton value="Agregar" icon="ui-icon-circle-plus" 
-                         process="@form"
-                         update="tblResultadoDiagnosticos"
-                         actionListener="#{pacienteWizardBean.agregarDiagnostico()}"/>
-
-        <p:panel id="pnlDiagnosticosCargados" header="Diagnósticos cargados">
+               
+                <p:commandButton id="btnFiltrarDiagnosticos" value="Filtrar" 
+                                 actionListener="#{pacienteWizardBean.filtrar()}"
+                                 update="pnlDiagnosticosCargados"
+                                 process="pnlDiagnosticosCargados" 
+                                 disabled="#{!pacienteWizardBean.filtrarHabilitado}"/>
+                <p:commandButton id="btnVerTodos" value="Ver todos"
+                                 actionListener="#{pacienteWizardBean.verTodos()}"
+                                 update="pnlDiagnosticosCargados"
+                                 process="pnlDiagnosticosCargados"
+                                 disabled="#{pacienteWizardBean.filtrarHabilitado}"/>
+            </h:panelGrid>
             <p:dataTable id="tblResultadoDiagnosticos" 
                          emptyMessage="Paciente sin diagnósticos cargados"
                          paginator="true" 
-                         value="#{pacienteWizardBean.paciente.historiaClinica.diagnostico}"
+                         value="#{pacienteWizardBean.diagnosticos}"
                          var="d" selection="#{pacienteWizardBean.selectedDiagnostico}" selectionMode="single"
                          rowKey="#{d.id}">
                 <p:column id="colTrabajoPractico" headerText="Trabajo práctico">
@@ -71,6 +99,9 @@
                     <h:panelGrid columns="3" cellpadding="1" cellspacing="1">
                         <p:commandButton id="btnCancelar" icon="ui-icon-cancel"
                                          oncomplete="dlgCancelarDianostico.show();"
+                                         process="tblResultadoDiagnosticos"/>
+                        <p:commandButton id="btnModificar" icon="ui-icon-pencil"
+                                         oncomplete="dlgModificarDiagnostico.show();"
                                          process="tblResultadoDiagnosticos"/>
                     </h:panelGrid> 
                 </p:column>
