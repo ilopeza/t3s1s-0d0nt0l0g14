@@ -22,7 +22,7 @@
     <context:component-scan base-package="tesis.odontologia.core" />
     
     <task:annotation-driven />
-    <bean id="demoServiceBasicUsageCron" class="tesis.odontologia.core.service.impl.AsignacionPacienteServiceImpl"></bean>
+    <bean id="demoServiceBasicUsageCron" class="tesis.odontologia.core.service.impl.ScheduleServiceImpl"></bean>
     
     <bean class ="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
     
