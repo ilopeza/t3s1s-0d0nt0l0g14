@@ -300,6 +300,7 @@ public class Initialization {
         ap.setDiagnostico(pacientes.get(0).getHistoriaClinica().getDiagnostico().get(0));
         ap.setEstado(AsignacionPaciente.EstadoAsignacion.PENDIENTE);
         ap.setPaciente(pacientes.get(0));
+        ap.setFechaCreacionAsignacion(Calendar.getInstance());
         ap.setFechaAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap);
 
@@ -312,6 +313,7 @@ public class Initialization {
         Calendar c1 = GregorianCalendar.getInstance();
         c1.set(2013, 10, 9);
         ap1.setFechaAsignacion(c1);
+        ap1.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap1);
 
         AsignacionPaciente ap2 = new AsignacionPaciente();
@@ -321,6 +323,7 @@ public class Initialization {
         ap2.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
         ap2.setPaciente(pacientes.get(0));
         ap2.setFechaAsignacion(Calendar.getInstance());
+        ap2.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap2);
         
         AsignacionPaciente ap4 = new AsignacionPaciente();
@@ -330,6 +333,7 @@ public class Initialization {
         ap4.setEstado(AsignacionPaciente.EstadoAsignacion.PENDIENTE);
         ap4.setPaciente(pacientes.get(1));
         ap4.setFechaAsignacion(Calendar.getInstance());
+        ap4.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap4);
 
         AsignacionPaciente ap5 = new AsignacionPaciente();
@@ -341,6 +345,7 @@ public class Initialization {
         Calendar c2 = GregorianCalendar.getInstance();
         c2.set(2013, 11, 30);
         ap5.setFechaAsignacion(c2);
+        ap5.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap5);
 
         AsignacionPaciente ap6 = new AsignacionPaciente();
@@ -352,6 +357,7 @@ public class Initialization {
         Calendar c3 = GregorianCalendar.getInstance();
         c3.set(2013, 06, 30);
         ap6.setFechaAsignacion(c3);
+        ap6.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap6);
         
         AsignacionPaciente ap7 = new AsignacionPaciente();
@@ -361,6 +367,7 @@ public class Initialization {
         ap7.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
         ap7.setPaciente(pacientes.get(2));
         ap7.setFechaAsignacion(Calendar.getInstance());
+        ap7.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap7);
 
         AsignacionPaciente ap8 = new AsignacionPaciente();
@@ -372,6 +379,7 @@ public class Initialization {
         Calendar c4 = GregorianCalendar.getInstance();
         c4.set(2013, 10, 9);
         ap8.setFechaAsignacion(c4);
+        ap8.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap8);
 
         AsignacionPaciente ap9 = new AsignacionPaciente();
@@ -381,6 +389,7 @@ public class Initialization {
         ap9.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
         ap9.setPaciente(pacientes.get(2));
         ap9.setFechaAsignacion(Calendar.getInstance());
+        ap9.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap9);
         
         AsignacionPaciente ap10 = new AsignacionPaciente();
@@ -390,6 +399,7 @@ public class Initialization {
         ap10.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
         ap10.setPaciente(pacientes.get(3));
         ap10.setFechaAsignacion(Calendar.getInstance());
+        ap10.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap10);
 
         AsignacionPaciente ap11 = new AsignacionPaciente();
@@ -401,6 +411,7 @@ public class Initialization {
         Calendar c5 = GregorianCalendar.getInstance();
         c5.set(2013, 11, 30);
         ap11.setFechaAsignacion(c5);
+        ap11.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap11);
 
         AsignacionPaciente ap12 = new AsignacionPaciente();
@@ -412,6 +423,7 @@ public class Initialization {
         Calendar c6 = GregorianCalendar.getInstance();
         c6.set(2013, 06, 30);
         ap12.setFechaAsignacion(c6);
+        ap12.setFechaCreacionAsignacion(Calendar.getInstance());
         asignacionPacienteService.save(ap12);
     }
 }
