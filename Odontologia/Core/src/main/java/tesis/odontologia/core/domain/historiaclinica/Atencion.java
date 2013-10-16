@@ -66,14 +66,14 @@ public abstract class Atencion extends Generic {
     
     @OneToOne
     @JoinColumn(name = "AsignacionPaciente_id")
-    private AsignacionPaciente asignacion;
+    private AsignacionPaciente asignacionPaciente;
     
     
     //CONSTRUCTORS
     public Atencion() {
     }
 
-    public Atencion(Calendar fechaAtencion, String motivoConsultaOdontologica, String comoComenzo, String cuantoTiempoHace, String donde, String aQueLoAtribuye, String queHizo, String descripcionProcedimiento, AsignacionPaciente asignacion) {
+    public Atencion(Calendar fechaAtencion, String motivoConsultaOdontologica, String comoComenzo, String cuantoTiempoHace, String donde, String aQueLoAtribuye, String queHizo, String descripcionProcedimiento, AsignacionPaciente asignacionPaciente) {
         this.fechaAtencion = fechaAtencion;
         this.motivoConsultaOdontologica = motivoConsultaOdontologica;
         this.comoComenzo = comoComenzo;
@@ -82,7 +82,7 @@ public abstract class Atencion extends Generic {
         this.aQueLoAtribuye = aQueLoAtribuye;
         this.queHizo = queHizo;
         this.descripcionProcedimiento = descripcionProcedimiento;
-        this.asignacion = asignacion;
+        this.asignacionPaciente = asignacionPaciente;
     }
     
     public Calendar getFechaAtencion() {
@@ -140,14 +140,7 @@ public abstract class Atencion extends Generic {
     public void setQueHizo(String queHizo) {
         this.queHizo = queHizo;
     }    
-    
-    public AsignacionPaciente getAsignacion() {
-        return asignacion;
-    }
 
-    public void setAsignacion(AsignacionPaciente asignacion) {
-        this.asignacion = asignacion;
-    }
 
     public String getDescripcionProcedimiento() {
         return descripcionProcedimiento;
@@ -156,7 +149,15 @@ public abstract class Atencion extends Generic {
 
     public void setDescripcionProcedimiento(String descripcionProcedimiento) {
         this.descripcionProcedimiento = descripcionProcedimiento;
-    }    
+    }
+    
+    public AsignacionPaciente getAsignacionPaciente() {
+        return asignacionPaciente;
+    }
+
+    public void setAsignacionPaciente(AsignacionPaciente asignacionPaciente) {
+        this.asignacionPaciente = asignacionPaciente;
+    }
  
     
     @Override
@@ -168,7 +169,5 @@ public abstract class Atencion extends Generic {
             throw new AtencionException("El motivo de consulta odontologica no puede ser nulo o vacio");
         }
     }
-
-   
 
 }
