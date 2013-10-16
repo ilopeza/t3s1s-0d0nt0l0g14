@@ -45,7 +45,6 @@ public class AsignacionPacienteSpecs {
         return $.fechaAsignacion.between(calDesde, calHasta);
     }
     
-    //PENDING: (MAXI) revisar especificacion
     public static BooleanExpression byMateria(Materia m){
         QDiagnostico d = QDiagnostico.diagnostico;
         QTrabajoPractico tp = QTrabajoPractico.trabajoPractico;
@@ -53,11 +52,6 @@ public class AsignacionPacienteSpecs {
     }
     
     public static BooleanExpression byTrabajoPractico(TrabajoPractico tp){
-//        Long id = tp.getId();
-//        QDiagnostico di = getDiagnostico();
-//        return di.trabajoPractico.id.eq(id);
-//        QTrabajoPractico qtp = getTrabajoPractico();
-//        return qtp.id.eq(tp.getId());
         QDiagnostico d = QDiagnostico.diagnostico;
         return new JPASubQuery().from(d).where($.diagnostico.eq(d).and(d.trabajoPractico.eq(tp))).exists();
     }
@@ -73,4 +67,5 @@ public class AsignacionPacienteSpecs {
      public static BooleanExpression byCatedra(Catedra c){
         return $.catedra.id.eq(c.getId());
     }
+     
 }

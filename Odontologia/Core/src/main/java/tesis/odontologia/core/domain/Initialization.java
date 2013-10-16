@@ -48,6 +48,8 @@ public class Initialization {
     private List<Diagnostico> diagnosticos = new ArrayList<Diagnostico>();
     private List<Alumno> alumnos = new ArrayList<Alumno>();
     private List<Rol> roles = new ArrayList<Rol>();
+    ArrayList<Materia> matprofp= new ArrayList<Materia>();
+     ArrayList<Materia> matprofp1= new ArrayList<Materia>();
 
     @PostConstruct
     public void setUp() {
@@ -81,10 +83,11 @@ public class Initialization {
         m.addTrabajoPractico(mtp2);
         TrabajoPractico mtp3 = new TrabajoPractico("Trabajo Práctico 3");
         m.addTrabajoPractico(mtp3);
-
         materias.add(materiaService.save(m));
-
-        Materia m1 = new Materia("Cirugia");
+        matprofp.add(m);
+        matprofp1.add(m);
+        
+        Materia m1 = new Materia("Cirugia I");
         Catedra ca1 = new Catedra("C");
         m1.addCatedra(ca1);
         Catedra cb1 = new Catedra("D");
@@ -95,8 +98,36 @@ public class Initialization {
         m1.addTrabajoPractico(m1tp2);
         TrabajoPractico m1tp3 = new TrabajoPractico("Trabajo Práctico 6");
         m1.addTrabajoPractico(m1tp3);
-
+        matprofp.add(m1);
         materias.add(materiaService.save(m1));
+        matprofp1.add(m1);
+        Materia m2 = new Materia("Periodoncia");
+        Catedra ca2 = new Catedra("L");
+        m2.addCatedra(ca2);
+        Catedra cb2 = new Catedra("M");
+        m2.addCatedra(cb2);
+        TrabajoPractico m2tp1 = new TrabajoPractico("Trabajo Práctico 7");
+        m2.addTrabajoPractico(m2tp1);
+        TrabajoPractico m2tp2 = new TrabajoPractico("Trabajo Práctico 8");
+        m2.addTrabajoPractico(m2tp2);
+        TrabajoPractico m2tp3 = new TrabajoPractico("Trabajo Práctico 9");
+        m2.addTrabajoPractico(m2tp3);
+        matprofp.add(m2);
+        materias.add(materiaService.save(m2));
+        
+        Materia m3 = new Materia("Cirugia II");
+        Catedra ca3 = new Catedra("F");
+        m3.addCatedra(ca3);
+        Catedra cb3 = new Catedra("K");
+        m3.addCatedra(cb3);
+        TrabajoPractico m3tp1 = new TrabajoPractico("Trabajo Práctico 10");
+        m3.addTrabajoPractico(m3tp1);
+        TrabajoPractico m3tp2 = new TrabajoPractico("Trabajo Práctico 11");
+        m3.addTrabajoPractico(m3tp2);
+        TrabajoPractico m3tp3 = new TrabajoPractico("Trabajo Práctico 12");
+        m3.addTrabajoPractico(m3tp3);
+        matprofp.add(m3);
+        materias.add(materiaService.save(m3));
 
     }
 
@@ -159,6 +190,18 @@ public class Initialization {
         p1.setEmail("enzo.biancato@gmail.com");
         HistoriaClinica hc1 = HistoriaClinica.createDefault();
         hc1.setNumero(2);
+        diagnosticos2 = new ArrayList<Diagnostico>();
+        Diagnostico d6 = new Diagnostico(materias.get(2).getTrabajoPractico().get(0), "Tratar Encias jsj", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d6.setMateria(materias.get(2));
+        diagnosticos2.add(d6);
+        Diagnostico d7 = new Diagnostico(materias.get(2).getTrabajoPractico().get(1), "Descripcion TP hola", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d7.setMateria(materias.get(2));
+        diagnosticos2.add(d7);
+        Diagnostico d8 = new Diagnostico(materias.get(3).getTrabajoPractico().get(0), "Descripcion TP: Se le realizará una extracción del 7mo molar premeditado pro el raavi shankar", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d8.setMateria(materias.get(3));
+        diagnosticos2.add(d8);
+
+        hc1.setDiagnostico(diagnosticos2);
         p1.setHistoriaClinica(hc1);
         p1.setFechaNacimiento(Calendar.getInstance());
         p1.setDomicilio(new Domicilio("Obispo Salguero", "444", "Córdoba"));
@@ -170,6 +213,17 @@ public class Initialization {
         p2.setEmail("romeritodelvalle@gmail.com");
         HistoriaClinica hc2 = HistoriaClinica.createDefault();
         hc2.setNumero(3);
+        diagnosticos2 = new ArrayList<Diagnostico>();
+        Diagnostico d9 = new Diagnostico(materias.get(2).getTrabajoPractico().get(0), "Tratar Encias jsj", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d9.setMateria(materias.get(2));
+        diagnosticos2.add(d9);
+        Diagnostico d10 = new Diagnostico(materias.get(2).getTrabajoPractico().get(1), "Descripcion TP hola", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d10.setMateria(materias.get(2));
+        diagnosticos2.add(d10);
+        Diagnostico d11 = new Diagnostico(materias.get(3).getTrabajoPractico().get(0), "Descripcion TP: Se le realizará una extracción del 7mo molar premeditado pro el raavi shankar", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d11.setMateria(materias.get(3));
+        diagnosticos2.add(d11);
+        hc2.setDiagnostico(diagnosticos2);
         p2.setHistoriaClinica(hc2);
         p2.setFechaNacimiento(Calendar.getInstance());
         p2.setDomicilio(new Domicilio("Gral. Manuel Belgrano", "745", "Córdoba"));
@@ -212,11 +266,11 @@ public class Initialization {
     }
 
     private void cargarProfesores() {
-
+        
         Profesor p = new Profesor("Lucas", "Rimoldi");
         p.setDocumento(new Documento("34342245", Documento.TipoDocumento.DNI));
         p.setFechaNacimiento(Calendar.getInstance());
-        p.setMateria(materias);
+        p.setMateria(matprofp);
         Usuario usuario1 = new Usuario("34342245", "34342245", roles.get(1), "Lucas@gmail.com");
         p.setUsuario(usuario1);
         personaService.save(p);
@@ -225,6 +279,7 @@ public class Initialization {
         p1.setDocumento(new Documento("34442245", Documento.TipoDocumento.DNI));
         p1.setFechaNacimiento(Calendar.getInstance());
         Usuario usuario2 = new Usuario("34442245", "34442245", roles.get(1), "Lorenzo@gmail.com");
+        p1.setMateria(matprofp1);
         p1.setUsuario(usuario2);
         personaService.save(p1);
 
@@ -232,6 +287,7 @@ public class Initialization {
         p2.setDocumento(new Documento("34332245", Documento.TipoDocumento.DNI));
         p2.setFechaNacimiento(Calendar.getInstance());
         Usuario usuario3 = new Usuario("34332245", "34332245", roles.get(1), "Lucia@gmail.com");
+        p2.setMateria(matprofp1);
         p2.setUsuario(usuario3);
         personaService.save(p2);
 
@@ -297,5 +353,65 @@ public class Initialization {
         c3.set(2013, 06, 30);
         ap6.setFechaAsignacion(c3);
         asignacionPacienteService.save(ap6);
+        
+        AsignacionPaciente ap7 = new AsignacionPaciente();
+        ap7.setAlumno(alumnos.get(0));
+        ap7.setCatedra(materias.get(2).getCatedra().get(0));
+        ap7.setDiagnostico(pacientes.get(2).getHistoriaClinica().getDiagnostico().get(0));
+        ap7.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
+        ap7.setPaciente(pacientes.get(2));
+        ap7.setFechaAsignacion(Calendar.getInstance());
+        asignacionPacienteService.save(ap7);
+
+        AsignacionPaciente ap8 = new AsignacionPaciente();
+        ap8.setAlumno(alumnos.get(1));
+        ap8.setCatedra(materias.get(2).getCatedra().get(0));
+        ap8.setDiagnostico(pacientes.get(2).getHistoriaClinica().getDiagnostico().get(1));
+        ap8.setEstado(AsignacionPaciente.EstadoAsignacion.AUTORIZADA);
+        ap8.setPaciente(pacientes.get(2));
+        Calendar c4 = GregorianCalendar.getInstance();
+        c4.set(2013, 10, 9);
+        ap8.setFechaAsignacion(c4);
+        asignacionPacienteService.save(ap8);
+
+        AsignacionPaciente ap9 = new AsignacionPaciente();
+        ap9.setAlumno(alumnos.get(2));
+        ap9.setCatedra(materias.get(3).getCatedra().get(0));
+        ap9.setDiagnostico(pacientes.get(2).getHistoriaClinica().getDiagnostico().get(2));
+        ap9.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
+        ap9.setPaciente(pacientes.get(2));
+        ap9.setFechaAsignacion(Calendar.getInstance());
+        asignacionPacienteService.save(ap9);
+        
+        AsignacionPaciente ap10 = new AsignacionPaciente();
+        ap10.setAlumno(alumnos.get(0));
+        ap10.setCatedra(materias.get(2).getCatedra().get(0));
+        ap10.setDiagnostico(pacientes.get(3).getHistoriaClinica().getDiagnostico().get(0));
+        ap10.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
+        ap10.setPaciente(pacientes.get(3));
+        ap10.setFechaAsignacion(Calendar.getInstance());
+        asignacionPacienteService.save(ap10);
+
+        AsignacionPaciente ap11 = new AsignacionPaciente();
+        ap11.setAlumno(alumnos.get(1));
+        ap11.setCatedra(materias.get(2).getCatedra().get(0));
+        ap11.setDiagnostico(pacientes.get(3).getHistoriaClinica().getDiagnostico().get(1));
+        ap11.setEstado(AsignacionPaciente.EstadoAsignacion.CONFIRMADA);
+        ap11.setPaciente(pacientes.get(3));
+        Calendar c5 = GregorianCalendar.getInstance();
+        c5.set(2013, 11, 30);
+        ap11.setFechaAsignacion(c5);
+        asignacionPacienteService.save(ap11);
+
+        AsignacionPaciente ap12 = new AsignacionPaciente();
+        ap12.setAlumno(alumnos.get(2));
+        ap12.setCatedra(materias.get(3).getCatedra().get(0));
+        ap12.setDiagnostico(pacientes.get(3).getHistoriaClinica().getDiagnostico().get(2));
+        ap12.setEstado(AsignacionPaciente.EstadoAsignacion.AUTORIZADA);
+        ap12.setPaciente(pacientes.get(3));
+        Calendar c6 = GregorianCalendar.getInstance();
+        c6.set(2013, 06, 30);
+        ap12.setFechaAsignacion(c6);
+        asignacionPacienteService.save(ap12);
     }
 }
