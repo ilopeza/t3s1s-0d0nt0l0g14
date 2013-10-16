@@ -145,7 +145,7 @@ and open the template in the editor.
                          widgetVar="dlgConfirmar" appendToBody="true">
             <p:commandButton value="Sí" actionListener="#{consultarAsignacionesBean.confirmarAsignacion()}"
                              oncomplete="dlgConfirmar.hide();"
-                             update=":asignacionesForm:tblResultadoAsignaciones"/>
+                             update=":asignacionesForm:tblResultadoAsignaciones,:msg"/>
             <p:commandButton value="No" onclick="dlgConfirmar.hide();" type="button" />
         </p:confirmDialog>
 
@@ -169,14 +169,15 @@ and open the template in the editor.
                     </p:row>
                     <p:row>
                         <p:inputTextarea id="txtMotivoCancelacion" value="#{consultarAsignacionesBean.motivoCancelacion}" 
-                                         maxlength="100" rows="5" cols="35"/>                     
+                                         maxlength="100" rows="5" cols="35" required="true"/>                     
                     </p:row>
                     <p:row>
                         <p:column>
                             <p:commandButton value="Sí" actionListener="#{consultarAsignacionesBean.cancelarAsignacion()}"
                                              oncomplete="dlgCancelarAsignacion.hide();"
                                              process="@form"
-                                             update=":asignacionesForm:tblResultadoAsignaciones"/>
+                                             update=":asignacionesForm:tblResultadoAsignaciones,:msg"
+                                             />
                         </p:column>
                         <p:column> 
                             <p:commandButton value="No" onclick="dlgCancelarAsignacion.hide();" type="button"/> 

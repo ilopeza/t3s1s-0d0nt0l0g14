@@ -115,7 +115,7 @@ public class ConsultarAsignacionesBean {
     }
 
     public void cargarAsignacionesFiltradas() {
-        asignaciones = buscarAsignaciones();     
+        asignaciones = buscarAsignaciones();
     }
 
     public String formatFecha(Calendar c) {
@@ -184,16 +184,22 @@ public class ConsultarAsignacionesBean {
     public void cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion estado) {
         try {
             if (asignacionSeleccionada != null) {
-                asignacionSeleccionada.setEstado(estado);
-                asignacionSeleccionada = asignacionPacienteService.save(asignacionSeleccionada);
-                asignaciones = buscarAsignaciones();
-                notificarPaciente(asignacionSeleccionada);
-                if (asignacionSeleccionada.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADA)== 0) {
+                if (asignacionSeleccionada.getEstado() == EstadoAsignacion.PENDIENTE && estado == EstadoAsignacion.CANCELADA) {
+                    asignacionSeleccionada.setEstado(estado);
+                    asignacionSeleccionada = asignacionPacienteService.save(asignacionSeleccionada);
+                    asignaciones = buscarAsignaciones();
+                } else {
+                    asignacionSeleccionada.setEstado(estado);
+                    asignacionSeleccionada = asignacionPacienteService.save(asignacionSeleccionada);
+                    asignaciones = buscarAsignaciones();
+                    notificarPaciente(asignacionSeleccionada);
+                }
+                if (asignacionSeleccionada.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CANCELADA) == 0) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("La asignación ha sido cancelada correctamente."));
                 }
-                if (asignacionSeleccionada.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CONFIRMADA)== 0) {
+                if (asignacionSeleccionada.getEstado().compareTo(AsignacionPaciente.EstadoAsignacion.CONFIRMADA) == 0) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("La asignación ha sido confirmada correctamente."));
-                }          
+                }
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "La asignacion no fue actualizada correctamente", null));
@@ -221,17 +227,31 @@ public class ConsultarAsignacionesBean {
                 textoEmail += "Saludos.";
                 try {
                     SMTPConfig.sendMail(true, "Confirmación de asistencia a práctica odontológica", textoEmail, asignacion.getPaciente().getEmail());
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se ha notificado correctamente al paciente."));
                 } catch (MessagingException ex) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No se ha podido notificar al paciente"));
                 }
             }
 
         } else if (asignacion.getEstado() == EstadoAsignacion.CANCELADA) {
+            if (asignacion.getPaciente().getEmail() != null && !asignacion.getPaciente().getEmail().isEmpty()) {
+                textoEmail = "Estimado " + asignacion.getPaciente().getNombre() + ":\n" + System.getProperty("line.separator");
+                textoEmail += "   El alumno " + asignacion.getAlumno().getApellido() + ", " + asignacion.getAlumno().getNombre() + "perteneciente a la Facultad de Odontología de la UNC ha cancelado una práctica para la que estabas asignado.\n";
+                textoEmail += "" + System.getProperty("line.separator");
+                textoEmail += " El motivo de la cancelación es el siguiente: " + asignacion.getMotivoCancelacion() + "\n";
+                textoEmail += "Saludos.";
+                try {
+                    SMTPConfig.sendMail(true, "Cancelación de práctica odontológica", textoEmail, asignacion.getPaciente().getEmail());
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se ha notificado correctamente al paciente."));
+                } catch (MessagingException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No se ha podido notificar al paciente"));
+                }
+            }
         }
     }
 
     public void cancelarAsignacion() {
-        asignacionSeleccionada.setMotivoCancelación(motivoCancelacion);
+        asignacionSeleccionada.setMotivoCancelacion(motivoCancelacion);
         cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CANCELADA);
         motivoCancelacion = "";
     }
@@ -263,12 +283,12 @@ public class ConsultarAsignacionesBean {
             rendered = false;
         }
     }
-    
-    public void confirmarModificacion(AsignacionPaciente a){
+
+    public void confirmarModificacion(AsignacionPaciente a) {
         if (this.asignacionSeleccionada != null) {
             asignacionSeleccionada = a;
             this.asignacionPacienteService.save(asignacionSeleccionada);
-            this.campoEditable=false;
+            this.campoEditable = false;
             rendered = true;
         }
     }
