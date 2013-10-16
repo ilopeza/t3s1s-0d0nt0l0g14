@@ -198,6 +198,7 @@ public class PacienteWizardBean {
             return false;
         } else {
             paciente = selectedPaciente;
+            paciente = personaService.reload(paciente, 2);
             diagnosticos.addAll(paciente.getHistoriaClinica().getDiagnostico());
             estaDeshabilitado = true;
             return true;
