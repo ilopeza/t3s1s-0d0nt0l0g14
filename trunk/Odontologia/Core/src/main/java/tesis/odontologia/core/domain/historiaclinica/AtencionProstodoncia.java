@@ -21,8 +21,8 @@ public class AtencionProstodoncia extends Atencion{
     public AtencionProstodoncia() {
     }
     
-    public AtencionProstodoncia(Calendar fechaAtencion, String motivoConsultaOdontologica, String comoComenzo, String cuantoTiempoHace, String donde, String aQueLoAtribuye, String queHizo, String descripcionProcedimiento, AsignacionPaciente asignacion){
-        super(fechaAtencion, motivoConsultaOdontologica, comoComenzo, cuantoTiempoHace, donde,  aQueLoAtribuye, queHizo, descripcionProcedimiento, asignacion);
+    public AtencionProstodoncia(Calendar fechaAtencion, String motivoConsultaOdontologica, String comoComenzo, String cuantoTiempoHace, String donde, String aQueLoAtribuye, String queHizo, String descripcionProcedimiento, AsignacionPaciente asignacionPaciente){
+        super(fechaAtencion, motivoConsultaOdontologica, comoComenzo, cuantoTiempoHace, donde,  aQueLoAtribuye, queHizo, descripcionProcedimiento, asignacionPaciente);
     }
 
     @Override
