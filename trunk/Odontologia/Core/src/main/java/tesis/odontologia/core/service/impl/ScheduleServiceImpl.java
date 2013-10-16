@@ -35,7 +35,7 @@ public class ScheduleServiceImpl {
         for (AsignacionPaciente asignacionAnalizada : asignacionesBD) {
             Calendar fechaActual = Calendar.getInstance();
             long milis1 = fechaActual.getTimeInMillis();
-            long milis2 = asignacionAnalizada.getFechaAsignacion().getTimeInMillis();
+            long milis2 = asignacionAnalizada.getFechaCreacionAsignacion().getTimeInMillis();
 
             // calcula la diferencia en milisengundos
             long diff = milis2 - milis1;
