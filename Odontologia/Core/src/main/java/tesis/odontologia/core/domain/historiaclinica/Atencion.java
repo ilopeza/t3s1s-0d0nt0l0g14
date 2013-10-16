@@ -5,7 +5,6 @@
 package tesis.odontologia.core.domain.historiaclinica;
 
 import java.util.Calendar;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -13,11 +12,12 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Generic;
+import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.exception.AtencionException;
 import tesis.odontologia.core.exception.GenericException;
 
@@ -59,16 +59,21 @@ public abstract class Atencion extends Generic {
     @Column(length = 255)
     @Size(min = 1, max = 255, message = "El campo que hizo debe tener entre 1 y 255 caracteres")
     private String queHizo;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "diagnostico_id")
-    private Diagnostico diagnostico;
+    
+    @Column(length = 255)
+    @Size(min = 1, max = 255, message = "El campo descripcion debe tener entre 1 y 255 caracteres")
+    private String descripcionProcedimiento;
+    
+    @OneToOne
+    @JoinColumn(name = "AsignacionPaciente_id")
+    private AsignacionPaciente asignacion;
+    
     
     //CONSTRUCTORS
     public Atencion() {
     }
 
-    public Atencion(Calendar fechaAtencion, String motivoConsultaOdontologica, String comoComenzo, String cuantoTiempoHace, String donde, String aQueLoAtribuye, String queHizo) {
+    public Atencion(Calendar fechaAtencion, String motivoConsultaOdontologica, String comoComenzo, String cuantoTiempoHace, String donde, String aQueLoAtribuye, String queHizo, String descripcionProcedimiento, AsignacionPaciente asignacion) {
         this.fechaAtencion = fechaAtencion;
         this.motivoConsultaOdontologica = motivoConsultaOdontologica;
         this.comoComenzo = comoComenzo;
@@ -76,15 +81,8 @@ public abstract class Atencion extends Generic {
         this.donde = donde;
         this.aQueLoAtribuye = aQueLoAtribuye;
         this.queHizo = queHizo;
-    }
-    
-    //GETTERS AND SETTERS
-    public Diagnostico getDiagnostico() {
-        return diagnostico;
-    }
-
-    public void setDiagnostico(Diagnostico diagnostico) {
-        this.diagnostico = diagnostico;
+        this.descripcionProcedimiento = descripcionProcedimiento;
+        this.asignacion = asignacion;
     }
     
     public Calendar getFechaAtencion() {
@@ -141,8 +139,25 @@ public abstract class Atencion extends Generic {
 
     public void setQueHizo(String queHizo) {
         this.queHizo = queHizo;
+    }    
+    
+    public AsignacionPaciente getAsignacion() {
+        return asignacion;
     }
 
+    public void setAsignacion(AsignacionPaciente asignacion) {
+        this.asignacion = asignacion;
+    }
+
+    public String getDescripcionProcedimiento() {
+        return descripcionProcedimiento;
+    }
+
+
+    public void setDescripcionProcedimiento(String descripcionProcedimiento) {
+        this.descripcionProcedimiento = descripcionProcedimiento;
+    }    
+ 
     
     @Override
     public void validar() throws GenericException {
@@ -152,15 +167,8 @@ public abstract class Atencion extends Generic {
         if(motivoConsultaOdontologica == null || motivoConsultaOdontologica.isEmpty()){
             throw new AtencionException("El motivo de consulta odontologica no puede ser nulo o vacio");
         }
-        if(diagnostico == null) {
-            throw new AtencionException("El diagnostico atendido no puede ser nulo.");
-        } else {
-            diagnostico.validar();
-        }
     }
-    
-    
-    
-    
-    
+
+   
+
 }
