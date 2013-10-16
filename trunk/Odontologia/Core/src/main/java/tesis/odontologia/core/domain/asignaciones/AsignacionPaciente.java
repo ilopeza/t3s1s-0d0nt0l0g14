@@ -38,9 +38,14 @@ public class AsignacionPaciente extends Generic{
     @NotNull(message = "La fecha de asignacion no puede ser nula.")
     private Calendar fechaAsignacion;
     
+    @Column(nullable = false)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @NotNull
+    private Calendar fechaCreacionAsignacion;
+    
     @Column(length = 100)
     @Size(min = 1, max = 100, message = "La descripción de la cancelación debe tener entre 1 y 100 caracteres.")
-    private String motivoCancelación;
+    private String motivoCancelacion;
     
     @OneToOne
     @JoinColumn(name = "paciente_id")
@@ -79,7 +84,7 @@ public class AsignacionPaciente extends Generic{
         this.profesor = profesor;
         this.diagnostico = diagnostico;
         this.catedra = catedra;
-        this.motivoCancelación = motivoCancelacion;
+        this.motivoCancelacion = motivoCancelacion;
     }
 
     public Diagnostico getDiagnostico() {
@@ -148,12 +153,26 @@ public class AsignacionPaciente extends Generic{
         this.profesor = profesor;
     }
     
-    public String getMotivoCancelación() {
-        return motivoCancelación;
+    public String getMotivoCancelacion() {
+        return motivoCancelacion;
     }
 
-    public void setMotivoCancelación(String motivoCancelación) {
-        this.motivoCancelación = motivoCancelación;
+    public void setMotivoCancelacion(String motivoCancelacion) {
+        this.motivoCancelacion = motivoCancelacion;
+    }
+
+    /**
+     * @return the fechaCreacionAsignacion
+     */
+    public Calendar getFechaCreacionAsignacion() {
+        return fechaCreacionAsignacion;
+    }
+
+    /**
+     * @param fechaCreacionAsignacion the fechaCreacionAsignacion to set
+     */
+    public void setFechaCreacionAsignacion(Calendar fechaCreacionAsignacion) {
+        this.fechaCreacionAsignacion = fechaCreacionAsignacion;
     }
 
    
