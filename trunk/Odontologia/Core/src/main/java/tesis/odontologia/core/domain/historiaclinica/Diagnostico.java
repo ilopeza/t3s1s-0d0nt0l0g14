@@ -126,6 +126,12 @@ public class Diagnostico extends Generic{
             return "Pendiente";
         }
     },
+    RESERVADO {
+        @Override
+        public String toString() {
+            return "Reservado";
+        }
+    },
     NO_SOLUCIONADO {
         @Override
         public String toString() {
