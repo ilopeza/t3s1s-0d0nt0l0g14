@@ -7,7 +7,7 @@
 
     <ui:define name="content">
         <h:outputLabel value="CONSULTAR ASIGNACIONES DE PACIENTES CONFIRMADAS" style="padding: 400px; font-size: 20px; font: " />
-
+ 
         <h:form id="consultarAsignacionesConfirmadasForm">
             <p:panel id="pnlConsultarAsignacionesConfirmadas" header="Parámetros de búsqueda">
                 <h:panelGrid id="paramentros" columns="4" cellpadding="3" cellspacing="3">                 
@@ -31,28 +31,41 @@
                     <p:selectOneMenu id="seleccionCatedraBusqueda" value="#{consultarAsignacionesConfirmadasBean.catedraFiltro}" converter="catedraConverter">
                         <f:selectItem itemLabel="Seleccione una Cátedra"/>
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.catedras}"/>
-                    </p:selectOneMenu>
+                    </p:selectOneMenu>                    
+                     <span></span> 
+                      <h:outputLabel value=""/>
+                     <h:outputLabel value="Fecha de Atención Desde:"/>
+                     <p:calendar id="calDesde" value="#{consultarAsignacionesConfirmadasBean.fechaDesdeFiltro}" navigator="true"  yearRange="c-100:c"/>
+                     
+                     <h:outputLabel value="Fecha de Atención Hasta:"/>
+                     <p:calendar id="calHasta" value="#{consultarAsignacionesConfirmadasBean.fechaHastaFiltro}" navigator="true"  yearRange="c-100:c"/>
                     
+                     <h:outputText value="Asignaciones Autorizadas " />  
+                     <p:selectBooleanCheckbox id="autorizada" value="#{consultarAsignacionesConfirmadasBean.estaAutorizada}" />
+                     <f:ajax event="click" execute="autorizada" listener="#{consultarAsignacionesConfirmadasBean.habilitarAutorizar()}"/>
                 </h:panelGrid>
                 <br/>
 
                 <p:commandButton  id="btnBuscarAsignacionesConfirmadas" value="Buscar Asignaciones Confirmadas" 
-                                  action="#{consultarAsignacionesConfirmadasBean.buscarAsignacionesConfirmadas()}" 
+                                  actionListener="#{consultarAsignacionesConfirmadasBean.buscarAsignacionesConfirmadas()}" 
                                   process="@form"
-                                  update="tblResultadosAsignacionesConfirmadas">
+                                  update="tblResultadosAsignacionesConfirmadas, :msg">
                 </p:commandButton>
             </p:panel>
             <br/>
             <br/>
             <p:panel  id="pnlResultadosConsultarAsignacionesConfirmadas" header="Resultados de Búsqueda">
-                <p:dataTable id="tblResultadosAsignacionesConfirmadas" var="asignaciones" value="#{consultarAsignacionesConfirmadasBean.asignacionesConfirmadas}" paginator="true" rows="10">  
+                <p:dataTable id="tblResultadosAsignacionesConfirmadas" var="asignaciones" value="#{consultarAsignacionesConfirmadasBean.asignacionesConfirmadas}"  paginator="true" rows="10"
+                             emptyMessage="No se registran asignaciones confirmadas para los parámetros ingresados" selection="#{consultarAsignacionesConfirmadasBean.selectedAsignacionesAutorizadas}" 
+                             rowKey="#{asignaciones.id}">  
 
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="Resultado de la Busqueda" />
                         </p:outputPanel>
                     </f:facet>
-
+                    
+                    <p:column selectionMode="multiple"/>
                     <p:column>  
                         <f:facet name="header">  
                             <h:outputText value="Paciente" />  
@@ -74,6 +87,38 @@
                         </f:facet>  
                         <h:outputText value="#{asignaciones.fecha}"/>
                     </p:column>
+                    
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Diagnóstico" />  
+                        </f:facet>  
+                        <h:outputText value="#{asignaciones.descripcionDiagnostico}"/>
+                    </p:column>
+                    
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Materia" />  
+                        </f:facet>  
+                        <h:outputText value="#{asignaciones.materia}"/>
+                    </p:column>
+                    
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Cátedra de Atención" />  
+                        </f:facet>  
+                        <h:outputText value="#{asignaciones.catedra}"/>
+                    </p:column>
+                    
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Trabajo Práctico" />  
+                        </f:facet>  
+                        <h:outputText value="#{asignaciones.trabajoPractico}"/>
+                    </p:column>
+                    
+                    <f:facet name="footer">  
+                        <p:commandButton id="autorizarAsignaciones" value="Autorizar" action="#{consultarAsignacionesConfirmadasBean.autorizarAsignaciones()}" update="tblResultadosAsignacionesConfirmadas" disabled="#{consultarAsignacionesConfirmadasBean.habilitarBotonAutorizar}"/>  
+                </f:facet> 
 
                 </p:dataTable>
             </p:panel>
