@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
+import tesis.odontologia.core.domain.historiaclinica.Atencion;
+import tesis.odontologia.core.domain.historiaclinica.AtencionGenerica;
 import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
 import tesis.odontologia.core.domain.historiaclinica.HistoriaClinica;
 import tesis.odontologia.core.domain.materia.Materia;
@@ -26,6 +28,7 @@ import tesis.odontologia.core.domain.usuario.Usuario;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.AsignacionPacienteService;
+import tesis.odontologia.core.service.AtencionService;
 import tesis.odontologia.core.service.RolService;
 
 /**
@@ -43,6 +46,7 @@ public class Initialization {
     private RolService rolService;
     @Autowired
     private AsignacionPacienteService asignacionPacienteService;
+    private List<Atencion> atenciones = new ArrayList<Atencion>();
     private List<Materia> materias = new ArrayList<Materia>();
     private List<Paciente> pacientes = new ArrayList<Paciente>();
     private List<Diagnostico> diagnosticos = new ArrayList<Diagnostico>();
@@ -50,6 +54,7 @@ public class Initialization {
     private List<Rol> roles = new ArrayList<Rol>();
     ArrayList<Materia> matprofp= new ArrayList<Materia>();
      ArrayList<Materia> matprofp1= new ArrayList<Materia>();
+     private List<AsignacionPaciente> asignaciones= new ArrayList<AsignacionPaciente>();
 
     @PostConstruct
     public void setUp() {
@@ -60,6 +65,7 @@ public class Initialization {
         cargarResponsable();
         cargarProfesores();
         cargarAsignaciones();
+        cargarAtenciones();
     }
 
     private void cargarRoles() {
@@ -302,7 +308,7 @@ public class Initialization {
         ap.setPaciente(pacientes.get(0));
         ap.setFechaCreacionAsignacion(Calendar.getInstance());
         ap.setFechaAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap);
+        asignaciones.add(asignacionPacienteService.save(ap));
 
         AsignacionPaciente ap1 = new AsignacionPaciente();
         ap1.setAlumno(alumnos.get(1));
@@ -314,7 +320,7 @@ public class Initialization {
         c1.set(2013, 10, 9);
         ap1.setFechaAsignacion(c1);
         ap1.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap1);
+        asignaciones.add(asignacionPacienteService.save(ap1));
 
         AsignacionPaciente ap2 = new AsignacionPaciente();
         ap2.setAlumno(alumnos.get(2));
@@ -324,7 +330,7 @@ public class Initialization {
         ap2.setPaciente(pacientes.get(0));
         ap2.setFechaAsignacion(Calendar.getInstance());
         ap2.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap2);
+        asignaciones.add(asignacionPacienteService.save(ap2));
         
         AsignacionPaciente ap4 = new AsignacionPaciente();
         ap4.setAlumno(alumnos.get(0));
@@ -334,7 +340,7 @@ public class Initialization {
         ap4.setPaciente(pacientes.get(1));
         ap4.setFechaAsignacion(Calendar.getInstance());
         ap4.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap4);
+        asignaciones.add(asignacionPacienteService.save(ap4));
 
         AsignacionPaciente ap5 = new AsignacionPaciente();
         ap5.setAlumno(alumnos.get(1));
@@ -346,7 +352,7 @@ public class Initialization {
         c2.set(2013, 11, 30);
         ap5.setFechaAsignacion(c2);
         ap5.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap5);
+        asignaciones.add(asignacionPacienteService.save(ap5));
 
         AsignacionPaciente ap6 = new AsignacionPaciente();
         ap6.setAlumno(alumnos.get(2));
@@ -358,7 +364,7 @@ public class Initialization {
         c3.set(2013, 06, 30);
         ap6.setFechaAsignacion(c3);
         ap6.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap6);
+        asignaciones.add(asignacionPacienteService.save(ap6));
         
         AsignacionPaciente ap7 = new AsignacionPaciente();
         ap7.setAlumno(alumnos.get(0));
@@ -368,7 +374,7 @@ public class Initialization {
         ap7.setPaciente(pacientes.get(2));
         ap7.setFechaAsignacion(Calendar.getInstance());
         ap7.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap7);
+        asignaciones.add(asignacionPacienteService.save(ap7));
 
         AsignacionPaciente ap8 = new AsignacionPaciente();
         ap8.setAlumno(alumnos.get(1));
@@ -380,7 +386,7 @@ public class Initialization {
         c4.set(2013, 10, 9);
         ap8.setFechaAsignacion(c4);
         ap8.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap8);
+        asignaciones.add(asignacionPacienteService.save(ap8));
 
         AsignacionPaciente ap9 = new AsignacionPaciente();
         ap9.setAlumno(alumnos.get(2));
@@ -390,7 +396,7 @@ public class Initialization {
         ap9.setPaciente(pacientes.get(2));
         ap9.setFechaAsignacion(Calendar.getInstance());
         ap9.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap9);
+        asignaciones.add(asignacionPacienteService.save(ap9));
         
         AsignacionPaciente ap10 = new AsignacionPaciente();
         ap10.setAlumno(alumnos.get(0));
@@ -400,7 +406,7 @@ public class Initialization {
         ap10.setPaciente(pacientes.get(3));
         ap10.setFechaAsignacion(Calendar.getInstance());
         ap10.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap10);
+        asignaciones.add(asignacionPacienteService.save(ap10));
 
         AsignacionPaciente ap11 = new AsignacionPaciente();
         ap11.setAlumno(alumnos.get(1));
@@ -412,7 +418,7 @@ public class Initialization {
         c5.set(2013, 11, 30);
         ap11.setFechaAsignacion(c5);
         ap11.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap11);
+        asignaciones.add(asignacionPacienteService.save(ap11));
 
         AsignacionPaciente ap12 = new AsignacionPaciente();
         ap12.setAlumno(alumnos.get(2));
@@ -424,6 +430,17 @@ public class Initialization {
         c6.set(2013, 06, 30);
         ap12.setFechaAsignacion(c6);
         ap12.setFechaCreacionAsignacion(Calendar.getInstance());
-        asignacionPacienteService.save(ap12);
+        asignaciones.add(asignacionPacienteService.save(ap12));
+    }
+    
+    private void cargarAtenciones(){
+        AtencionGenerica at = new AtencionGenerica();
+        at.setFechaAtencion(Calendar.getInstance());
+        at.setMotivoConsultaOdontologica("dolor dolor mas dolor");
+        at.setAsignacionPaciente(asignaciones.get(0));
+        at.setDescripcionProcedimiento("seguramente le saco algo que se yo que?");
+        atenciones.add(at);
+        pacientes.get(0).getHistoriaClinica().setAtencion(atenciones);
+        personaService.save(pacientes.get(0));
     }
 }
