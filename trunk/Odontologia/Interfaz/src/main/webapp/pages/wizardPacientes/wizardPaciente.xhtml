@@ -32,6 +32,10 @@
                                  update="pnlConsultarPaciente, 
                                  :formWizard"/>
 
+                <p:commandButton value="Ver historia Clinica" id="btnVerHC"
+                                 action="#{pacienteWizardBean.cargarPaciente()}"
+                                 disabled="#{!pacienteWizardBean.estaDeshabilitado}">
+                </p:commandButton>
             </p:panel>
         </h:form>
         <p:panel id="pnlTabsPaciente" header="DATOS PACIENTE">
@@ -97,7 +101,7 @@
                                  :consultarPacienteForm:pnlConsultarPaciente" />
             </h:form>
         </p:dialog>  
-        
+
         <p:confirmDialog message="¿Realmente quiere cancelar el diagnóstico?"
                          header="Cancelación de diagnóstico" severity="alert"
                          widgetVar="dlgCancelarDianostico" appendToBody="true">
@@ -106,7 +110,7 @@
                              update=":formWizard:tblResultadoDiagnosticos"/>
             <p:commandButton value="No" onclick="dlgCancelarDianostico.hide();" type="button" />
         </p:confirmDialog>
-        
+
         <p:confirmDialog message="¿Desea eliminar o modificar el diagnóstico seleccionado?"
                          header="Modificación de diagnóstico" severity="alert"
                          widgetVar="dlgModificarDiagnostico" id="dlgModificar" appendToBody="true">
@@ -119,9 +123,9 @@
                              update=":formWizard:pnlDiagnosticosCargados"
                              icon="ui-icon-closethick"/>
             <p:commandButton value="Volver" onclick="dlgModificarDiagnostico.hide();" type="button" icon="ui-icon-arrowreturnthick-1-w" />
-            
+
         </p:confirmDialog>
-        
+
     </ui:define>
 </ui:composition>
 

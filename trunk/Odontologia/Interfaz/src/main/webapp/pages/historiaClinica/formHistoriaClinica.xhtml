@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+    <ui:define name="content">
+        <h:form id="historiaClinicaForm">
+            <p:panel header="Historia clinica de #{historiaClinicaBean.paciente}">
+                <c:forEach var="i" begin="1" end="29">
+                    <p:panel>  
+                        <h:panelGrid columns="6">
+                            <c:forEach items="#{historiaClinicaBean.hc.detallesHC}" var="dhc">
+                                <c:if test="#{i eq dhc.grupo}">
+                                    <c:choose>
+                                        <c:when test="#{dhc.getClass().simpleName eq 'CampoSiNo'}">
+                                            <h:panelGrid columns="3">
+                                                <h:outputLabel value="#{dhc.nombre}"/>
+                                                <p:selectOneRadio value="#{dhc.siNo}">  
+                                                    <f:selectItem itemLabel="Sí" itemValue="true" />  
+                                                    <f:selectItem itemLabel="No" itemValue="false" />   
+                                                </p:selectOneRadio> 
+                                            </h:panelGrid>
+                                        </c:when>
+                                        <c:when test="#{dhc.getClass().simpleName eq 'CampoDetalle'}">
+                                            <h:panelGrid columns="2">
+                                                <h:outputLabel value="#{dhc.nombre}"/>
+                                                <p:inputText value="#{dhc.only_detalle}" />
+                                            </h:panelGrid>
+                                        </c:when>
+                                        <c:when test="#{dhc.getClass().simpleName eq 'CampoEnumerable'}">
+                                            <h:panelGrid columns="2">
+                                                <p:selectBooleanCheckbox value="#{dhc.checked}" /> 
+                                                <h:outputLabel value="#{dhc.nombre}"/> 
+                                            </h:panelGrid>
+                                        </c:when>
+                                    </c:choose>
+                                </c:if>
+                            </c:forEach>
+                        </h:panelGrid>
+                    </p:panel>  
+                </c:forEach>
+                <p:commandButton value="Guardar" id="btnGuardar" 
+                             actionListener="#{historiaClinicaBean.saveHistoriaClinica()}"
+                              update=":msg"/>
+                <p:commandButton value="Volver" id="btnCancelar" 
+                             action="registroPaciente"
+                              />
+            </p:panel>
+            
+        </h:form>
+    </ui:define>
+</ui:composition>

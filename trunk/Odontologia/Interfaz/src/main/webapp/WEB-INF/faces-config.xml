@@ -27,4 +27,23 @@
             <to-view-id>index.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/pages/wizardPacientes/wizardPaciente.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>historiaClinica</from-outcome>
+            <to-view-id>/pages/historiaClinica/formHistoriaClinica.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/pages/historiaClinica/formHistoriaClinica.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>registroPaciente</from-outcome>
+            <to-view-id>/pages/wizardPacientes/wizardPaciente.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    
 </faces-config>
