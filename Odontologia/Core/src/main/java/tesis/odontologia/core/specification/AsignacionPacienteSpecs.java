@@ -51,6 +51,11 @@ public class AsignacionPacienteSpecs {
         return new JPASubQuery().from(d).where($.diagnostico.eq(d).and(new JPASubQuery().from(tp).where(d.trabajoPractico.eq(tp).and(d.trabajoPractico.in(m.getTrabajoPractico()))).exists())).exists();
     }
     
+    public static BooleanExpression byMateria2(Materia materia) {
+        QDiagnostico d = QDiagnostico.diagnostico;
+        return new JPASubQuery().from(d).where($.diagnostico.eq(d).and(d.materia.eq(materia))).exists();
+    }
+    
     public static BooleanExpression byTrabajoPractico(TrabajoPractico tp){
         QDiagnostico d = QDiagnostico.diagnostico;
         return new JPASubQuery().from(d).where($.diagnostico.eq(d).and(d.trabajoPractico.eq(tp))).exists();
