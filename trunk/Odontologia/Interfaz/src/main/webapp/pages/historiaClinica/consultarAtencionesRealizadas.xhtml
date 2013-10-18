@@ -1,0 +1,111 @@
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:outputLabel value="CONSULTAR ATENCIONES REALIZADAS" style="padding: 400px; font-size: 20px; font: " />
+
+        <h:form id="consultarAtencionesRealizadasForm">
+            <p:panel id="pnlConsultarAtencionesRealizadas" header="Parámetros de búsqueda">
+                <h:panelGrid id="paramentros" columns="4" cellpadding="3" cellspacing="3">                 
+
+                    <p:outputLabel value="Materia "/>
+                    <p:selectOneMenu id="selecciontMateriaBusqueda" value="#{consultarAtencionesRealizadasBean.materiaFiltro}" converter="materiaConverter">
+                        <f:selectItem itemLabel="Seleccione una Materia"/>
+                        <f:selectItems value="#{consultarAtencionesRealizadasBean.materias}"/>
+                        <f:ajax event="change"  render="seleccionCatedraBusqueda seleccionTrabajoPracticoBusqueda" execute="selecciontMateriaBusqueda"
+                                listener="#{consultarAtencionesRealizadasBean.filtrarCombosPorMateria()}"/>
+                    </p:selectOneMenu>     
+
+                    <p:outputLabel value="Trabajo práctico"/>
+                    <p:selectOneMenu id="seleccionTrabajoPracticoBusqueda" value="#{consultarAtencionesRealizadasBean.trabajoPracticoFiltro}"
+                                     converter="trabajoPracticoConverter">
+                        <f:selectItem itemLabel="Seleccione un trabajo práctico"/>
+                        <f:selectItems value="#{consultarAtencionesRealizadasBean.trabajosPracticos}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Cátedra de Atención " />
+                    <p:selectOneMenu id="seleccionCatedraBusqueda" value="#{consultarAtencionesRealizadasBean.catedraFiltro}" converter="catedraConverter">
+                        <f:selectItem itemLabel="Seleccione una Cátedra"/>
+                        <f:selectItems value="#{consultarAtencionesRealizadasBean.catedras}"/>
+                    </p:selectOneMenu>                    
+                    <span></span> 
+                    <h:outputLabel value=""/>
+                    <h:outputLabel value="Fecha de Atención Desde:"/>
+                    <p:calendar id="calDesde" value="#{consultarAtencionesRealizadasBean.fechaDesdeFiltro}" navigator="true"  yearRange="c-100:c"/>
+
+                    <h:outputLabel value="Fecha de Atención Hasta:"/>
+                    <p:calendar id="calHasta" value="#{consultarAtencionesRealizadasBean.fechaHastaFiltro}" navigator="true"  yearRange="c-100:c"/>
+
+                </h:panelGrid>
+                <br/>
+
+                <p:commandButton  id="btnBuscarAtencionesRealizadas" value="Buscar Atenciones Realizadas" 
+                                  actionListener="#{consultarAtencionesRealizadasBean.buscarAtencionesRealizadas()}" 
+                                  process="@form"
+                                  update="tblResultadosAtencionesRealizadas, :msg">
+                </p:commandButton>
+            </p:panel>
+            <br/>
+            <br/>
+
+            <p:panel  id="pnlResultadosConsultarAtencionesRealizadas" header="Resultados de Búsqueda">
+                <p:dataTable id="tblResultadosAtencionesRealizadas" var="atenciones" value="#{consultarAtencionesRealizadasBean.atencionesGenericas}"  paginator="true" rows="10"
+                             emptyMessage="No se registran asignaciones confirmadas para los parámetros ingresados" >
+
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Resultado de la Busqueda" />
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Paciente" />  
+                        </f:facet>  
+                        <h:outputText value="#{atenciones.asignacionPaciente.paciente}" />  
+                    </p:column> 
+
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Alumno Practicante" />  
+                        </f:facet>  
+                        <h:outputText value="#{atenciones.asignacionPaciente.alumno}" />  
+                    </p:column> 
+                    
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Profesor que Autorizó" />  
+                        </f:facet>  
+                        <h:outputText value="#{atenciones.asignacionPaciente.profesor}" />  
+                    </p:column>
+                    
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Diagnósitico que Resolvió" />  
+                        </f:facet>  
+                        <h:outputText value="#{atenciones.asignacionPaciente.diagnostico.descripcion}" />  
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Descripción Procedimiento" />  
+                        </f:facet> 
+                        <p:commandButton id="btnVerDescripcion" icon="ui-icon-circle-zoomin"
+                                         oncomplete="dlgDescripcionProcedimiento.show();"/>
+                        <p:dialog id="Dialog" header="Descripción del procedimiento realizado por el alumno" widgetVar="dlgDescripcionProcedimiento">  
+                            <h:outputText value="#{atenciones.descripcionProcedimiento}" />  
+                        </p:dialog>
+                    </p:column>
+
+                </p:dataTable>
+
+            </p:panel>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
