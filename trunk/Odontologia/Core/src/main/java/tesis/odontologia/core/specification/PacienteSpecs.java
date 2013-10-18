@@ -12,6 +12,7 @@ import java.util.List;
 
 import tesis.odontologia.core.domain.QPersona;
 import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
+import tesis.odontologia.core.domain.historiaclinica.QHistoriaClinica;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
@@ -37,6 +38,11 @@ public class PacienteSpecs {
         return $.documento.numero.equalsIgnoreCase(nroDocumento);
     }
     
+    public static BooleanExpression byDiagnostico(Diagnostico diagnostico) {
+        QHistoriaClinica h = QHistoriaClinica.historiaClinica;
+        return new JPASubQuery().from(h).where($.historiaClinica.eq(h).and(h.diagnostico.any().id.eq(diagnostico.getId()))).exists();
+    }
+    
 
     public static BooleanExpression byMenorA(Calendar edadHasta) {
         return $.fechaNacimiento.after(edadHasta);
@@ -58,6 +64,22 @@ public class PacienteSpecs {
         return $.historiaClinica.diagnostico.any().estado.in(estados)
                 .and($.historiaClinica.diagnostico.any().materia.eq(materia));
     }
+    
+    public static BooleanExpression byMateria(Materia materia) {
+        QHistoriaClinica h = QHistoriaClinica.historiaClinica;
+        return new JPASubQuery().from(h).where($.historiaClinica.eq(h).and(h.diagnostico.any().materia.eq(materia))).exists();
+    }
+    
+    public static BooleanExpression byEstadoDiagnosticoParaBusqueda() {
+        QHistoriaClinica h = QHistoriaClinica.historiaClinica;
+        return new JPASubQuery().from(h).where($.historiaClinica.eq(h).and(h.diagnostico.any().estado.eq(Diagnostico.EstadoDiagnostico.PENDIENTE))).exists();
+    }
+    
+    public static BooleanExpression byPractico(TrabajoPractico practico) {
+        QHistoriaClinica h = QHistoriaClinica.historiaClinica;
+        return new JPASubQuery().from(h).where($.historiaClinica.eq(h).and(h.diagnostico.any().trabajoPractico.eq(practico))).exists();
+    }
+    
     
     public static BooleanExpression byTipoPersona(Object t){
         return $.instanceOf(Paciente.class); 
