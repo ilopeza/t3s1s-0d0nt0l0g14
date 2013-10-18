@@ -51,6 +51,7 @@ public class Initialization {
     private List<Paciente> pacientes = new ArrayList<Paciente>();
     private List<Diagnostico> diagnosticos = new ArrayList<Diagnostico>();
     private List<Alumno> alumnos = new ArrayList<Alumno>();
+    private List<Profesor> profesores = new ArrayList<Profesor>();
     private List<Rol> roles = new ArrayList<Rol>();
     ArrayList<Materia> matprofp= new ArrayList<Materia>();
      ArrayList<Materia> matprofp1= new ArrayList<Materia>();
@@ -279,7 +280,7 @@ public class Initialization {
         p.setMateria(matprofp);
         Usuario usuario1 = new Usuario("34342245", "34342245", roles.get(1), "Lucas@gmail.com");
         p.setUsuario(usuario1);
-        personaService.save(p);
+        profesores.add(personaService.save(p));
 
         Profesor p1 = new Profesor("Lorenzo", "Diaz");
         p1.setDocumento(new Documento("34442245", Documento.TipoDocumento.DNI));
@@ -287,7 +288,7 @@ public class Initialization {
         Usuario usuario2 = new Usuario("34442245", "34442245", roles.get(1), "Lorenzo@gmail.com");
         p1.setMateria(matprofp1);
         p1.setUsuario(usuario2);
-        personaService.save(p1);
+        profesores.add(personaService.save(p1));
 
         Profesor p2 = new Profesor("Lucia", "Roma");
         p2.setDocumento(new Documento("34332245", Documento.TipoDocumento.DNI));
@@ -295,7 +296,7 @@ public class Initialization {
         Usuario usuario3 = new Usuario("34332245", "34332245", roles.get(1), "Lucia@gmail.com");
         p2.setMateria(matprofp1);
         p2.setUsuario(usuario3);
-        personaService.save(p2);
+        profesores.add(personaService.save(p2));
 
     }
 
@@ -304,7 +305,8 @@ public class Initialization {
         ap.setAlumno(alumnos.get(0));
         ap.setCatedra(materias.get(0).getCatedra().get(0));
         ap.setDiagnostico(pacientes.get(0).getHistoriaClinica().getDiagnostico().get(0));
-        ap.setEstado(AsignacionPaciente.EstadoAsignacion.PENDIENTE);
+        ap.setEstado(AsignacionPaciente.EstadoAsignacion.AUTORIZADA);
+        ap.setProfesor(profesores.get(0));
         ap.setPaciente(pacientes.get(0));
         ap.setFechaCreacionAsignacion(Calendar.getInstance());
         ap.setFechaAsignacion(Calendar.getInstance());
@@ -438,7 +440,7 @@ public class Initialization {
         at.setFechaAtencion(Calendar.getInstance());
         at.setMotivoConsultaOdontologica("dolor dolor mas dolor");
         at.setAsignacionPaciente(asignaciones.get(0));
-        at.setDescripcionProcedimiento("seguramente le saco algo que se yo que?");
+        at.setDescripcionProcedimiento("seguramente le saco algo que se yo que? hdasdfhsdfhaiosdhfpoashdfashdfpasidfjasijdfo  asdfhoas  asofdh oiasd hf  ioasdfhoas hfoias ihasd fohasiofdh asodaoisdhfoash foiha sdofh sadfhoahsdfo");
         atenciones.add(at);
         pacientes.get(0).getHistoriaClinica().setAtencion(atenciones);
         personaService.save(pacientes.get(0));
