@@ -280,7 +280,7 @@ public class PacienteWizardBean {
         diagnostico.setId(Long.valueOf(idAux));
         nuevosDiagnosticos.add(diagnostico);
         diagnosticos.add(diagnostico);
-        //paciente.getHistoriaClinica().getDiagnostico().add(diagnostico);
+        paciente.getHistoriaClinica().getDiagnostico().add(diagnostico);
 
         diagnostico = new Diagnostico();
     }
