@@ -13,6 +13,7 @@ import tesis.odontologia.core.domain.historiaclinica.QHistoriaClinica;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
+import tesis.odontologia.core.domain.paciente.QPaciente;
 
 
 /**
@@ -37,6 +38,12 @@ public class DiagnosticoSpecs {
 
     public static BooleanExpression byTrabajoPractico(TrabajoPractico tp) {
         return $.trabajoPractico.eq(tp);
+    }
+    
+    public static BooleanExpression byNombreODocPaciente(String filtro) {
+        QHistoriaClinica h = QHistoriaClinica.historiaClinica;
+        QPaciente p = QPaciente.paciente;
+        return new JPASubQuery().from(h).where($.in(h.diagnostico).and(new JPASubQuery().from(p).where(p.historiaClinica.id.eq(h.id).and(p.nombre.containsIgnoreCase(filtro).or(p.apellido.containsIgnoreCase(filtro).or(p.documento.numero.eq(filtro))))).exists())).exists();
     }
 
     public static BooleanExpression byAsignacion(AsignacionPaciente asignacion) {

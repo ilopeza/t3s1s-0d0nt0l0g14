@@ -5,6 +5,7 @@
 package tesis.odontologia.interfaces.asignaciones;
 
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
@@ -23,14 +25,19 @@ import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
+import tesis.odontologia.core.domain.usuario.Rol;
 import tesis.odontologia.core.service.AsignacionPacienteService;
 import tesis.odontologia.core.service.CatedraService;
+import tesis.odontologia.core.service.DiagnosticoService;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.TrabajoPracticoService;
 import tesis.odontologia.core.specification.AlumnoSpecs;
 import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
+import tesis.odontologia.core.specification.DiagnosticoSpecs;
 import tesis.odontologia.core.specification.PacienteSpecs;
+import tesis.odontologia.core.specification.PersonaSpecs;
+import tesis.odontologia.interfaces.login.LoginBean;
 import tesis.odontologia.interfaces.util.Utiles;
 
 /**
@@ -42,7 +49,6 @@ import tesis.odontologia.interfaces.util.Utiles;
 public class AsignacionBean {
 
     private AsignacionPaciente asignacion;
-
     private Date fechaAsignacion;
     //Listas para cargar combos.
     private List<TrabajoPractico> trabajosPracticos;
@@ -51,9 +57,11 @@ public class AsignacionBean {
     //Listas para cargar tablas
     private List<AsignacionPaciente> asignaciones;
     private List<Paciente> pacientes;
+    private List<Diagnostico> diagnosticos;
     //Atributos búsqueda tabla.
     private String filtroPaciente;
     private Paciente pacienteSeleccionado;
+    private ResultadoConsulta diagnosticoSeleccionado;
     //Atributos búsqueda avanzada.
     private Materia materiaFiltro;
     private Catedra catedraFiltro;
@@ -61,6 +69,8 @@ public class AsignacionBean {
     //Atributos para buscar el alumno.
     private String nroDocumentoAlumnoBuscado;
     private Alumno alumnoBuscado;
+    private boolean mostrarBuscarAlumno = true;
+    private List<ResultadoConsulta> resultadoBusqueda = new ArrayList<ResultadoConsulta>();
     //Servicio
     @ManagedProperty(value = "#{asignacionPacienteService}")
     private AsignacionPacienteService asignacionPacienteService;
@@ -70,10 +80,10 @@ public class AsignacionBean {
     private MateriaService materiaService;
     @ManagedProperty(value = "#{catedraService}")
     private CatedraService catedraService;
-    @ManagedProperty(value="#{trabajoPracticoService}")
+    @ManagedProperty(value = "#{trabajoPracticoService}")
     private TrabajoPracticoService trabajoPracticoService;
-
-   
+    @ManagedProperty(value = "#{diagnosticoService}")
+    private DiagnosticoService diagnosticoService;
 
     /**
      * Creates a new instance of AsignacionBean
@@ -86,60 +96,113 @@ public class AsignacionBean {
         //Se cargan los combos.
         cargarCombos();
         pacientes = new ArrayList<Paciente>();
-        
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        LoginBean login = (LoginBean) session.getAttribute("loginBean");
+
+        if (login.getUsuario().getRol().is(Rol.ALUMNO)) {
+            mostrarBuscarAlumno = false;
+            alumnoBuscado = (Alumno) login.getPersona();
+            buscarAsignaciones();
+        }
+
+
+    }
+
+    public void filtrarCombosPorMateria() {
+        if (materiaFiltro != null) {
+            materiaFiltro = materiaService.reload(materiaFiltro, 1);
+            buscarCatedras();
+            buscarTrabajosPracticos();
+        } else {
+            catedras = new ArrayList<Catedra>();
+            trabajosPracticos = new ArrayList<TrabajoPractico>();
+        }
     }
 
     public String save() {
-        if (alumnoBuscado == null) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un alumno.", null));
-            return null;
-        }
-        if (pacienteSeleccionado == null) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un paciente.", null));
-            return null;
-        }
-        if (trabajoPracticoFiltro == null) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un trabajo práctico.", null));
-            return null;
-        }
-        if (fechaAsignacion == null) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono una fecha para la asignacion.", null));
-            return null;
-        }
-
-        //Crea la asinación y le setea los atributos.
-        this.createAsignacionPaciente(alumnoBuscado, pacienteSeleccionado, catedraFiltro, pacienteSeleccionado.getHistoriaClinica().getDiagnosticoByTrabajoPractico(trabajoPracticoFiltro));
-        
-        try {
-            asignacion = asignacionPacienteService.save(asignacion);
-            asignaciones.add(asignacion);
-            if (asignacion != null && !asignacion.isNew()) {
+        Boolean validacion = false;
+        if (true) {
+            if (alumnoBuscado == null) {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Asignacion guardada", null));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un alumno.", null));
+                validacion = true;
             }
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_FATAL, "La asignacion no ha sido guardada", null));
+            if (diagnosticoSeleccionado == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono un paciente.", null));
+                validacion = true;
+            }
+            if (catedraFiltro == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono una cátedra", null));
+                validacion = true;
+            }
+            if (fechaAsignacion == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se selecciono una fecha para la asignacion.", null));
+                validacion = true;
+            }
         }
+        if (validacion) {
+            return null;
+        } else {
 
-        return "asignacionPaciente";
+
+            AsignacionPaciente asig = new AsignacionPaciente();
+            asig.setDiagnostico(diagnosticoService.findOne(diagnosticoSeleccionado.getIdDiagnostico()));
+            asig.setFechaCreacionAsignacion(Calendar.getInstance());
+            Calendar fecha = new GregorianCalendar();
+            fecha.setTime(fechaAsignacion);
+            asig.setFechaAsignacion(fecha);
+            asig.setAlumno(alumnoBuscado);
+            asig.setPaciente(diagnosticoSeleccionado.getPaciente());
+            asig.setCatedra(catedraFiltro);
+
+
+            try {
+                asig = asignacionPacienteService.save(asig);
+                buscarAsignaciones();
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha registrado la asignación.", null));
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_FATAL, "La asignacion no ha sido guardada.", null));
+            }
+
+            return null;
+        }
     }
 
     // Métodos de la interfaz.
     public void buscarPacientes() {
-//        if (filtroPaciente == null || filtroPaciente.isEmpty()) {
-//            if ((edadDesdeFiltro == null || edadDesdeFiltro.isEmpty()) && (edadHastaFiltro.isEmpty() || edadHastaFiltro == null)) {
-//                buscarTodosLosPacientes();
-//            } else {
-//                busquedaAvanzada();
-//            }
-//        } else {
-        busquedaSimple();
-//        }
+
+        diagnosticos = new ArrayList<Diagnostico>();
+        resultadoBusqueda = new ArrayList<ResultadoConsulta>();
+        BooleanExpression predicate = DiagnosticoSpecs.byEstado(Diagnostico.EstadoDiagnostico.PENDIENTE);
+
+        if (materiaFiltro != null) {
+            predicate = predicate.and(DiagnosticoSpecs.byMateria(materiaFiltro));
+        }
+
+        if (trabajoPracticoFiltro != null) {
+            predicate = predicate.and(DiagnosticoSpecs.byTrabajoPractico(trabajoPracticoFiltro));
+        }
+
+        if (filtroPaciente != null && !filtroPaciente.isEmpty()) {
+            if (filtroPaciente.matches("[0-9]*")) {
+                predicate = predicate.and(DiagnosticoSpecs.byNombreODocPaciente(filtroPaciente));
+            } else {
+                predicate = predicate.and(DiagnosticoSpecs.byNombreODocPaciente(filtroPaciente));
+            }
+
+        }
+        diagnosticos = (List<Diagnostico>) diagnosticoService.findAll(predicate);
+
+        for (Diagnostico d : diagnosticos) {
+            resultadoBusqueda.add(new ResultadoConsulta(d));
+        }
+
     }
 
     //Métodos auxiliares.
@@ -158,8 +221,8 @@ public class AsignacionBean {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
         }
     }
-    
-    public void createAsignacionPaciente(Alumno a, Paciente p, Catedra c, Diagnostico d){
+
+    public void createAsignacionPaciente(Alumno a, Paciente p, Catedra c, Diagnostico d) {
         asignacion = new AsignacionPaciente();
         asignacion.setAlumno(a);
         asignacion.setPaciente(p);
@@ -184,44 +247,54 @@ public class AsignacionBean {
         }
         buscarAsignaciones();
     }
+
     /**
-     * Busca las asignaciones PENDIENTES de un paciente para una materia y TP seleccionados.
+     * Busca las asignaciones PENDIENTES de un paciente para una materia y TP
+     * seleccionados.
      */
     public void buscarAsignaciones() {
         asignaciones = new ArrayList<AsignacionPaciente>();
-        asignaciones = (List<AsignacionPaciente>) 
-                asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
+        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
                 and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
 //        .AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
-                //and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE))
+        //and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE))
 //                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE).
 //                and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro))));
-        
+
         if (asignaciones == null || asignaciones.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
         }
     }
 
     //MÉTODOS AUXILIARES
-    
-    private void cargarCombos(){
+    private void cargarCombos() {
         materias = buscarMaterias();
         catedras = buscarCatedras();
         trabajosPracticos = buscarTrabajosPracticos();
-    } 
-    private  List<Materia> buscarMaterias(){
+    }
+
+    private List<Materia> buscarMaterias() {
         return materiaService.findAll();
     }
-    
-    private List<Catedra> buscarCatedras(){
-        return catedraService.findAll();
+
+    private List<Catedra> buscarCatedras() {
+        if (materiaFiltro == null) {
+            return null;
+        } else {
+            catedras = materiaFiltro.getCatedra();
+            return catedras;
+        }
     }
-    
-    private List<TrabajoPractico> buscarTrabajosPracticos(){
-        return trabajoPracticoService.findAll();
+
+    private List<TrabajoPractico> buscarTrabajosPracticos() {
+        if (materiaFiltro == null) {
+            return null;
+        } else {
+            trabajosPracticos = materiaFiltro.getTrabajoPractico();
+            return trabajosPracticos;
+        }
     }
-    
-    
+
     // GETTERS Y SETTERS
     public void setPacienteSeleccionado(Paciente pacienteSeleccionado) {
         this.pacienteSeleccionado = pacienteSeleccionado;
@@ -246,7 +319,7 @@ public class AsignacionBean {
     public void setFiltroPaciente(String filtroPaciente) {
         this.filtroPaciente = filtroPaciente;
     }
-    
+
     public AsignacionPacienteService getAsignacionPacienteService() {
         return asignacionPacienteService;
     }
@@ -338,8 +411,7 @@ public class AsignacionBean {
     public void setFechaAsignacion(Date fechaAsignacion) {
         this.fechaAsignacion = fechaAsignacion;
     }
-    
-    
+
     public List<TrabajoPractico> getTrabajosPracticos() {
         return trabajosPracticos;
     }
@@ -371,8 +443,8 @@ public class AsignacionBean {
     public void setTrabajoPracticoFiltro(TrabajoPractico trabajoPracticoFiltro) {
         this.trabajoPracticoFiltro = trabajoPracticoFiltro;
     }
-    
-     public TrabajoPracticoService getTrabajoPracticoService() {
+
+    public TrabajoPracticoService getTrabajoPracticoService() {
         return trabajoPracticoService;
     }
 
@@ -412,4 +484,155 @@ public class AsignacionBean {
 //
 //        return Utiles.convertIntegerToCalendarYear(anioHasta);
 //    }
+
+    /**
+     * @return the mostrarBuscarAlumno
+     */
+    public boolean isMostrarBuscarAlumno() {
+        return mostrarBuscarAlumno;
+    }
+
+    /**
+     * @param mostrarBuscarAlumno the mostrarBuscarAlumno to set
+     */
+    public void setMostrarBuscarAlumno(boolean mostrarBuscarAlumno) {
+        this.mostrarBuscarAlumno = mostrarBuscarAlumno;
+    }
+
+    /**
+     * @return the resultadoBusqueda
+     */
+    public List<ResultadoConsulta> getResultadoBusqueda() {
+        return resultadoBusqueda;
+    }
+
+    /**
+     * @param resultadoBusqueda the resultadoBusqueda to set
+     */
+    public void setResultadoBusqueda(List<ResultadoConsulta> resultadoBusqueda) {
+        this.resultadoBusqueda = resultadoBusqueda;
+    }
+
+    /**
+     * @param diagnosticoService the diagnosticoService to set
+     */
+    public void setDiagnosticoService(DiagnosticoService diagnosticoService) {
+        this.diagnosticoService = diagnosticoService;
+    }
+
+    /**
+     * @return the diagnosticos
+     */
+    public List<Diagnostico> getDiagnosticos() {
+        return diagnosticos;
+    }
+
+    /**
+     * @param diagnosticos the diagnosticos to set
+     */
+    public void setDiagnosticos(List<Diagnostico> diagnosticos) {
+        this.diagnosticos = diagnosticos;
+    }
+
+    /**
+     * @return the diagnosticoSeleccionado
+     */
+    public ResultadoConsulta getDiagnosticoSeleccionado() {
+        return diagnosticoSeleccionado;
+    }
+
+    /**
+     * @param diagnosticoSeleccionado the diagnosticoSeleccionado to set
+     */
+    public void setDiagnosticoSeleccionado(ResultadoConsulta diagnosticoSeleccionado) {
+        this.diagnosticoSeleccionado = diagnosticoSeleccionado;
+    }
+
+    public class ResultadoConsulta {
+
+        private String materia;
+        private String practico;
+        private String descripcionDiagnostico;
+        private Long idDiagnostico;
+        private Paciente paciente;
+
+        public ResultadoConsulta(Diagnostico diagnostico) {
+            this.materia = diagnostico.getMateria().getNombre();
+            this.practico = diagnostico.getTrabajoPractico().getNombre();
+            this.descripcionDiagnostico = diagnostico.getDescripcion();
+            this.idDiagnostico = diagnostico.getId();
+            this.paciente = personaService.findOne(PacienteSpecs.byDiagnostico(diagnostico));
+
+        }
+
+        /**
+         * @return the materia
+         */
+        public String getMateria() {
+            return materia;
+        }
+
+        /**
+         * @param materia the materia to set
+         */
+        public void setMateria(String materia) {
+            this.materia = materia;
+        }
+
+        /**
+         * @return the practico
+         */
+        public String getPractico() {
+            return practico;
+        }
+
+        /**
+         * @param practico the practico to set
+         */
+        public void setPractico(String practico) {
+            this.practico = practico;
+        }
+
+        /**
+         * @return the descripcionDiagnostico
+         */
+        public String getDescripcionDiagnostico() {
+            return descripcionDiagnostico;
+        }
+
+        /**
+         * @param descripcionDiagnostico the descripcionDiagnostico to set
+         */
+        public void setDescripcionDiagnostico(String descripcionDiagnostico) {
+            this.descripcionDiagnostico = descripcionDiagnostico;
+        }
+
+        /**
+         * @return the idDiagnostico
+         */
+        public Long getIdDiagnostico() {
+            return idDiagnostico;
+        }
+
+        /**
+         * @param idDiagnostico the idDiagnostico to set
+         */
+        public void setIdDiagnostico(Long idDiagnostico) {
+            this.idDiagnostico = idDiagnostico;
+        }
+
+        /**
+         * @return the paciente
+         */
+        public Paciente getPaciente() {
+            return paciente;
+        }
+
+        /**
+         * @param paciente the paciente to set
+         */
+        public void setPaciente(Paciente paciente) {
+            this.paciente = paciente;
+        }
+    }
 }
