@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -95,6 +96,17 @@ public class PacienteWizardBean {
     //MÉTODOS AUXILIARES
     @PostConstruct
     public void init() {
+//        Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+//        paciente = (Paciente) sessionMap.get("paciente");
+//        HistoriaClinica historiaClinica = (HistoriaClinica) sessionMap.get("historiaClinica");
+//        if(paciente != null && historiaClinica != null) {
+//            estaDeshabilitado = true;
+//        }
+//        if(historiaClinica != null) {
+//            diagnosticos = historiaClinica.getDiagnostico();
+//        } else {
+            diagnosticos = new ArrayList<Diagnostico>();
+//        }
         if (paciente == null) {
             paciente = new Paciente();
             paciente.setDomicilio(new Domicilio());
@@ -109,12 +121,11 @@ public class PacienteWizardBean {
             diagnostico = new Diagnostico();
         }
         filtrarHabilitado = true;
-        diagnosticos = new ArrayList<Diagnostico>();
         nuevosDiagnosticos = new ArrayList<Diagnostico>();
         cargarCombos();
 
     }
-
+    
     public void cargarMaterias() {
         materias = materiaService.findAll();
     }
@@ -197,8 +208,8 @@ public class PacienteWizardBean {
         if (selectedPaciente == null) {
             return false;
         } else {
+            selectedPaciente = personaService.reload(selectedPaciente, 2);
             paciente = selectedPaciente;
-            paciente = personaService.reload(paciente, 2);
             diagnosticos.addAll(paciente.getHistoriaClinica().getDiagnostico());
             estaDeshabilitado = true;
             return true;
@@ -375,8 +386,22 @@ public class PacienteWizardBean {
         return listaAux;
     }
     
-  
+    /**
+     * Metodo que carga el paciente a la session para poderlo pasar a la pagina en la
+     * que se visualiza la historia clinica
+     * @return 
+     */
+    public String cargarPaciente() {
+        if(selectedPaciente == null) return null;
+        Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+        sessionMap.remove("paciente");
+        sessionMap.remove("historiaClinica");
+        sessionMap.put("paciente", selectedPaciente);
+        sessionMap.put("historiaClinica", selectedPaciente.getHistoriaClinica());
+        return "historiaClinica";
+    }
     
+  
     /**
      * Filtra por TP
      * @param d Diagnóstico a comparar.
