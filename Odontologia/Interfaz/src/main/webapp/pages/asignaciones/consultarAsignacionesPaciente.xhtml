@@ -80,7 +80,7 @@ and open the template in the editor.
                         <p:calendar id="calFechaAsignación" value="#{consultarAsignacionesBean.fechaFiltro}"/>
                     </p:column>
 
-                    <p:commandButton id="btnFiltrarAsignaciones" value="Filtrar" 
+                    <p:commandButton id="btnFiltrarAsignaciones" value="Buscar" 
                                      actionListener="#{consultarAsignacionesBean.cargarAsignacionesFiltradas}"
                                      process="@form"
                                      update="tblResultadoAsignaciones"/>
@@ -118,6 +118,18 @@ and open the template in the editor.
                     </p:column>
                     <p:column id="colEstado" headerText="Estado Asignacion">
                         <h:outputText value="#{a.estado}" />
+                    </p:column>
+                     <p:column id="Telefono" headerText="Teléfono">
+                         <h:outputText value="#{a.paciente.telefono}" />
+                    </p:column>
+                    <p:column id="Celular" headerText="Celular">
+                        <h:outputText value="#{a.paciente.celular}" />
+                    </p:column>
+                    <p:column id="Domicilio" headerText="Domicilio">
+                        <h:outputText value="#{a.paciente.domicilio}" />
+                    </p:column>
+                    <p:column id="email" headerText="Correo electrónico">
+                        <h:outputText value="#{a.paciente.email}" />
                     </p:column>
                     <p:column id="colAcciones" headerText="Acciones">
                         <h:panelGrid columns="3">

@@ -164,7 +164,10 @@ public class ConsultarAsignacionesBean {
             predicate = predicate.and(AsignacionPacienteSpecs.byNombreOApellido(pacienteFiltro));
         }
         if (materiaFiltro != null) {
-            predicate = predicate.and(AsignacionPacienteSpecs.byMateria(materiaFiltro));
+            predicate = predicate.and(AsignacionPacienteSpecs.byMateria2(materiaFiltro));
+        }
+        if (fechaFiltro != null) {
+            
         }
         List<AsignacionPaciente> listaAsignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(predicate);
 
