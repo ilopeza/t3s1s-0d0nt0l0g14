@@ -102,19 +102,19 @@
             </h:form>
         </p:dialog>  
 
-        <p:confirmDialog message="¿Realmente quiere cancelar el diagnóstico?"
-                         header="Cancelación de diagnóstico" severity="alert"
-                         widgetVar="dlgCancelarDianostico" appendToBody="true">
+        <p:confirmDialog message="¿Realmente quiere dar de baja el diagnóstico?"
+                         header="Baja de diagnóstico" severity="alert"
+                         widgetVar="dlgBajaDeDianostico" appendToBody="true">
             <p:commandButton value="Sí" actionListener="#{pacienteWizardBean.cancelarDiagnostico()}"
-                             oncomplete="dlgCancelarDianostico.hide();"
+                             oncomplete="dlgBajaDeDianostico.hide();"
                              update=":formWizard:tblResultadoDiagnosticos"/>
-            <p:commandButton value="No" onclick="dlgCancelarDianostico.hide();" type="button" />
+            <p:commandButton value="No" onclick="dlgBajaDeDianostico.hide();" type="button" />
         </p:confirmDialog>
 
         <p:confirmDialog message="¿Desea eliminar o modificar el diagnóstico seleccionado?"
                          header="Modificación de diagnóstico" severity="alert"
                          widgetVar="dlgModificarDiagnostico" id="dlgModificar" appendToBody="true">
-            <p:commandButton value="Modificar" actionListener="#{pacienteWizardBean.modificarDiagnostico()}"
+            <p:commandButton value="Modificar" actionListener="#{pacienteWizardBean.seleccionarModificarDiagnostico()}"
                              oncomplete="dlgModificarDiagnostico.hide();"
                              update=":formWizard:pnlNuevoDiagnostico"
                              icon="ui-icon-pencil"/>
