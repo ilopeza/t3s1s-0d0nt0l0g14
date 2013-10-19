@@ -25,7 +25,7 @@
                 </p:column>
                 <p:column>
                     <p:selectOneMenu id="selectMateria" value="#{pacienteWizardBean.diagnostico.materia}" filterMatchMode="startsWith"
-                                     converter="materiaConverter" >
+                                     converter="materiaConverter" disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}">
                         <f:selectItems value="#{pacienteWizardBean.materias}"/>
                     </p:selectOneMenu>
                 </p:column>          
@@ -34,7 +34,7 @@
                 </p:column>          
                 <p:column>
                     <p:selectOneMenu id="selectTrabajoPráctico" value="#{pacienteWizardBean.diagnostico.trabajoPractico}"
-                                     converter="trabajoPracticoConverter">
+                                     converter="trabajoPracticoConverter" disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}">
                         <f:selectItems value="#{pacienteWizardBean.trabajosPracticos}"/>
                     </p:selectOneMenu>
                 </p:column>
@@ -43,32 +43,47 @@
                 </p:column>
                 <p:column>
                     <p:inputTextarea autoResize="true" id="txtDescripcionDiagnostico" rows="3" cols="99" 
-                                     value="#{pacienteWizardBean.diagnostico.descripcion}"/>
+                                     value="#{pacienteWizardBean.diagnostico.descripcion}" disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}"/>
                 </p:column>
             </h:panelGrid>
 
-            <p:commandButton value="Agregar" icon="ui-icon-circle-plus" 
-                             process="@form"
-                             update="pnlDiagnosticosCargados"
-                             actionListener="#{pacienteWizardBean.agregarDiagnostico()}"/>
+            <h:panelGrid columns="3" cellspacing="3" cellpadding="3">
+                <p:commandButton value="Nuevo diagnóstico" actionListener="#{pacienteWizardBean.nuevoDiagnostico()}"
+                                 oncomplete="dlgModificarDiagnostico.hide();" 
+                                 update="pnlNuevoDiagnostico"
+                                 icon="ui-icon-circle-arrow-e"
+                                 disabled="#{pacienteWizardBean.nuevoDiagnosticoHabilitado}"/>
+                <p:commandButton value="Agregar" 
+                                 icon="ui-icon-circle-plus"
+                                 process="@form"
+                                 update="pnlDiagnosticosCargados, pnlNuevoDiagnostico, :msg"
+                                 actionListener="#{pacienteWizardBean.agregarDiagnostico()}"
+                                 disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}"/>
+                <p:commandButton value="Cancelar" actionListener="#{pacienteWizardBean.reestablecerDiagnostico()}" 
+                                 update="pnlNuevoDiagnostico"
+                                 disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}"
+                                 icon="ui-icon-closethick"/>
+
+            </h:panelGrid>
+
         </p:panel>
-        
+
         <p:panel id="pnlDiagnosticosCargados" header="Diagnósticos cargados">
             <h:panelGrid columns="7" cellpadding="3" cellspacing="3">
                 <h:outputText value="Ver por: "/>
-                
+
                 <h:outputText value="Estado: "/>
                 <p:selectOneMenu id="selectEstadoDiagnostico" value="#{pacienteWizardBean.estadoDiagnosticoFiltro}">
                     <f:selectItem itemLabel="Seleccione una estado"/>
                     <f:selectItems value="#{pacienteWizardBean.estadosDiagnostico}"/>
                 </p:selectOneMenu>
-                
+
                 <h:outputText value="Trabajo Práctico:"/>
                 <p:selectOneMenu id="selectTrabajoPrácticoDiagnostico" converter="trabajoPracticoConverter" value="#{pacienteWizardBean.trabajoPracticoFiltro}">
                     <f:selectItem itemLabel="Seleccione un trabajo práctico"/>
                     <f:selectItems value="#{pacienteWizardBean.trabajosPracticos}"/>
                 </p:selectOneMenu>
-               
+
                 <p:commandButton id="btnFiltrarDiagnosticos" value="Filtrar" 
                                  actionListener="#{pacienteWizardBean.filtrar()}"
                                  update="pnlDiagnosticosCargados"
@@ -98,7 +113,7 @@
                 <p:column id="colAcciones" headerText="Acciones">
                     <h:panelGrid columns="3" cellpadding="1" cellspacing="1">
                         <p:commandButton id="btnCancelar" icon="ui-icon-cancel"
-                                         oncomplete="dlgCancelarDianostico.show();"
+                                         oncomplete="dlgBajaDeDianostico.show();"
                                          process="tblResultadoDiagnosticos"/>
                         <p:commandButton id="btnModificar" icon="ui-icon-pencil"
                                          oncomplete="dlgModificarDiagnostico.show();"
