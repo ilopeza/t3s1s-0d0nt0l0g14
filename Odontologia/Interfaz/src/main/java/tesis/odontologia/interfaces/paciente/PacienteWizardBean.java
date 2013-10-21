@@ -55,11 +55,12 @@ public class PacienteWizardBean {
     private List<Paciente> pacientesEncontrados;
     private Paciente selectedPaciente;
     // Lista auxiliar que va a almacenar todos los diagnósticos nuevos que se carguen.
-    // NO SE CARGAN EN LA TABLA (se cargan los de paciente.getDiagnosticos())
-    private List<Diagnostico> nuevosDiagnosticos;
+    // NO SE CARGAN EN LA TABLA (se cargan los de diagnosticos)
+    private List<Diagnostico> diagnosticosNuevos;
     private List<Diagnostico> diagnosticos;
     private Diagnostico diagnostico;
     private Diagnostico selectedDiagnostico;
+    private List<Diagnostico> diagnosticosEliminados; // Lista donde se guardan los diagnósticos eliminados.
     //Atributos seleccionados para los combos.
     private Materia selectedMateria;
     private TrabajoPractico selectedTrabajoPractico;
@@ -78,10 +79,11 @@ public class PacienteWizardBean {
     private DiagnosticoService diagnosticoService;
     @ManagedProperty(value = "#{personaService}")
     private PersonaService personaService;
-    
     //Atributos para deshabilitar/habilitar       
     private boolean estaDeshabilitado;
     private boolean filtrarHabilitado;
+    private boolean nuevoDiagnosticoHabilitado;
+    private boolean edicionDiagnosticoHabilitado;
     private Date fechaNacimiento;
     //CONSTRUCTORES
 
@@ -105,7 +107,7 @@ public class PacienteWizardBean {
 //        if(historiaClinica != null) {
 //            diagnosticos = historiaClinica.getDiagnostico();
 //        } else {
-            diagnosticos = new ArrayList<Diagnostico>();
+        diagnosticos = new ArrayList<Diagnostico>();
 //        }
         if (paciente == null) {
             paciente = new Paciente();
@@ -121,11 +123,13 @@ public class PacienteWizardBean {
             diagnostico = new Diagnostico();
         }
         filtrarHabilitado = true;
-        nuevosDiagnosticos = new ArrayList<Diagnostico>();
+        nuevoDiagnosticoHabilitado = false;
+        edicionDiagnosticoHabilitado = true;
+        diagnosticosNuevos = new ArrayList<Diagnostico>();
         cargarCombos();
 
     }
-    
+
     public void cargarMaterias() {
         materias = materiaService.findAll();
     }
@@ -137,9 +141,6 @@ public class PacienteWizardBean {
     public void cargarCombos() {
         cargarMaterias();
         cargarTrabajosPracticos();
-    }
-
-    public void cargarEstadosDiagnostico() {
     }
 
     /**
@@ -211,6 +212,7 @@ public class PacienteWizardBean {
             selectedPaciente = personaService.reload(selectedPaciente, 2);
             paciente = selectedPaciente;
             diagnosticos.addAll(paciente.getHistoriaClinica().getDiagnostico());
+            //diagnosticos = paciente.getHistoriaClinica().getDiagnostico();
             estaDeshabilitado = true;
             return true;
         }
@@ -230,9 +232,13 @@ public class PacienteWizardBean {
 
                 nuevoPaciente();
             }
+            diagnosticos.clear();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El paciente " + paciente.toString() + " no fue cargado correctamente", null));
             System.out.println(ex.getMessage());
+        } finally {
+            diagnosticos.addAll(paciente.getHistoriaClinica().getDiagnostico());
+            diagnostico = new Diagnostico();
         }
 
     }
@@ -250,14 +256,15 @@ public class PacienteWizardBean {
     }
 
     private void actualizarPaciente() {
-        if (!nuevosDiagnosticos.isEmpty()) {
+        if (!diagnosticosNuevos.isEmpty()) {
             this.setearIdNuevosDiagosticos(); // Se setean a null los IDS de los NUEVOS DIAGNOSTICOS para no generar conflictos en la BD.
         }
         paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
         paciente = personaService.save(paciente);
-        nuevosDiagnosticos.clear(); // Vuelve la lista a cero para que se puedan cargar nuevos diagnósticos.
+        diagnosticosNuevos.clear(); // Vuelve la lista a cero para que se puedan cargar nuevos diagnósticos.
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
                 + " actualizado correctamente."));
+
     }
 
     /**
@@ -266,11 +273,18 @@ public class PacienteWizardBean {
      * PEDIENTE. Se los añade también a la lista de diagnósticos del paciente
      * para que puedan ser cargados en la tabla.
      */
-    public void agregarDiagnostico() {
-        if (selectedDiagnostico == null) {
-            setNuevoDiagnostico();
+    public void agregarDiagnosticoEnMemoria() {
+        if (this.validarDescripcion() == true) {
+            if (selectedDiagnostico == null) {
+                setNuevoDiagnostico();
+            } else {
+                this.modificarDiagnosticoEnMemoria(selectedDiagnostico);
+            }
+            this.nuevoDiagnosticoHabilitado = false;
         } else {
-            this.modificarDiagnostico(selectedDiagnostico);
+            FacesContext.getCurrentInstance().
+                    addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "El diagnóstico debe tener una descripción para poder ser agregado.", null));
         }
     }
 
@@ -278,9 +292,9 @@ public class PacienteWizardBean {
         diagnostico.setEstado(Diagnostico.EstadoDiagnostico.PENDIENTE);
         long idAux = paciente.getHistoriaClinica().getDiagnostico().size();
         diagnostico.setId(Long.valueOf(idAux));
-        nuevosDiagnosticos.add(diagnostico);
+        diagnosticosNuevos.add(diagnostico);
         diagnosticos.add(diagnostico);
-        paciente.getHistoriaClinica().getDiagnostico().add(diagnostico);
+        //paciente.getHistoriaClinica().getDiagnostico().add(diagnostico);
 
         diagnostico = new Diagnostico();
     }
@@ -292,12 +306,13 @@ public class PacienteWizardBean {
      * @param diag a comparar
      * @return diagnóstico encontrado
      */
-    public boolean modificarDiagnostico(Diagnostico diag) {
+    public boolean modificarDiagnosticoEnMemoria(Diagnostico diag) {
         boolean band = false;
         for (Diagnostico d : diagnosticos) {
             if (d.equals(diag)) {
                 diagnostico = d;
                 band = true;
+                //this.reestablecerDiagnostico();
                 selectedDiagnostico = null;
                 break;
             }
@@ -306,10 +321,24 @@ public class PacienteWizardBean {
     }
 
     /**
+     * Método para asegurarse de que no se incluya un diagnóstico sin
+     * descripción.
+     *
+     * @return boolean false si no hay descripción.
+     */
+    private boolean validarDescripcion() {
+        if (diagnostico.getDescripcion() == null || diagnostico.getDescripcion().compareTo("") == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Toma el diagnóstico seleccionado de la tabla y le cambia el estado a
      * CANCELADO.
      */
-    public void cancelarDiagnostico() {
+    public void cancelarDiagnosticoEnMemoria() {
         //Para conocer cuál es el diagnóstico seleccionado en la lista
         // de diagnósticos del paciente (que es la que se carga en la interfaz),
         // y así ponerlo en CANCELADO.
@@ -326,8 +355,9 @@ public class PacienteWizardBean {
      * Setea el diagnóstico seleccionado como el que se va a mostrar en la
      * intergaz para que pueda ser modificado.
      */
-    public void modificarDiagnostico() {
+    public void seleccionarModificarDiagnostico() {
         diagnostico = selectedDiagnostico;
+        nuevoDiagnosticoHabilitado = true;
         //selectedDiagnostico = null;
     }
 
@@ -335,9 +365,10 @@ public class PacienteWizardBean {
      * Elimina un diagnóstico seleccionado de la lista de diagnósticos del
      * paciente.
      */
-    public void eliminarDiagnostico() {
+    public void eliminarDiagnosticoEnMemoria() {
         for (Diagnostico d : diagnosticos) {
             if (d.equals(selectedDiagnostico)) {
+                diagnosticosEliminados.add(d);
                 diagnosticos.remove(d);
             }
         }
@@ -350,49 +381,58 @@ public class PacienteWizardBean {
      */
     public void setearIdNuevosDiagosticos() {
         for (Diagnostico d : diagnosticos) {
-            if (nuevosDiagnosticos.contains(d)) {
+            if (diagnosticosNuevos.contains(d)) {
                 d.setId(null);
             }
         }
     }
-    
-    public void filtrar(){
+
+    public void filtrar() {
         diagnosticos = filtrarDiagnosticos();
     }
-    
-    public void verTodos(){
+
+    public void verTodos() {
         filtrarHabilitado = true;
         diagnosticos.clear();
         diagnosticos.addAll(paciente.getHistoriaClinica().getDiagnostico());
     }
-    
+
     /**
      * Método que recorre los diagnósticos en mememoria cargados en el paciente
      * y los va filtrando según las opciones seleccionadas (estado y TP).
+     *
      * @return listaFiltrada
      */
-    private List<Diagnostico> filtrarDiagnosticos(){
-        List<Diagnostico> listaAux = new ArrayList<Diagnostico>(); 
+    private List<Diagnostico> filtrarDiagnosticos() {
+        List<Diagnostico> listaAux = new ArrayList<Diagnostico>();
+        boolean diagnosticoEnLista = false; // FALSE= si no está en la listaAux.
         for (Diagnostico d : diagnosticos) {
-//            filtrarPorTrabajoPractico(d, listaAux);
-//            filtrarPorEstado(d, listaAux);
-            if (trabajoPracticoFiltro != null || estadoDiagnosticoFiltro != null) {
-                if (d.getTrabajoPractico().equals(trabajoPracticoFiltro) || d.getEstado().equals(estadoDiagnosticoFiltro)) {
+            diagnosticoEnLista = false; // Vuelvo a buscar.
+            if (trabajoPracticoFiltro != null) {
+                if (d.getTrabajoPractico().equals(trabajoPracticoFiltro)) {
                     listaAux.add(d);
+                    diagnosticoEnLista = true; // Ya la agregué, así que no la voy a agregar de vuelta.
                 }
+            }
+            // Si no pasó el primer filtro (sigue el boolean = FALSE)
+            if (diagnosticoEnLista == false && estadoDiagnosticoFiltro != null && d.getEstado().equals(estadoDiagnosticoFiltro)) {
+                listaAux.add(d);
             }
         }
         filtrarHabilitado = false;
         return listaAux;
     }
-    
+
     /**
-     * Metodo que carga el paciente a la session para poderlo pasar a la pagina en la
-     * que se visualiza la historia clinica
-     * @return 
+     * Metodo que carga el paciente a la session para poderlo pasar a la pagina
+     * en la que se visualiza la historia clinica
+     *
+     * @return
      */
     public String cargarPaciente() {
-        if(selectedPaciente == null) return null;
+        if (selectedPaciente == null) {
+            return null;
+        }
         Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
         sessionMap.remove("paciente");
         sessionMap.remove("historiaClinica");
@@ -400,33 +440,29 @@ public class PacienteWizardBean {
         sessionMap.put("historiaClinica", selectedPaciente.getHistoriaClinica());
         return "historiaClinica";
     }
-    
-  
+
     /**
-     * Filtra por TP
-     * @param d Diagnóstico a comparar.
-     * @param listaAux lista de diagnósticos filtrados.
+     * Método para "vaciar" un diagnóstico. Ejecutado por el botón "Cancelar"
+     * del panel para un nuevo diagnóstico.
      */
-//    private void filtrarPorTrabajoPractico(Diagnostico d, List<Diagnostico> listaAux) {
-//        if(trabajoPracticoFiltro != null){
-//            if(d.getTrabajoPractico().equals(trabajoPracticoFiltro)){
-//                listaAux.add(d);
-//            }
-//        }
-//    }
-//
-//    /**
-//     * Idem anterior pero con estadoDiagnostico
-//     * @param d
-//     * @param listaAux 
-//     */
-//    private void filtrarPorEstado(Diagnostico d, List<Diagnostico> listaAux) {
-//        if (estadoDiagnosticoFiltro != null) {
-//            if (d.getEstado().equals(estadoDiagnosticoFiltro)) {
-//                listaAux.add(d);
-//            }
-//        }
-//    }
+    public void reestablecerDiagnostico() {
+        diagnostico.setDescripcion("");
+        diagnostico.setMateria(null);
+        diagnostico.setTrabajoPractico(null);
+        this.nuevoDiagnosticoHabilitado = false;
+    }
+
+    public void nuevoDiagnostico() {
+        this.nuevoDiagnosticoHabilitado = true;
+    }
+
+    public void habilitarEdicionDiagnostico() {
+        if (selectedDiagnostico.getEstado().equals(Diagnostico.EstadoDiagnostico.CANCELADO)) {
+            edicionDiagnosticoHabilitado = true;
+        } else {
+            edicionDiagnosticoHabilitado = false;
+        }
+    }
 
     //GETTERS Y SETTERS
     public Paciente getPaciente() {
@@ -496,12 +532,12 @@ public class PacienteWizardBean {
         this.selectedPaciente = selectedPaciente;
     }
 
-    public List<Diagnostico> getNuevosDiagnosticos() {
-        return nuevosDiagnosticos;
+    public List<Diagnostico> getDiagnosticosNuevos() {
+        return diagnosticosNuevos;
     }
 
-    public void setNuevosDiagnosticos(List<Diagnostico> diagnosticos) {
-        this.nuevosDiagnosticos = diagnosticos;
+    public void setDiagnosticosNuevos(List<Diagnostico> diagnosticos) {
+        this.diagnosticosNuevos = diagnosticos;
     }
 
     public Diagnostico getDiagnostico() {
@@ -663,12 +699,36 @@ public class PacienteWizardBean {
     public void setTrabajoPracticoFiltro(TrabajoPractico trabajoPracticoFiltro) {
         this.trabajoPracticoFiltro = trabajoPracticoFiltro;
     }
-    
-     public boolean isFiltrarHabilitado() {
+
+    public boolean isFiltrarHabilitado() {
         return filtrarHabilitado;
     }
 
     public void setFiltrarHabilitado(boolean filtrarHabilitado) {
         this.filtrarHabilitado = filtrarHabilitado;
+    }
+
+    public boolean isNuevoDiagnosticoHabilitado() {
+        return nuevoDiagnosticoHabilitado;
+    }
+
+    public void setNuevoDiagnosticoHabilitado(boolean nuevoDiagnosticoHabilitado) {
+        this.nuevoDiagnosticoHabilitado = nuevoDiagnosticoHabilitado;
+    }
+
+    public List<Diagnostico> getDiagnosticosEliminados() {
+        return diagnosticosEliminados;
+    }
+
+    public void setDiagnosticosEliminados(List<Diagnostico> diagnosticosEliminados) {
+        this.diagnosticosEliminados = diagnosticosEliminados;
+    }
+
+    public boolean isEdicionDiagnosticoHabilitado() {
+        return edicionDiagnosticoHabilitado;
+    }
+
+    public void setEdicionDiagnosticoHabilitado(boolean edicionDiagnosticoHabilitado) {
+        this.edicionDiagnosticoHabilitado = edicionDiagnosticoHabilitado;
     }
 }
