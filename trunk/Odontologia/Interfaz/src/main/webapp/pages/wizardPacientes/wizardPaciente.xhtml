@@ -105,7 +105,7 @@
         <p:confirmDialog message="¿Realmente quiere dar de baja el diagnóstico?"
                          header="Baja de diagnóstico" severity="alert"
                          widgetVar="dlgBajaDeDianostico" appendToBody="true">
-            <p:commandButton value="Sí" actionListener="#{pacienteWizardBean.cancelarDiagnostico()}"
+            <p:commandButton value="Sí" actionListener="#{pacienteWizardBean.cancelarDiagnosticoEnMemoria()}"
                              oncomplete="dlgBajaDeDianostico.hide();"
                              update=":formWizard:tblResultadoDiagnosticos"/>
             <p:commandButton value="No" onclick="dlgBajaDeDianostico.hide();" type="button" />
@@ -118,7 +118,7 @@
                              oncomplete="dlgModificarDiagnostico.hide();"
                              update=":formWizard:pnlNuevoDiagnostico"
                              icon="ui-icon-pencil"/>
-            <p:commandButton value="Eliminar" actionListener="#{pacienteWizardBean.eliminarDiagnostico()}"
+            <p:commandButton value="Eliminar" actionListener="#{pacienteWizardBean.eliminarDiagnosticoEnMemoria()}"
                              oncomplete="dlgModificarDiagnostico.hide();" 
                              update=":formWizard:pnlDiagnosticosCargados"
                              icon="ui-icon-closethick"/>
