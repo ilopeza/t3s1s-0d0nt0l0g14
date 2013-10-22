@@ -86,6 +86,7 @@ public class ConsultarAtencionesRealizadasBean {
         atencionesGenericas= new ArrayList<AtencionGenerica>();
         BooleanExpression predicate = null;
         if (materiaFiltro != null) {
+            if(validarFechaDesdeHasta(fechaDesdeFiltro, fechaHastaFiltro)==true){
             materiaFiltro = materiaService.reload(materiaFiltro, 1);
             predicate = (AtencionGenericaSpecs.byMateria(materiaFiltro));
             
@@ -101,12 +102,9 @@ public class ConsultarAtencionesRealizadasBean {
             } else {
                 predicate = predicate.and(AtencionGenericaSpecs.byFechaDesdeHasta(FechaUtils.convertDateToCalendar(fechaDesdeFiltro), FechaUtils.convertDateToCalendar(fechaHastaFiltro)));
             }
-//            Predicate p = null;
-//            p = AtencionSpecs.byClass(AtencionGenerica.class);
             atencionesGenericas=(List<AtencionGenerica>)atencionService.findAll(predicate);
-//            for (AsignacionPaciente a : asignaciones) {
-//                asignacionesConfirmadas.add(new AsignacionPacienteAux(a));
-//            }
+
+        }
         }else{
              FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Debe seleccionar una materia", null));
@@ -116,6 +114,24 @@ public class ConsultarAtencionesRealizadasBean {
     
     
     //MÉTODOS AUXILIARES
+    
+    private boolean validarFechaDesdeHasta(Date fechaDesde, Date fechaHasta) {
+        if (fechaDesde != null && fechaDesde.compareTo(fechaHasta) <= 0) {
+            return true;
+        } else if (fechaDesde == null) {
+            if (fechaHasta != null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Debe ingresar una Fecha de Atención Desde", null));
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "La Fecha de Atención Desde debe ser mayor que la fecha de Atención Hasta", null));
+            return false;
+        }
+    }
     private void cargarCombos() {
         materias = buscarMaterias();
         catedras = buscarCatedras();

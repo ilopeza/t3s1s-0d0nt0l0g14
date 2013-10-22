@@ -39,10 +39,10 @@ import tesis.odontologia.interfaces.login.LoginBean;
 @ViewScoped
 public class ConsultarAsignacionesConfirmadasBean {
     //Lista para cargar Tablas
+
     private List<AsignacionPaciente> asignaciones;
     private List<AsignacionPacienteAux> asignacionesConfirmadas;
     private List<AsignacionPacienteAux> selectedAsignacionesAutorizadas;
-    
     //Atributos búsqueda avanzada.
     private Materia materiaFiltro;
     private Catedra catedraFiltro;
@@ -52,9 +52,7 @@ public class ConsultarAsignacionesConfirmadasBean {
     private Date fechaDesdeFiltro;
     private Date fechaHastaFiltro;
     private boolean estaAutorizada;
-    private boolean habilitarBotonAutorizar= false;
-
-    
+    private boolean habilitarBotonAutorizar = false;
     //Listas para cargar combos.
     private List<TrabajoPractico> trabajosPracticos;
     private List<Catedra> catedras;
@@ -93,41 +91,40 @@ public class ConsultarAsignacionesConfirmadasBean {
         asignacionesConfirmadas = new ArrayList<AsignacionPacienteAux>();
         BooleanExpression predicate = null;
         if (materiaFiltro != null) {
-            materiaFiltro = materiaService.reload(materiaFiltro, 1);
-            predicate = (AsignacionPacienteSpecs.byMateria(materiaFiltro));
+            if (validarFechaDesdeHasta(fechaDesdeFiltro, fechaHastaFiltro) == true) {
 
-            if (catedraFiltro != null) {
-                predicate = predicate.and(AsignacionPacienteSpecs.byCatedra(catedraFiltro));
+                materiaFiltro = materiaService.reload(materiaFiltro, 1);
+                predicate = (AsignacionPacienteSpecs.byMateria(materiaFiltro));
+
+                if (catedraFiltro != null) {
+                    predicate = predicate.and(AsignacionPacienteSpecs.byCatedra(catedraFiltro));
+                }
+                if (trabajoPracticoFiltro != null) {
+                    predicate = predicate.and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro));
+                }
+                if (fechaDesdeFiltro == null && fechaHastaFiltro == null) {
+                } else if (fechaDesdeFiltro != null && fechaHastaFiltro == null) {
+                    predicate = predicate.and(AsignacionPacienteSpecs.byFecha(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
+                } else {
+                    predicate = predicate.and(AsignacionPacienteSpecs.byFechaDesdeHasta(FechaUtils.convertDateToCalendar(fechaDesdeFiltro), FechaUtils.convertDateToCalendar(fechaHastaFiltro)));
+                }
+
+                if (estaAutorizada == true) {
+                    predicate = predicate.and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.AUTORIZADA));
+                } else {
+                    predicate = predicate.and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.CONFIRMADA));
+                }
+                asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(predicate);
+                for (AsignacionPaciente a : asignaciones) {
+                    asignacionesConfirmadas.add(new AsignacionPacienteAux(a));
+                }
+
             }
-            if (trabajoPracticoFiltro != null) {
-                predicate = predicate.and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro));
-            }
-            if (fechaDesdeFiltro == null && fechaHastaFiltro == null) {
-            } else if (fechaDesdeFiltro != null && fechaHastaFiltro == null) {
-                predicate = predicate.and(AsignacionPacienteSpecs.byFecha(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
-            } else {
-                predicate = predicate.and(AsignacionPacienteSpecs.byFechaDesdeHasta(FechaUtils.convertDateToCalendar(fechaDesdeFiltro), FechaUtils.convertDateToCalendar(fechaHastaFiltro)));
-            }
-            
-            if (estaAutorizada == true) {
-                predicate = predicate.and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.AUTORIZADA));
-            }else{
-                predicate = predicate.and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.CONFIRMADA));
-            }
-            asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(predicate);
-            for (AsignacionPaciente a : asignaciones) {
-                asignacionesConfirmadas.add(new AsignacionPacienteAux(a));
-            }
-        }else{
-             FacesContext.getCurrentInstance().addMessage(null,
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Debe seleccionar una materia", null));
         }
-        
-//        if (asignacionesConfirmadas == null) {
-//            FacesContext.getCurrentInstance().addMessage(null,
-//                    new FacesMessage(FacesMessage.SEVERITY_INFO, "No existen Asignaciones Confirmadas Actualmente.", null));
-//            return null;
-//        }
+
         return asignacionesConfirmadas;
 
     }
@@ -142,21 +139,38 @@ public class ConsultarAsignacionesConfirmadasBean {
                     a.setProfesor(profesor);
                     asignacionPacienteService.save(a);
                 }
-
             }
         }
         buscarAsignacionesConfirmadas();
     }
 
     //MÉTODOS AUXILIARES
-    public void habilitarAutorizar(){
-        if(estaAutorizada==true){
-            habilitarBotonAutorizar=true;
-        }else{
-            habilitarBotonAutorizar=false;
+    public void habilitarAutorizar() {
+        if (estaAutorizada == true) {
+            habilitarBotonAutorizar = true;
+        } else {
+            habilitarBotonAutorizar = false;
         }
     }
- 
+
+    private boolean validarFechaDesdeHasta(Date fechaDesde, Date fechaHasta) {
+        if (fechaDesde != null && fechaDesde.compareTo(fechaHasta) <= 0) {
+            return true;
+        } else if (fechaDesde == null) {
+            if (fechaHasta != null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Debe ingresar una Fecha de Atención Desde", null));
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "La Fecha de Atención Desde debe ser mayor que la fecha de Atención Hasta", null));
+            return false;
+        }
+    }
+
     private void cargarCombos() {
         materias = buscarMaterias();
         catedras = buscarCatedras();
@@ -204,7 +218,6 @@ public class ConsultarAsignacionesConfirmadasBean {
     }
 
     // GETTERS Y SETTERS 
-    
     public boolean isHabilitarBotonAutorizar() {
         return habilitarBotonAutorizar;
     }
@@ -212,7 +225,7 @@ public class ConsultarAsignacionesConfirmadasBean {
     public void setHabilitarBotonAutorizar(boolean habilitarBotonAutorizar) {
         this.habilitarBotonAutorizar = habilitarBotonAutorizar;
     }
-    
+
     public List<AsignacionPaciente> getAsignaciones() {
         return asignaciones;
     }
@@ -220,8 +233,7 @@ public class ConsultarAsignacionesConfirmadasBean {
     public void setAsignaciones(List<AsignacionPaciente> asignaciones) {
         this.asignaciones = asignaciones;
     }
-    
-      
+
     public Profesor getProfesor() {
         return profesor;
     }
@@ -229,6 +241,7 @@ public class ConsultarAsignacionesConfirmadasBean {
     public void setProfesor(Profesor profesor) {
         this.profesor = profesor;
     }
+
     public List<AsignacionPacienteAux> getSelectedAsignacionesAutorizadas() {
         return selectedAsignacionesAutorizadas;
     }
@@ -365,6 +378,7 @@ public class ConsultarAsignacionesConfirmadasBean {
         this.trabajoPracticoService = trabajoPracticoService;
     }
     // Clase Auxiliar
+
     public class AsignacionPacienteAux {
 
         private String paciente;
