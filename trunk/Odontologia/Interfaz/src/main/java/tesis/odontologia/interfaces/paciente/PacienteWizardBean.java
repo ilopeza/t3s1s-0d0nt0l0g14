@@ -294,7 +294,7 @@ public class PacienteWizardBean {
         diagnostico.setId(Long.valueOf(idAux));
         diagnosticosNuevos.add(diagnostico);
         diagnosticos.add(diagnostico);
-        //paciente.getHistoriaClinica().getDiagnostico().add(diagnostico);
+        paciente.getHistoriaClinica().getDiagnostico().add(diagnostico);
 
         diagnostico = new Diagnostico();
     }
@@ -389,6 +389,8 @@ public class PacienteWizardBean {
 
     public void filtrar() {
         diagnosticos = filtrarDiagnosticos();
+        estadoDiagnosticoFiltro = null;
+        trabajoPracticoFiltro = null;
     }
 
     public void verTodos() {
@@ -409,14 +411,19 @@ public class PacienteWizardBean {
         for (Diagnostico d : diagnosticos) {
             diagnosticoEnLista = false; // Vuelvo a buscar.
             if (trabajoPracticoFiltro != null) {
-                if (d.getTrabajoPractico().equals(trabajoPracticoFiltro)) {
+                if(estadoDiagnosticoFiltro != null && d.getTrabajoPractico().equals(trabajoPracticoFiltro) && d.getEstado().equals(estadoDiagnosticoFiltro)){ // filtra por los dos.
                     listaAux.add(d);
-                    diagnosticoEnLista = true; // Ya la agregué, así que no la voy a agregar de vuelta.
+                    diagnosticoEnLista = true;          
+                }else{
+                    if (estadoDiagnosticoFiltro == null && d.getTrabajoPractico().equals(trabajoPracticoFiltro)) {
+                        listaAux.add(d);
+                        diagnosticoEnLista = true;
+                    }
                 }
-            }
-            // Si no pasó el primer filtro (sigue el boolean = FALSE)
-            if (diagnosticoEnLista == false && estadoDiagnosticoFiltro != null && d.getEstado().equals(estadoDiagnosticoFiltro)) {
-                listaAux.add(d);
+            }else{
+                if(estadoDiagnosticoFiltro != null && d.getEstado().equals(estadoDiagnosticoFiltro)){
+                    listaAux.add(d);
+                }
             }
         }
         filtrarHabilitado = false;

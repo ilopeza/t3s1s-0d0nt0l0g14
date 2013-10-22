@@ -57,7 +57,7 @@
                                  icon="ui-icon-circle-plus"
                                  process="@form"
                                  update="pnlDiagnosticosCargados, pnlNuevoDiagnostico, :msg"
-                                 actionListener="#{pacienteWizardBean.agregarDiagnostico()}"
+                                 actionListener="#{pacienteWizardBean.agregarDiagnosticoEnMemoria()}"
                                  disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}"/>
                 <p:commandButton value="Cancelar" actionListener="#{pacienteWizardBean.reestablecerDiagnostico()}" 
                                  update="pnlNuevoDiagnostico"
@@ -101,6 +101,9 @@
                          value="#{pacienteWizardBean.diagnosticos}"
                          var="d" selection="#{pacienteWizardBean.selectedDiagnostico}" selectionMode="single"
                          rowKey="#{d.id}">
+                
+                <f:ajax event="rowSelect" render="btnCancelar btnModificar"/>
+                
                 <p:column id="colTrabajoPractico" headerText="Trabajo práctico">
                     <h:outputText value="#{d.trabajoPractico}" />
                 </p:column>
