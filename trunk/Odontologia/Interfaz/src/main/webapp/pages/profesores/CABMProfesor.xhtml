@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formConsultarProfesores">
+            <p:panel id="pnlConsultarProfesores" header="Consultar profesores">
+                <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
+                    <p:outputLabel value="Nombre o número de documento:"/>
+                    <p:inputText id="txtNombreBusqueda" value="#{profesoresBean.apeNomDocBusqueda}"/>
+
+                    <p:outputLabel value="Materia"/>
+                    <p:selectOneMenu id="selectMateriaBusqueda" filter="true" filterMatchMode="startsWith" value="#{profesoresBean.materiaBusqueda}" converter="materiaConverter">
+                        <f:selectItem itemLabel="Seleccione una materia"/>
+                        <f:selectItems value="#{profesoresBean.materias}"/>
+                    </p:selectOneMenu>
+
+                    <p:commandButton id="btnBuscarProfesor" value="Buscar" icon="ui-icon-search" 
+                                     actionListener="#{profesoresBean.buscarProfesores}" 
+                                     update="@form :msg"/>
+                </h:panelGrid> 
+                <p:dataTable id="tblResultadoProfesores" 
+                             emptyMessage="No se encontraron profesores con los filtros especificados."
+                             paginator="true" value="#{profesoresBean.profesoresEncontrados}" var="p"
+                             selectionMode="single" selection="#{profesoresBean.selectedProfesor}"
+                             rowKey="#{p.id}">
+                    <f:facet name="header">
+                        Profesores encontrados
+                    </f:facet>
+                    <p:column id="colApellidoNombre" headerText="Apellido, Nombre">
+                        <h:outputText value="#{p}"/>
+                    </p:column>
+                    <p:column id="colDocumento" headerText="Documento">
+                        <h:outputText value="#{p.documento.numero}" />
+                    </p:column>
+                    <p:column id="colFechaNacimiento" headerText="Fecha de Nacimiento">
+                        <h:outputText value="" />
+                    </p:column>
+                    <p:column id="colMateria" headerText="Materia">
+                        <!--p:selectOneMenu id="materiasProfesor">
+                            <f:selectItems value="{p.materia}"/>
+                        </p:selectOneMenu-->
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="btnNuevoProfesor" value="Nuevo" icon="ui-icon-plusthick" 
+                                         actionListener="#{profesoresBean.registrarNuevoProfesor()}" 
+                                         update=":formNuevoProf"/>
+                        <p:commandButton id="btnModificarProfesor" value="Modificar" icon="ui-icon-gear" 
+                                         actionListener="#{profesoresBean.seleccionarProfesor()}" 
+                                         update=":formNuevoProf"/>
+                        <p:commandButton id="btnBajaProfesor" value="Dar de baja" icon="ui-icon-cancel"/>
+                    </f:facet> 
+                </p:dataTable>
+            </p:panel>
+        </h:form>  
+     
+         <h:form id="formNuevoProf">
+            <p:panel id="pnlNuevoProf" header="Consultar profesores">
+                <h:panelGrid columns="8" cellpadding="3" cellspacing="3">
+                    <p:outputLabel value="Apellido:"/>
+                    <p:inputText id="txtApellido" value="#{profesoresBean.profesor.apellido}"/>
+                    <p:outputLabel value="Nombre:"/>
+                    <p:inputText id="txtNombre" value="#{profesoresBean.profesor.nombre}"/>  
+                    <p:outputLabel value="Tipo de documento:"/>
+                    <p:selectOneMenu id="selectTipoDocumento" value="#{profesoresBean.profesor.documento.tipoDocumento}">
+                        <f:selectItem itemLabel="Seleccione un tipo de documento"/>
+                        <f:selectItems value="#{profesoresBean.tiposDocuementos}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Número de documento:"/>
+                    <p:inputText id="txtNumeroDocumento" value="#{profesoresBean.profesor.documento.numero}"/>
+                    <p:outputLabel value="Fecha de nacimiento:"/>
+                    <p:calendar id="calFechaNacimientoProfesor" value="#{profesoresBean.fechaNacimiento}" navigator="true"  yearRange="c-100:c"/>
+                      
+                    <!--p:outputLabel value="Fecha de nacimiento:"/>
+                    <p:calendar id="calFechaNacimiento" value="{profesoresBean.profesor.fechaNacimiento}"/-->
+                </h:panelGrid> 
+                <p:pickList id="pickListMaterias" 
+                            showCheckbox="true" value="#{profesoresBean.materiasElegidas}" var="mat"
+                            converter="materiaConverter" itemValue="#{mat}" itemLabel="#{mat.nombre}"
+                            showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
+
+                    <f:facet name="sourceCaption">Materias disponibles</f:facet>  
+                    <f:facet name="targetCaption">Materias elegidas</f:facet>  
+                </p:pickList>
+                <h:panelGrid columns="3">
+                    <p:commandButton id="btnGuardar" value="Guardar" icon="ui-icon-check"
+                                     actionListener="#{profesoresBean.saveProfesor()}" update=":msg @form" 
+                                     process="@form"/>
+                    <p:commandButton id="btnConfirmarCambios" value="Confirmar cambios" icon="ui-icon-pencil" disabled="#{!profesoresBean.habilitarBotonNuevo}"
+                                     update=":msg @form" actionListener="#{profesoresBean.saveProfesor()}"/>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define> 
+</ui:composition>
+
+
+
+               
+   

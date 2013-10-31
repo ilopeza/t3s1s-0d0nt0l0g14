@@ -67,6 +67,8 @@ public class MenuBean {
             menuItem = menuItem("Registrar Materia", "/pages/materias/formMaterias.xhtml");
             submenu.getChildren().add(menuItem);
             menu.addSubmenu(submenu);
+            
+            
         }
 
 //        if (rol.is(Rol.ALUMNO)) {
@@ -84,6 +86,12 @@ public class MenuBean {
         //Opciones
         menuItem = menuItem("Registrar Usuario de Alumno", "/pages/alumnos/formUsuarioAlumno.xhtml");
         submenu.getChildren().add(menuItem);
+        
+        submenu = subMenu("Gestión de Profesores");
+        //Opciones
+        menuItem = menuItem("Consultar profesores", "/pages/profesores/CABMProfesor.xhtml");
+        submenu.getChildren().add(menuItem);
+        
         menu.addSubmenu(submenu);
         }
 
@@ -96,6 +104,7 @@ public class MenuBean {
         submenu.getChildren().add(menuItem);
         menuItem = menuItem("Consultar Asignacion Paciente", "/pages/asignaciones/consultarAsignacionesPaciente.xhtml");
         submenu.getChildren().add(menuItem);
+
         
         if (rol.is(Rol.PROFESOR)) {
         menuItem = menuItem("Consultar Asignaciones Confirmadas", "/pages/asignaciones/consultarAsignacionesConfirmadas.xhtml");
