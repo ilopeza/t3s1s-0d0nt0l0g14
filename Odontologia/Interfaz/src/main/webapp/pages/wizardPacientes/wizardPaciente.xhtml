@@ -22,7 +22,7 @@
                 <p:commandButton value="Buscar" id="btnBuscar"
                                  process="@form"
                                  oncomplete="dlgPacientesEncontrados.show()"
-                                 update=":secondaryForm:tablaPacientesEncontrados" 
+                                 update=":secondaryForm:tablaPacientesEncontrados, :msg" 
                                  actionListener="#{pacienteWizardBean.buscarPacientes()}" 
                                  icon="ui-icon-search"/>
 
