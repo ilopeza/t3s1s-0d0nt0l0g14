@@ -7,6 +7,7 @@ package tesis.odontologia.core.specification;
 import com.mysema.query.types.expr.BooleanExpression;
 import tesis.odontologia.core.domain.QPersona;
 import tesis.odontologia.core.domain.materia.Materia;
+import tesis.odontologia.core.domain.profesor.Profesor;
 import tesis.odontologia.core.domain.profesor.QProfesor;
 
 
@@ -18,8 +19,8 @@ public class ProfesorSpecs {
 
     private static final QProfesor $ = QPersona.persona.as(QProfesor.class);
 
-    public static BooleanExpression byNombre(String nombre) {
-        return $.nombre.equalsIgnoreCase(nombre);
+    public static BooleanExpression byNombreOrApellido(String nombre) {
+        return $.nombre.containsIgnoreCase(nombre).or($.apellido.containsIgnoreCase(nombre));
     }
     
     public static BooleanExpression byNumeroDocumento(String numDoc){
@@ -33,4 +34,9 @@ public class ProfesorSpecs {
     public static BooleanExpression byId(Long id) {
         return $.id.eq(id);
     }
+    
+    public static BooleanExpression byClaseProfesor(){
+        return $.instanceOf(Profesor.class);
+    }
+    
 }

@@ -4,7 +4,7 @@
  */
 package tesis.odontologia.interfaces.profesores;
 
-import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -37,7 +37,7 @@ public class ProfesoresBean {
     private Date fechaNacimiento;
 
     //Atributos para búsqueda.
-    private String apeNomDocBusqueda;
+    private String filtroBusqueda;
     private Materia materiaBusqueda;
     //Atributos tabla.
     private List<Profesor> profesoresEncontrados;
@@ -85,27 +85,39 @@ public class ProfesoresBean {
      * Método para buscar los pacientes en el panel consultar paciente.
      */
     public void buscarProfesores() {
+        boolean aux = false;
+        BooleanExpression p = ProfesorSpecs.byClaseProfesor();
 
-        Predicate p = null;
-
-        if (apeNomDocBusqueda != null && apeNomDocBusqueda.isEmpty() == false) {
-            if (this.getProfesorPorDocumento(p, apeNomDocBusqueda) == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontró el profesor con documento " + apeNomDocBusqueda, null));
+        if (filtroBusqueda != null && filtroBusqueda.isEmpty() == false) {
+            if(filtroBusqueda.matches("[0-9]*")){
+                p = p.and(ProfesorSpecs.byNumeroDocumento(filtroBusqueda));
+                aux = true;
+            }else{
+                p= ProfesorSpecs.byNombreOrApellido(filtroBusqueda);
+                aux = true;
             }
         }
-    }
-
-    private List<Profesor> getProfesorPorDocumento(Predicate p, String numDocFiltro) {
-        p = ProfesorSpecs.byNumeroDocumento(numDocFiltro);
-        Profesor prof = (Profesor) personaService.findOne(p);
-
-        if (prof == null) {
-            return null;
-        } else {
-            profesoresEncontrados.add(prof);
-            return profesoresEncontrados;
+        
+        if (materiaBusqueda != null) {
+            p = p.and(ProfesorSpecs.byMateria(materiaBusqueda));
+            aux= true;
+        }
+        
+        profesoresEncontrados = (ArrayList)personaService.findAll(p);
+        
+        if(profesoresEncontrados == null || profesoresEncontrados.isEmpty()){
+            FacesContext.getCurrentInstance().
+                   addMessage(null, new FacesMessage
+                    (FacesMessage.SEVERITY_ERROR, "No se encontraron profesores registrados para los parámetros ingresados.", null));
+        }
+        
+        if (aux == false) {
+            FacesContext.getCurrentInstance().
+                   addMessage(null, new FacesMessage
+                    (FacesMessage.SEVERITY_ERROR, "Debe especificar al menos un parámetro de búsqueda para consultar los profesores registrados.", null));
         }
     }
+    
 
     public void seleccionarProfesor() {
         if (selectedProfesor == null) {
@@ -113,6 +125,7 @@ public class ProfesoresBean {
                     addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Seleccione un profesor de la lista.", null));
         } else {
             profesor = selectedProfesor;
+            materiasElegidas.setTarget(profesor.getMateria());
             habilitarNuevoProfesor = true;
             habilitarBotonNuevo = true;
         }
@@ -130,6 +143,11 @@ public class ProfesoresBean {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El profesor " + profesor.toString() + " no fue cargado correctamente", null));
             System.out.println(ex.getMessage());
+        }finally{
+            materiasElegidas.setSource(materias);
+            materiasElegidas.setTarget(null);
+            profesor = new Profesor();
+            profesor.setDocumento(new Documento());
         }
     }
 
@@ -137,13 +155,13 @@ public class ProfesoresBean {
         profesor.setMateria(materiasElegidas.getTarget());
         getPersonaService().save(profesor);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + profesor.toString()
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Profesor " + profesor.toString()
                 + " guardado correctamente."));
     }
 
     private void actualizarProfesor() {
         profesor = personaService.save(profesor);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + profesor.toString()
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Profesor " + profesor.toString()
                 + " actualizado correctamente."));
 
     }
@@ -162,12 +180,12 @@ public class ProfesoresBean {
         this.profesor = profesor;
     }
 
-    public String getApeNomDocBusqueda() {
-        return apeNomDocBusqueda;
+    public String getFiltroBusqueda() {
+        return filtroBusqueda;
     }
 
-    public void setApeNomDocBusqueda(String apeNomDocBusqueda) {
-        this.apeNomDocBusqueda = apeNomDocBusqueda;
+    public void setFiltroBusqueda(String filtroBusqueda) {
+        this.filtroBusqueda = filtroBusqueda;
     }
 
     public Materia getMateriaBusqueda() {
