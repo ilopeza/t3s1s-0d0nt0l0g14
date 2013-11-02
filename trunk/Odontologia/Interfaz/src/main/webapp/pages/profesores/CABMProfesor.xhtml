@@ -11,7 +11,7 @@
             <p:panel id="pnlConsultarProfesores" header="Consultar profesores">
                 <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
                     <p:outputLabel value="Nombre o número de documento:"/>
-                    <p:inputText id="txtNombreBusqueda" value="#{profesoresBean.apeNomDocBusqueda}"/>
+                    <p:inputText id="txtNombreBusqueda" value="#{profesoresBean.filtroBusqueda}"/>
 
                     <p:outputLabel value="Materia"/>
                     <p:selectOneMenu id="selectMateriaBusqueda" filter="true" filterMatchMode="startsWith" value="#{profesoresBean.materiaBusqueda}" converter="materiaConverter">
@@ -59,7 +59,7 @@
         </h:form>  
      
          <h:form id="formNuevoProf">
-            <p:panel id="pnlNuevoProf" header="Consultar profesores">
+             <p:panel id="pnlNuevoProf" header="Nuevo profesor" visible="#{profesoresBean.habilitarNuevoProfesor}">
                 <h:panelGrid columns="8" cellpadding="3" cellspacing="3">
                     <p:outputLabel value="Apellido:"/>
                     <p:inputText id="txtApellido" value="#{profesoresBean.profesor.apellido}"/>
@@ -89,7 +89,7 @@
                 <h:panelGrid columns="3">
                     <p:commandButton id="btnGuardar" value="Guardar" icon="ui-icon-check"
                                      actionListener="#{profesoresBean.saveProfesor()}" update=":msg @form" 
-                                     process="@form"/>
+                                     process="@form" disabled="#{profesoresBean.habilitarBotonNuevo}"/>
                     <p:commandButton id="btnConfirmarCambios" value="Confirmar cambios" icon="ui-icon-pencil" disabled="#{!profesoresBean.habilitarBotonNuevo}"
                                      update=":msg @form" actionListener="#{profesoresBean.saveProfesor()}"/>
                 </h:panelGrid>
