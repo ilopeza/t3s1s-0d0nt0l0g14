@@ -9,6 +9,8 @@ import com.mysema.query.types.expr.BooleanExpression;
 import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.QCatedra;
 import tesis.odontologia.core.domain.materia.QMateria;
+import tesis.odontologia.core.domain.materia.QTrabajoPractico;
+import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.usuario.QRol;
 
 /**
@@ -30,5 +32,10 @@ public class MateriaSpecs {
     public static BooleanExpression byCatedra(Catedra c){
         QCatedra ca= QCatedra.catedra;
         return $.catedra.any().id.eq(c.getId());
+    }
+    
+    public static BooleanExpression byTrabajoPractico(TrabajoPractico tp){
+        QTrabajoPractico tpra= QTrabajoPractico.trabajoPractico;
+        return $.trabajoPractico.any().id.eq(tp.getId());
     }
 }
