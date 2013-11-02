@@ -5,6 +5,7 @@
 package tesis.odontologia.interfaces.paciente;
 
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -29,8 +30,10 @@ import tesis.odontologia.core.service.DiagnosticoService;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.TrabajoPracticoService;
+import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
 import tesis.odontologia.core.specification.PacienteSpecs;
 import tesis.odontologia.core.specification.PersonaSpecs;
+import tesis.odontologia.interfaces.validacion.Validacion;
 
 /**
  *
@@ -85,8 +88,12 @@ public class PacienteWizardBean {
     private boolean nuevoDiagnosticoHabilitado;
     private boolean edicionDiagnosticoHabilitado;
     private Date fechaNacimiento;
-    //CONSTRUCTORES
+    private Validacion validacion = new Validacion();
+    private String filtroBusqueda;
+    private boolean mensaje = true;
+    boolean unicoPacienteEncontrado;
 
+    //CONSTRUCTORES
     /**
      * Creates a new instance of PacienteWizardBean
      */
@@ -143,42 +150,87 @@ public class PacienteWizardBean {
         cargarTrabajosPracticos();
     }
 
+//    public String actualizarComponentes() {
+//        String var="";
+//        if (mensaje) {
+//            var = ":msg";
+//        }         
+//        if(mensaje==false) {
+//            var = ":secondaryForm:tablaPacientesEncontrados";
+//        }
+//        
+//        if(unicoPacienteEncontrado){
+//            var = ":formWizard:wizardPaciente,:consultarPacienteForm:pnlConsultarPaciente";
+//        }
+//        return var;
+//    }
     /**
      * Método para buscar los pacientes en el panel consultar paciente.
      */
     public void buscarPacientes() {
         pacientesEncontrados = new ArrayList<Paciente>();
-        Predicate p = null;
+        mensaje = true;
+        boolean bandera = true;
         String docFiltro = this.getNumDocumentoBusqueda();
         String nomFiltro = this.getNombreApellidoBusqueda();
+        //Predicate p = PacienteSpecs.byNombreOApellido(nomFiltro);        
 
-        if (docFiltro != null && docFiltro.isEmpty() == false) {
-            if (this.getPacientesPorDocumento(p, docFiltro) == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes con documento " + docFiltro, null));
-            }
-        } else {
-            if (nomFiltro != null && nomFiltro.isEmpty() == false) {
-                if (this.getPacientesPorNombreYApellido(p, nomFiltro) == null || this.getPacientesPorNombreYApellido(p, nomFiltro).isEmpty()) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encotraron pacientes con nombre " + nomFiltro, null));
+        if (validarCamposBusqueda()) {
+
+            if (nomFiltro != null || docFiltro != null) {
+
+                //CASO EN QUE DOCUMENTO Y NOMBRE/APELLIDO ESTEN CARGADOS            
+                if (nomFiltro != null && docFiltro != null) {
+                    //BooleanExpression predicate = PacienteSpecs.byNombreOApellido(nomFiltro);
+                    //predicate.and(PacienteSpecs.byNumeroDocumento(docFiltro));
+                    bandera = false;
+                    if (this.getPacientesPorNombreApellidoYdocumento(nomFiltro, docFiltro) == null || this.getPacientesPorNombreApellidoYdocumento(nomFiltro, docFiltro).isEmpty()) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encotraron pacientes con nombre o apellido" + nomFiltro + " y documento" + docFiltro, null));
+                    }
+                }
+
+                if (bandera) {
+                    //CASO EN QUE NOMBRE/APELLIDO ESTEN CARGADOS            
+                    if (nomFiltro != null && nomFiltro.isEmpty() == false) {
+                        //BooleanExpression predicate = PacienteSpecs.byNombreOApellido(nomFiltro);
+                        if (this.getPacientesPorNombreYApellido(nomFiltro) == null || this.getPacientesPorNombreYApellido(nomFiltro).isEmpty()) {
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encotraron pacientes con nombre " + nomFiltro, null));
+                        }
+                    }
+
+                    //CASO EN QUE DOCUMENTO ESTE CARGADOS            
+                    if (docFiltro != null && docFiltro.isEmpty() == false) {
+                        //BooleanExpression predicate = PacienteSpecs.byNumeroDocumento(docFiltro);
+                        if (this.getPacientesPorDocumento(docFiltro) == null) {
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes con documento " + docFiltro, null));
+                        }
+                    }
                 }
             }
         }
     }
 
-    private List<Paciente> getPacientesPorDocumento(Predicate p, String numDocFiltro) {
-        p = PacienteSpecs.byNumeroDocumento(numDocFiltro);
-        Paciente pac = (Paciente) getPersonaService().findOne(p);
-
-        if (pac == null) {
+    private List<Paciente> getPacientesPorDocumento(String numDocFiltro) {
+        pacientesEncontrados = (List<Paciente>) personaService.findAll(PacienteSpecs.byNumeroDocumento(numDocFiltro).and(PersonaSpecs.byClass(Paciente.class)));
+        if (pacientesEncontrados == null || pacientesEncontrados.isEmpty()) {
             return null;
         } else {
-            pacientesEncontrados.add(pac);
+            return pacientesEncontrados;
+        }
+
+    }
+
+    private List<Paciente> getPacientesPorNombreYApellido(String nomFiltro) {
+        pacientesEncontrados = (List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(nomFiltro).and(PersonaSpecs.byClass(Paciente.class)));
+        if (pacientesEncontrados == null || pacientesEncontrados.isEmpty()) {
+            return null;
+        } else {
             return pacientesEncontrados;
         }
     }
 
-    private List<Paciente> getPacientesPorNombreYApellido(Predicate p, String nomFiltro) {
-        pacientesEncontrados = (List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(nomFiltro).and(PersonaSpecs.byClass(Paciente.class)));
+    private List<Paciente> getPacientesPorNombreApellidoYdocumento(String nomFiltro, String numDocFiltro) {
+        pacientesEncontrados = (List<Paciente>) personaService.findAll(PacienteSpecs.byNombreOApellido(nomFiltro).and(PacienteSpecs.byNumeroDocumento(numDocFiltro).and(PersonaSpecs.byClass(Paciente.class))));
         if (pacientesEncontrados == null || pacientesEncontrados.isEmpty()) {
             return null;
         } else {
@@ -225,22 +277,149 @@ public class PacienteWizardBean {
     public void savePaciente() {
         paciente.getHistoriaClinica().getDiagnostico().clear();
 
-        try {
-            if (selectedPaciente != null) {
-                actualizarPaciente();
-            } else {
+        if (validar()) {
+            try {
+                if (selectedPaciente != null) {
+                    actualizarPaciente();
+                    //resetFields();
+                } else {
 
-                nuevoPaciente();
+                    nuevoPaciente();
+                    //resetFields();
+                }
+                diagnosticos.clear();
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El paciente " + paciente.toString() + " no fue cargado correctamente", null));
+                System.out.println(ex.getMessage());
+            } finally {
+                diagnosticos.addAll(paciente.getHistoriaClinica().getDiagnostico());
+                diagnostico = new Diagnostico();
             }
-            diagnosticos.clear();
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El paciente " + paciente.toString() + " no fue cargado correctamente", null));
-            System.out.println(ex.getMessage());
-        } finally {
-            diagnosticos.addAll(paciente.getHistoriaClinica().getDiagnostico());
-            diagnostico = new Diagnostico();
+        }
+    }
+
+    public void resetFields() {
+        paciente = new Paciente();
+    }
+
+    private boolean validarCamposBusqueda() {
+
+        String docFiltro = this.getNumDocumentoBusqueda();
+        String nomFiltro = this.getNombreApellidoBusqueda();
+        boolean varValidacion = true;
+
+        if (validacion.nullEmpty(docFiltro) || validacion.nullEmpty(nomFiltro)) {
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Por favor ingrese un parámetro de búsqueda", null));
+
+        } else {
+            if (!validacion.validarNumero(docFiltro) || docFiltro.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo documento debe ser numérico", null));
+                varValidacion = false;
+            }
+
+            if (!validacion.validarTexto(nomFiltro) || nomFiltro.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo nombre o apellido debe ser texto", null));
+                varValidacion = false;
+            }
         }
 
+
+        return varValidacion;
+    }
+
+    private boolean validar() {
+
+        boolean varValidacion = true;
+        if (!validacion.validarTexto(paciente.getNombre())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo nombre debe ser solo texto", null));
+            varValidacion = false;
+        }
+
+        if (!validacion.validarTexto(paciente.getApellido())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo apellido debe ser solo texto", null));
+            varValidacion = false;
+        }
+
+        //agregar fecha de nacimiento
+
+        if (!validacion.validarNumero(paciente.getDocumento().getNumero())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo numero de documento debe ser solo numérico", null));
+            varValidacion = false;
+        }
+
+        if (!paciente.getEmail().isEmpty()) {
+            if (!validacion.validarMail(paciente.getEmail())) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo inválido", null));
+                varValidacion = false;
+            }
+        }
+
+        if (!paciente.getNacionalidad().isEmpty()) {
+            if (getValidacion().validarTexto(paciente.getNacionalidad()) == false) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo nacionalidad debe ser solo texto", null));
+                varValidacion = false;
+            }
+        }
+
+        if (!paciente.getLugarNacimiento().isEmpty()) {
+            if (getValidacion().validarTexto(paciente.getLugarNacimiento()) == false) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo lugar de naciomiento debe ser solo texto", null));
+                varValidacion = false;
+            }
+        }
+
+        if (!paciente.getProvincia().isEmpty()) {
+            if (getValidacion().validarTexto(paciente.getProvincia()) == false) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo provincia debe ser solo texto", null));
+                varValidacion = false;
+            }
+        }
+
+        if (getValidacion().validarTexto(paciente.getDomicilio().getCalle()) == false) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo calle debe ser solo texto", null));
+            varValidacion = false;
+        }
+
+        if (!validacion.validarNumero(paciente.getDomicilio().getCalleNumero())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo numero de calle debe ser solo numérico", null));
+            varValidacion = false;
+        }
+
+        if (getValidacion().validarTexto(paciente.getDomicilio().getCiudadActual()) == false) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo ciudad actual debe ser solo texto", null));
+            varValidacion = false;
+        }
+
+//        if (!paciente.getDomicilio().getPiso().isEmpty()) {
+//            if (validacion.validarNumero(paciente.getDomicilio().getPiso()) == false) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo piso debe ser solo numero", null));
+//                varValidacion = false;
+//            }
+//        }
+
+        if (!paciente.getCelular().isEmpty()) {
+            if (getValidacion().validarNumero(paciente.getCelular()) == false) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo celular debe ser solo numérico", null));
+                varValidacion = false;
+            }
+        }
+
+        if (!paciente.getTelefono().isEmpty()) {
+            if (getValidacion().validarNumero(paciente.getTelefono()) == false) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo teléfono debe ser solo numérico", null));
+                varValidacion = false;
+            }
+        }
+
+        if (!paciente.getTelefonoMedico().isEmpty()) {
+            if (getValidacion().validarNumero(paciente.getTelefonoMedico()) == false) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo teléfono médico debe ser solo numérico", null));
+                varValidacion = false;
+            }
+        }
+
+        return varValidacion;
     }
 
     private void nuevoPaciente() {
@@ -249,7 +428,7 @@ public class PacienteWizardBean {
         hc.setDiagnostico(paciente.getHistoriaClinica().getDiagnostico());
         paciente.setHistoriaClinica(hc);
 
-        getPersonaService().save(paciente);
+        paciente = personaService.save(paciente);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
                 + " guardado correctamente."));
@@ -411,17 +590,17 @@ public class PacienteWizardBean {
         for (Diagnostico d : diagnosticos) {
             diagnosticoEnLista = false; // Vuelvo a buscar.
             if (trabajoPracticoFiltro != null) {
-                if(estadoDiagnosticoFiltro != null && d.getTrabajoPractico().equals(trabajoPracticoFiltro) && d.getEstado().equals(estadoDiagnosticoFiltro)){ // filtra por los dos.
+                if (estadoDiagnosticoFiltro != null && d.getTrabajoPractico().equals(trabajoPracticoFiltro) && d.getEstado().equals(estadoDiagnosticoFiltro)) { // filtra por los dos.
                     listaAux.add(d);
-                    diagnosticoEnLista = true;          
-                }else{
+                    diagnosticoEnLista = true;
+                } else {
                     if (estadoDiagnosticoFiltro == null && d.getTrabajoPractico().equals(trabajoPracticoFiltro)) {
                         listaAux.add(d);
                         diagnosticoEnLista = true;
                     }
                 }
-            }else{
-                if(estadoDiagnosticoFiltro != null && d.getEstado().equals(estadoDiagnosticoFiltro)){
+            } else {
+                if (estadoDiagnosticoFiltro != null && d.getEstado().equals(estadoDiagnosticoFiltro)) {
                     listaAux.add(d);
                 }
             }
@@ -579,22 +758,21 @@ public class PacienteWizardBean {
         this.selectedTrabajoPractico = selectedTrabajoPractico;
     }
 
-    public String getNumDocumentoBusqueda() {
-        return numDocumentoBusqueda;
-    }
-
-    public void setNumDocumentoBusqueda(String numDocumentoBusqueda) {
-        this.numDocumentoBusqueda = numDocumentoBusqueda;
-    }
-
-    public String getNombreApellidoBusqueda() {
-        return nombreApellidoBusqueda;
-    }
-
-    public void setNombreApellidoBusqueda(String nombreApellidoBusqueda) {
-        this.nombreApellidoBusqueda = nombreApellidoBusqueda;
-    }
-
+//    public String getNumDocumentoBusqueda() {
+//        return numDocumentoBusqueda;
+//    }
+//
+//    public void setNumDocumentoBusqueda(String numDocumentoBusqueda) {
+//        this.numDocumentoBusqueda = numDocumentoBusqueda;
+//    }
+//
+//    public String getNombreApellidoBusqueda() {
+//        return nombreApellidoBusqueda;
+//    }
+//
+//    public void setNombreApellidoBusqueda(String nombreApellidoBusqueda) {
+//        this.nombreApellidoBusqueda = nombreApellidoBusqueda;
+//    }
     public MateriaService getMateriaService() {
         return materiaService;
     }
@@ -737,5 +915,61 @@ public class PacienteWizardBean {
 
     public void setEdicionDiagnosticoHabilitado(boolean edicionDiagnosticoHabilitado) {
         this.edicionDiagnosticoHabilitado = edicionDiagnosticoHabilitado;
+    }
+
+    /**
+     * @return the filtroBusqueda
+     */
+    public String getFiltroBusqueda() {
+        return filtroBusqueda;
+    }
+
+    /**
+     * @param filtroBusqueda the filtroBusqueda to set
+     */
+    public void setFiltroBusqueda(String filtroBusqueda) {
+        this.filtroBusqueda = filtroBusqueda;
+    }
+
+    /**
+     * @return the validacion
+     */
+    public Validacion getValidacion() {
+        return validacion;
+    }
+
+    /**
+     * @param validacion the validacion to set
+     */
+    public void setValidacion(Validacion validacion) {
+        this.validacion = validacion;
+    }
+
+    /**
+     * @return the numDocumentoBusqueda
+     */
+    public String getNumDocumentoBusqueda() {
+        return numDocumentoBusqueda;
+    }
+
+    /**
+     * @param numDocumentoBusqueda the numDocumentoBusqueda to set
+     */
+    public void setNumDocumentoBusqueda(String numDocumentoBusqueda) {
+        this.numDocumentoBusqueda = numDocumentoBusqueda;
+    }
+
+    /**
+     * @return the nombreApellidoBusqueda
+     */
+    public String getNombreApellidoBusqueda() {
+        return nombreApellidoBusqueda;
+    }
+
+    /**
+     * @param nombreApellidoBusqueda the nombreApellidoBusqueda to set
+     */
+    public void setNombreApellidoBusqueda(String nombreApellidoBusqueda) {
+        this.nombreApellidoBusqueda = nombreApellidoBusqueda;
     }
 }
