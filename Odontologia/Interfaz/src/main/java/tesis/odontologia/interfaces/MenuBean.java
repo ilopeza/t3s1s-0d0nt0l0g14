@@ -115,6 +115,15 @@ public class MenuBean {
         menu.addSubmenu(submenu);
         }
         
+        if (rol.is(Rol.PROFESOR)){
+        //Menu
+        submenu = subMenu("Trabajos Prácticos");
+        menuItem = menuItem("Nuevo Trabajo Práctico", "/pages/trabajosPracticos/registrarTrabajoPractico.xhtml");
+        submenu.getChildren().add(menuItem);
+        
+        menu.addSubmenu(submenu);
+        }
+        
         if (rol.is(Rol.ALUMNO) || rol.is(Rol.PROFESOR) || rol.is(Rol.RESPONSABLE) ) {
         //Menu
         submenu = subMenu("Cuenta");
