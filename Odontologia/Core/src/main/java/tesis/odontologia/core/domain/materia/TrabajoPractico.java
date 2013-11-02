@@ -31,8 +31,9 @@ public class TrabajoPractico extends Generic {
     public TrabajoPractico() {
     }
 
-    public TrabajoPractico(String nombre) {
+    public TrabajoPractico(String nombre, String descripcion) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
     }
 
     public String getNombre() {
@@ -75,6 +76,20 @@ public class TrabajoPractico extends Generic {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    /**
+     * @return the descripcion
+     */
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    /**
+     * @param descripcion the descripcion to set
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
     
 }
