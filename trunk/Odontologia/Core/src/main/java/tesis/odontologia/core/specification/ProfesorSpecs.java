@@ -28,7 +28,7 @@ public class ProfesorSpecs {
     }
     
     public static BooleanExpression byMateria(Materia mat){
-      return $.materia.contains(mat);
+      return $.listaMaterias.contains(mat);
     }
 
     public static BooleanExpression byId(Long id) {
@@ -37,6 +37,10 @@ public class ProfesorSpecs {
     
     public static BooleanExpression byClaseProfesor(){
         return $.instanceOf(Profesor.class);
+    }
+    
+    public static BooleanExpression byEstadoProfesor(Profesor.EstadoProfesor est){
+        return $.estado.eq(est);
     }
     
 }

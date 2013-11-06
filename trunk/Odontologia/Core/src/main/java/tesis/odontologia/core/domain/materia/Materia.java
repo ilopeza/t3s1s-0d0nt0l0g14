@@ -11,10 +11,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import tesis.odontologia.core.domain.Generic;
+import tesis.odontologia.core.domain.profesor.Profesor;
 import tesis.odontologia.core.exception.GenericException;
 import tesis.odontologia.core.exception.MateriaException;
 
@@ -37,6 +39,10 @@ public class Materia extends Generic {
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "materia_id")
     private List<TrabajoPractico> trabajoPractico;
+    
+    @ManyToMany(mappedBy = "listaMaterias")
+    private List<Profesor> profesores;
+
 
     public Materia() {
         catedra = new ArrayList<Catedra>();
@@ -47,8 +53,6 @@ public class Materia extends Generic {
         this();
         this.nombre = nombre;
     }
-
-    
 
     public List<TrabajoPractico> getTrabajoPractico() {
         return trabajoPractico;
@@ -116,6 +120,15 @@ public class Materia extends Generic {
 
     public void setCatedra(List<Catedra> catedra) {
         this.catedra = catedra;
+    }
+    
+    
+    public List<Profesor> getProfesores() {
+        return profesores;
+    }
+
+    public void setProfesores(List<Profesor> profesores) {
+        this.profesores = profesores;
     }
 
     @Override

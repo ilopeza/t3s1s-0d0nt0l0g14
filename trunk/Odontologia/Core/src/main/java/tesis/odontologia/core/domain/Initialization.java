@@ -277,7 +277,8 @@ public class Initialization {
         Profesor p = new Profesor("Lucas", "Rimoldi");
         p.setDocumento(new Documento("34342245", Documento.TipoDocumento.DNI));
         p.setFechaNacimiento(Calendar.getInstance());
-        p.setMateria(matprofp);
+        p.setListaMaterias(matprofp);
+        p.setEstado(Profesor.EstadoProfesor.ACTIVO);
         Usuario usuario1 = new Usuario("34342245", "34342245", roles.get(1), "Lucas@gmail.com");
         p.setUsuario(usuario1);
         profesores.add(personaService.save(p));
@@ -286,16 +287,18 @@ public class Initialization {
         p1.setDocumento(new Documento("34442245", Documento.TipoDocumento.DNI));
         p1.setFechaNacimiento(Calendar.getInstance());
         Usuario usuario2 = new Usuario("34442245", "34442245", roles.get(1), "Lorenzo@gmail.com");
-        p1.setMateria(matprofp1);
+        p1.setListaMaterias(matprofp1);
         p1.setUsuario(usuario2);
+        p.setEstado(Profesor.EstadoProfesor.ACTIVO);
         profesores.add(personaService.save(p1));
 
         Profesor p2 = new Profesor("Lucia", "Roma");
         p2.setDocumento(new Documento("34332245", Documento.TipoDocumento.DNI));
         p2.setFechaNacimiento(Calendar.getInstance());
         Usuario usuario3 = new Usuario("34332245", "34332245", roles.get(1), "Lucia@gmail.com");
-        p2.setMateria(matprofp1);
+        p2.setListaMaterias(matprofp1);
         p2.setUsuario(usuario3);
+        p.setEstado(Profesor.EstadoProfesor.DADO_DE_BAJA);
         profesores.add(personaService.save(p2));
 
     }
