@@ -111,6 +111,8 @@ public class MenuBean {
         submenu.getChildren().add(menuItem);
         menuItem = menuItem("Consultar Atenciones Realizadas", "/pages/historiaClinica/consultarAtencionesRealizadas.xhtml");
         submenu.getChildren().add(menuItem);
+        menuItem = menuItem("Consultar Estadisticas", "/pages/estadisticas/consultarEstadisticas.xhtml");
+        submenu.getChildren().add(menuItem);
         }
         menu.addSubmenu(submenu);
         }

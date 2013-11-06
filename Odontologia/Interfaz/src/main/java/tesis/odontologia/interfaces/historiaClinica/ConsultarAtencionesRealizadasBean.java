@@ -154,7 +154,7 @@ public class ConsultarAtencionesRealizadasBean {
             return null;
         } else {
             profesor = personaService.reload(profesor, 1);
-            return profesor.getMateria();
+            return profesor.getListaMaterias();
         }
 
     }

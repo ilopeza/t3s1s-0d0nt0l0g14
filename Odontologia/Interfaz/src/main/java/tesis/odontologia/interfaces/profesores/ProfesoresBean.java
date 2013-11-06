@@ -35,21 +35,31 @@ public class ProfesoresBean {
     //Atributos para crear.
     private Profesor profesor;
     private Date fechaNacimiento;
-
     //Atributos para búsqueda.
     private String filtroBusqueda;
     private Materia materiaBusqueda;
+    private Profesor.EstadoProfesor estadoBusqueda;
     //Atributos tabla.
     private List<Profesor> profesoresEncontrados;
     private Profesor selectedProfesor;
     //Atributos para llenar combos y listas.
     private List<Materia> materias;
     private List<Documento.TipoDocumento> tiposDocuementos;
+    private List<Profesor.EstadoProfesor> estadosProfesor;
     //Atributo para el pickList
     private DualListModel<Materia> materiasElegidas;
     //Atributos habilitar.
     private boolean habilitarNuevoProfesor;
     private boolean habilitarBotonNuevo;
+    private boolean habilitarCambioEstado;
+
+    public boolean isHabilitarCambioEstado() {
+        return habilitarCambioEstado;
+    }
+
+    public void setHabilitarCambioEstado(boolean habilitarCambioEstado) {
+        this.habilitarCambioEstado = habilitarCambioEstado;
+    }
     //Servicios.
     @ManagedProperty(value = "#{personaService}")
     private PersonaService personaService;
@@ -63,12 +73,12 @@ public class ProfesoresBean {
     //MÉTODOS
     @PostConstruct
     public void init() {
-         //Inicialización
+        //Inicialización
         cargarMaterias();
         habilitarNuevoProfesor = false;
         habilitarBotonNuevo = true;
         profesoresEncontrados = new ArrayList<Profesor>();
-        
+
         materiasElegidas = new DualListModel<Materia>();
         if (profesor == null) {
             profesor = new Profesor();
@@ -89,35 +99,22 @@ public class ProfesoresBean {
         BooleanExpression p = ProfesorSpecs.byClaseProfesor();
 
         if (filtroBusqueda != null && filtroBusqueda.isEmpty() == false) {
-            if(filtroBusqueda.matches("[0-9]*")){
-                p = p.and(ProfesorSpecs.byNumeroDocumento(filtroBusqueda));
-                aux = true;
-            }else{
-                p= ProfesorSpecs.byNombreOrApellido(filtroBusqueda);
-                aux = true;
-            }
+            p = buscarPorNombreOrNumDoc(p);
+            aux = true;
         }
-        
+
         if (materiaBusqueda != null) {
             p = p.and(ProfesorSpecs.byMateria(materiaBusqueda));
-            aux= true;
+            aux = true;
         }
-        
-        profesoresEncontrados = (ArrayList)personaService.findAll(p);
-        
-        if(profesoresEncontrados == null || profesoresEncontrados.isEmpty()){
-            FacesContext.getCurrentInstance().
-                   addMessage(null, new FacesMessage
-                    (FacesMessage.SEVERITY_ERROR, "No se encontraron profesores registrados para los parámetros ingresados.", null));
+
+        if (estadoBusqueda != null) {
+            p = buscarPorEstado(p);
+            aux = true;
         }
-        
-        if (aux == false) {
-            FacesContext.getCurrentInstance().
-                   addMessage(null, new FacesMessage
-                    (FacesMessage.SEVERITY_ERROR, "Debe especificar al menos un parámetro de búsqueda para consultar los profesores registrados.", null));
-        }
+        profesoresEncontrados = (ArrayList) personaService.findAll(p);
+        mostrarMensajesBusqueda(aux);
     }
-    
 
     public void seleccionarProfesor() {
         if (selectedProfesor == null) {
@@ -125,7 +122,9 @@ public class ProfesoresBean {
                     addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Seleccione un profesor de la lista.", null));
         } else {
             profesor = selectedProfesor;
-            materiasElegidas.setTarget(profesor.getMateria());
+            profesor = personaService.reload(profesor, 1);
+            materiasElegidas.setTarget(profesor.getListaMaterias());
+            materiasElegidas.setSource(this.getSourceMaterias());
             habilitarNuevoProfesor = true;
             habilitarBotonNuevo = true;
         }
@@ -143,7 +142,7 @@ public class ProfesoresBean {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El profesor " + profesor.toString() + " no fue cargado correctamente", null));
             System.out.println(ex.getMessage());
-        }finally{
+        } finally {
             materiasElegidas.setSource(materias);
             materiasElegidas.setTarget(null);
             profesor = new Profesor();
@@ -151,9 +150,47 @@ public class ProfesoresBean {
         }
     }
 
+    private BooleanExpression buscarPorNombreOrNumDoc(BooleanExpression p) {
+        if (filtroBusqueda.matches("[0-9]*")) {
+            p = p.and(ProfesorSpecs.byNumeroDocumento(filtroBusqueda));
+
+        } else {
+            p = ProfesorSpecs.byNombreOrApellido(filtroBusqueda);
+
+        }
+        return p;
+    }
+
+    private BooleanExpression buscarPorEstado(BooleanExpression p) {
+        p = p.and(ProfesorSpecs.byEstadoProfesor(estadoBusqueda));
+        if (estadoBusqueda.equals(Profesor.EstadoProfesor.ACTIVO)) {
+            habilitarCambioEstado = false;
+        } else {
+            habilitarCambioEstado = true;
+        }
+        return p;
+    }
+
+    private void mostrarMensajesBusqueda(boolean aux) {
+        if (profesoresEncontrados == null || profesoresEncontrados.isEmpty()) {
+            FacesContext.getCurrentInstance().
+                    addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron profesores registrados para los parámetros ingresados.", null));
+        } else {
+            for (Profesor prof : profesoresEncontrados) {
+                profesor = (Profesor) personaService.reload(prof, 1);
+            }
+        }
+
+        if (aux == false) {
+            FacesContext.getCurrentInstance().
+                    addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe especificar al menos un parámetro de búsqueda para consultar los profesores registrados.", null));
+        }
+    }
+
     private void nuevoProfesor() {
-        profesor.setMateria(materiasElegidas.getTarget());
-        getPersonaService().save(profesor);
+        profesor.setEstado(Profesor.EstadoProfesor.ACTIVO);
+        profesor.setListaMaterias(materiasElegidas.getTarget());
+        profesor = personaService.save(profesor);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Profesor " + profesor.toString()
                 + " guardado correctamente."));
@@ -163,12 +200,36 @@ public class ProfesoresBean {
         profesor = personaService.save(profesor);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Profesor " + profesor.toString()
                 + " actualizado correctamente."));
+    }
 
+    public void darBaja() {
+        this.cambiarEstado(Profesor.EstadoProfesor.DADO_DE_BAJA);
+
+    }
+
+    public void darAlta() {
+        this.cambiarEstado(Profesor.EstadoProfesor.ACTIVO);
+    }
+
+    private void cambiarEstado(Profesor.EstadoProfesor nuevoEstado) {
+        selectedProfesor.setEstado(nuevoEstado);
+        profesor = selectedProfesor;
+        saveProfesor();
+        buscarProfesores();
     }
 
     public void registrarNuevoProfesor() {
         habilitarNuevoProfesor = true;
         habilitarBotonNuevo = false;
+    }
+    
+    private List<Materia> getSourceMaterias(){
+        List<Materia> listaAuxMat = new ArrayList<Materia>();
+        listaAuxMat.addAll(materias);
+        for(Materia m : materiasElegidas.getTarget()){
+            listaAuxMat.remove(m);
+        }    
+        return listaAuxMat;
     }
 
     //GETTERS Y SETTERS.
@@ -268,8 +329,7 @@ public class ProfesoresBean {
     public void setHabilitarBotonNuevo(boolean habilitarBotonNuevo) {
         this.habilitarBotonNuevo = habilitarBotonNuevo;
     }
-    
-    
+
     public Date getFechaNacimiento() {
         return profesor.getFechaNacimiento() == null ? null : profesor.getFechaNacimiento().getTime();
     }
@@ -284,5 +344,22 @@ public class ProfesoresBean {
         Calendar cal = Calendar.getInstance();
         cal.setTime(fechaNacimiento);
         profesor.setFechaNacimiento(cal);
+    }
+
+    public Profesor.EstadoProfesor getEstadoBusqueda() {
+        return estadoBusqueda;
+    }
+
+    public void setEstadoBusqueda(Profesor.EstadoProfesor estadoBusqueda) {
+        this.estadoBusqueda = estadoBusqueda;
+    }
+
+    public List<Profesor.EstadoProfesor> getEstadosProfesor() {
+        estadosProfesor = Arrays.asList(Profesor.EstadoProfesor.values());
+        return estadosProfesor;
+    }
+
+    public void setEstadosProfesor(List<Profesor.EstadoProfesor> estadosProfesor) {
+        this.estadosProfesor = estadosProfesor;
     }
 }
