@@ -6,7 +6,6 @@ package tesis.odontologia.interfaces.asignaciones;
 
 import com.mysema.query.types.expr.BooleanExpression;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -193,7 +192,7 @@ public class ConsultarAsignacionesConfirmadasBean {
             return null;
         } else {
             profesor = personaService.reload(profesor, 1);
-            return profesor.getMateria();
+            return profesor.getListaMaterias();
         }
 
     }

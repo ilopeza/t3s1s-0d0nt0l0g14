@@ -344,13 +344,13 @@ public class BuscarTableBean {
 
         List<TrabajoPractico> lista = new ArrayList<TrabajoPractico>();
 
-        TrabajoPractico tp1 = new TrabajoPractico("TP1");
-        TrabajoPractico tp2 = new TrabajoPractico("TP2");
-        TrabajoPractico tp3 = new TrabajoPractico("TP3");
+//        TrabajoPractico tp1 = new TrabajoPractico("TP1");
+//        TrabajoPractico tp2 = new TrabajoPractico("TP2");
+//        TrabajoPractico tp3 = new TrabajoPractico("TP3");
 
-        lista.add(tp1);
-        lista.add(tp2);
-        lista.add(tp3);
+//        lista.add(tp1);
+//        lista.add(tp2);
+//        lista.add(tp3);
 
         return lista;
     }

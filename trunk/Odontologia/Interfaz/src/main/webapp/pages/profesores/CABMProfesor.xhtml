@@ -9,7 +9,7 @@
     <ui:define name="content">
         <h:form id="formConsultarProfesores">
             <p:panel id="pnlConsultarProfesores" header="Consultar profesores">
-                <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
+                <h:panelGrid columns="7" cellpadding="3" cellspacing="3">
                     <p:outputLabel value="Nombre o número de documento:"/>
                     <p:inputText id="txtNombreBusqueda" value="#{profesoresBean.filtroBusqueda}"/>
 
@@ -17,6 +17,11 @@
                     <p:selectOneMenu id="selectMateriaBusqueda" filter="true" filterMatchMode="startsWith" value="#{profesoresBean.materiaBusqueda}" converter="materiaConverter">
                         <f:selectItem itemLabel="Seleccione una materia"/>
                         <f:selectItems value="#{profesoresBean.materias}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Estado:"/>
+                    <p:selectOneMenu id="selectEstadoProfesor" value="#{profesoresBean.estadoBusqueda}">
+                        <f:selectItems value="#{profesoresBean.estadosProfesor}"/>
                     </p:selectOneMenu>
 
                     <p:commandButton id="btnBuscarProfesor" value="Buscar" icon="ui-icon-search" 
@@ -27,7 +32,7 @@
                              emptyMessage="No se encontraron profesores con los filtros especificados."
                              paginator="true" value="#{profesoresBean.profesoresEncontrados}" var="p"
                              selectionMode="single" selection="#{profesoresBean.selectedProfesor}"
-                             rowKey="#{p.id}">
+                             rowKey="#{p.id}" paginatorAlwaysVisible="false">
                     <f:facet name="header">
                         Profesores encontrados
                     </f:facet>
@@ -41,9 +46,8 @@
                         <h:outputText value="" />
                     </p:column>
                     <p:column id="colMateria" headerText="Materia">
-                        <!--p:selectOneMenu id="materiasProfesor">
-                            <f:selectItems value="{p.materia}"/>
-                        </p:selectOneMenu-->
+                        <p:selectOneMenu id="materiasProfesor">
+                        </p:selectOneMenu>
                     </p:column>
                     <f:facet name="footer">
                         <p:commandButton id="btnNuevoProfesor" value="Nuevo" icon="ui-icon-plusthick" 
@@ -52,19 +56,25 @@
                         <p:commandButton id="btnModificarProfesor" value="Modificar" icon="ui-icon-gear" 
                                          actionListener="#{profesoresBean.seleccionarProfesor()}" 
                                          update=":formNuevoProf"/>
-                        <p:commandButton id="btnBajaProfesor" value="Dar de baja" icon="ui-icon-cancel"/>
+                        <p:commandButton id="btnBajaProfesor" value="Dar de baja" icon="ui-icon-cancel" 
+                                         disabled="#{profesoresBean.habilitarCambioEstado}" onclick="dlgDarDeBaja.show()"/>
+                        <p:commandButton id="btnAltaProfesor" value="Dar de alta" icon="ui-icon-cancel" 
+                                         disabled="#{!profesoresBean.habilitarCambioEstado}" onclick="dlgDarDeAlta.show()"/>
                     </f:facet> 
                 </p:dataTable>
+
             </p:panel>
+
+
         </h:form>  
-     
-         <h:form id="formNuevoProf">
-             <p:panel id="pnlNuevoProf" header="Nuevo profesor" visible="#{profesoresBean.habilitarNuevoProfesor}">
+
+        <h:form id="formNuevoProf">
+            <p:panel id="pnlNuevoProf" header="Nuevo profesor" visible="#{profesoresBean.habilitarNuevoProfesor}">
                 <h:panelGrid columns="8" cellpadding="3" cellspacing="3">
-                    <p:outputLabel value="Apellido:"/>
-                    <p:inputText id="txtApellido" value="#{profesoresBean.profesor.apellido}"/>
                     <p:outputLabel value="Nombre:"/>
-                    <p:inputText id="txtNombre" value="#{profesoresBean.profesor.nombre}"/>  
+                    <p:inputText id="txtNombre" value="#{profesoresBean.profesor.nombre}"/> 
+                    <p:outputLabel value="Apellido:"/>
+                    <p:inputText id="txtApellido" value="#{profesoresBean.profesor.apellido}"/>     
                     <p:outputLabel value="Tipo de documento:"/>
                     <p:selectOneMenu id="selectTipoDocumento" value="#{profesoresBean.profesor.documento.tipoDocumento}">
                         <f:selectItem itemLabel="Seleccione un tipo de documento"/>
@@ -74,9 +84,6 @@
                     <p:inputText id="txtNumeroDocumento" value="#{profesoresBean.profesor.documento.numero}"/>
                     <p:outputLabel value="Fecha de nacimiento:"/>
                     <p:calendar id="calFechaNacimientoProfesor" value="#{profesoresBean.fechaNacimiento}" navigator="true"  yearRange="c-100:c"/>
-                      
-                    <!--p:outputLabel value="Fecha de nacimiento:"/>
-                    <p:calendar id="calFechaNacimiento" value="{profesoresBean.profesor.fechaNacimiento}"/-->
                 </h:panelGrid> 
                 <p:pickList id="pickListMaterias" 
                             showCheckbox="true" value="#{profesoresBean.materiasElegidas}" var="mat"
@@ -95,10 +102,24 @@
                 </h:panelGrid>
             </p:panel>
         </h:form>
+        <p:confirmDialog message="¿Realmente desea dar de baja al profesor #{profesoresBean.selectedProfesor.apellido}?"
+                         header="Dar de baja" severity="alert"
+                         widgetVar="dlgDarDeBaja" appendToBody="true">
+            <p:commandButton value="Sí" actionListener="#{profesoresBean.darBaja()}"
+                             update=":msg :formConsultarProfesores" oncomplete="dlgDarDeBaja.hide()"/>
+            <p:commandButton value="No" onclick="dlgDarDeBaja.hide();" type="button" />
+        </p:confirmDialog>
+
+        <p:confirmDialog message="¿Realmente desea dar de alta al profesor #{profesoresBean.selectedProfesor.apellido}?"
+                         header="Dar de alta" severity="alert"
+                         widgetVar="dlgDarDeAlta" appendToBody="true">
+            <p:commandButton value="Sí" actionListener="#{profesoresBean.darAlta()}"
+                             update=":msg :formConsultarProfesores" oncomplete="dlgDarDeAlta.hide()"/>
+            <p:commandButton value="No" onclick="dlgDarDeAlta.hide();" type="button" />
+        </p:confirmDialog>
     </ui:define> 
 </ui:composition>
 
 
 
-               
-   
+
