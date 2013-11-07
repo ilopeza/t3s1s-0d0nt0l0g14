@@ -11,6 +11,7 @@
     <ui:define name="content">
         <h:outputLabel value="REGISTRAR ASIGNACIÓN PACIENTE" style="padding: 400px; font-size: 20px; font: " />
         <h:form id="busquedaAlumnoForm">
+
             <p:panel id="pnlBusquedaAlumno" header="Alumno">
 
                 <h:panelGrid columns="3" cellpadding="3" cellspacing="3" rendered="#{asignacionBean.mostrarBuscarAlumno}">
@@ -75,62 +76,68 @@
                         <f:selectItem itemLabel="Seleccione una trabajo práctico"/>
                         <f:selectItems value="#{asignacionBean.trabajosPracticos}"/>
                     </p:selectOneMenu>
-                    
+
                     <p:outputLabel value="Nombre o número de documento: "/>
                     <p:inputText value="#{asignacionBean.filtroPaciente}" id="txtFiltroPaciente"/>
-                     <p:commandButton id="btnBuscar" value="Buscar" 
-                                         actionListener="#{asignacionBean.buscarPacientes()}" 
-                                         update="tblResultadosBusquedaPacienteAsignacion, :msg" 
-                                         icon="ui-icon-search"
-                                         process="@this, :busquedaAlumnoForm, txtFiltroPaciente"/> 
+                    <p:commandButton id="btnBuscar" value="Buscar" 
+                                     actionListener="#{asignacionBean.buscarPacientes()}" 
+                                     update="tblResultadosBusquedaPacienteAsignacion, :msg" 
+                                     icon="ui-icon-search"
+                                     process="@this, :busquedaAlumnoForm, txtFiltroPaciente"/> 
                 </h:panelGrid> 
                 <h:outputText value="La cátedra atiende en los siguientes horarios: [lunes 18:00] [martes 20:00]"/>
             </p:panel>
-                <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
-                             var="p" value="#{asignacionBean.resultadoBusqueda}"
-                             emptyMessage="No se encontraron pacientes."
-                             selectionMode="single"
-                             selection="#{asignacionBean.diagnosticoSeleccionado}"
-                             
-                             rowKey="#{p.idDiagnostico}">
-                    <f:facet name="header" >  
-                        <p:outputPanel>  
-                            <h:outputText value="Resultados de búsqueda" />                  
-                        </p:outputPanel>  
-                    </f:facet>                                   
-                    <p:column id="NombYApellido" headerText="Apellido y nombre">  
-                        <h:outputText value="#{p.paciente}" />  
-                    </p:column>
-                    <p:column id="Documento" headerText="Número de Documento" style="width:15%">  
-                        <h:outputText value="#{p.paciente.documento}" />  
-                    </p:column>
-                    <p:column id="materia" headerText="Materia">
-                        <h:outputText value="#{p.materia}" /> 
-                    </p:column>
-                    <p:column id="practico" headerText="Practico">
-                        <h:outputText value="#{p.practico}" /> 
-                    </p:column>
-                    <p:column id="diagnostico" headerText="Diagnostico">
-                        <h:outputText value="#{p.descripcionDiagnostico}" /> 
-                    </p:column>
-                </p:dataTable>
+            <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
+                         var="p" value="#{asignacionBean.resultadoBusqueda}"
+                         emptyMessage="No se encontraron pacientes."
+                         selectionMode="single"
+                         selection="#{asignacionBean.diagnosticoSeleccionado}"
+
+                         rowKey="#{p.idDiagnostico}">
+                <f:facet name="header" >  
+                    <p:outputPanel>  
+                        <h:outputText value="Resultados de búsqueda" />                  
+                    </p:outputPanel>  
+                </f:facet>      
+                <p:ajax event="rowSelect" listener="#{asignacionBean.onRowSelect}"   
+                        update=":msg, :busquedaAlumnoForm:selectCatedraBusqueda"  oncomplete="selectCatedraBusqueda"/>  
+                <p:ajax event="rowUnselect" listener="#{asignacionBean.onRowUnselect}" update=":msg"/> 
+                <p:column id="NombYApellido" headerText="Apellido y nombre">  
+                    <h:outputText value="#{p.paciente}" />  
+                </p:column>
+                <p:column id="Documento" headerText="Número de Documento" style="width:15%">  
+                    <h:outputText value="#{p.paciente.documento}" />  
+                </p:column>
+                <p:column id="materia" headerText="Materia">
+                    <h:outputText value="#{p.materia}" /> 
+                </p:column>
+                <p:column id="practico" headerText="Practico">
+                    <h:outputText value="#{p.practico}" /> 
+                </p:column>
+                <p:column id="diagnostico" headerText="Diagnostico">
+                    <h:outputText value="#{p.descripcionDiagnostico}" /> 
+                </p:column>
+            </p:dataTable>
             <p:panel id="pnldatosAsignacion" header="Datos asignación de paciente">
-                <h:panelGrid columns="5" cellpadding="3" cellspacing="3">
+                <h:panelGrid id="pnlgridDatosAsignacion" columns="5" cellpadding="3" cellspacing="3">
                     <p:outputLabel value="Cátedra: " />
                     <p:selectOneMenu id="selectCatedraBusqueda" value="#{asignacionBean.catedraFiltro}"
                                      converter="catedraConverter">
-                          <f:selectItem itemLabel="Seleccione una Cátedra"/>
+                        <f:selectItem itemLabel="Seleccione una Cátedra"/>
                         <f:selectItems value="#{asignacionBean.catedras}"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="Fecha de asignacion: "></p:outputLabel>
-                    <p:calendar value="#{asignacionBean.fechaAsignacion}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" id="txtFechaAsignacion"/>
+                    <p:calendar value="#{asignacionBean.fechaAsignacion}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" 
+                                id="txtFechaAsignacion" 
+                                mindate="#{asignacionBean.fechaDesde}" 
+                                label="Fecha de asignación"/>
                     <p:commandButton id="asignar" value="Asignar" 
                                      action="#{asignacionBean.save}"
                                      update=":msg, tblAsignacionesAlumno"
                                      process="@this, :busquedaAlumnoForm, tblResultadosBusquedaPacienteAsignacion, txtFechaAsignacion "
                                      icon="ui-icon-circle-check"/> 
                 </h:panelGrid>
-        </p:panel>
+            </p:panel>
         </h:form>
 
         <p:spacer width="10px"/>
