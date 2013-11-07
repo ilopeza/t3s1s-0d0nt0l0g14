@@ -77,5 +77,9 @@ public class Rol extends Generic{
         }
         return true;
     }
+    @Override
+    public String toString() {
+        return nombre;
+    }
 
 }
