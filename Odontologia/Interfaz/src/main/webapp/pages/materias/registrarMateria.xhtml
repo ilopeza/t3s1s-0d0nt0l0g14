@@ -140,7 +140,7 @@
 
                         <p:column>
                             <p:commandButton oncomplete="trabajoPractico.hide()" value="Aceptar" 
-                                             update=":frmConsultarTrabajosPracticos:tblResultadoTrabajosPracticos, :frmConsultarTrabajosPracticos:pnlTrabajoPractico"
+                                             update=":frmConsultarTrabajosPracticos:tblResultadoTrabajosPracticos, :frmConsultarTrabajosPracticos:pnlTrabajoPractico, :msg"
                                              disabled="#{!materiaBean.nuevoTPHabilitado}"
                                              actionListener="#{materiaBean.saveTrabajoPractico()}" >
                                 <f:setPropertyActionListener value="#{mat}" target="#{materiaBean.materia}" />
@@ -163,7 +163,7 @@
                          widgetVar="dlgBajaTrabajoPractico" appendToBody="true">
 
             <p:commandButton value="Sí" actionListener="#{materiaBean.eliminarTrabajoPractico()}"
-                             update=":frmConsultarTrabajosPracticos:tblResultadoTrabajosPracticos"
+                             update=":frmConsultarTrabajosPracticos:tblResultadoTrabajosPracticos, msg"
                              oncomplete="dlgBajaTrabajoPractico.hide()">
 
                 <f:setPropertyActionListener value="#{mat}" target="#{materiaBean.materia}" />
