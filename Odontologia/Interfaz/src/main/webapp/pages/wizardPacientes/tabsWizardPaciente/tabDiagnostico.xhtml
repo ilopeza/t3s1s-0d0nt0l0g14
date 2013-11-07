@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
-    <p:fieldset id="fldsOdontograma" legend="Odontograma" toggleable="true" collapsed="true">
+    <p:fieldset id="fldsOdontograma" legend="#{msg.lblOdontograma}" toggleable="true" collapsed="true">
         <h:panelGrid id="gridOdontograma" columns="1" cellpadding="3" cellspacing="3">
             <p:column>
                 <h:outputLabel value="Complete el odontograma con los datos correspondientes"/>
@@ -15,12 +15,12 @@
             </p:column>
         </h:panelGrid>
     </p:fieldset>
-    <p:fieldset id="fldsNuevoDiagnóstico" legend="Nuevo diagnóstico" toggleable="true" toggleSpeed="150" collapsed="false">
+    <p:fieldset id="fldsNuevoDiagnóstico" legend="#{msg.lblRegistrarNuevoDiagnostico}" toggleable="true" toggleSpeed="150" collapsed="false">
         <p:panel id="pnlNuevoDiagnostico">
             <h:outputLabel value="Para agregar un nuevo diagnóstico, seleccione la materia correspondiente y luego el trabajo práctico que trata el problema."/>
             <h:panelGrid id="gridNuevoDiagnóstico" columns="2" cellpadding="3" cellspacing="3" >
                 <p:column>
-                    <p:outputLabel id="lblMateria" value="Materia: "/>
+                    <p:outputLabel id="lblMateria" value="#{msg.lblMateria}: "/>
                 </p:column>
                 <p:column>
                     <p:selectOneMenu id="selectMateria" value="#{pacienteWizardBean.diagnostico.materia}" filterMatchMode="startsWith"
@@ -29,7 +29,7 @@
                     </p:selectOneMenu>
                 </p:column>          
                 <p:column>
-                    <p:outputLabel id="lblTrabajoPractico" value="Trabajo práctico: "/>
+                    <p:outputLabel id="lblTrabajoPractico" value="#{msg.lblTrabajoPractico}: "/>
                 </p:column>          
                 <p:column>
                     <p:selectOneMenu id="selectTrabajoPráctico" value="#{pacienteWizardBean.diagnostico.trabajoPractico}"
@@ -38,7 +38,7 @@
                     </p:selectOneMenu>
                 </p:column>
                 <p:column>
-                    <p:outputLabel id="lblDescripcion" value="Descripción del diagnóstico: "/>
+                    <p:outputLabel id="lblDescripcion" value="#{msg.lblDesc}: "/>
                 </p:column>
                 <p:column>
                     <p:inputTextarea autoResize="true" id="txtDescripcionDiagnostico" rows="3" cols="99" 
@@ -47,18 +47,18 @@
             </h:panelGrid>
 
             <h:panelGrid columns="3" cellspacing="3" cellpadding="3">
-                <p:commandButton value="Nuevo diagnóstico" actionListener="#{pacienteWizardBean.nuevoDiagnostico()}"
+                <p:commandButton value="#{msg.btnNuevoDiagnostico}" actionListener="#{pacienteWizardBean.nuevoDiagnostico()}"
                                  oncomplete="dlgModificarDiagnostico.hide();" 
                                  update="pnlNuevoDiagnostico"
                                  icon="ui-icon-circle-arrow-e"
                                  disabled="#{pacienteWizardBean.nuevoDiagnosticoHabilitado}"/>
-                <p:commandButton value="Agregar" 
+                <p:commandButton value="#{msg.btnAgregar}" 
                                  icon="ui-icon-circle-plus"
                                  process="@form"
                                  update="pnlDiagnosticosCargados, pnlNuevoDiagnostico, :msg"
                                  actionListener="#{pacienteWizardBean.agregarDiagnosticoEnMemoria()}"
                                  disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}"/>
-                <p:commandButton value="Cancelar" actionListener="#{pacienteWizardBean.reestablecerDiagnostico()}" 
+                <p:commandButton value="#{msg.btnCancelar}" actionListener="#{pacienteWizardBean.reestablecerDiagnostico()}" 
                                  update="pnlNuevoDiagnostico"
                                  disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}"
                                  icon="ui-icon-closethick"/>
@@ -67,28 +67,27 @@
 
         </p:panel>
 
-        <p:panel id="pnlDiagnosticosCargados" header="Diagnósticos cargados">
-            <h:panelGrid columns="7" cellpadding="3" cellspacing="3">
-                <h:outputText value="Ver por: "/>
+        <p:panel id="pnlDiagnosticosCargados" header="#{msg.lblConsultarDiagnosticos}">
+            <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
 
-                <h:outputText value="Estado: "/>
+                <h:outputText value="#{msg.lblEstado}: "/>
                 <p:selectOneMenu id="selectEstadoDiagnostico" value="#{pacienteWizardBean.estadoDiagnosticoFiltro}">
                     <f:selectItem itemLabel="Seleccione una estado"/>
                     <f:selectItems value="#{pacienteWizardBean.estadosDiagnostico}"/>
                 </p:selectOneMenu>
 
-                <h:outputText value="Trabajo Práctico:"/>
+                <h:outputText value="#{msg.lblTrabajoPractico}:"/>
                 <p:selectOneMenu id="selectTrabajoPrácticoDiagnostico" converter="trabajoPracticoConverter" value="#{pacienteWizardBean.trabajoPracticoFiltro}">
                     <f:selectItem itemLabel="Seleccione un trabajo práctico"/>
                     <f:selectItems value="#{pacienteWizardBean.trabajosPracticos}"/>
                 </p:selectOneMenu>
 
-                <p:commandButton id="btnFiltrarDiagnosticos" value="Filtrar" 
+                <p:commandButton id="btnFiltrarDiagnosticos" value="#{msg.btnBuscar}" 
                                  actionListener="#{pacienteWizardBean.filtrar()}"
                                  update="pnlDiagnosticosCargados"
                                  process="pnlDiagnosticosCargados" 
                                  disabled="#{!pacienteWizardBean.filtrarHabilitado}"/>
-                <p:commandButton id="btnVerTodos" value="Ver todos"
+                <p:commandButton id="btnVerTodos" value="#{msg.btnVerTodos}"
                                  actionListener="#{pacienteWizardBean.verTodos()}"
                                  update="pnlDiagnosticosCargados"
                                  process="pnlDiagnosticosCargados"
@@ -103,13 +102,13 @@
                 
                 <f:ajax event="rowSelect" render="btnCancelar btnModificar"/>
                 
-                <p:column id="colTrabajoPractico" headerText="Trabajo práctico">
+                <p:column id="colTrabajoPractico" headerText="#{msg.lblTrabajoPractico}">
                     <h:outputText value="#{d.trabajoPractico}" />
                 </p:column>
-                <p:column id="colDescripcion" headerText="Descripción">
+                <p:column id="colDescripcion" headerText="#{msg.lblDesc}">
                     <h:outputText value="#{d.descripcion}" />
                 </p:column>
-                <p:column id="colEstado" headerText="Estado del diagnóstico">
+                <p:column id="colEstado" headerText="#{msg.lblDesc}">
                     <h:outputText value="#{d.estado}" />
                 </p:column>
                 <p:column id="colAcciones" headerText="Acciones">
@@ -128,7 +127,7 @@
                          actionListener="#{pacienteWizardBean.savePaciente()}" 
                          process="@form"
                          update=":msg"
-                         value="Guardar"/>
+                         value="#{msg.btnGuardar}"/>
     </p:fieldset>
 
 </html>

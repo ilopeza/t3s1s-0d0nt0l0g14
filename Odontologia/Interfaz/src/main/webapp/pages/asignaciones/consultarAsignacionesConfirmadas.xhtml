@@ -6,47 +6,47 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:outputLabel value="CONSULTAR ASIGNACIONES DE PACIENTES CONFIRMADAS" style="padding: 400px; font-size: 20px; font: " />
+        <h:outputLabel value="#{msg.lblConsultarAsignacionesConfirmadas}" style="padding: 400px; font-size: 20px; font: " />
  
         <h:form id="consultarAsignacionesConfirmadasForm">
-            <p:panel id="pnlConsultarAsignacionesConfirmadas" header="Parámetros de búsqueda">
+            <p:panel id="pnlConsultarAsignacionesConfirmadas" header="#{msg.lblParametroBusquedaAsignaciones}">
                 <h:panelGrid id="paramentros" columns="4" cellpadding="3" cellspacing="3">                 
   
-                    <p:outputLabel value="Materia "/>
+                    <p:outputLabel value="#{msg.lblMateria}: "/>
                     <p:selectOneMenu id="selecciontMateriaBusqueda" value="#{consultarAsignacionesConfirmadasBean.materiaFiltro}" converter="materiaConverter">
-                        <f:selectItem itemLabel="Seleccione una Materia"/>
+                        <f:selectItem itemLabel="#{msg.lblSelectMateria}"/>
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.materias}"/>
                         <f:ajax event="change"  render="seleccionCatedraBusqueda seleccionTrabajoPracticoBusqueda" execute="selecciontMateriaBusqueda"
                                 listener="#{consultarAsignacionesConfirmadasBean.filtrarCombosPorMateria()}"/>
                     </p:selectOneMenu>     
                     
-                    <p:outputLabel value="Trabajo práctico"/>
+                    <p:outputLabel value="#{msg.lblTrabajoPractico}:"/>
                     <p:selectOneMenu id="seleccionTrabajoPracticoBusqueda" value="#{consultarAsignacionesConfirmadasBean.trabajoPracticoFiltro}"
                                      converter="trabajoPracticoConverter">
-                        <f:selectItem itemLabel="Seleccione un trabajo práctico"/>
+                        <f:selectItem itemLabel="#{msg.lblSelectTrabPrac}"/>
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.trabajosPracticos}"/>
                     </p:selectOneMenu>
                     
-                     <p:outputLabel value="Cátedra de Atención " />
+                    <p:outputLabel value="#{msg.lblCatedraAtencion} " />
                     <p:selectOneMenu id="seleccionCatedraBusqueda" value="#{consultarAsignacionesConfirmadasBean.catedraFiltro}" converter="catedraConverter">
-                        <f:selectItem itemLabel="Seleccione una Cátedra"/>
+                        <f:selectItem itemLabel="Seleccione una cátedra"/>
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.catedras}"/>
                     </p:selectOneMenu>                    
                      <span></span> 
                       <h:outputLabel value=""/>
-                     <h:outputLabel value="Fecha de Atención Desde:"/>
+                      <h:outputLabel value="#{msg.lblFechaAtencionDesde}:"/>
                      <p:calendar id="calDesde" value="#{consultarAsignacionesConfirmadasBean.fechaDesdeFiltro}" navigator="true"  yearRange="c-100:c"/>
                      
-                     <h:outputLabel value="Fecha de Atención Hasta:"/>
+                     <h:outputLabel value="#{msg.lblFechaAtencionHasta}:"/>
                      <p:calendar id="calHasta" value="#{consultarAsignacionesConfirmadasBean.fechaHastaFiltro}" navigator="true"  yearRange="c-100:c"/>
                     
-                     <h:outputText value="Asignaciones Autorizadas " />  
+                     <h:outputText value="#{msg.lblAsignacionesAutorizadas}: " />  
                      <p:selectBooleanCheckbox id="autorizada" value="#{consultarAsignacionesConfirmadasBean.estaAutorizada}" />
                      <f:ajax event="click" execute="autorizada" listener="#{consultarAsignacionesConfirmadasBean.habilitarAutorizar()}"/>
                 </h:panelGrid>
                 <br/>
 
-                <p:commandButton  id="btnBuscarAsignacionesConfirmadas" value="Buscar Asignaciones Confirmadas" 
+                <p:commandButton  id="btnBuscarAsignacionesConfirmadas" value="#{msg.btnBuscar}" 
                                   actionListener="#{consultarAsignacionesConfirmadasBean.buscarAsignacionesConfirmadas()}" 
                                   process="@form"
                                   update="tblResultadosAsignacionesConfirmadas, :msg">
@@ -54,28 +54,28 @@
             </p:panel>
             <br/>
             <br/>
-            <p:panel  id="pnlResultadosConsultarAsignacionesConfirmadas" header="Resultados de Búsqueda">
+            <p:panel  id="pnlResultadosConsultarAsignacionesConfirmadas" header="#{msg.lblAsignacionesEncontradas}">
                 <p:dataTable id="tblResultadosAsignacionesConfirmadas" var="asignaciones" value="#{consultarAsignacionesConfirmadasBean.asignacionesConfirmadas}"  paginator="true" rows="10"
                              emptyMessage="No se registran asignaciones confirmadas para los parámetros ingresados" selection="#{consultarAsignacionesConfirmadasBean.selectedAsignacionesAutorizadas}" 
                              rowKey="#{asignaciones.id}">  
 
                     <f:facet name="header">
                         <p:outputPanel>
-                            <h:outputText value="Resultado de la Busqueda" />
+                            <h:outputText value="#{msg.lblAsignacionesEncontradas}" />
                         </p:outputPanel>
                     </f:facet>
                     
                     <p:column selectionMode="multiple"/>
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Paciente" />  
+                            <h:outputText value="#{msg.lblApeNom} del paciente" />  
                         </f:facet>  
                         <h:outputText value="#{asignaciones.paciente}" />  
                     </p:column>  
 
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Alumno" />  
+                            <h:outputText value="#{msg.lblApeNom} del alumno" />  
                         </f:facet>  
                         <h:outputText value="#{asignaciones.alumno}" />  
                     </p:column>  
@@ -83,48 +83,48 @@
 
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Fecha de Atención" />  
+                            <h:outputText value="#{msg.lblFechaAtencion}" />  
                         </f:facet>  
                         <h:outputText value="#{asignaciones.fecha}"/>
                     </p:column>
                     
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Diagnóstico" />  
+                            <h:outputText value="#{msg.lblDescripcionDiagnostico}" />  
                         </f:facet>  
                         <h:outputText value="#{asignaciones.descripcionDiagnostico}"/>
                     </p:column>
                     
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Materia" />  
+                            <h:outputText value="#{msg.lblMateria}" />  
                         </f:facet>  
                         <h:outputText value="#{asignaciones.materia}"/>
                     </p:column>
                     
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Cátedra de Atención" />  
+                            <h:outputText value="#{msg.lblCatedraAtencion}" />  
                         </f:facet>  
                         <h:outputText value="#{asignaciones.catedra}"/>
                     </p:column>
                     
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Trabajo Práctico" />  
+                            <h:outputText value="#{msg.lblTrabajoPractico}" />  
                         </f:facet>  
                         <h:outputText value="#{asignaciones.trabajoPractico}"/>
                     </p:column>
                     
                     <f:facet name="footer">  
-                        <p:commandButton id="autorizarAsignaciones" value="Autorizar" action="#{consultarAsignacionesConfirmadasBean.autorizarAsignaciones()}" update="tblResultadosAsignacionesConfirmadas" disabled="#{consultarAsignacionesConfirmadasBean.habilitarBotonAutorizar}"/>  
+                        <p:commandButton id="autorizarAsignaciones" value="#{msg.btnAutorizar}" action="#{consultarAsignacionesConfirmadasBean.autorizarAsignaciones()}" update="tblResultadosAsignacionesConfirmadas" disabled="#{consultarAsignacionesConfirmadasBean.habilitarBotonAutorizar}"/>  
                 </f:facet> 
 
                 </p:dataTable>
             </p:panel>
             <br/>
             <br/>
-            <p:panel id="pnlExportarAsignacionesConfirmadas" header="Exportar Datos">
+            <p:panel id="pnlExportarAsignacionesConfirmadas" header="#{msg.lblExportarDatos}">
                 <h:commandLink>  
                     <p:graphicImage library="images" name ="Excel.png" />  
                     <p:dataExporter type="xls" target="tblResultadosAsignacionesConfirmadas" fileName="Busqueda Paciente Confirmados"/>  

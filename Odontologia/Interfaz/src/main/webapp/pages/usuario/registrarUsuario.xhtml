@@ -11,26 +11,26 @@ and open the template in the editor.
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:outputLabel value="RECUPERAR USUARIO" style="padding: 400px; font-size: 20px; font: " />
-        <p:panel id="pnlRegistrarUsuario" header="Registrar Usuario">
+        <h:outputLabel value="¿¿RECUPERAR USUARIO??" style="padding: 400px; font-size: 20px; font: " />
+        <p:panel id="pnlRegistrarUsuario" header="#{msg.lblRegistrarNuevoUsuario}">
             <h:form id="registrarUsuarioForm">
                 <h:panelGrid id="datosUsuario" columns="2" cellpadding="3" cellspacing="3">
-                    <h:outputLabel value="Nombre de usuario: "/>
+                    <h:outputLabel value="#{msg.lblNombreUsuario}: "/>
                             <p:inputText id="nombreUsuario" value="#{registrarUsuarioBean.usuario.nombreUsuario}"></p:inputText>
 
-                            <h:outputLabel value="Correo electrónico: " />
+                            <h:outputLabel value="#{msg.lblCorreoElectronico}: " />
                             <p:inputText id="email" value="#{registrarUsuarioBean.usuario.email}"></p:inputText>
 
-                            <h:outputLabel value="Rol: " />
+                            <h:outputLabel value="#{msg.lblRol}: " />
                             <p:selectOneMenu id="rol" value="#{registrarUsuarioBean.rol}">
-                                <f:selectItem itemLabel="Seleccione un rol"/>
+                                <f:selectItem itemLabel="#{msg.lblSelectRol}"/>
                                 <f:selectItems value="#{registrarUsuarioBean.roles}"/>
                             </p:selectOneMenu>
 
-                            <h:outputLabel value="Contraseña: " />
+                            <h:outputLabel value="#{msg.lblContrasenia}: " />
                             <p:inputText id="contraseña" value="#{registrarUsuarioBean.usuario.contraseña}"></p:inputText>
 
-                            <h:outputLabel value="Reescriba la contraseña: " />
+                            <h:outputLabel value="#{msg.lblRepetirCont}: " />
                             <p:inputText id="repetirContraseña"></p:inputText>
                 </h:panelGrid>
             </h:form>

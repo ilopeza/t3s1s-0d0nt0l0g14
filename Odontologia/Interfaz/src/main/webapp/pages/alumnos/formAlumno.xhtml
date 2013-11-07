@@ -13,23 +13,23 @@ and open the template in the editor.
 
     <ui:define name="content">
         <h:form id="primaryForm">
-            <h:outputLabel value="DATOS ALUMNO" style="padding: 400px; font-size: 20px; font: " />
-            <p:panel id="pnlAlumno" header="ALUMNO">
+            <h:outputLabel value="#{msg.lblRegistrarAlumno}" style="padding: 400px; font-size: 20px; font: " />
+            <p:panel id="pnlAlumno" header="#{msg.lblDatosAlumno}">
                 <h:panelGrid id="gridDatosPersonalesAlumno" cellpadding="3" cellspacing="3" columns="4">
                     <p:column>
-                        <h:outputLabel value="Nombre (*): " />
+                        <h:outputLabel value="#{msg.lblNombre} (*): " />
                     </p:column>
                     <p:column>
                         <p:inputText id="txtNombre" value="#{formAlumnoBean.alumno.nombre}" size="50" style=""/>
                     </p:column>
                     <p:column>
-                        <h:outputLabel value="Apellido (*):"/>
+                        <h:outputLabel value="#{msg.lblApellido} (*):"/>
                     </p:column>
                     <p:column>
                         <p:inputText id="txtApellido" value="#{formAlumnoBean.alumno.apellido}" size="50"/>
                     </p:column>
                     <p:column>
-                        <h:outputLabel value="Tipo de documento (*): "/>
+                        <h:outputLabel value="#{msg.lblTipoDocumento} (*): "/>
                     </p:column>
                     <p:column>
                         <p:selectOneMenu id="selectedTipoDocumento" value="#{formAlumnoBean.alumno.documento.tipoDocumento}" disabled="true">
@@ -37,19 +37,19 @@ and open the template in the editor.
                         </p:selectOneMenu>
                     </p:column>
                     <p:column>
-                        <h:outputLabel value="Número de documento (*):"/>
+                        <h:outputLabel value="#{msg.lblNumDoc} (*):"/>
                     </p:column>
                     <p:column>
                         <p:inputText id="txtNumero" value="#{formAlumnoBean.alumno.documento.numero}" size="50" disabled="true"/>
                     </p:column>
                     <p:column>
-                        <h:outputLabel value="Correo electronico (*): "/> 
+                        <h:outputLabel value="#{msg.lblCorreoElectronico} (*): "/> 
                     </p:column>
                     <p:column>
                         <p:inputText id="txtEmail" value="#{formAlumnoBean.alumno.usuario.email}" size="50"/>
                     </p:column>
                     <p:column>
-                        <p:commandButton value="Guardar" actionListener="#{formAlumnoBean.save()}" update="primaryForm :loginForm"
+                        <p:commandButton value="#{msg.btnGuardar}" actionListener="#{formAlumnoBean.save()}" update="primaryForm :loginForm"
                                          icon="ui-icon-plusthick">
                         </p:commandButton>                            
                     </p:column>

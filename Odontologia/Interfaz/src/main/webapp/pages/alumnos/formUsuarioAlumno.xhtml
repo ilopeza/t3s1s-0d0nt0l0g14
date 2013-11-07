@@ -10,10 +10,10 @@
 
     <ui:define name="content">
 
-        <p:panel id="grid" header="NUEVO USUARIO ALUMNO">
+        <p:panel id="grid" header="#{msg.lblRegistrarUsuarioAlumno}">
             <h:form id="primaryForm">
                 <h:panelGrid columns="2" style="text-align: right">
-                    <h:outputLabel value="Número de documento (*): "/>
+                    <h:outputLabel value="#{msg.lblNumDoc} (*): "/>
                     <h:inputText id="txtDocumento" size="50"
                                  required="true"
                                  value="#{formUsuarioAlumnoBean.usuario.nombreUsuario}"
@@ -21,7 +21,7 @@
 
                                  >
                     </h:inputText>
-                    <h:outputLabel value="E-mail (*):" />
+                    <h:outputLabel value="#{msg.lblCorreoElectronico} (*):" />
                     <h:inputText id="txtEmail"  size="50"
                                  required="true"
                                  validatorMessage="El formato de e-mail es incorrecto"
@@ -30,7 +30,7 @@
                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </h:inputText>
                     <h:outputLabel/>
-                    <p:commandButton value="Guardar" 
+                    <p:commandButton value="#{msg.btnBuscar}" 
                                      ajax="true" 
                                      action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
                                      update=":msg"
