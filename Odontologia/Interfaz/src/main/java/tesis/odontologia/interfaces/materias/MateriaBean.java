@@ -5,6 +5,7 @@
 package tesis.odontologia.interfaces.materias;
 
 import com.mysema.query.types.expr.BooleanExpression;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -13,12 +14,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
 import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.service.CatedraService;
+import tesis.odontologia.core.service.DiagnosticoService;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.TrabajoPracticoService;
+import tesis.odontologia.core.specification.DiagnosticoSpecs;
 import tesis.odontologia.core.specification.MateriaSpecs;
 import tesis.odontologia.interfaces.validacion.Validacion;
 
@@ -46,6 +50,8 @@ public class MateriaBean {
     private Catedra selectedCatedra;
     @ManagedProperty(value = "#{materiaService}")
     private MateriaService materiaService;
+    @ManagedProperty(value = "#{diagnosticoService}")
+    private DiagnosticoService diagnosticoService;
     @ManagedProperty(value = "#{trabajoPracticoService}")
     private TrabajoPracticoService trabajoPracticoService;
     @ManagedProperty(value = "#{catedraService}")
@@ -53,12 +59,13 @@ public class MateriaBean {
     private boolean rendered = true;
     private boolean nuevoTPHabilitado;
     private boolean modificarTPHabilitado;
+    private List<Diagnostico> diagnosticos;
 
     @PostConstruct
     public void init() {
         materias = materiaService.findAll();
         catedras = catedraService.findAll();
-        trabajosPracticos = new ArrayList<TrabajoPractico>();        
+        trabajosPracticos = new ArrayList<TrabajoPractico>();
         resetFields();
         resetFieldsTP();
     }
@@ -71,8 +78,8 @@ public class MateriaBean {
     public void resetFieldsTP() {
         trabajoPractico = new TrabajoPractico();
     }
-    
-    public void nuevoTrabajoPractico(){
+
+    public void nuevoTrabajoPractico() {
         trabajoPractico = new TrabajoPractico();
         nuevoTPHabilitado = true;
     }
@@ -89,12 +96,21 @@ public class MateriaBean {
 
     public void eliminarTrabajoPractico() {
         trabajoPractico = selectedTrabajoPractico;
-        materia = materiaService.reload(materia, 1);
-        //materia.removeTrabajoPractico(trabajoPractico);
-        materia.getTrabajoPractico().remove(trabajoPractico);
-        materia = materiaService.save(materia);
-        trabajoPractico = new TrabajoPractico();
-        
+        if (validarTPconDiagnosticos()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existen diagnosticos que tienen asociado al Trabajo Práctico: " + "" + trabajoPractico + "." + "No se pude borrar el Trabajo Práctico", null));
+        } else {
+
+            materia = materiaService.reload(materia, 1);
+            //materia.removeTrabajoPractico(trabajoPractico);
+            materia.getTrabajoPractico().remove(trabajoPractico);
+            materia = materiaService.save(materia);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(trabajoPractico.getNombre()
+                + " eliminado correctamente."));
+            trabajoPractico = new TrabajoPractico();
+        }
+
+
     }
 
     public void saveTrabajoPractico() {
@@ -103,18 +119,24 @@ public class MateriaBean {
         if (trabajoPractico.isNew()) {
             materia = materiaService.reload(materia, 1);
             //materia.addTrabajoPractico(trabajoPractico);
-            materia.getTrabajoPractico().add(trabajoPractico);            
+            materia.getTrabajoPractico().add(trabajoPractico);
             materia = materiaService.save(materia);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(trabajoPractico.getNombre()
+                + " guardado correctamente."));
+            
             materia = new Materia();
             resetFieldsTP();
             nuevoTPHabilitado = false;
-        }else{
+        } else {
             trabajoPractico = trabajoPracticoService.save(trabajoPractico);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(trabajoPractico.getNombre()
+                + " actualizado correctamente."));
             trabajoPractico = new TrabajoPractico();
             nuevoTPHabilitado = false;
-        }   
+        }
     }
-
 
     public void retornarMateria() {
 
@@ -124,6 +146,18 @@ public class MateriaBean {
         materia = materiaService.findOne(predicate);
 
         //return materia.getNombre();
+    }
+
+    public boolean validarTPconDiagnosticos() {
+        diagnosticos = new ArrayList<Diagnostico>();
+        BooleanExpression predicate = null;
+        boolean var = false;
+        predicate = (DiagnosticoSpecs.byTrabajoPractico(trabajoPractico));
+        diagnosticos = (List<Diagnostico>) (diagnosticoService.findAll(predicate));
+        if (diagnosticos.size()>0) {            
+            var = true;
+        }
+        return var;
     }
 
     private boolean validar() {
@@ -357,5 +391,33 @@ public class MateriaBean {
      */
     public void setModificarTPHabilitado(boolean modificarTPHabilitado) {
         this.modificarTPHabilitado = modificarTPHabilitado;
+    }
+
+    /**
+     * @return the diagnosticoService
+     */
+    public DiagnosticoService getDiagnosticoService() {
+        return diagnosticoService;
+    }
+
+    /**
+     * @param diagnosticoService the diagnosticoService to set
+     */
+    public void setDiagnosticoService(DiagnosticoService diagnosticoService) {
+        this.diagnosticoService = diagnosticoService;
+    }
+
+    /**
+     * @return the diagnosticos
+     */
+    public List<Diagnostico> getDiagnosticos() {
+        return diagnosticos;
+    }
+
+    /**
+     * @param diagnosticos the diagnosticos to set
+     */
+    public void setDiagnosticos(List<Diagnostico> diagnosticos) {
+        this.diagnosticos = diagnosticos;
     }
 }
