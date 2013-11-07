@@ -32,13 +32,12 @@ and open the template in the editor.
                         <p:commandButton value="Buscar" icon="ui-icon-search" id="btnBuscarAlumno" 
                                          actionListener="#{consultarAsignacionesBean.cargarAlumno}"
                                          process="@form"
-                                         update="@form, :asignacionesForm:tblResultadoAsignaciones"/>
+                                         update="@form, :asignacionesForm:tblResultadoAsignaciones, :msg"/>
                     </p:column>
                     <p:column colspan="5">
-                        <h:outputLabel value="#{consultarAsignacionesBean.alumno} "/>
-                    </p:column>
-                    <p:column colspan="5">
-                        <h:outputLabel value="#{consultarAsignacionesBean.alumno.documento.numero} "/>
+                        <p:panel id="alumnoEncontrado" header="Alumno">
+                            <h:outputLabel value="#{consultarAsignacionesBean.alumno} "/>
+                        </p:panel>
                     </p:column>
                 </h:panelGrid>
             </h:form>
@@ -77,7 +76,7 @@ and open the template in the editor.
                         <h:outputLabel value="Fecha de asignación: " />
                     </p:column>
                     <p:column>
-                        <p:calendar id="calFechaAsignación" value="#{consultarAsignacionesBean.fechaFiltro}"/>
+                        <p:calendar id="calFechaAsignación" pattern="dd/MM/yyyy" value="#{consultarAsignacionesBean.fechaFiltro}"/>
                     </p:column>
 
                     <p:commandButton id="btnFiltrarAsignaciones" value="Buscar" 
@@ -91,18 +90,22 @@ and open the template in the editor.
 
                 <p:dataTable id="tblResultadoAsignaciones" 
                              value="#{consultarAsignacionesBean.asignaciones}"
-                             emptyMessage="Alumno sin asignaciones"
+                             emptyMessage="Sin resultados"
                              paginator="true" 
                              selectionMode="single"
                              selection="#{consultarAsignacionesBean.asignacionSeleccionada}"
                              var="a"
                              rowKey="#{a.id}" 
-                             editable="#{consultarAsignacionesBean.campoEditable}" editMode="cell">
+                             editable="true"
+                             filteredValue="#{consultarAsignacionesBean.filteredAsignaciones}">
                     <f:facet name="header">
                         <h:outputText value="Asignaciones del alumno #{consultarAsignacionesBean.alumno}" />
                     </f:facet>
+                    <p:ajax event="rowEdit" listener="#{consultarAsignacionesBean.onEdit}" update=":msg" />  
+                    <p:ajax event="rowEditCancel" listener="#{consultarAsignacionesBean.onCancel}" update=":msg" />
+
                     <p:column id="colPaciente" headerText="Paciente">
-                        <h:outputText value="#{a.paciente}" />
+                        <h:outputText value="#{a.paciente}" />  
                     </p:column>
                     <p:column id="colDocumento" headerText="Documento">
                         <h:outputText value="#{a.paciente.documento.numero}" />
@@ -113,14 +116,24 @@ and open the template in the editor.
                     <p:column id="colTrabajoPractico" headerText="Trabajo Práctico">
                         <h:outputText value="#{a.diagnostico.trabajoPractico.nombre}" />
                     </p:column>
-                    <p:column id="colFechaAsignacion" headerText="Fecha Asignacion">
-                        <h:outputText value="#{consultarAsignacionesBean.formatFecha(a.fechaAsignacion)}" />
+
+                    <p:column id="colFechaAsignacion" headerText="Fecha Asignacion" sortBy="#{a.fechaAsignacion.time}">
+
+                        <p:cellEditor>  
+                            <f:facet name="output"><h:outputText value="#{consultarAsignacionesBean.formatFecha(a.fechaAsignacion)}" /></f:facet>  
+                            <f:facet name="input"><p:calendar value="#{a.fechaAsignacion.time}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" 
+                                                              id="calendarFechaAsignacion" 
+                                                              mindate="#{consultarAsignacionesBean.getFechaDesde(a)}" 
+                                                              label="Fecha de asignación"
+                                                              showButtonPanel="true"/> </f:facet>  
+                        </p:cellEditor> 
                     </p:column>
+
                     <p:column id="colEstado" headerText="Estado Asignacion">
                         <h:outputText value="#{a.estado}" />
                     </p:column>
-                     <p:column id="Telefono" headerText="Teléfono">
-                         <h:outputText value="#{a.paciente.telefono}" />
+                    <p:column id="Telefono" headerText="Teléfono">
+                        <h:outputText value="#{a.paciente.telefono}" />
                     </p:column>
                     <p:column id="Celular" headerText="Celular">
                         <h:outputText value="#{a.paciente.celular}" />
@@ -132,20 +145,21 @@ and open the template in the editor.
                         <h:outputText value="#{a.paciente.email}" />
                     </p:column>
                     <p:column id="colAcciones" headerText="Acciones">
-                        <h:panelGrid columns="3">
-                            <p:commandButton id="btnConfirmar" value="Confirmar" icon="ui-icon-check"
-                                             oncomplete="dlgConfirmar.show();" 
-                                             update="tblResultadoAsignaciones"
-                                             disabled="#{consultarAsignacionesBean.deshabilitarBtnConfirmarAsignacion(a)}"/>
-                            <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-cancel"
-                                             oncomplete="dlgCancelarAsignacion.show();"
-                                             disabled="#{consultarAsignacionesBean.deshabilitarBtnCancelarAsignacion(a)}"
-                                             update="tblResultadoAsignaciones"/>
-                            <p:commandButton id="btnModificar" value="Modificar" icon="ui-icon-gear"
-                                             disabled="#{consultarAsignacionesBean.deshabilitarBtnModificarAsignacion(a)}"
-                                             rendered="#{consultarAsignacionesBean.rendered}"/>
-                        </h:panelGrid> 
+                        <p:splitButton value="Acciones">  
+                            <p:menuitem id="btnConfirmar" value="Confirmar" icon="ui-icon-check"
+                                        oncomplete="dlgConfirmar.show();" 
+                                        update="tblResultadoAsignaciones"
+                                        disabled="#{consultarAsignacionesBean.deshabilitarBtnConfirmarAsignacion(a)}"/> 
+                            <p:menuitem id="btnCancelar" value="Cancelar" icon="ui-icon-cancel"
+                                        oncomplete="dlgCancelarAsignacion.show();"
+                                        disabled="#{consultarAsignacionesBean.deshabilitarBtnCancelarAsignacion(a)}"
+                                        update="tblResultadoAsignaciones"/>  
+                        </p:splitButton>
+
                     </p:column>
+                    <p:column headerText="Editar">  
+                        <p:rowEditor rendered="#{!consultarAsignacionesBean.deshabilitarBtnModificarAsignacion(a)}" />  
+                    </p:column>  
                 </p:dataTable>
 
 
