@@ -6,7 +6,11 @@ package tesis.odontologia.core.specification;
 
 import com.mysema.query.jpa.impl.JPASubQuery;
 import com.mysema.query.types.expr.BooleanExpression;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.asignaciones.QAsignacionPaciente;
@@ -37,12 +41,30 @@ public class AsignacionPacienteSpecs {
         return $.estado.eq(ea);
     }
     
+    public static BooleanExpression byNoMostrarCanceladas() {
+        return $.estado.ne(AsignacionPaciente.EstadoAsignacion.CANCELADA);
+    }
+    
     public static BooleanExpression byFecha(Calendar cal){
         return $.fechaAsignacion.eq(cal);
     }
     
     public static BooleanExpression byFechaDesdeHasta(Calendar calDesde, Calendar calHasta){
         return $.fechaAsignacion.between(calDesde, calHasta);
+    }
+    
+    public static BooleanExpression byDate(Date fecha) {
+        Calendar cal1 = new GregorianCalendar();
+        cal1.setTime(fecha);
+        cal1.set(Calendar.HOUR_OF_DAY, 0);
+        cal1.set(Calendar.MINUTE, 0);
+        cal1.set(Calendar.SECOND, 0);
+        Calendar cal2 = new GregorianCalendar();
+        cal2.setTime(fecha);
+        cal2.set(Calendar.HOUR_OF_DAY, 23);
+        cal2.set(Calendar.MINUTE, 59);
+        cal2.set(Calendar.SECOND, 59);
+        return $.fechaAsignacion.between(cal1, cal2);
     }
     
     public static BooleanExpression byMateria(Materia m){
@@ -72,5 +94,9 @@ public class AsignacionPacienteSpecs {
      public static BooleanExpression byCatedra(Catedra c){
         return $.catedra.id.eq(c.getId());
     }
+     
+     public static BooleanExpression byEstados(List<AsignacionPaciente.EstadoAsignacion> estados) {
+         return $.estado.in(estados);
+     }
      
 }
