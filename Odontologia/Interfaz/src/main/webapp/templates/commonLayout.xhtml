@@ -11,7 +11,7 @@
             <f:facet name="first">
                 <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>S.A.P.O</title>
+                <title>#{msg.lblSapoSiglas}</title>
             </f:facet>
 
             <style type="text/css">
@@ -31,18 +31,18 @@
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit  position="north" size="70" header="Facultad de Odontología - S.A.P.O." style="text-align: center">  
+                <p:layoutUnit  position="north" size="70" header="#{msg.lblFacultad}" style="text-align: center">  
                     <h:form id="loginForm">    
                         <p:spacer width="45%" height="10" />
                         #{loginBean.persona} 
-                        <p:commandLink value=" (Logout)" action="#{loginBean.redirectLogin()}"
+                        <p:commandLink value=" (#{msg.lblCerrarSesion})" action="#{loginBean.redirectLogin()}"
                                        style="text-align: right" ajax="false">  
                             <h:outputText value="(Logout)"/> 
                         </p:commandLink> 
                         <p:spacer width="42%" height="10" />
-                        <p:commandLink value="Inicio" action="index"
+                        <p:commandLink value="#{msg.lblInicio}" action="index"
                                        style="text-align: right" ajax="false">  
-                            <h:outputText value="(Logout)"/> 
+                            <h:outputText value="(#{msg.lblCerrarSesion})"/> 
                         </p:commandLink>
                     </h:form>
                     <ui:include src="commonHeader.xhtml"/>

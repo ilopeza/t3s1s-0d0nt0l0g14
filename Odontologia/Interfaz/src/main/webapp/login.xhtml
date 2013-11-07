@@ -8,9 +8,7 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <f:facet name="first">
             <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
@@ -35,22 +33,22 @@ and open the template in the editor.
 
             <p:growl id="growl" showDetail="true" life="3000" />  
 
-            <p:dialog id="dialog" header="Login" widgetVar="dlg" resizable="false" visible="true" draggable="false"
+            <p:dialog id="dialog" header="#{msg.btnEntrar}" widgetVar="dlg" resizable="false" visible="true" draggable="false"
                       closable="false" height="130"  width="300" modal="true">  
 
                 <h:panelGrid columns="2" cellpadding="5">  
-                    <h:outputLabel for="username" value="Username:" />  
+                    <h:outputLabel for="username" value="#{msg.lblUsuario}:" />  
                     <p:inputText value="#{loginBean.username}"   
                                  id="username" required="true" label="username" />  
 
-                    <h:outputLabel for="password" value="Password:" /> 
+                    <h:outputLabel for="password" value="#{msg.lblContrasenia}:" /> 
                     <p:password value="#{loginBean.password}"   
                                    id="password" required="true" label="password" />
                     <!--h:inputSecret value="{loginBean.password}"   
                                    id="password" required="true" label="password" /-->  
 
                     <f:facet name="footer">  
-                        <p:commandButton id="loginButton" value="Login" update="growl"   
+                        <p:commandButton id="loginButton" value="#{msg.btnEntrar}" update="growl"   
                                          action="#{loginBean.login}"/>  
                     </f:facet>  
                 </h:panelGrid>  
