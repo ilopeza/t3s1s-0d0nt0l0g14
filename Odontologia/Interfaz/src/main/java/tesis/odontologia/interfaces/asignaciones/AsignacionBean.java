@@ -6,6 +6,7 @@ package tesis.odontologia.interfaces.asignaciones;
 
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +19,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
@@ -112,10 +115,10 @@ public class AsignacionBean {
     public void filtrarCombosPorMateria() {
         if (materiaFiltro != null) {
             materiaFiltro = materiaService.reload(materiaFiltro, 1);
-            buscarCatedras();
+            //buscarCatedras();
             buscarTrabajosPracticos();
         } else {
-            catedras = new ArrayList<Catedra>();
+            //catedras = new ArrayList<Catedra>();
             trabajosPracticos = new ArrayList<TrabajoPractico>();
         }
     }
@@ -150,18 +153,21 @@ public class AsignacionBean {
 
 
             AsignacionPaciente asig = new AsignacionPaciente();
-            asig.setDiagnostico(diagnosticoService.findOne(diagnosticoSeleccionado.getIdDiagnostico()));
-            asig.setFechaCreacionAsignacion(Calendar.getInstance());
+            Diagnostico diag = diagnosticoService.findOne(diagnosticoSeleccionado.getIdDiagnostico());
+            asig.setDiagnostico(diag);
+            asig.setFechaCreacionAsignacion(GregorianCalendar.getInstance());
             Calendar fecha = new GregorianCalendar();
             fecha.setTime(fechaAsignacion);
             asig.setFechaAsignacion(fecha);
             asig.setAlumno(alumnoBuscado);
             asig.setPaciente(diagnosticoSeleccionado.getPaciente());
             asig.setCatedra(catedraFiltro);
+            diag.setEstado(Diagnostico.EstadoDiagnostico.RESERVADO);
 
 
             try {
                 asig = asignacionPacienteService.save(asig);
+                diag = diagnosticoService.save(diag);
                 buscarAsignaciones();
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha registrado la asignación.", null));
@@ -172,6 +178,19 @@ public class AsignacionBean {
 
             return null;
         }
+    }
+    
+    public void onRowSelect(SelectEvent event) { 
+        buscarCatedras(diagnosticoService.findOne(diagnosticoSeleccionado.idDiagnostico).getMateria());
+        FacesMessage msg = new FacesMessage("Paciente Seleccionado");  
+  
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }  
+  
+    public void onRowUnselect(UnselectEvent event) {  
+        FacesMessage msg = new FacesMessage("Sin selección de paciente");  
+  
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
     }
 
     // Métodos de la interfaz.
@@ -206,21 +225,6 @@ public class AsignacionBean {
     }
 
     //Métodos auxiliares.
-    private void busquedaSimple() {
-        pacientes.clear();
-        if (filtroPaciente == null || filtroPaciente.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "El filtro de busqueda de paciente no puede estar vacio.", null));
-            return;
-        }
-        pacientes = (List<Paciente>) personaService.findAll(PacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro).and(PacienteSpecs.byNombreOApellido(filtroPaciente)));
-//                .findAll(PacienteSpecs.byNombreOApellido(filtroPaciente).
-//                and(PersonaSpecs.byClass(Paciente.class).and(PacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro))));
-        if (pacientes == null || pacientes.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron pacientes.", null));
-        }
-    }
 
     public void createAsignacionPaciente(Alumno a, Paciente p, Catedra c, Diagnostico d) {
         asignacion = new AsignacionPaciente();
@@ -269,7 +273,7 @@ public class AsignacionBean {
     //MÉTODOS AUXILIARES
     private void cargarCombos() {
         materias = buscarMaterias();
-        catedras = buscarCatedras();
+        //catedras = buscarCatedras();
         trabajosPracticos = buscarTrabajosPracticos();
     }
 
@@ -277,13 +281,17 @@ public class AsignacionBean {
         return materiaService.findAll();
     }
 
-    private List<Catedra> buscarCatedras() {
-        if (materiaFiltro == null) {
+    public List<Catedra> buscarCatedras(Materia materia) {
+        materia = materiaService.reload(materia, 1);
+        catedras = materia.getCatedra();
+        return catedras;
+        /*if (materiaFiltro == null) {
             return null;
         } else {
             catedras = materiaFiltro.getCatedra();
             return catedras;
-        }
+        }*/
+        
     }
 
     private List<TrabajoPractico> buscarTrabajosPracticos() {
@@ -451,45 +459,17 @@ public class AsignacionBean {
     public void setTrabajoPracticoService(TrabajoPracticoService trabajoPracticoService) {
         this.trabajoPracticoService = trabajoPracticoService;
     }
-//      RESPALDO DE CODIGO DE FILTROS
-//    private void busquedaAvanzada() {
-//        pacientes.clear();
-//        Predicate p = null;
-//
-//        if (edadDesdeFiltro != null && edadDesdeFiltro.length() > 0) {
-//            // Busca pacientes que tengan como máximo cierta edad.
-//            p = PacienteSpecs.byMayorA(convertirFechaDesde());
-//        }
-//        if (edadHastaFiltro != null && edadHastaFiltro.length() > 0) {
-//            p = PacienteSpecs.byMenorA(convertirFechaHasta()).and(p);
-//        }
-//        pacientes.addAll((Collection<? extends Paciente>) personaService.findAll(p));
-//    }
-//
-//    private void buscarTodosLosPacientes() {
-//        Predicate p = PersonaSpecs.byClass(Paciente.class);
-//        pacientes = (List<Paciente>) personaService.findAll(p);
-//    }
-//
-//    private Calendar convertirFechaDesde() {
-//        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-//        int anioDesde = anioActual - Utiles.convertStringToInt(edadDesdeFiltro).intValue();
-//
-//        return Utiles.convertIntegerToCalendarYear(anioDesde);
-//    }
-//
-//    private Calendar convertirFechaHasta() {
-//        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-//        int anioHasta = anioActual - Utiles.convertStringToInt(edadHastaFiltro).intValue();
-//
-//        return Utiles.convertIntegerToCalendarYear(anioHasta);
-//    }
 
     /**
      * @return the mostrarBuscarAlumno
      */
     public boolean isMostrarBuscarAlumno() {
         return mostrarBuscarAlumno;
+    }
+    
+    public String getFechaDesde() {
+        SimpleDateFormat fechaMin = new SimpleDateFormat("dd/MM/yyyy");
+        return fechaMin.format(GregorianCalendar.getInstance().getTime());
     }
 
     /**
