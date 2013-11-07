@@ -11,7 +11,7 @@
 
     <ui:define name="content">
         <h:form id="historiaClinicaForm">
-            <p:panel header="Historia clinica de #{historiaClinicaBean.paciente}">
+            <p:panel header="#{msg.lblHistClinica} #{historiaClinicaBean.paciente}">
                 <c:forEach var="i" begin="1" end="29">
                     <p:panel>  
                         <h:panelGrid columns="6">
@@ -45,10 +45,10 @@
                         </h:panelGrid>
                     </p:panel>  
                 </c:forEach>
-                <p:commandButton value="Guardar" id="btnGuardar" 
+                <p:commandButton value="#{msg.btnGuardar}" id="btnGuardar" 
                              actionListener="#{historiaClinicaBean.saveHistoriaClinica()}"
                               update=":msg"/>
-                <p:commandButton value="Volver" id="btnCancelar" 
+                <p:commandButton value="#{msg.btnCancelar}" id="btnCancelar" 
                              action="registroPaciente"
                               />
             </p:panel>

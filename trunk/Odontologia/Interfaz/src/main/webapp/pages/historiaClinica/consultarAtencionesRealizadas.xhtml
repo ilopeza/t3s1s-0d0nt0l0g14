@@ -6,44 +6,44 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:outputLabel value="CONSULTAR ATENCIONES REALIZADAS" style="padding: 400px; font-size: 20px; font: " />
+        <h:outputLabel value="#{msg.lblConsultarAtencionesRealizadas}" style="padding: 400px; font-size: 20px; font: " />
 
         <h:form id="consultarAtencionesRealizadasForm">
-            <p:panel id="pnlConsultarAtencionesRealizadas" header="Parámetros de búsqueda">
+            <p:panel id="pnlConsultarAtencionesRealizadas" header="#{msg.lblParametrosBusquedaAtenciones}">
                 <h:panelGrid id="paramentros" columns="4" cellpadding="3" cellspacing="3">                 
 
-                    <p:outputLabel value="Materia "/>
+                    <p:outputLabel value="#{msg.lblMateria}: "/>
                     <p:selectOneMenu id="selecciontMateriaBusqueda" value="#{consultarAtencionesRealizadasBean.materiaFiltro}" converter="materiaConverter">
-                        <f:selectItem itemLabel="Seleccione una Materia"/>
+                        <f:selectItem itemLabel="#{msg.lblSelectMateria}"/>
                         <f:selectItems value="#{consultarAtencionesRealizadasBean.materias}"/>
                         <f:ajax event="change"  render="seleccionCatedraBusqueda seleccionTrabajoPracticoBusqueda" execute="selecciontMateriaBusqueda"
                                 listener="#{consultarAtencionesRealizadasBean.filtrarCombosPorMateria()}"/>
                     </p:selectOneMenu>     
 
-                    <p:outputLabel value="Trabajo práctico"/>
+                    <p:outputLabel value="#{msg.lblTrabajoPractico}:"/>
                     <p:selectOneMenu id="seleccionTrabajoPracticoBusqueda" value="#{consultarAtencionesRealizadasBean.trabajoPracticoFiltro}"
                                      converter="trabajoPracticoConverter">
-                        <f:selectItem itemLabel="Seleccione un trabajo práctico"/>
+                        <f:selectItem itemLabel="#{msg.lblSelectTrabPrac}"/>
                         <f:selectItems value="#{consultarAtencionesRealizadasBean.trabajosPracticos}"/>
                     </p:selectOneMenu>
 
-                    <p:outputLabel value="Cátedra de Atención " />
+                    <p:outputLabel value="#{msg.lblCatedraAtencion}: " />
                     <p:selectOneMenu id="seleccionCatedraBusqueda" value="#{consultarAtencionesRealizadasBean.catedraFiltro}" converter="catedraConverter">
-                        <f:selectItem itemLabel="Seleccione una Cátedra"/>
+                        <f:selectItem itemLabel="#{msg.lblSelectCatedra}"/>
                         <f:selectItems value="#{consultarAtencionesRealizadasBean.catedras}"/>
                     </p:selectOneMenu>                    
                     <span></span> 
                     <h:outputLabel value=""/>
-                    <h:outputLabel value="Fecha de Atención Desde:"/>
+                    <h:outputLabel value="#{msg.lblFechaAtencionDesde}:"/>
                     <p:calendar id="calDesde" value="#{consultarAtencionesRealizadasBean.fechaDesdeFiltro}" navigator="true"  yearRange="c-100:c"/>
 
-                    <h:outputLabel value="Fecha de Atención Hasta:"/>
+                    <h:outputLabel value="#{msg.lblFechaAtencionHasta}:"/>
                     <p:calendar id="calHasta" value="#{consultarAtencionesRealizadasBean.fechaHastaFiltro}" navigator="true"  yearRange="c-100:c"/>
 
                 </h:panelGrid>
                 <br/>
 
-                <p:commandButton  id="btnBuscarAtencionesRealizadas" value="Buscar Atenciones Realizadas" 
+                <p:commandButton  id="btnBuscarAtencionesRealizadas" value="#{msg.btnBuscar}" 
                                   actionListener="#{consultarAtencionesRealizadasBean.buscarAtencionesRealizadas()}" 
                                   process="@form"
                                   update="tblResultadosAtencionesRealizadas, :msg">
@@ -52,7 +52,7 @@
             <br/>
             <br/>
 
-            <p:panel  id="pnlResultadosConsultarAtencionesRealizadas" header="Resultados de Búsqueda">
+            <p:panel  id="pnlResultadosConsultarAtencionesRealizadas" header="#{msg.lblAtencionesRealizadas}">
                 <p:dataTable id="tblResultadosAtencionesRealizadas" var="atenciones" value="#{consultarAtencionesRealizadasBean.atencionesGenericas}"  paginator="true" rows="10"
                              emptyMessage="No se registran asignaciones confirmadas para los parámetros ingresados" >
 
@@ -64,35 +64,35 @@
 
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Paciente" />  
+                            <h:outputText value="#{msg.lblApeNom} del paciente" />  
                         </f:facet>  
                         <h:outputText value="#{atenciones.asignacionPaciente.paciente}" />  
                     </p:column> 
 
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Alumno Practicante" />  
+                            <h:outputText value="#{msg.lblApeNom} del alumno"  />  
                         </f:facet>  
                         <h:outputText value="#{atenciones.asignacionPaciente.alumno}" />  
                     </p:column> 
                     
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Profesor que Autorizó" />  
+                            <h:outputText value="#{msg.lblProfesorAut}" />  
                         </f:facet>  
                         <h:outputText value="#{atenciones.asignacionPaciente.profesor}" />  
                     </p:column>
                     
                     <p:column>  
                         <f:facet name="header">  
-                            <h:outputText value="Diagnósitico que Resolvió" />  
+                            <h:outputText value="#{msg.lblDiagnosticoResuelto}" />  
                         </f:facet>  
                         <h:outputText value="#{atenciones.asignacionPaciente.diagnostico.descripcion}" />  
                     </p:column>
 
                     <p:column>
                         <f:facet name="header">  
-                            <h:outputText value="Descripción Procedimiento" />  
+                            <h:outputText value="#{msg.lblProcedimiento}" />  
                         </f:facet> 
                         <p:commandButton id="btnVerDescripcion" icon="ui-icon-circle-zoomin"
                                          oncomplete="dlgDescripcionProcedimiento.show();"/>

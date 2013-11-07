@@ -1,4 +1,4 @@
-en <?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="./../../templates/commonLayout.xhtml"
@@ -8,23 +8,23 @@ en <?xml version='1.0' encoding='UTF-8' ?>
 
     <ui:define name="content">
         <h:form id="formConsultarProfesores">
-            <p:panel id="pnlConsultarProfesores" header="Consultar profesores">
+            <p:panel id="pnlConsultarProfesores" header="#{msg.lblConsultarProfesor}">
                 <h:panelGrid columns="7" cellpadding="3" cellspacing="3">
-                    <p:outputLabel value="Nombre o número de documento:"/>
+                    <p:outputLabel value="#{msg.lblBuscarPorNumApeNom}:"/>
                     <p:inputText id="txtNombreBusqueda" value="#{profesoresBean.filtroBusqueda}"/>
 
-                    <p:outputLabel value="Materia"/>
+                    <p:outputLabel value="#{msg.lblMateria}:"/>
                     <p:selectOneMenu id="selectMateriaBusqueda" filter="true" filterMatchMode="startsWith" value="#{profesoresBean.materiaBusqueda}" converter="materiaConverter">
-                        <f:selectItem itemLabel="Seleccione una materia"/>
+                        <f:selectItem itemLabel="#{msg.lblSelectMateria}"/>
                         <f:selectItems value="#{profesoresBean.materias}"/>
                     </p:selectOneMenu>
 
-                    <p:outputLabel value="Estado:"/>
+                    <p:outputLabel value="#{msg.lblEstado}:"/>
                     <p:selectOneMenu id="selectEstadoProfesor" value="#{profesoresBean.estadoBusqueda}">
                         <f:selectItems value="#{profesoresBean.estadosProfesor}"/>
                     </p:selectOneMenu>
 
-                    <p:commandButton id="btnBuscarProfesor" value="Buscar" icon="ui-icon-search" 
+                    <p:commandButton id="btnBuscarProfesor" value="#{msg.btnBuscar}" icon="ui-icon-search" 
                                      actionListener="#{profesoresBean.buscarProfesores}" 
                                      update="@form :msg"/>
                 </h:panelGrid> 
@@ -34,31 +34,31 @@ en <?xml version='1.0' encoding='UTF-8' ?>
                              selectionMode="single" selection="#{profesoresBean.selectedProfesor}"
                              rowKey="#{p.id}" paginatorAlwaysVisible="false">
                     <f:facet name="header">
-                        Profesores encontrados
+                        #{msg.lblProfesoresEncontrados}
                     </f:facet>
-                    <p:column id="colApellidoNombre" headerText="Apellido, Nombre">
+                    <p:column id="colApellidoNombre" headerText="#{msg.lblApeNom}">
                         <h:outputText value="#{p}"/>
                     </p:column>
-                    <p:column id="colDocumento" headerText="Documento">
+                    <p:column id="colDocumento" headerText="#{msg.lblNumDoc}">
                         <h:outputText value="#{p.documento.numero}" />
                     </p:column>
-                    <p:column id="colFechaNacimiento" headerText="Fecha de Nacimiento">
+                    <p:column id="colFechaNacimiento" headerText="#{msg.lblFechaDeNacimiento}">
                         <h:outputText value="" />
                     </p:column>
-                    <p:column id="colMateria" headerText="Materia">
+                    <p:column id="colMateria" headerText="#{msg.lblMateria}">
                         <p:selectOneMenu id="materiasProfesor">
                         </p:selectOneMenu>
                     </p:column>
                     <f:facet name="footer">
-                        <p:commandButton id="btnNuevoProfesor" value="Nuevo" icon="ui-icon-plusthick" 
+                        <p:commandButton id="btnNuevoProfesor" value="#{msg.btnNuevoProfesor}" icon="ui-icon-plusthick" 
                                          actionListener="#{profesoresBean.registrarNuevoProfesor()}" 
                                          update=":formNuevoProf"/>
-                        <p:commandButton id="btnModificarProfesor" value="Modificar" icon="ui-icon-gear" 
+                        <p:commandButton id="btnModificarProfesor" value="#{msg.btnModificar}" icon="ui-icon-gear" 
                                          actionListener="#{profesoresBean.seleccionarProfesor()}" 
                                          update=":formNuevoProf"/>
-                        <p:commandButton id="btnBajaProfesor" value="Dar de baja" icon="ui-icon-cancel" 
+                        <p:commandButton id="btnBajaProfesor" value="#{msg.btnDarDeBaja}" icon="ui-icon-cancel" 
                                          disabled="#{profesoresBean.habilitarCambioEstado}" onclick="dlgDarDeBaja.show()"/>
-                        <p:commandButton id="btnAltaProfesor" value="Dar de alta" icon="ui-icon-cancel" 
+                        <p:commandButton id="btnAltaProfesor" value="#{msg.btnDarDeAlta}" icon="ui-icon-cancel" 
                                          disabled="#{!profesoresBean.habilitarCambioEstado}" onclick="dlgDarDeAlta.show()"/>
                     </f:facet> 
                 </p:dataTable>
@@ -69,20 +69,20 @@ en <?xml version='1.0' encoding='UTF-8' ?>
         </h:form>  
 
         <h:form id="formNuevoProf">
-            <p:panel id="pnlNuevoProf" header="Nuevo profesor" visible="#{profesoresBean.habilitarNuevoProfesor}">
+            <p:panel id="pnlNuevoProf" header="#{msg.lblRegistrarNuevoProfesor}" visible="#{profesoresBean.habilitarNuevoProfesor}">
                 <h:panelGrid columns="8" cellpadding="3" cellspacing="3">
-                    <p:outputLabel value="Nombre:"/>
+                    <p:outputLabel value="#{msg.lblNombre}:"/>
                     <p:inputText id="txtNombre" value="#{profesoresBean.profesor.nombre}"/> 
-                    <p:outputLabel value="Apellido:"/>
+                    <p:outputLabel value="#{msg.lblApellido}:"/>
                     <p:inputText id="txtApellido" value="#{profesoresBean.profesor.apellido}"/>     
-                    <p:outputLabel value="Tipo de documento:"/>
+                    <p:outputLabel value="#{msg.lblTipoDocumento}:"/>
                     <p:selectOneMenu id="selectTipoDocumento" value="#{profesoresBean.profesor.documento.tipoDocumento}">
-                        <f:selectItem itemLabel="Seleccione un tipo de documento"/>
+                        <f:selectItem itemLabel="#{msg.lblSelectTipoDoc}"/>
                         <f:selectItems value="#{profesoresBean.tiposDocuementos}"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="Número de documento:"/>
+                    <p:outputLabel value="#{msg.lblNumDoc}:"/>
                     <p:inputText id="txtNumeroDocumento" value="#{profesoresBean.profesor.documento.numero}"/>
-                    <p:outputLabel value="Fecha de nacimiento:"/>
+                    <p:outputLabel value="#{msg.lblFechaDeNacimiento}:"/>
                     <p:calendar id="calFechaNacimientoProfesor" value="#{profesoresBean.fechaNacimiento}" navigator="true"  yearRange="c-100:c"/>
                 </h:panelGrid> 
                 <p:pickList id="pickListMaterias" 
@@ -90,14 +90,14 @@ en <?xml version='1.0' encoding='UTF-8' ?>
                             converter="materiaConverter" itemValue="#{mat}" itemLabel="#{mat.nombre}"
                             showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
 
-                    <f:facet name="sourceCaption">Materias disponibles</f:facet>  
-                    <f:facet name="targetCaption">Materias elegidas</f:facet>  
+                    <f:facet name="sourceCaption">#{msg.lblMatDisp}</f:facet>  
+                    <f:facet name="targetCaption">#{msg.lblMatSel}</f:facet>  
                 </p:pickList>
                 <h:panelGrid columns="3">
-                    <p:commandButton id="btnGuardar" value="Guardar" icon="ui-icon-check"
+                    <p:commandButton id="btnGuardar" value="#{msg.btnGuardar}" icon="ui-icon-check"
                                      actionListener="#{profesoresBean.saveProfesor()}" update=":msg @form" 
                                      process="@form" disabled="#{profesoresBean.habilitarBotonNuevo}"/>
-                    <p:commandButton id="btnConfirmarCambios" value="Confirmar cambios" icon="ui-icon-pencil" disabled="#{!profesoresBean.habilitarBotonNuevo}"
+                    <p:commandButton id="btnConfirmarCambios" value="#{msg.btnConfirmarCambios}" icon="ui-icon-pencil" disabled="#{!profesoresBean.habilitarBotonNuevo}"
                                      update=":msg @form" actionListener="#{profesoresBean.saveProfesor()}"/>
                 </h:panelGrid>
             </p:panel>
@@ -105,17 +105,17 @@ en <?xml version='1.0' encoding='UTF-8' ?>
         <p:confirmDialog message="¿Realmente desea dar de baja al profesor #{profesoresBean.selectedProfesor.apellido}?"
                          header="Dar de baja" severity="alert"
                          widgetVar="dlgDarDeBaja" appendToBody="true">
-            <p:commandButton value="Sí" actionListener="#{profesoresBean.darBaja()}"
+            <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{profesoresBean.darBaja()}"
                              update=":msg :formConsultarProfesores" oncomplete="dlgDarDeBaja.hide()"/>
-            <p:commandButton value="No" onclick="dlgDarDeBaja.hide();" type="button" />
+            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgDarDeBaja.hide();" type="button" />
         </p:confirmDialog>
 
         <p:confirmDialog message="¿Realmente desea dar de alta al profesor #{profesoresBean.selectedProfesor.apellido}?"
-                         header="Dar de alta" severity="alert"
+                         header="#{msg.btnDarDeAlta}" severity="alert"
                          widgetVar="dlgDarDeAlta" appendToBody="true">
-            <p:commandButton value="Sí" actionListener="#{profesoresBean.darAlta()}"
+            <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{profesoresBean.darAlta()}"
                              update=":msg :formConsultarProfesores" oncomplete="dlgDarDeAlta.hide()"/>
-            <p:commandButton value="No" onclick="dlgDarDeAlta.hide();" type="button" />
+            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgDarDeAlta.hide();" type="button" />
         </p:confirmDialog>
     </ui:define> 
 </ui:composition>

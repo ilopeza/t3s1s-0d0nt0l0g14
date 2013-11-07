@@ -7,22 +7,22 @@
       >
     <p:fieldset id="fldsDatosDocum" legend="Datos personales" toggleable="true">
         <h:panelGrid id="gridDatosPersonales" columns="8" cellpadding="3" cellspacing="3" >
-            <h:outputLabel value="Nombre (*): "/>
+            <h:outputLabel value="#{msg.lblNombre} (*): "/>
             <p:inputText id="txtNombre" value="#{pacienteWizardBean.paciente.nombre}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
-            <h:outputLabel value="Apellido (*): "/>
+            <h:outputLabel value="#{msg.lblApellido} (*): "/>
             <p:inputText id="txtApellido" value="#{pacienteWizardBean.paciente.apellido}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
-            <h:outputLabel value="Tipo de documento (*):"/>
+            <h:outputLabel value="#{msg.lblTipoDocumento} (*):"/>
             <p:selectOneMenu id="selectedTipoDocumento" value="#{pacienteWizardBean.paciente.documento.tipoDocumento}" disabled="#{pacienteWizardBean.estaDeshabilitado}">
                 <f:selectItems value="#{pacienteWizardBean.listaTipoDocumento}"/>
             </p:selectOneMenu>
-            <h:outputLabel value="Número de documento (*):"/>
+            <h:outputLabel value="#{msg.lblNumDoc} (*):"/>
             <p:inputText id="txtDocumento" value="#{pacienteWizardBean.paciente.documento.numero}" disabled="#{pacienteWizardBean.estaDeshabilitado}"
                          />
             <h:outputLabel value="Sexo: "/>
             <p:selectOneMenu id="selectedSexo" value="#{pacienteWizardBean.paciente.sexo}" disabled="#{pacienteWizardBean.estaDeshabilitado}">
                 <f:selectItems value="#{pacienteWizardBean.listaSexo}"/>
             </p:selectOneMenu>
-            <h:outputLabel value="Correo electrónico (*): "/>
+            <h:outputLabel value="#{msg.lblCorreoElectronico} (*): "/>
             <p:inputText id="txtEmail" value="#{pacienteWizardBean.paciente.email}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
             <h:outputLabel value="Estado Civil: "/>
             <p:selectOneMenu id="selectedEstadoCivil" value="#{pacienteWizardBean.paciente.estadoCivil}" disabled="#{pacienteWizardBean.estaDeshabilitado}">
@@ -34,7 +34,7 @@
             <p:inputText id="txtLugarDeNacimiento" value="#{pacienteWizardBean.paciente.lugarNacimiento}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
             <h:outputLabel value="Provincia: "/>
             <p:inputText id="txtProvincia" value="#{pacienteWizardBean.paciente.provincia}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
-            <h:outputLabel value="Fecha de nacimiento (*):"/>
+            <h:outputLabel value="#{msg.lblFechaDeNacimiento}(*):"/>
             <p:calendar id="cal" value="#{pacienteWizardBean.fechaNacimiento}" navigator="true"  yearRange="c-100:c" disabled="#{pacienteWizardBean.estaDeshabilitado}"/> 
         </h:panelGrid>
 
@@ -47,15 +47,15 @@
             <p:inputText id="txtCalleNumero" value="#{pacienteWizardBean.paciente.domicilio.calleNumero}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
             <h:outputLabel value="Piso: "/>
             <p:inputText id="txtPiso" value="#{pacienteWizardBean.paciente.domicilio.piso}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
-            <h:outputLabel value="Depto: "/>
+            <h:outputLabel value="Departamento.: "/>
             <p:inputText id="txtDepartamento" value="#{pacienteWizardBean.paciente.domicilio.departamento}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
             <h:outputLabel value="Barrio: "/>
             <p:inputText id="txtBarrio" value="#{pacienteWizardBean.paciente.domicilio.barrio}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
             <h:outputLabel value="Ciudad (*): "/>
             <p:inputText id="txtCiudadActual" value="#{pacienteWizardBean.paciente.domicilio.ciudadActual}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
-            <h:outputLabel value="Teléfono: "/>
+            <h:outputLabel value="#{msg.lblTelefono}: "/>
             <p:inputText id="txtTelefono" value="#{pacienteWizardBean.paciente.telefono}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
-            <h:outputLabel value="Celular: "/>
+            <h:outputLabel value="#{msg.lblCelular}: "/>
             <p:inputText id="txtCelular" value="#{pacienteWizardBean.paciente.celular}" disabled="#{pacienteWizardBean.estaDeshabilitado}" />
             <h:outputLabel value="Domicilio anterior: "/>
             <p:inputText id="txtResidenciaAnterior" value="#{pacienteWizardBean.paciente.domicilio.residenciaAnterior}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
@@ -81,9 +81,9 @@
             <p:inputText id="txtObraSocial" value="#{pacienteWizardBean.paciente.obraSocial}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
             <h:outputLabel value="Médico de cabecera: "/>
             <p:inputText id="txtMedicoCabecera" value="#{pacienteWizardBean.paciente.medicoCabecera}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
-            <h:outputLabel value="Teléfono: "/>
+            <h:outputLabel value="#{msg.lblTelefono}: "/>
             <p:inputText id="txtTelefonoMedico" value="#{pacienteWizardBean.paciente.telefonoMedico}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
-            <h:outputLabel value="Serv. de emergencia: "/>
+            <h:outputLabel value="Servicio de emergencia: "/>
             <p:selectOneRadio id="rdbServicioEmergencia" disabled="#{pacienteWizardBean.estaDeshabilitado}">
                 <f:selectItem itemLabel="Sí" itemValue="1" />  
                 <f:selectItem itemLabel="No" itemValue="0" />  

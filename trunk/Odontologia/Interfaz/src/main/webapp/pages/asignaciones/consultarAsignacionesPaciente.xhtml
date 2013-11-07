@@ -12,8 +12,8 @@ and open the template in the editor.
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:outputLabel value="CONSULTAR ASIGNACIONES DE PACIENTES" style="padding: 400px; font-size: 20px; font: " />
-        <p:panel id="pnlBuscarAlumno" header="Buscar alumno" rendered="#{consultarAsignacionesBean.rendered}">
+        <h:outputLabel value="#{msg.lblConsultarAsignaciones}" style="padding: 400px; font-size: 20px; font: " />
+        <p:panel id="pnlBuscarAlumno" header="#{msg.lblConsultarAlumno}" rendered="#{consultarAsignacionesBean.rendered}">
             <h:form id="buscarAlumnoForm">
                 <h:panelGrid id="gridBusquedaAlumno" cellpadding="3" cellspacing="3" columns="5">
                     <!--p:column>
@@ -23,13 +23,13 @@ and open the template in the editor.
                         <p:inputText id="txtNombreAlumno" value="{consultarAsignacionesBean.}" size="50" style=""/>
                     </p:column-->
                     <p:column>
-                        <h:outputLabel value="Número de documento: " />
+                        <h:outputLabel value="#{msg.lblNumDoc}: " />
                     </p:column>
                     <p:column>
                         <p:inputText id="txtNumDocumentoAlumno" value="#{consultarAsignacionesBean.nroDocumentoFiltro}" size="50"/>
                     </p:column>
                     <p:column>
-                        <p:commandButton value="Buscar" icon="ui-icon-search" id="btnBuscarAlumno" 
+                        <p:commandButton value="#{msg.btnBuscar}" icon="ui-icon-search" id="btnBuscarAlumno" 
                                          actionListener="#{consultarAsignacionesBean.cargarAlumno}"
                                          process="@form"
                                          update="@form, :asignacionesForm:tblResultadoAsignaciones, :msg"/>
