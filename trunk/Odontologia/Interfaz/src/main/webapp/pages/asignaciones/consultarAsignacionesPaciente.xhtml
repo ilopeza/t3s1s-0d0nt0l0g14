@@ -47,7 +47,7 @@ and open the template in the editor.
                 <h:panelGrid id="gridBusquedaAsignaciones" cellpadding="3" cellspacing="3" columns="4">
 
                     <p:column>
-                        <h:outputLabel value="Materia: " />
+                        <h:outputLabel value="#{msg.lblMateria}: " />
                     </p:column>
                     <p:column>
                         <p:selectOneMenu id="selectMateria" value="#{consultarAsignacionesBean.materiaFiltro}"
@@ -57,7 +57,7 @@ and open the template in the editor.
                         </p:selectOneMenu>
                     </p:column>
                     <p:column>
-                        <h:outputLabel value="Estado de asignación: " />
+                        <h:outputLabel value="#{msg.lblEstado}: " />
                     </p:column>
                     <p:column>
                         <p:selectOneMenu id="selectEstadoAsignacion" value="#{consultarAsignacionesBean.estadoFiltro}">
@@ -67,25 +67,22 @@ and open the template in the editor.
                     </p:column>
 
                     <p:column>
-                        <h:outputLabel value="Paciente: " />
+                        <h:outputLabel value="#{msg.lblNombre} del paciente: " />
                     </p:column>
                     <p:column>
                         <p:inputText id="txtNombrePaciente" value="#{consultarAsignacionesBean.pacienteFiltro}"/>
                     </p:column>
                     <p:column>
-                        <h:outputLabel value="Fecha de asignación: " />
+                        <h:outputLabel value="#{msg.lblFechaDeAsignacion}: " />
                     </p:column>
                     <p:column>
                         <p:calendar id="calFechaAsignación" pattern="dd/MM/yyyy" value="#{consultarAsignacionesBean.fechaFiltro}"/>
                     </p:column>
 
-                    <p:commandButton id="btnFiltrarAsignaciones" value="Buscar" 
+                    <p:commandButton id="btnFiltrarAsignaciones" value="#{msg.btnBuscar}" 
                                      actionListener="#{consultarAsignacionesBean.cargarAsignacionesFiltradas}"
                                      process="@form"
                                      update="tblResultadoAsignaciones"/>
-
-                    <!--
-                    -->
                 </h:panelGrid>
 
                 <p:dataTable id="tblResultadoAsignaciones" 
@@ -98,10 +95,9 @@ and open the template in the editor.
                              var="a"
                              rowKey="#{a.id}" 
                              editable="true"
-                             paginator="true" 
-                             rows="10"                             
+                             paginator="true"                            
                              rowsPerPageTemplate="5,10,15"
-                             paginatorAlwaysVisible="false">
+                             >
                     <f:facet name="header">
                         <h:outputText value="Asignaciones del alumno #{consultarAsignacionesBean.alumno}" />
                     </f:facet>
@@ -111,57 +107,54 @@ and open the template in the editor.
                     <p:column id="colPaciente" headerText="Paciente">
                         <h:outputText value="#{a.paciente}" />  
                     </p:column>
-                    <p:column id="colDocumento" headerText="Documento">
+                    <p:column id="colDocumento" headerText="#{msg.lblNumDoc}">
                         <h:outputText value="#{a.paciente.documento.numero}" />
                     </p:column>
-                    <p:column id="colMateria" headerText="Materia">
+                    <p:column id="colMateria" headerText="#{msg.lblMateria}">
                         <h:outputText value="#{a.diagnostico.materia.nombre}" />
                     </p:column>
-                    <p:column id="colTrabajoPractico" headerText="Trabajo Práctico">
+                    <p:column id="colTrabajoPractico" headerText="#{msg.lblTrabajoPractico}">
                         <h:outputText value="#{a.diagnostico.trabajoPractico.nombre}" />
                     </p:column>
 
-                    <p:column id="colFechaAsignacion" headerText="Fecha Asignacion" sortBy="#{a.fechaAsignacion.time}">
+                    <p:column id="colFechaAsignacion" headerText="#{msg.lblFechaDeAsignacion}" sortBy="#{a.fechaAsignacion.time}">
 
                         <p:cellEditor>  
                             <f:facet name="output"><h:outputText value="#{consultarAsignacionesBean.formatFecha(a.fechaAsignacion)}" /></f:facet>  
                             <f:facet name="input"><p:calendar value="#{a.fechaAsignacion.time}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" 
                                                               id="calendarFechaAsignacion" 
                                                               mindate="#{consultarAsignacionesBean.getFechaDesde(a)}" 
-                                                              label="Fecha de asignación"
+                                                              label="#{msg.lblFechaDeAsignacion}"
                                                               showButtonPanel="true"/> </f:facet>  
                         </p:cellEditor> 
                     </p:column>
 
-                    <p:column id="colEstado" headerText="Estado Asignacion">
+                    <p:column id="colEstado" headerText="#{msg.lblEstado}">
                         <h:outputText value="#{a.estado}" />
                     </p:column>
-                    <p:column id="Telefono" headerText="Teléfono">
+                    <p:column id="Telefono" headerText="#{msg.lblTelefono}">
                         <h:outputText value="#{a.paciente.telefono}" />
                     </p:column>
-                    <p:column id="Celular" headerText="Celular">
+                    <p:column id="Celular" headerText="#{msg.lblCelular}">
                         <h:outputText value="#{a.paciente.celular}" />
                     </p:column>
-                    <p:column id="Domicilio" headerText="Domicilio">
-                        <h:outputText value="#{a.paciente.domicilio}" />
-                    </p:column>
-                    <p:column id="email" headerText="Correo electrónico">
+                    <p:column id="email" headerText="#{msg.lblCorreoElectronico}">
                         <h:outputText value="#{a.paciente.email}" />
                     </p:column>
                     <p:column id="colAcciones" headerText="Acciones">
                         <p:splitButton value="Acciones">  
-                            <p:menuitem id="btnConfirmar" value="Confirmar" icon="ui-icon-check"
+                            <p:menuitem id="btnConfirmar" value="#{msg.lblConfirmarAsignacion}" icon="ui-icon-check"
                                         oncomplete="dlgConfirmar.show();" 
                                         update="tblResultadoAsignaciones"
                                         disabled="#{consultarAsignacionesBean.deshabilitarBtnConfirmarAsignacion(a)}"/> 
-                            <p:menuitem id="btnCancelar" value="Cancelar" icon="ui-icon-cancel"
+                            <p:menuitem id="btnCancelar" value="#{msg.lblCancAsig}" icon="ui-icon-cancel"
                                         oncomplete="dlgCancelarAsignacion.show();"
                                         disabled="#{consultarAsignacionesBean.deshabilitarBtnCancelarAsignacion(a)}"
                                         update="tblResultadoAsignaciones"/>  
                         </p:splitButton>
 
                     </p:column>
-                    <p:column headerText="Editar">  
+                    <p:column headerText="#{msg.btnModificar}">  
                         <p:rowEditor rendered="#{!consultarAsignacionesBean.deshabilitarBtnModificarAsignacion(a)}" />  
                     </p:column>  
                 </p:dataTable>
@@ -170,15 +163,15 @@ and open the template in the editor.
 
             </h:form>
         </p:panel>
-        <p:confirmDialog message="¿Realmente quiere confirmar la asignación?"
-                         header="Confirmación de asignación" severity="alert"
+        <p:confirmDialog message="#{msg.msgConfAsig}"
+                         header="#{msg.lblConfirmarAsignacion}" severity="alert"
                          widgetVar="dlgConfirmar" appendToBody="true">
-            <p:commandButton value="Sí" actionListener="#{consultarAsignacionesBean.confirmarAsignacion()}"
+            <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{consultarAsignacionesBean.confirmarAsignacion()}"
                              oncomplete="dlgConfirmar.hide();"
                              update=":asignacionesForm:tblResultadoAsignaciones,:msg"/>
-            <p:commandButton value="No" onclick="dlgConfirmar.hide();" type="button" />
+            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgConfirmar.hide();" type="button" />
         </p:confirmDialog>
-
+        
         <!--p:confirmDialog message="¿Realmente desea cancelar la asignación?"
                          header="Cancelación de asignación" severity="alert"
                          widgetVar="dlgCancelarAsignacion" appendToBody="true">
@@ -186,16 +179,16 @@ and open the template in the editor.
                              
         </p:confirmDialog-->
 
-        <p:dialog  header="Cancelación de asignación" appendToBody="true"
+        <p:dialog  header="#{msg.lblCancAsig}" appendToBody="true"
                    widgetVar="dlgCancelarAsignacion" closeOnEscape="true" modal="true">
             <h:form id="formCancelar">
                 <h:panelGrid>
 
                     <p:row>
-                        <h:outputText value="¿Realmente desea cancelar la asignación?"/>
+                        <h:outputText value="#{msg.msgCancAsig}"/>
                     </p:row>
                     <p:row>
-                        <h:outputText value="Ingrese una descripción del motivo de la cancelación:"/>
+                        <h:outputText value="#{msg.lblMotivoCancelacion}"/>
                     </p:row>
                     <p:row>
                         <p:inputTextarea id="txtMotivoCancelacion" value="#{consultarAsignacionesBean.motivoCancelacion}" 
@@ -203,14 +196,14 @@ and open the template in the editor.
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:commandButton value="Sí" actionListener="#{consultarAsignacionesBean.cancelarAsignacion()}"
+                            <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{consultarAsignacionesBean.cancelarAsignacion()}"
                                              oncomplete="dlgCancelarAsignacion.hide();"
                                              process="@form"
                                              update=":asignacionesForm:tblResultadoAsignaciones,:msg"
                                              />
                         </p:column>
                         <p:column> 
-                            <p:commandButton value="No" onclick="dlgCancelarAsignacion.hide();" type="button"/> 
+                            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgCancelarAsignacion.hide();" type="button"/> 
                         </p:column>
                     </p:row>
 
