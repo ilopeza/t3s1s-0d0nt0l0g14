@@ -27,10 +27,8 @@ public class MenuBean {
      * Creates a new instance of MenuBean
      */
     private MenuModel menu = new DefaultMenuModel();
-
     private Rol rol;
-    
-    
+
     public MenuBean() {
         buildMenu();
     }
@@ -38,8 +36,8 @@ public class MenuBean {
     public void buildMenu() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-        LoginBean login =(LoginBean) session.getAttribute("loginBean");
-        
+        LoginBean login = (LoginBean) session.getAttribute("loginBean");
+
         rol = login.getUsuario().getRol();
         if (rol.is(Rol.ALUMNO) || rol.is(Rol.PACIENTE) || rol.is(Rol.PROFESOR) || rol.is(Rol.RESPONSABLE) || rol.is(Rol.ADMINACADEMICO)) {
             if (rol == null) {
@@ -66,9 +64,10 @@ public class MenuBean {
             //Opciones
             menuItem = menuItem("Registrar Materia", "/pages/materias/formMaterias.xhtml");
             submenu.getChildren().add(menuItem);
+
             menu.addSubmenu(submenu);
-            
-            
+
+
         }
 
 //        if (rol.is(Rol.ALUMNO)) {
@@ -81,66 +80,71 @@ public class MenuBean {
 //        }
 
         if (rol.is(Rol.RESPONSABLE)) {
-        //Menu
-        submenu = subMenu("Gestión de Usuarios");
-        //Opciones
-        menuItem = menuItem("Registrar Usuario de Alumno", "/pages/alumnos/formUsuarioAlumno.xhtml");
-        submenu.getChildren().add(menuItem);
-        
-        submenu = subMenu("Gestión de Profesores");
-        //Opciones
-        menuItem = menuItem("Consultar profesores", "/pages/profesores/CABMProfesor.xhtml");
-        submenu.getChildren().add(menuItem);
-        
-        menu.addSubmenu(submenu);
+            //Menu
+            submenu = subMenu("Gestión de Usuarios");
+            //Opciones
+            menuItem = menuItem("Registrar Usuario de Alumno", "/pages/alumnos/formUsuarioAlumno.xhtml");
+            submenu.getChildren().add(menuItem);
+
+            menuItem = menuItem("Registrar Usuario", "/pages/usuario/registrarUsuario.xhtml");
+            submenu.getChildren().add(menuItem);
+            
+            menu.addSubmenu(submenu);
+
+            submenu = subMenu("Gestión de Profesores");
+            //Opciones
+            menuItem = menuItem("Consultar profesores", "/pages/profesores/CABMProfesor.xhtml");
+            submenu.getChildren().add(menuItem);
+
+            menu.addSubmenu(submenu);
         }
 
-        
+
         if (rol.is(Rol.ALUMNO) || rol.is(Rol.PROFESOR) || rol.is(Rol.RESPONSABLE)) {
-        //Menu
-        submenu = subMenu("Asignaciones de Pacientes");
-        //Opciones
-        menuItem = menuItem("Asignacion Paciente", "/pages/asignaciones/registrarAsignacionPaciente.xhtml");
-        submenu.getChildren().add(menuItem);
-        menuItem = menuItem("Consultar Asignacion Paciente", "/pages/asignaciones/consultarAsignacionesPaciente.xhtml");
-        submenu.getChildren().add(menuItem);
+            //Menu
+            submenu = subMenu("Asignaciones de Pacientes");
+            //Opciones
+            menuItem = menuItem("Asignacion Paciente", "/pages/asignaciones/registrarAsignacionPaciente.xhtml");
+            submenu.getChildren().add(menuItem);
+            menuItem = menuItem("Consultar Asignacion Paciente", "/pages/asignaciones/consultarAsignacionesPaciente.xhtml");
+            submenu.getChildren().add(menuItem);
 
-        
+
+            if (rol.is(Rol.PROFESOR)) {
+                menuItem = menuItem("Consultar Asignaciones Confirmadas", "/pages/asignaciones/consultarAsignacionesConfirmadas.xhtml");
+                submenu.getChildren().add(menuItem);
+                menuItem = menuItem("Consultar Atenciones Realizadas", "/pages/historiaClinica/consultarAtencionesRealizadas.xhtml");
+                submenu.getChildren().add(menuItem);
+                menuItem = menuItem("Consultar Estadisticas", "/pages/estadisticas/consultarEstadisticas.xhtml");
+                submenu.getChildren().add(menuItem);
+            }
+            menu.addSubmenu(submenu);
+        }
+
         if (rol.is(Rol.PROFESOR)) {
-        menuItem = menuItem("Consultar Asignaciones Confirmadas", "/pages/asignaciones/consultarAsignacionesConfirmadas.xhtml");
-        submenu.getChildren().add(menuItem);
-        menuItem = menuItem("Consultar Atenciones Realizadas", "/pages/historiaClinica/consultarAtencionesRealizadas.xhtml");
-        submenu.getChildren().add(menuItem);
-        menuItem = menuItem("Consultar Estadisticas", "/pages/estadisticas/consultarEstadisticas.xhtml");
-        submenu.getChildren().add(menuItem);
+            //Menu
+            submenu = subMenu("Trabajos Prácticos");
+            menuItem = menuItem("Nuevo Trabajo Práctico", "/pages/trabajosPracticos/registrarTrabajoPractico.xhtml");
+            submenu.getChildren().add(menuItem);
+
+            menu.addSubmenu(submenu);
         }
-        menu.addSubmenu(submenu);
-        }
-        
-        if (rol.is(Rol.PROFESOR)){
-        //Menu
-        submenu = subMenu("Trabajos Prácticos");
-        menuItem = menuItem("Nuevo Trabajo Práctico", "/pages/trabajosPracticos/registrarTrabajoPractico.xhtml");
-        submenu.getChildren().add(menuItem);
-        
-        menu.addSubmenu(submenu);
-        }
-        
-        if (rol.is(Rol.ALUMNO) || rol.is(Rol.PROFESOR) || rol.is(Rol.RESPONSABLE) ) {
-        //Menu
-        submenu = subMenu("Cuenta");
-        //Opciones
-        menuItem = menuItem("Datos Alumno", "/pages/alumnos/formAlumno.xhtml");
-        submenu.getChildren().add(menuItem);
-        menuItem = menuItem("Recuperar contraseña", "/pages/usuario/recuperarPassword.xhtml");
-        submenu.getChildren().add(menuItem);
-        menuItem = menuItem("Modificar mis datos","/pages/usuario/modificarDatosUsuario.xhtml");
-        submenu.getChildren().add(menuItem);
+
+        if (rol.is(Rol.ALUMNO) || rol.is(Rol.PROFESOR) || rol.is(Rol.RESPONSABLE)) {
+            //Menu
+            submenu = subMenu("Cuenta");
+            //Opciones
+            menuItem = menuItem("Datos Alumno", "/pages/alumnos/formAlumno.xhtml");
+            submenu.getChildren().add(menuItem);
+            menuItem = menuItem("Recuperar contraseña", "/pages/usuario/recuperarPassword.xhtml");
+            submenu.getChildren().add(menuItem);
+            menuItem = menuItem("Modificar mis datos", "/pages/usuario/modificarDatosUsuario.xhtml");
+            submenu.getChildren().add(menuItem);
 //        menuItem = menuItem("Caducar sesión", "/pages/usuario/caducarSesion.xhtml");
 //        submenu.getChildren().add(menuItem);
 //        menuItem = menuItem("Iniciar sesión", "/pages/usuario/iniciarSesion.xhtml");
 //        submenu.getChildren().add(menuItem);
-        menu.addSubmenu(submenu);
+            menu.addSubmenu(submenu);
         }
     }
 
@@ -164,8 +168,7 @@ public class MenuBean {
     public void setRol(Rol rol) {
         this.rol = rol;
     }
-    
-    
+
     public MenuModel getMenu() {
         return menu;
     }
@@ -173,5 +176,4 @@ public class MenuBean {
     public void setMenu(MenuModel menu) {
         this.menu = menu;
     }
-    
 }
