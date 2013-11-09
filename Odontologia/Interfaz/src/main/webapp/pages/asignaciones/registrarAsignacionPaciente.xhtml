@@ -32,7 +32,7 @@
                 <p:dataTable id="tblAsignacionesAlumno" 
                              var="asignacion" 
                              value="#{asignacionBean.asignaciones}" 
-                             emptyMessage="Alumno sin asignaciones"
+                             emptyMessage="#{msg.msgAsignacionesAlu}"
                              rowKey="#{asignacion.id}">
                     <f:facet name="header">
                         <h:outputText value="#{msg.lblConsularPacientesAsignados} #{asignacionBean.alumnoBuscado.toString()}" />
@@ -89,10 +89,14 @@
             </p:panel>
             <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
                          var="p" value="#{asignacionBean.resultadoBusqueda}"
-                         emptyMessage="No se encontraron pacientes."
+                         emptyMessage="#{msg.msgPacientes}"
                          selectionMode="single"
                          selection="#{asignacionBean.diagnosticoSeleccionado}"
-                         rowKey="#{p.idDiagnostico}">
+                         rowKey="#{p.idDiagnostico}"
+                         paginator="true" 
+                         rows="10"                             
+                         rowsPerPageTemplate="5,10,15"
+                         paginatorAlwaysVisible="false">
                 <f:facet name="header" >  
                     <p:outputPanel>  
                         <h:outputText value="#{msg.lblPacientesEncontrados}" />                  
@@ -138,9 +142,6 @@
                 </h:panelGrid>
             </p:panel>
         </h:form>
-
         <p:spacer width="10px"/>
-
-
     </ui:define>
 </ui:composition>

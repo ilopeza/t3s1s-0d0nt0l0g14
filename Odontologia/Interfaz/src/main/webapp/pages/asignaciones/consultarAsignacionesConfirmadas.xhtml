@@ -29,7 +29,7 @@
                     
                     <p:outputLabel value="#{msg.lblCatedraAtencion} " />
                     <p:selectOneMenu id="seleccionCatedraBusqueda" value="#{consultarAsignacionesConfirmadasBean.catedraFiltro}" converter="catedraConverter">
-                        <f:selectItem itemLabel="Seleccione una cátedra"/>
+                        <f:selectItem itemLabel="#{msg.lblSelectCatedra}"/>
                         <f:selectItems value="#{consultarAsignacionesConfirmadasBean.catedras}"/>
                     </p:selectOneMenu>                    
                      <span></span> 
@@ -55,8 +55,15 @@
             <br/>
             <br/>
             <p:panel  id="pnlResultadosConsultarAsignacionesConfirmadas" header="#{msg.lblAsignacionesEncontradas}">
-                <p:dataTable id="tblResultadosAsignacionesConfirmadas" var="asignaciones" value="#{consultarAsignacionesConfirmadasBean.asignacionesConfirmadas}"  paginator="true" rows="10"
-                             emptyMessage="No se registran asignaciones confirmadas para los parámetros ingresados" selection="#{consultarAsignacionesConfirmadasBean.selectedAsignacionesAutorizadas}" 
+                <p:dataTable id="tblResultadosAsignacionesConfirmadas" 
+                             var="asignaciones" 
+                             value="#{consultarAsignacionesConfirmadasBean.asignacionesConfirmadas}"  
+                             paginator="true" 
+                             rows="10"                             
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorAlwaysVisible="false"
+                             emptyMessage="#{msg.msgAsignacionesConf}" 
+                             selection="#{consultarAsignacionesConfirmadasBean.selectedAsignacionesAutorizadas}" 
                              rowKey="#{asignaciones.id}">  
 
                     <f:facet name="header">

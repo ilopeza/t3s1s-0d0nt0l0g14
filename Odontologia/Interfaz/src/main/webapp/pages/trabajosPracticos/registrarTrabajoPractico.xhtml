@@ -28,9 +28,11 @@
             <h:form id="frmConsultarTrabajosPracticos">
                 <p:dataTable id="tblResultadoTrabajosPracticos" var="tp" 
                              value="#{trabajoPracticoBean.trabajosPracticos}"
-                             paginator="true" selection="#{trabajoPracticoBean.selectedTrabajoPractico}"
+                             selection="#{trabajoPracticoBean.selectedTrabajoPractico}"
+                             paginator="true" 
                              rows="10"                             
                              rowsPerPageTemplate="5,10,15"
+                             paginatorAlwaysVisible="false"
                              rowKey="#{tp.id}">
 
                     <f:facet name="header">  
