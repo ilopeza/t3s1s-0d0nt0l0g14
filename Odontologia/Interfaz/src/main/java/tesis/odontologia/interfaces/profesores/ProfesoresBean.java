@@ -97,6 +97,8 @@ public class ProfesoresBean {
     public void buscarProfesores() {
         boolean aux = false;
         BooleanExpression p = ProfesorSpecs.byClaseProfesor();
+        Profesor profAux = new Profesor();
+        ArrayList<Profesor> profesoresAgregadosAux = new ArrayList<Profesor>(); 
 
         if (filtroBusqueda != null && filtroBusqueda.isEmpty() == false) {
             p = buscarPorNombreOrNumDoc(p);
@@ -112,7 +114,17 @@ public class ProfesoresBean {
             p = buscarPorEstado(p);
             aux = true;
         }
-        profesoresEncontrados = (ArrayList) personaService.findAll(p);
+
+        ArrayList<Profesor> profesoresRecorridosAux = (ArrayList) personaService.findAll(p);
+        if (profesoresRecorridosAux != null && !profesoresRecorridosAux.isEmpty()) {
+            for (Profesor prof : profesoresRecorridosAux) {
+                //profesoresRecorridosAux.remove(prof);
+                profAux = (Profesor) personaService.reload(prof, 1);
+                profesoresAgregadosAux.add(profAux);
+            }
+            profesoresEncontrados = profesoresAgregadosAux;
+        }
+
         mostrarMensajesBusqueda(aux);
     }
 
@@ -172,15 +184,6 @@ public class ProfesoresBean {
     }
 
     private void mostrarMensajesBusqueda(boolean aux) {
-        if (profesoresEncontrados == null || profesoresEncontrados.isEmpty()) {
-            FacesContext.getCurrentInstance().
-                    addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron profesores registrados para los parámetros ingresados.", null));
-        } else {
-            for (Profesor prof : profesoresEncontrados) {
-                profesor = (Profesor) personaService.reload(prof, 1);
-            }
-        }
-
         if (aux == false) {
             FacesContext.getCurrentInstance().
                     addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe especificar al menos un parámetro de búsqueda para consultar los profesores registrados.", null));
@@ -222,13 +225,13 @@ public class ProfesoresBean {
         habilitarNuevoProfesor = true;
         habilitarBotonNuevo = false;
     }
-    
-    private List<Materia> getSourceMaterias(){
+
+    private List<Materia> getSourceMaterias() {
         List<Materia> listaAuxMat = new ArrayList<Materia>();
         listaAuxMat.addAll(materias);
-        for(Materia m : materiasElegidas.getTarget()){
+        for (Materia m : materiasElegidas.getTarget()) {
             listaAuxMat.remove(m);
-        }    
+        }
         return listaAuxMat;
     }
 
