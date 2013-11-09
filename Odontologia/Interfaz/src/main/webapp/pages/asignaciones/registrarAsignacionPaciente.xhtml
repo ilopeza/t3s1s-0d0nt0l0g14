@@ -87,17 +87,14 @@
             </p:panel>
             <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
                          var="p" value="#{asignacionBean.resultadoBusqueda}"
-                         paginator="true"
-                         rows="10"
-                         paginatorAlwaysVisible="false"
-                         emptyMessage="No se encontraron pacientes."
                          selectionMode="single"
                          selection="#{asignacionBean.diagnosticoSeleccionado}"
                          rowKey="#{p.idDiagnostico}"
                          paginator="true" 
                          rows="10"                             
                          rowsPerPageTemplate="5,10,15"
-                         paginatorAlwaysVisible="false">
+                         paginatorAlwaysVisible="false"
+                         emptyMessage="#{msg.msgPacientes}">
                 <f:facet name="header" >  
                     <p:outputPanel>  
                         <h:outputText value="#{msg.lblPacientesEncontrados}" />                  
