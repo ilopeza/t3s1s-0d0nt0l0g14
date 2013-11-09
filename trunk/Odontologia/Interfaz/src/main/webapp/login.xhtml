@@ -25,6 +25,9 @@ and open the template in the editor.
             .ui-layout-north .ui-layout-unit-content {
                 overflow:visible !important;
             }
+            .ui-widget,.ui-widget .ui-widget {
+                font-size: 90% !important;
+            }
         </style>
     </h:head>
 
@@ -43,7 +46,7 @@ and open the template in the editor.
 
                     <h:outputLabel for="password" value="#{msg.lblContrasenia}:" /> 
                     <p:password value="#{loginBean.password}"   
-                                   id="password" required="true" label="password" />
+                                id="password" required="true" label="password" />
                     <!--h:inputSecret value="{loginBean.password}"   
                                    id="password" required="true" label="password" /-->  
 
