@@ -53,8 +53,14 @@
             <br/>
 
             <p:panel  id="pnlResultadosConsultarAtencionesRealizadas" header="#{msg.lblAtencionesRealizadas}">
-                <p:dataTable id="tblResultadosAtencionesRealizadas" var="atenciones" value="#{consultarAtencionesRealizadasBean.atencionesGenericas}"  paginator="true" rows="10"
-                             emptyMessage="No se registran asignaciones confirmadas para los parámetros ingresados" >
+                <p:dataTable id="tblResultadosAtencionesRealizadas" 
+                             var="atenciones" 
+                             value="#{consultarAtencionesRealizadasBean.atencionesGenericas}" 
+                             paginator="true" 
+                             rows="10"                             
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorAlwaysVisible="false"
+                             emptyMessage="#{msg.msgAtencionesRealizadas}" >
 
                     <f:facet name="header">
                         <p:outputPanel>
@@ -96,7 +102,7 @@
                         </f:facet> 
                         <p:commandButton id="btnVerDescripcion" icon="ui-icon-circle-zoomin"
                                          oncomplete="dlgDescripcionProcedimiento.show();"/>
-                        <p:dialog id="Dialog" header="Descripción del procedimiento realizado por el alumno" widgetVar="dlgDescripcionProcedimiento">  
+                        <p:dialog id="Dialog" header="#{msg.lblDescripcionProc}" widgetVar="dlgDescripcionProcedimiento">  
                             <h:outputText value="#{atenciones.descripcionProcedimiento}" />  
                         </p:dialog>
                     </p:column>

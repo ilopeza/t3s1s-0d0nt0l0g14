@@ -29,10 +29,13 @@
                                      update="@form :msg"/>
                 </h:panelGrid> 
                 <p:dataTable id="tblResultadoProfesores" 
-                             emptyMessage="No se encontraron profesores con los filtros especificados."
-                             paginator="true" value="#{profesoresBean.profesoresEncontrados}" var="p"
+                             emptyMessage="#{msg.msgProfesores}"
+                             value="#{profesoresBean.profesoresEncontrados}" var="p"
                              selectionMode="single" selection="#{profesoresBean.selectedProfesor}"
-                             rowKey="#{p.id}" paginatorAlwaysVisible="false">
+                             rowKey="#{p.id}" paginator="true" 
+                             rows="10"                             
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorAlwaysVisible="false">
                     <f:facet name="header">
                         #{msg.lblProfesoresEncontrados}
                     </f:facet>
@@ -102,15 +105,15 @@
                 </h:panelGrid>
             </p:panel>
         </h:form>
-        <p:confirmDialog message="¿Realmente desea dar de baja al profesor #{profesoresBean.selectedProfesor.apellido}?"
-                         header="Dar de baja" severity="alert"
+        <p:confirmDialog message="#{msg.msgBajaProf}"
+                         header="#{msg.btnDarDeBaja}" severity="alert"
                          widgetVar="dlgDarDeBaja" appendToBody="true">
             <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{profesoresBean.darBaja()}"
                              update=":msg :formConsultarProfesores" oncomplete="dlgDarDeBaja.hide()"/>
             <p:commandButton value="#{msg.btnCancelar}" onclick="dlgDarDeBaja.hide();" type="button" />
         </p:confirmDialog>
 
-        <p:confirmDialog message="¿Realmente desea dar de alta al profesor #{profesoresBean.selectedProfesor.apellido}?"
+        <p:confirmDialog message="#{msg.msgAltaProf}}?"
                          header="#{msg.btnDarDeAlta}" severity="alert"
                          widgetVar="dlgDarDeAlta" appendToBody="true">
             <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{profesoresBean.darAlta()}"

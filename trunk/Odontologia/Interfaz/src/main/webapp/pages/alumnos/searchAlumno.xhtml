@@ -17,7 +17,12 @@
                               update=":primaryForm:tblResultadosBusquedaAlumno"/>
 
 
-            <p:dataTable id="tblResultadosBusquedaAlumno" var="alumno" value="#{searchAlumnoBean.alumno}">
+            <p:dataTable id="tblResultadosBusquedaAlumno" var="alumno" value="#{searchAlumnoBean.alumno}"
+                         paginator="true" 
+                         rows="10"                             
+                         rowsPerPageTemplate="5,10,15"
+                         paginatorAlwaysVisible="false"
+                         emptyMessage="#{msg.msgAlumnos}">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Resultado de la Busqueda de Alumnos" />

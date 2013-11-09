@@ -78,7 +78,7 @@
 
                 <h:outputText value="#{msg.lblTrabajoPractico}:"/>
                 <p:selectOneMenu id="selectTrabajoPrácticoDiagnostico" converter="trabajoPracticoConverter" value="#{pacienteWizardBean.trabajoPracticoFiltro}">
-                    <f:selectItem itemLabel="Seleccione un trabajo práctico"/>
+                    <f:selectItem itemLabel="#{msg.lblSelectTrabPrac}"/>
                     <f:selectItems value="#{pacienteWizardBean.trabajosPracticos}"/>
                 </p:selectOneMenu>
 
@@ -94,14 +94,17 @@
                                  disabled="#{pacienteWizardBean.filtrarHabilitado}"/>
             </h:panelGrid>
             <p:dataTable id="tblResultadoDiagnosticos" 
-                         emptyMessage="Paciente sin diagnósticos cargados"
-                         paginator="true" 
+                         emptyMessage="#{msg.msgDiagCargados}"
                          value="#{pacienteWizardBean.diagnosticos}"
                          var="d" selection="#{pacienteWizardBean.selectedDiagnostico}" selectionMode="single"
-                         rowKey="#{d.id}">
-                
+                         rowKey="#{d.id}"
+                         paginator="true" 
+                         rows="10"                             
+                         rowsPerPageTemplate="5,10,15"
+                         paginatorAlwaysVisible="false">
+
                 <f:ajax event="rowSelect" render="btnCancelar btnModificar"/>
-                
+
                 <p:column id="colTrabajoPractico" headerText="#{msg.lblTrabajoPractico}">
                     <h:outputText value="#{d.trabajoPractico}" />
                 </p:column>

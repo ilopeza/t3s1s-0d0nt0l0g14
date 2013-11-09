@@ -70,9 +70,11 @@
                              selectionMode="single"
                              selection="#{pacienteWizardBean.selectedPaciente}"
                              rowKey="#{paciente.id}"
-                             paginator="true"
+                             paginator="true" 
+                             rows="10"                             
+                             rowsPerPageTemplate="5,10,15"
                              paginatorAlwaysVisible="false"
-                             rows="10">
+                             emptyMessage="#{msg.msgPacientes}">
 
                     <f:facet name="header" >  
                         <p:outputPanel>  
@@ -102,8 +104,8 @@
             </h:form>
         </p:dialog>  
 
-        <p:confirmDialog message="¿Realmente quiere dar de baja el diagnóstico?"
-                         header="Baja de diagnóstico" severity="alert"
+        <p:confirmDialog message="#{msg.msgBajaDiag}"
+                         header="#{msg.lblDarBajaDiag}" severity="alert"
                          widgetVar="dlgBajaDeDianostico" appendToBody="true">
             <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{pacienteWizardBean.cancelarDiagnosticoEnMemoria()}"
                              oncomplete="dlgBajaDeDianostico.hide();"
@@ -112,9 +114,9 @@
         </p:confirmDialog>
 
         <p:confirmDialog message="¿Desea eliminar o modificar el diagnóstico seleccionado?"
-                         header="Modificación de diagnóstico" severity="alert"
+                         header="#{msg.lblModifDiag}" severity="alert"
                          widgetVar="dlgModificarDiagnostico" id="dlgModificar" appendToBody="true">
-            <p:commandButton value="Modificar" actionListener="#{pacienteWizardBean.seleccionarModificarDiagnostico()}"
+            <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{pacienteWizardBean.seleccionarModificarDiagnostico()}"
                              oncomplete="dlgModificarDiagnostico.hide();"
                              update=":formWizard:pnlNuevoDiagnostico"
                              icon="ui-icon-pencil"/>

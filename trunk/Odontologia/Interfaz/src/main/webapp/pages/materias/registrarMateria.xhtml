@@ -12,20 +12,27 @@
             <h:form id="primaryForm">
                 <h:outputLabel value="MATERIAS" style="padding: 400px; font-size: 20px; font: " />
                 <br/>
-                <p:dataTable id="tableMaterias" var="mat" value="#{materiaBean.materias}" resizableColumns="true">  
-                    <p:column headerText="Materia">  
+                <p:dataTable id="tableMaterias" 
+                             var="mat" value="#{materiaBean.materias}" 
+                             resizableColumns="true"
+                             paginator="true" 
+                             rows="10"                             
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorAlwaysVisible="false">  
+                    <p:column headerText="#{msg.lblMateria}">  
                         <h:outputText value="#{mat.nombre}" />  
                     </p:column>  
                     <p:column headerText="Acciones">  
-                        <p:commandButton id="editarMateria" update=":secondaryForm:display" oncomplete="materia.show()"
-                                         icon="ui-icon-pencil" title="Editar materia">  
+                        <p:commandButton id="editarMateria" update=":secondaryForm:display" 
+                                         oncomplete="materia.show()"
+                                         icon="ui-icon-pencil" title="#{msg.btnModificar}">  
                             <f:setPropertyActionListener value="#{mat}" target="#{materiaBean.materia}" />  
                         </p:commandButton>
 
                         <p:commandButton id="consultarTrabajosPracticos" update=":frmConsultarTrabajosPracticos:tblResultadoTrabajosPracticos"
                                          actionListener="#{materiaBean.resetFields()}"
                                          action="#{materiaBean.buscarTPs()}"
-                                         title="Consultar Trabajos Prácticos"
+                                         title="#{msg.btnConsultarTrabPrac}"
                                          oncomplete="consultarTrabajosPracticos.show()"                                         
                                          icon="ui-icon-search">
                             <f:setPropertyActionListener value="#{mat}" target="#{materiaBean.materia}" />
@@ -34,30 +41,30 @@
                     </p:column>  
                 </p:dataTable>
 
-                <p:commandButton id="nuevaMateria" value ="Nueva Materia" update=":secondaryForm:display" 
+                <p:commandButton id="nuevaMateria" value ="#{msg.btnNuevaMateria}" update=":secondaryForm:display" 
                                  oncomplete="materia.show()"
                                  icon="ui-icon-plusthick"> 
                 </p:commandButton>
             </h:form>
         </p:panel>
 
-        <p:dialog header="Materia" widgetVar="materia" resizable="false" appendToBody="true" modal="true" closable="false" >  
+        <p:dialog header="#{msg.lblMateria}" widgetVar="materia" resizable="false" appendToBody="true" modal="true" closable="false" >  
             <h:form id="secondaryForm">  
                 <h:panelGrid id="display" columns="2" cellpadding="3" cellspacing="3" style="margin:0 auto;">  
-                    <h:outputLabel for="nombre" value="Nombre: " />  
+                    <h:outputLabel for="nombre" value="#{msg.lblNombre}: " />  
                     <p:inputText id="nombre" value="#{materiaBean.materia.nombre}" />    
                 </h:panelGrid>
                 <p:commandButton update=":primaryForm:tableMaterias" 
-                                 oncomplete="materia.hide()" value="Cancelar"
+                                 oncomplete="materia.hide()" value="#{msg.btnCancelar}"
                                  actionListener="#{materiaBean.resetFields()}">
                 </p:commandButton>
-                <p:commandButton update=":primaryForm:tableMaterias" oncomplete="materia.hide()" value="Aceptar" 
+                <p:commandButton update=":primaryForm:tableMaterias" oncomplete="materia.hide()" value="#{msg.btnGuardar}" 
                                  actionListener="#{materiaBean.saveMateria()}" >
                 </p:commandButton>
             </h:form>  
         </p:dialog>
 
-        <p:dialog header="Trabajos Prácticos" widgetVar="consultarTrabajosPracticos" resizable="false" appendToBody="true" modal="true" closable="true">          
+        <p:dialog header="#{msg.lblTrabajoPractico}" widgetVar="consultarTrabajosPracticos" resizable="false" appendToBody="true" modal="true" closable="true">          
             <h:form id="frmConsultarTrabajosPracticos">
                 <p:dataTable id="tblResultadoTrabajosPracticos" var="tp" 
                              value="#{materiaBean.trabajosPracticos}"
@@ -66,17 +73,17 @@
                              rows="10"                             
                              rowsPerPageTemplate="5,10,15"
                              rowKey="#{tp.id}"
-                             emptyMessage="No se encontraron trabajos practicos para la materia: #{materiaBean.materia.nombre}" >
+                             emptyMessage="#{msg.msgTrabajoPractico}" >
 
                     <f:facet name="header">  
-                        <h:outputText value="Trabajos Prácticos de la materia:  #{materiaBean.materia.nombre}" />
+                        <h:outputText value="#{msg.lblTrabajoPractico}" />
                     </f:facet>
 
-                    <p:column id="colNombreTrabajoPractico" headerText="Nombre del Trabjo Práctico" style="width:50px;">
+                    <p:column id="colNombreTrabajoPractico" headerText="#{msg.lblNombreTrabPractico}:" style="width:50px;">
                         <h:outputText value="#{tp.nombre}" />
                     </p:column>
 
-                    <p:column id="colDescripcionTrabajoPractico" headerText="Descripcion" style="width:600px;">
+                    <p:column id="colDescripcionTrabajoPractico" headerText="#{msg.lblDesTrabPractico}" style="width:600px;">
                         <h:outputText value="#{tp.descripcion}" />
                     </p:column>
 
@@ -85,7 +92,7 @@
                         <p:commandButton id="btnModificarTP"                                                                                   
                                          oncomplete="dlgModificarTrabajoPractico.show()"
                                          icon="ui-icon-pencil"
-                                         title="Modificar">
+                                         title="#{msg.btnModificar}">
                             
                             <f:setPropertyActionListener value="#{tp}" target="#{materiaBean.selectedTrabajoPractico}" />
                         </p:commandButton>
@@ -93,19 +100,16 @@
                         <p:commandButton id="btnEliminarTP"
                                          oncomplete="dlgBajaTrabajoPractico.show()"
                                          icon="ui-icon-closethick"
-                                         title="Eliminar">
+                                         title="#{msg.btnEliminar}">
 
                             <f:setPropertyActionListener value="#{tp}" target="#{materiaBean.selectedTrabajoPractico}" />
 
                         </p:commandButton>
-
-
-
                     </p:column>
                 </p:dataTable>
 
                 <p:commandButton id="nuevoTrabajoPractico"                                  
-                                 value="Nuevo Trabajo Práctico"
+                                 value="#{msg.btnNuevoTrabPrac}"
                                  actionListener="#{materiaBean.nuevoTrabajoPractico()}"
                                  disabled="#{materiaBean.nuevoTPHabilitado}"
                                  update="pnlTrabajoPractico"
@@ -113,16 +117,16 @@
                 </p:commandButton>
 
                 <br/>
-                <p:panel id="pnlTrabajoPractico" header="Trabajo Práctico">
+                <p:panel id="pnlTrabajoPractico" header="#{msg.lblTrabajoPractico}">
                     <h:panelGrid id="displayTrabajoPractico" columns="2" cellpadding="3" cellspacing="3" style="margin:0 auto;">
                         <p:column>
-                            <p:outputLabel id="lblNombreTrabajoPractico" value="Nombre del Trabajo Práctico: "/>
+                            <p:outputLabel id="lblNombreTrabajoPractico" value="#{msg.lblNombreTrabPractico}: "/>
                         </p:column>
                         <p:column>
                             <p:inputText id="txtNombreTrabajoPractico" value="#{materiaBean.trabajoPractico.nombre}" disabled="#{!materiaBean.nuevoTPHabilitado}"/>
                         </p:column>
                         <p:column>
-                            <p:outputLabel id="lblDescripcionTrabajoPractico" value="Descripcion del Trabajo Práctico: " />
+                            <p:outputLabel id="lblDescripcionTrabajoPractico" value="#{msg.lblDesTrabPractico}: " />
                         </p:column>
                         <p:column>
                             <p:inputTextarea autoResize="true" id="txtAreaDescripcionTrabajoPractico" 
@@ -133,13 +137,13 @@
                         </p:column>
 
                         <p:column>
-                            <p:commandButton oncomplete="trabajoPractico.hide()" value="Cancelar"
+                            <p:commandButton oncomplete="trabajoPractico.hide()" value="#{msg.btnCancelar}"
                                              disabled="#{!materiaBean.nuevoTPHabilitado}">
                             </p:commandButton>
                         </p:column>
 
                         <p:column>
-                            <p:commandButton oncomplete="trabajoPractico.hide()" value="Aceptar" 
+                            <p:commandButton oncomplete="trabajoPractico.hide()" value="#{msg.btnGuardar}" 
                                              update=":frmConsultarTrabajosPracticos:tblResultadoTrabajosPracticos, :frmConsultarTrabajosPracticos:pnlTrabajoPractico, :msg"
                                              disabled="#{!materiaBean.nuevoTPHabilitado}"
                                              actionListener="#{materiaBean.saveTrabajoPractico()}" >
@@ -152,17 +156,18 @@
 
             </h:form>
             
-            <p:commandButton oncomplete="consultarTrabajosPracticos.hide()" value="Atrás"/>
+            <p:commandButton oncomplete="consultarTrabajosPracticos.hide()" value="¿Atrás?"/>
 
         </p:dialog>
         
         
 
-        <p:confirmDialog message="¿Realmente quiere dar de baja el Trabajo Práctico?"
-                         header="Baja de Trabajo Práctico" severity="alert"
+        <p:confirmDialog message="#{msg.msgBajaTrabPrac}"
+                         header="#{msg.lblDarBajaTrabPrac}" severity="alert"
                          widgetVar="dlgBajaTrabajoPractico" appendToBody="true">
 
-            <p:commandButton value="Sí" actionListener="#{materiaBean.eliminarTrabajoPractico()}"
+            <p:commandButton value="#{msg.btnConfirmar}" 
+                             actionListener="#{materiaBean.eliminarTrabajoPractico()}"
                              update=":frmConsultarTrabajosPracticos:tblResultadoTrabajosPracticos, msg"
                              oncomplete="dlgBajaTrabajoPractico.hide()">
 
@@ -170,15 +175,15 @@
 
             </p:commandButton>
 
-            <p:commandButton value="No" onclick="dlgBajaTrabajoPractico.hide();" type="button" />
+            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgBajaTrabajoPractico.hide();" type="button" />
 
         </p:confirmDialog>
         
-        <p:confirmDialog message="¿Realmente quiere modificar el Trabajo Práctico?"
-                         header="Modificacion de Trabajo Práctico" severity="alert"
+        <p:confirmDialog message="#{msg.msgModTrabPrac}"
+                         header="#{msg.lblModifTrabPrac}" severity="alert"
                          widgetVar="dlgModificarTrabajoPractico" appendToBody="true">
 
-            <p:commandButton value="Sí" actionListener="#{materiaBean.modificarTrabajoPractico()}"
+            <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{materiaBean.modificarTrabajoPractico()}"
                              update=":frmConsultarTrabajosPracticos:pnlTrabajoPractico"
                              oncomplete="dlgModificarTrabajoPractico.hide()">
 
@@ -186,12 +191,7 @@
 
             </p:commandButton>
 
-            <p:commandButton value="No" onclick="dlgModificarTrabajoPractico.hide();" type="button" />
-
+            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgModificarTrabajoPractico.hide();" type="button" />
         </p:confirmDialog>
-
-
-
-
     </ui:define>
 </ui:composition>
