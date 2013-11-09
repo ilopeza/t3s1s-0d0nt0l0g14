@@ -18,4 +18,8 @@ public class RolSpecs {
     public static BooleanExpression byNombre(String nombre) {
         return $.nombre.containsIgnoreCase(nombre);
     }
+    
+     public static BooleanExpression byId(Long id) {
+        return $.id.eq(id);
+    }
 }
