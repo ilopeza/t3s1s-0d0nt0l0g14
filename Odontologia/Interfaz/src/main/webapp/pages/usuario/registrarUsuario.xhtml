@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:h="http://java.sun.com/jsf/html"
                 template="./../../templates/commonLayout.xhtml"
                 xmlns:p="http://primefaces.org/ui"
@@ -11,29 +8,34 @@ and open the template in the editor.
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:outputLabel value="¿¿RECUPERAR USUARIO??" style="padding: 400px; font-size: 20px; font: " />
-        <p:panel id="pnlRegistrarUsuario" header="#{msg.lblRegistrarNuevoUsuario}">
-            <h:form id="registrarUsuarioForm">
+        <h:outputLabel value="REGISTRAR USUARIO" style="padding: 400px; font-size: 20px; font: " />
+        <h:form id="registrarUsuarioForm">
+        <p:panel id="pnlRegistrarUsuario" header="Registrar Usuario">
+            
                 <h:panelGrid id="datosUsuario" columns="2" cellpadding="3" cellspacing="3">
                     <h:outputLabel value="#{msg.lblNombreUsuario}: "/>
-                            <p:inputText id="nombreUsuario" value="#{registrarUsuarioBean.usuario.nombreUsuario}"></p:inputText>
+                    <p:inputText id="nombreUsuario" value="#{registrarUsuarioBean.nombreUsuario}"></p:inputText>
 
                             <h:outputLabel value="#{msg.lblCorreoElectronico}: " />
-                            <p:inputText id="email" value="#{registrarUsuarioBean.usuario.email}"></p:inputText>
+                            <p:inputText id="email" value="#{registrarUsuarioBean.email}"></p:inputText>
 
                             <h:outputLabel value="#{msg.lblRol}: " />
-                            <p:selectOneMenu id="rol" value="#{registrarUsuarioBean.rol}">
+                            <p:selectOneMenu id="rol" value="#{registrarUsuarioBean.rol}" converter="rolConverter">
                                 <f:selectItem itemLabel="#{msg.lblSelectRol}"/>
                                 <f:selectItems value="#{registrarUsuarioBean.roles}"/>
                             </p:selectOneMenu>
 
                             <h:outputLabel value="#{msg.lblContrasenia}: " />
-                            <p:inputText id="contraseña" value="#{registrarUsuarioBean.usuario.contraseña}"></p:inputText>
+                            <p:password id="contraseña" value="#{registrarUsuarioBean.contraseña}"></p:password>
 
                             <h:outputLabel value="#{msg.lblRepetirCont}: " />
-                            <p:inputText id="repetirContraseña"></p:inputText>
+                            <p:password id="repetirContraseña" value="#{registrarUsuarioBean.repetirContraseña}"></p:password>
+                            <p:commandButton id="btnRegistrarUsuario" value="Guardar" update=":msg"
+                                             icon="ui-icon-circle-check"
+                                             action="#{registrarUsuarioBean.registrarUsuario}"/>
                 </h:panelGrid>
+            </p:panel>
             </h:form>
-        </p:panel>
+        
     </ui:define>
 </ui:composition>
