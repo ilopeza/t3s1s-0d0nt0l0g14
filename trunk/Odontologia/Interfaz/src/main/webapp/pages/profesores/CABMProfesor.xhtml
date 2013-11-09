@@ -50,6 +50,7 @@
                     </p:column>
                     <p:column id="colMateria" headerText="#{msg.lblMateria}">
                         <p:selectOneMenu id="materiasProfesor">
+                            <f:selectItems value="#{p.listaMaterias}"/>
                         </p:selectOneMenu>
                     </p:column>
                     <f:facet name="footer">
