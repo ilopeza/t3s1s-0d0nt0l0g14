@@ -115,10 +115,10 @@ public class AsignacionBean {
     public void filtrarCombosPorMateria() {
         if (materiaFiltro != null) {
             materiaFiltro = materiaService.reload(materiaFiltro, 1);
-            //buscarCatedras();
+            buscarCatedras();
             buscarTrabajosPracticos();
         } else {
-            //catedras = new ArrayList<Catedra>();
+            catedras = new ArrayList<Catedra>();
             trabajosPracticos = new ArrayList<TrabajoPractico>();
         }
     }
@@ -179,53 +179,45 @@ public class AsignacionBean {
             return null;
         }
     }
-    
-    public void onRowSelect(SelectEvent event) { 
-        buscarCatedras(diagnosticoService.findOne(diagnosticoSeleccionado.idDiagnostico).getMateria());
-        FacesMessage msg = new FacesMessage("Paciente Seleccionado");  
-  
-        FacesContext.getCurrentInstance().addMessage(null, msg);  
-    }  
-  
-    public void onRowUnselect(UnselectEvent event) {  
-        FacesMessage msg = new FacesMessage("Sin selección de paciente");  
-  
-        FacesContext.getCurrentInstance().addMessage(null, msg);  
-    }
 
     // Métodos de la interfaz.
     public void buscarPacientes() {
 
-        diagnosticos = new ArrayList<Diagnostico>();
-        resultadoBusqueda = new ArrayList<ResultadoConsulta>();
-        BooleanExpression predicate = DiagnosticoSpecs.byEstado(Diagnostico.EstadoDiagnostico.PENDIENTE);
+        if (materiaFiltro == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione una materia.", null));
+        } else {
 
-        if (materiaFiltro != null) {
-            predicate = predicate.and(DiagnosticoSpecs.byMateria(materiaFiltro));
-        }
+            diagnosticos = new ArrayList<Diagnostico>();
+            resultadoBusqueda = new ArrayList<ResultadoConsulta>();
+            BooleanExpression predicate = DiagnosticoSpecs.byEstado(Diagnostico.EstadoDiagnostico.PENDIENTE);
 
-        if (trabajoPracticoFiltro != null) {
-            predicate = predicate.and(DiagnosticoSpecs.byTrabajoPractico(trabajoPracticoFiltro));
-        }
-
-        if (filtroPaciente != null && !filtroPaciente.isEmpty()) {
-            if (filtroPaciente.matches("[0-9]*")) {
-                predicate = predicate.and(DiagnosticoSpecs.byNombreODocPaciente(filtroPaciente));
-            } else {
-                predicate = predicate.and(DiagnosticoSpecs.byNombreODocPaciente(filtroPaciente));
+            if (materiaFiltro != null) {
+                predicate = predicate.and(DiagnosticoSpecs.byMateria(materiaFiltro));
             }
 
-        }
-        diagnosticos = (List<Diagnostico>) diagnosticoService.findAll(predicate);
+            if (trabajoPracticoFiltro != null) {
+                predicate = predicate.and(DiagnosticoSpecs.byTrabajoPractico(trabajoPracticoFiltro));
+            }
 
-        for (Diagnostico d : diagnosticos) {
-            resultadoBusqueda.add(new ResultadoConsulta(d));
+            if (filtroPaciente != null && !filtroPaciente.isEmpty()) {
+                if (filtroPaciente.matches("[0-9]*")) {
+                    predicate = predicate.and(DiagnosticoSpecs.byNombreODocPaciente(filtroPaciente));
+                } else {
+                    predicate = predicate.and(DiagnosticoSpecs.byNombreODocPaciente(filtroPaciente));
+                }
+
+            }
+            diagnosticos = (List<Diagnostico>) diagnosticoService.findAll(predicate);
+
+            for (Diagnostico d : diagnosticos) {
+                resultadoBusqueda.add(new ResultadoConsulta(d));
+            }
         }
 
     }
 
     //Métodos auxiliares.
-
     public void createAsignacionPaciente(Alumno a, Paciente p, Catedra c, Diagnostico d) {
         asignacion = new AsignacionPaciente();
         asignacion.setAlumno(a);
@@ -273,7 +265,7 @@ public class AsignacionBean {
     //MÉTODOS AUXILIARES
     private void cargarCombos() {
         materias = buscarMaterias();
-        //catedras = buscarCatedras();
+        catedras = buscarCatedras();
         trabajosPracticos = buscarTrabajosPracticos();
     }
 
@@ -281,17 +273,14 @@ public class AsignacionBean {
         return materiaService.findAll();
     }
 
-    public List<Catedra> buscarCatedras(Materia materia) {
-        materia = materiaService.reload(materia, 1);
-        catedras = materia.getCatedra();
-        return catedras;
-        /*if (materiaFiltro == null) {
-            return null;
-        } else {
-            catedras = materiaFiltro.getCatedra();
-            return catedras;
-        }*/
-        
+    public List<Catedra> buscarCatedras() {
+        if (materiaFiltro == null) {
+         return null;
+         } else {
+         catedras = materiaFiltro.getCatedra();
+         return catedras;
+         }
+
     }
 
     private List<TrabajoPractico> buscarTrabajosPracticos() {
@@ -466,7 +455,7 @@ public class AsignacionBean {
     public boolean isMostrarBuscarAlumno() {
         return mostrarBuscarAlumno;
     }
-    
+
     public String getFechaDesde() {
         SimpleDateFormat fechaMin = new SimpleDateFormat("dd/MM/yyyy");
         return fechaMin.format(GregorianCalendar.getInstance().getTime());

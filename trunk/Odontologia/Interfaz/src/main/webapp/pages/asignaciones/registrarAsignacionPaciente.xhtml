@@ -14,7 +14,7 @@
 
             <p:panel id="pnlBusquedaAlumno" header="#{msg.lblConsultarAlumno}">
 
-                <h:panelGrid columns="3" cellpadding="3" cellspacing="3" rendered="#{asignacionBean.mostrarBuscarAlumno}">
+                <h:panelGrid columns="4" cellpadding="3" cellspacing="3" rendered="#{asignacionBean.mostrarBuscarAlumno}">
 
                     <h:outputLabel value="#{msg.lblNumDoc}:"/>
                     <p:inputText value="#{asignacionBean.nroDocumentoAlumnoBuscado}"/>
@@ -23,11 +23,9 @@
                                       actionListener="#{asignacionBean.buscarAlumno()}" 
                                       update="@form, :msg"
                                       icon="ui-icon-search"/>
-
-                    <h:outputLabel id="datosAlumno" rendered="#{asignacionBean.alumnoBuscado ne null}" 
-                                   value= "#{msg.lblAlumnoEncontrado}: #{asignacionBean.alumnoBuscado.toString()} 
-                                   #{asignacionBean.alumnoBuscado.documento.toString()}">
-                    </h:outputLabel>
+                    <p:panel id="alumnoEncontrado" header="Alumno">
+                            <h:outputLabel value="#{asignacionBean.alumnoBuscado.toString()} "/>
+                        </p:panel>
                 </h:panelGrid>
                 <p:dataTable id="tblAsignacionesAlumno" 
                              var="asignacion" 
@@ -89,7 +87,10 @@
             </p:panel>
             <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
                          var="p" value="#{asignacionBean.resultadoBusqueda}"
-                         emptyMessage="#{msg.msgPacientes}"
+                         paginator="true"
+                         rows="10"
+                         paginatorAlwaysVisible="false"
+                         emptyMessage="No se encontraron pacientes."
                          selectionMode="single"
                          selection="#{asignacionBean.diagnosticoSeleccionado}"
                          rowKey="#{p.idDiagnostico}"
@@ -102,9 +103,6 @@
                         <h:outputText value="#{msg.lblPacientesEncontrados}" />                  
                     </p:outputPanel>  
                 </f:facet>      
-                <p:ajax event="rowSelect" listener="#{asignacionBean.onRowSelect}"   
-                        update=":msg, :busquedaAlumnoForm:selectCatedraBusqueda"  oncomplete="selectCatedraBusqueda"/>  
-                <p:ajax event="rowUnselect" listener="#{asignacionBean.onRowUnselect}" update=":msg"/> 
                 <p:column id="NombYApellido" headerText="#{msg.lblApeNom}">  
                     <h:outputText value="#{p.paciente}" />  
                 </p:column>
@@ -136,7 +134,7 @@
                                 label="#{msg.lblFechaDeAsignacion}"/>
                     <p:commandButton id="asignar" value="#{msg.btnAsignar}" 
                                      action="#{asignacionBean.save}"
-                                     update=":msg, tblAsignacionesAlumno"
+                                     update=":msg, tblAsignacionesAlumno, tblResultadosBusquedaPacienteAsignacion"
                                      process="@this, :busquedaAlumnoForm, tblResultadosBusquedaPacienteAsignacion, txtFechaAsignacion "
                                      icon="ui-icon-circle-check"/> 
                 </h:panelGrid>
