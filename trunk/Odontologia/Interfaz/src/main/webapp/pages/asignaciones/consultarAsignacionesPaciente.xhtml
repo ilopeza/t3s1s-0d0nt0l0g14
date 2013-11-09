@@ -91,6 +91,8 @@ and open the template in the editor.
                 <p:dataTable id="tblResultadoAsignaciones" 
                              value="#{consultarAsignacionesBean.asignaciones}"
                              emptyMessage="#{msg.msgAsignaciones}"
+                             rows="10"
+                             paginatorAlwaysVisible="false"
                              selectionMode="single"
                              selection="#{consultarAsignacionesBean.asignacionSeleccionada}"
                              var="a"

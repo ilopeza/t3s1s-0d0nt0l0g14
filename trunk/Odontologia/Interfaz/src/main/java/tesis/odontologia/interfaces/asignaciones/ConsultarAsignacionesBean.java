@@ -25,6 +25,7 @@ import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente.EstadoAsignacion;
+import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
 import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
@@ -32,10 +33,12 @@ import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.domain.usuario.Rol;
 import tesis.odontologia.core.mail.SMTPConfig;
 import tesis.odontologia.core.service.AsignacionPacienteService;
+import tesis.odontologia.core.service.DiagnosticoService;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.specification.AlumnoSpecs;
 import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
+import tesis.odontologia.core.specification.DiagnosticoSpecs;
 import tesis.odontologia.core.utils.FechaUtils;
 import tesis.odontologia.interfaces.login.LoginBean;
 
@@ -78,6 +81,8 @@ public class ConsultarAsignacionesBean {
     private PersonaService personaService;
     @ManagedProperty(value = "#{materiaService}")
     private MateriaService materiaService;
+    @ManagedProperty(value = "#{diagnosticoService}")
+    private DiagnosticoService diagnosticoService;
 
     /**
      * Creates a new instance of ConsultarAsignacionesBean
@@ -280,6 +285,10 @@ public class ConsultarAsignacionesBean {
         asignacionSeleccionada.setMotivoCancelacion(motivoCancelacion);
         cambiarEstadoAsignacionPaciente(AsignacionPaciente.EstadoAsignacion.CANCELADA);
         motivoCancelacion = "";
+        Diagnostico d = diagnosticoService.findOne(asignacionSeleccionada.getDiagnostico().getId());
+        d.setEstado(Diagnostico.EstadoDiagnostico.PENDIENTE);
+        diagnosticoService.save(d);
+        
     }
 
     public boolean deshabilitarBtnConfirmarAsignacion(AsignacionPaciente a) {
@@ -543,5 +552,12 @@ public class ConsultarAsignacionesBean {
 
     public void setCampoEditable(boolean campoEditable) {
         this.campoEditable = campoEditable;
+    }
+
+    /**
+     * @param diagnosticoService the diagnosticoService to set
+     */
+    public void setDiagnosticoService(DiagnosticoService diagnosticoService) {
+        this.diagnosticoService = diagnosticoService;
     }
 }
