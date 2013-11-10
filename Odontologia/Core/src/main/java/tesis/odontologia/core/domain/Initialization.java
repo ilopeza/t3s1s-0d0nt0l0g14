@@ -21,6 +21,7 @@ import tesis.odontologia.core.domain.materia.Materia;
 import tesis.odontologia.core.domain.materia.Catedra;
 import tesis.odontologia.core.domain.materia.TrabajoPractico;
 import tesis.odontologia.core.domain.paciente.Paciente;
+import tesis.odontologia.core.domain.profesor.AdministradorAcademico;
 import tesis.odontologia.core.domain.profesor.Profesor;
 import tesis.odontologia.core.domain.profesor.Responsable;
 import tesis.odontologia.core.domain.usuario.Rol;
@@ -67,6 +68,7 @@ public class Initialization {
         cargarProfesores();
         cargarAsignaciones();
         cargarAtenciones();
+        cargarAdminAcademico();
     }
 
     private void cargarRoles() {
@@ -268,6 +270,15 @@ public class Initialization {
         p.setDocumento(new Documento("30271221", Documento.TipoDocumento.DNI));
         p.setFechaNacimiento(Calendar.getInstance());
         Usuario usuario1 = new Usuario("30271221", "30271221", roles.get(3), "Juan@gmail.com");
+        p.setUsuario(usuario1);
+        personaService.save(p);
+    }
+    
+    private void cargarAdminAcademico() {
+        AdministradorAcademico p = new AdministradorAcademico("Rolando", "Zárate");
+        p.setDocumento(new Documento("35054738", Documento.TipoDocumento.DNI));
+        p.setFechaNacimiento(Calendar.getInstance());
+        Usuario usuario1 = new Usuario("35054738", "35054738", roles.get(4), "roly_zarate@gmail.com");
         p.setUsuario(usuario1);
         personaService.save(p);
     }
