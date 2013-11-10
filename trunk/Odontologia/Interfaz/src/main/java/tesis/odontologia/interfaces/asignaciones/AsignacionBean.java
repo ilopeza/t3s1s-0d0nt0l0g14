@@ -115,10 +115,10 @@ public class AsignacionBean {
     public void filtrarCombosPorMateria() {
         if (materiaFiltro != null) {
             materiaFiltro = materiaService.reload(materiaFiltro, 1);
-            buscarCatedras();
+            //buscarCatedras();
             buscarTrabajosPracticos();
         } else {
-            catedras = new ArrayList<Catedra>();
+            //catedras = new ArrayList<Catedra>();
             trabajosPracticos = new ArrayList<TrabajoPractico>();
         }
     }
@@ -150,7 +150,12 @@ public class AsignacionBean {
         if (validacion) {
             return null;
         } else {
-
+            
+            if (!permitirAsignacion()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "No puedes reservar más de 2 pacientes para una práctica.", null));
+                return null;
+            }
 
             AsignacionPaciente asig = new AsignacionPaciente();
             Diagnostico diag = diagnosticoService.findOne(diagnosticoSeleccionado.getIdDiagnostico());
@@ -169,6 +174,7 @@ public class AsignacionBean {
                 asig = asignacionPacienteService.save(asig);
                 diag = diagnosticoService.save(diag);
                 buscarAsignaciones();
+                resultadoBusqueda.remove(diagnosticoSeleccionado);
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha registrado la asignación.", null));
             } catch (Exception ex) {
@@ -179,15 +185,31 @@ public class AsignacionBean {
             return null;
         }
     }
+    
+    public boolean permitirAsignacion() {
+        Diagnostico diagnostico = diagnosticoService.findOne(diagnosticoSeleccionado.getIdDiagnostico());
+        List<AsignacionPaciente> asigTP = new ArrayList<AsignacionPaciente>();
+        Materia materia = diagnostico.getMateria();
+        TrabajoPractico practico = diagnostico.getTrabajoPractico();
+        
+        BooleanExpression predicate = AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE).and(AsignacionPacienteSpecs.byMateria2(materia)).and(AsignacionPacienteSpecs.byTrabajoPractico(practico));
+        asigTP = (List<AsignacionPaciente>) asignacionPacienteService.findAll(predicate);
+        
+        if (asigTP.size() < 2) {
+            return true;
+        }
+        return false;
+    }
 
     // Métodos de la interfaz.
     public void buscarPacientes() {
 
         if (materiaFiltro == null) {
             FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione una materia.", null));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione una materia.", null));
         } else {
-
+            
+            buscarCatedras();
             diagnosticos = new ArrayList<Diagnostico>();
             resultadoBusqueda = new ArrayList<ResultadoConsulta>();
             BooleanExpression predicate = DiagnosticoSpecs.byEstado(Diagnostico.EstadoDiagnostico.PENDIENTE);
@@ -213,20 +235,15 @@ public class AsignacionBean {
             for (Diagnostico d : diagnosticos) {
                 resultadoBusqueda.add(new ResultadoConsulta(d));
             }
+            if (resultadoBusqueda.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "No se encontraron pacientes.", null));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Enhorabuena, se encontraron " + resultadoBusqueda.size() + " pacientes.", null));
+            }
         }
 
-    }
-
-    //Métodos auxiliares.
-    public void createAsignacionPaciente(Alumno a, Paciente p, Catedra c, Diagnostico d) {
-        asignacion = new AsignacionPaciente();
-        asignacion.setAlumno(a);
-        asignacion.setPaciente(p);
-        Calendar fecha = new GregorianCalendar();
-        fecha.setTime(fechaAsignacion);
-        asignacion.setFechaAsignacion(fecha);
-        asignacion.setCatedra(c);
-        asignacion.setDiagnostico(d);
     }
 
     public void buscarAlumno() {
@@ -275,11 +292,12 @@ public class AsignacionBean {
 
     public List<Catedra> buscarCatedras() {
         if (materiaFiltro == null) {
-         return null;
-         } else {
-         catedras = materiaFiltro.getCatedra();
-         return catedras;
-         }
+            return null;
+        } else {
+            materiaFiltro = materiaService.reload(materiaFiltro, 1);
+            catedras = materiaFiltro.getCatedra();
+            return catedras;
+        }
 
     }
 
