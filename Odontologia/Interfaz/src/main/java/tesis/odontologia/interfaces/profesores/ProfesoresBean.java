@@ -194,13 +194,15 @@ public class ProfesoresBean {
         profesor.setEstado(Profesor.EstadoProfesor.ACTIVO);
         profesor.setListaMaterias(materiasElegidas.getTarget());
         profesor = personaService.save(profesor);
-
+        buscarProfesores();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Profesor " + profesor.toString()
                 + " guardado correctamente."));
     }
 
     private void actualizarProfesor() {
+        profesor.setListaMaterias(materiasElegidas.getTarget());
         profesor = personaService.save(profesor);
+        buscarProfesores();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Profesor " + profesor.toString()
                 + " actualizado correctamente."));
     }
