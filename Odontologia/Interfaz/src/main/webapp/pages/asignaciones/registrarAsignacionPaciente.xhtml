@@ -39,7 +39,7 @@
                     <f:facet name="header">
                         <h:outputText value="#{msg.lblConsularPacientesAsignados} #{asignacionBean.alumnoBuscado.toString()}" />
                     </f:facet>
-                    <p:column id="Paciente" headerText="#{msg.lblApeNom}">
+                    <p:column id="Paciente" headerText="#{msg.lblPaciente}">
                         <h:outputText value="#{asignacion.paciente}" />
                     </p:column>
                     <p:column id="FechaAsignacion" headerText="#{msg.lblFechaDeAsignacion}">
@@ -48,14 +48,11 @@
                     <p:column id="Estado" headerText="#{msg.lblEstado}">
                         <h:outputText value="#{asignacion.estado}" />
                     </p:column>
-                    <p:column id="Telefono" headerText="#{msg.lblTelefono}">
-                        <h:outputText value="#{asignacion.paciente.telefono}" />
+                    <p:column id="Materia" headerText="#{msg.lblMateria}">
+                        <h:outputText value="#{asignacion.diagnostico.materia}" />
                     </p:column>
-                    <p:column id="Celular" headerText="#{msg.lblCelular}">
-                        <h:outputText value="#{asignacion.paciente.celular}" />
-                    </p:column>
-                    <p:column id="Domicilio" headerText="#{msg.lblDomicilio}">
-                        <h:outputText value="#{asignacion.paciente.domicilio}" />
+                    <p:column id="Practico" headerText="#{msg.lblTrabajoPractico}">
+                        <h:outputText value="#{asignacion.diagnostico.trabajoPractico}" />
                     </p:column>
                 </p:dataTable>
 
@@ -69,7 +66,7 @@
                                      converter="materiaConverter">
                         <f:selectItem itemLabel="#{msg.lblSelectMateria}"/>
                         <f:selectItems value="#{asignacionBean.materias}"/>
-                        <f:ajax event="change"  render="selectCatedraBusqueda selectTrabajoPracticoBusqueda" execute="selectMateriaBusqueda"
+                        <f:ajax event="change"  render="selectTrabajoPracticoBusqueda" execute="selectMateriaBusqueda"
                                 listener="#{asignacionBean.filtrarCombosPorMateria()}"/>
                     </p:selectOneMenu>  
                     <p:outputLabel value="#{msg.lblTrabajoPractico}: "/>
@@ -83,7 +80,7 @@
                     <p:inputText value="#{asignacionBean.filtroPaciente}" id="txtFiltroPaciente"/>
                     <p:commandButton id="btnBuscar" value="#{msg.btnBuscar}" 
                                      actionListener="#{asignacionBean.buscarPacientes()}" 
-                                     update="tblResultadosBusquedaPacienteAsignacion, :msg" 
+                                     update="tblResultadosBusquedaPacienteAsignacion, :msg, selectCatedraBusqueda" 
                                      icon="ui-icon-search"
                                      process="@this, :busquedaAlumnoForm, txtFiltroPaciente"/> 
                 </h:panelGrid> 
