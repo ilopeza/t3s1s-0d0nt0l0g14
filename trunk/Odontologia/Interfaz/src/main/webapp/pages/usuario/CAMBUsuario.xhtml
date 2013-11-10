@@ -50,7 +50,7 @@
                                          update=":formNuevoUsuario"/>
                         <p:commandButton id="btnModificarUsuario" value="#{msg.btnModificar}" icon="ui-icon-gear" 
                                          actionListener="#{usuarioBean.seleccionarUsuario()}" 
-                                         update=":formNuevoUsuario"/>
+                                         update=":formNuevoUsuario, :msg"/>
                     </f:facet> 
                 </p:dataTable>
 
@@ -70,7 +70,7 @@
 
                     <h:outputLabel value="#{msg.lblRol}: " />
                    
-                    <p:selectOneMenu id="cmbrol" value="#{usuarioBean.usuario.rol}" converter="rolConverter">
+                    <p:selectOneMenu id="cmbrol" value="#{usuarioBean.rol}" converter="rolConverter">
                         <f:selectItem itemLabel="#{msg.lblSelectRol}"/>
                         <f:selectItems value="#{usuarioBean.roles}"/>
                     </p:selectOneMenu>
