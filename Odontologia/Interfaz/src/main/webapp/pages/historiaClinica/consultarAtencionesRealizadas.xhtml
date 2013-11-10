@@ -46,13 +46,11 @@
                 <p:commandButton  id="btnBuscarAtencionesRealizadas" value="#{msg.btnBuscar}" 
                                   actionListener="#{consultarAtencionesRealizadasBean.buscarAtencionesRealizadas()}" 
                                   process="@form"
+                                  icon="ui-icon-search"
                                   update="tblResultadosAtencionesRealizadas, :msg">
                 </p:commandButton>
-            </p:panel>
-            <br/>
-            <br/>
-
-            <p:panel  id="pnlResultadosConsultarAtencionesRealizadas" header="#{msg.lblAtencionesRealizadas}">
+                <br/>
+                <br/>
                 <p:dataTable id="tblResultadosAtencionesRealizadas" 
                              var="atenciones" 
                              value="#{consultarAtencionesRealizadasBean.atencionesGenericas}" 
@@ -64,7 +62,7 @@
 
                     <f:facet name="header">
                         <p:outputPanel>
-                            <h:outputText value="Resultado de la Busqueda" />
+                            <h:outputText value="#{msg.lblAtencionesRealizadas}" />
                         </p:outputPanel>
                     </f:facet>
 
@@ -81,22 +79,24 @@
                         </f:facet>  
                         <h:outputText value="#{atenciones.asignacionPaciente.alumno}" />  
                     </p:column> 
-                    
+
                     <p:column>  
                         <f:facet name="header">  
                             <h:outputText value="#{msg.lblProfesorAut}" />  
                         </f:facet>  
                         <h:outputText value="#{atenciones.asignacionPaciente.profesor}" />  
                     </p:column>
-                    
+
                     <p:column>  
                         <f:facet name="header">  
                             <h:outputText value="#{msg.lblDiagnosticoResuelto}" />  
                         </f:facet>  
                         <h:outputText value="#{atenciones.asignacionPaciente.diagnostico.descripcion}" />  
                     </p:column>
-
-                    <p:column>
+                    <p:rowExpansion>
+                        <h:outputText value="#{atenciones.descripcionProcedimiento}" />
+                    </p:rowExpansion>
+                    <!--p:column>
                         <f:facet name="header">  
                             <h:outputText value="#{msg.lblProcedimiento}" />  
                         </f:facet> 
@@ -105,12 +105,13 @@
                         <p:dialog id="Dialog" header="#{msg.lblDescripcionProc}" widgetVar="dlgDescripcionProcedimiento">  
                             <h:outputText value="#{atenciones.descripcionProcedimiento}" />  
                         </p:dialog>
+                    </p:column-->
+                    <p:column headerText="Ver">
+                        <p:rowToggler/>
                     </p:column>
 
                 </p:dataTable>
-
             </p:panel>
-
         </h:form>
 
     </ui:define>
