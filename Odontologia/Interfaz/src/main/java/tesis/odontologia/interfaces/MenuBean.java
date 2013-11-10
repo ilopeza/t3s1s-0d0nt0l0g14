@@ -62,7 +62,7 @@ public class MenuBean {
 
             submenu = subMenu("Gestión de Materias");
             //Opciones
-            menuItem = menuItem("Registrar materia", "/pages/materias/formMaterias.xhtml");
+            menuItem = menuItem("Administrar materias", "/pages/materias/registrarMateria.xhtml");
             submenu.getChildren().add(menuItem);
 
             menu.addSubmenu(submenu);
