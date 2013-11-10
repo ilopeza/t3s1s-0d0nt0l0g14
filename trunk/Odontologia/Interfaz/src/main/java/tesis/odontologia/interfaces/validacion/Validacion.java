@@ -38,7 +38,7 @@ public class Validacion {
 
     public boolean validarTexto(String cadenaCaracteres) {
         boolean var;
-        var = cadenaCaracteres.matches("[a-zA-Z]{1,}");
+        var = cadenaCaracteres.matches("([a-z A-Z ñáéíóú]{2,50})");
         return var;
     }
     
