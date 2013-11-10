@@ -351,28 +351,28 @@ public class PacienteWizardBean {
             varValidacion = false;
         }
 
-        if (!paciente.getEmail().isEmpty()) {
+        if (paciente.getEmail()!=null && !paciente.getEmail().isEmpty()) {
             if (!validacion.validarMail(paciente.getEmail())) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo inválido", null));
                 varValidacion = false;
             }
         }
 
-        if (!paciente.getNacionalidad().isEmpty()) {
+        if (paciente.getNacionalidad()!= null && !paciente.getNacionalidad().isEmpty()) {
             if (getValidacion().validarTexto(paciente.getNacionalidad()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo nacionalidad debe ser solo texto", null));
                 varValidacion = false;
             }
         }
 
-        if (!paciente.getLugarNacimiento().isEmpty()) {
+        if (paciente.getLugarNacimiento()!=null&&!paciente.getLugarNacimiento().isEmpty()) {
             if (getValidacion().validarTexto(paciente.getLugarNacimiento()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo lugar de naciomiento debe ser solo texto", null));
                 varValidacion = false;
             }
         }
 
-        if (!paciente.getProvincia().isEmpty()) {
+        if (paciente.getProvincia()!=null && !paciente.getProvincia().isEmpty()) {
             if (getValidacion().validarTexto(paciente.getProvincia()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo provincia debe ser solo texto", null));
                 varValidacion = false;
@@ -401,21 +401,21 @@ public class PacienteWizardBean {
 //            }
 //        }
 
-        if (!paciente.getCelular().isEmpty()) {
+        if (paciente.getCelular()!=null && !paciente.getCelular().isEmpty()) {
             if (getValidacion().validarNumero(paciente.getCelular()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo celular debe ser solo numérico", null));
                 varValidacion = false;
             }
         }
 
-        if (!paciente.getTelefono().isEmpty()) {
+        if (paciente.getTelefono()!=null && !paciente.getTelefono().isEmpty()) {
             if (getValidacion().validarNumero(paciente.getTelefono()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo teléfono debe ser solo numérico", null));
                 varValidacion = false;
             }
         }
 
-        if (!paciente.getTelefonoMedico().isEmpty()) {
+        if (paciente.getTelefonoMedico()!=null && !paciente.getTelefonoMedico().isEmpty()) {
             if (getValidacion().validarNumero(paciente.getTelefonoMedico()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo teléfono médico debe ser solo numérico", null));
                 varValidacion = false;
