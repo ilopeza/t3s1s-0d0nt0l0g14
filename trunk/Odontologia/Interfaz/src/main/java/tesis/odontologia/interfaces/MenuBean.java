@@ -86,7 +86,7 @@ public class MenuBean {
             menuItem = menuItem("Registrar usuario de alumno", "/pages/alumnos/formUsuarioAlumno.xhtml");
             submenu.getChildren().add(menuItem);
 
-            menuItem = menuItem("Registrar usuario", "/pages/usuario/registrarUsuario.xhtml");
+            menuItem = menuItem("Registrar Usuario", "/pages/usuario/CAMBUsuario.xhtml");
             submenu.getChildren().add(menuItem);
             
             menu.addSubmenu(submenu);
