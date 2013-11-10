@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formConsultarUsuario">
+            <p:panel id="pnlConsultarUsuarios" header="#{msg.lblConsultarUsuario}">
+                <h:panelGrid columns="7" cellpadding="3" cellspacing="3">
+                    <p:outputLabel value="#{msg.lblNombreUsuario}:"/>
+                    <p:inputText id="txtFiltroBusqueda" value="#{usuarioBean.filtroBusqueda}"/>
+
+                    <p:outputLabel value="#{msg.lblRol}:"/>
+                    
+                    <p:selectOneMenu id="selectRolBusqueda" filter="true" filterMatchMode="startsWith" value="#{usuarioBean.rolBusqueda}" converter="rolConverter">
+                        <f:selectItem itemLabel="#{msg.lblSelectRol}"/>
+                        <f:selectItems value="#{usuarioBean.roles}"/>
+                    </p:selectOneMenu>
+                    
+                    <p:commandButton id="btnBuscarUsuario" value="#{msg.btnBuscar}" icon="ui-icon-search" 
+                                     actionListener="#{usuarioBean.buscarUsuarios()}" 
+                                     update="@form :msg"/>
+                </h:panelGrid> 
+                <p:dataTable id="tblResultadoUsuarios" 
+                             emptyMessage="#{msg.msgUsuarios}"
+                             value="#{usuarioBean.usuariosEncontrados}" var="u"
+                             selectionMode="single" selection="#{usuarioBean.selectedUsuario}"
+                             rowKey="#{u.id}" paginator="true" 
+                             rows="5"                             
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorAlwaysVisible="false">
+                    <f:facet name="header">
+                        #{msg.lblUsuariosEncontrados}
+                    </f:facet>
+                    <p:column id="colNombreUsuario" headerText="#{msg.lblNombreUsuario}">
+                        <h:outputText value="#{u.nombreUsuario}"/>
+                    </p:column>
+                    <p:column id="colEmail" headerText="#{msg.lblCorreoElectronico}">
+                        <h:outputText value="#{u.email}" />
+                    </p:column>
+                    <p:column id="colRol" headerText="#{msg.lblRol}">
+                        <h:outputText value="#{u.rol}" />
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="btnNuevoUsuario" value="#{msg.btnNuevoUsuario}" icon="ui-icon-plusthick" 
+                                         actionListener="#{usuarioBean.registrarNuevoUsuario()}" 
+                                         update=":formNuevoUsuario"/>
+                        <p:commandButton id="btnModificarUsuario" value="#{msg.btnModificar}" icon="ui-icon-gear" 
+                                         actionListener="#{usuarioBean.seleccionarUsuario()}" 
+                                         update=":formNuevoUsuario"/>
+                    </f:facet> 
+                </p:dataTable>
+
+            </p:panel>
+
+
+        </h:form>  
+
+        <h:form id="formNuevoUsuario">
+            <p:panel id="pnlNuevoUsuario" header="#{msg.lblRegistrarNuevoUsuario}" visible="#{usuarioBean.habilitarNuevoUsuario}">
+                <h:panelGrid columns="2" cellpadding="3" cellspacing="3">
+                    <h:outputLabel value="#{msg.lblNombreUsuario}: "/>
+                    <p:inputText id="txtnombreUsuario" value="#{usuarioBean.usuario.nombreUsuario}"></p:inputText>
+
+                    <h:outputLabel value="#{msg.lblCorreoElectronico}: " />
+                    <p:inputText id="txtemail" value="#{usuarioBean.usuario.email}"></p:inputText>
+
+                    <h:outputLabel value="#{msg.lblRol}: " />
+                   
+                    <p:selectOneMenu id="cmbrol" value="#{usuarioBean.usuario.rol}" converter="rolConverter">
+                        <f:selectItem itemLabel="#{msg.lblSelectRol}"/>
+                        <f:selectItems value="#{usuarioBean.roles}"/>
+                    </p:selectOneMenu>
+                   
+                    <h:outputLabel value="#{msg.lblContrasenia}: " />
+                    <p:password id="txtcontraseña" value="#{usuarioBean.usuario.contraseña}" disabled="#{!usuarioBean.habilitarContraseña}"></p:password>
+
+                    <h:outputLabel value="#{msg.lblRepetirCont}: " />
+                    <p:password id="txtrepetirContraseña" value="#{usuarioBean.repetirContraseña}" disabled="#{!usuarioBean.habilitarContraseña}"></p:password>
+                </h:panelGrid> 
+                <h:panelGrid columns="3">
+                    <p:commandButton id="btnGuardar" value="#{msg.btnGuardar}" icon="ui-icon-check"
+                                     actionListener="#{usuarioBean.registrarUsuario()}" update=":msg @form" 
+                                     process="@form" disabled="#{usuarioBean.habilitarBotonNuevo}"/>
+                    <p:commandButton id="btnConfirmarCambios" value="#{msg.btnConfirmarCambios}" icon="ui-icon-pencil" disabled="#{!usuarioBean.habilitarBotonNuevo}"
+                                     update=":msg @form" actionListener="#{usuarioBean.registrarUsuario()}"/>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define> 
+</ui:composition>
+
