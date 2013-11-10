@@ -5,7 +5,6 @@
 package tesis.odontologia.interfaces.materias;
 
 import com.mysema.query.types.expr.BooleanExpression;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -40,14 +39,11 @@ public class MateriaBean {
     private TrabajoPractico trabajoPractico;
     private TrabajoPractico selectedTrabajoPractico;
     private List<TrabajoPractico> trabajosPracticos;
-    private List<TrabajoPractico> trabajosPracticosMateria;
     private Validacion validacion = new Validacion();
     private List<Materia> materias;
     private List<Catedra> catedras;
     private Materia materia;
     private Catedra catedra;
-    private Materia selectedMateria;
-    private Catedra selectedCatedra;
     @ManagedProperty(value = "#{materiaService}")
     private MateriaService materiaService;
     @ManagedProperty(value = "#{diagnosticoService}")
@@ -56,9 +52,7 @@ public class MateriaBean {
     private TrabajoPracticoService trabajoPracticoService;
     @ManagedProperty(value = "#{catedraService}")
     private CatedraService catedraService;
-    private boolean rendered = true;
     private boolean nuevoTPHabilitado;
-    private boolean modificarTPHabilitado;
     private List<Diagnostico> diagnosticos;
 
     @PostConstruct
@@ -80,8 +74,13 @@ public class MateriaBean {
     }
 
     public void nuevoTrabajoPractico() {
-        trabajoPractico = new TrabajoPractico();
+        trabajoPractico = new TrabajoPractico();        
         nuevoTPHabilitado = true;
+    }
+
+    public void limpiarCancelar() {
+        trabajoPractico = new TrabajoPractico();
+        nuevoTPHabilitado = false;
     }
 
     public MateriaBean() {
@@ -91,50 +90,61 @@ public class MateriaBean {
         trabajoPractico = selectedTrabajoPractico;
         nuevoTPHabilitado = true;
         //retornarMateria();
-
     }
 
     public void eliminarTrabajoPractico() {
         trabajoPractico = selectedTrabajoPractico;
         if (validarTPconDiagnosticos()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existen diagnosticos que tienen asociado al Trabajo Práctico: " + "" + trabajoPractico + "." + "No se pude borrar el Trabajo Práctico", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se puede borrar el Trabajo Práctico. Existe al menos un Diagnóstico con este Trabajo Práctico", null));
+
+            buscarTPs();
+            resetFieldsTP();
+            nuevoTPHabilitado = false;
+
         } else {
 
             materia = materiaService.reload(materia, 1);
             //materia.removeTrabajoPractico(trabajoPractico);
             materia.getTrabajoPractico().remove(trabajoPractico);
             materia = materiaService.save(materia);
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(trabajoPractico.getNombre()
-                + " eliminado correctamente."));
-            trabajoPractico = new TrabajoPractico();
+                    + " eliminado correctamente."));
+
+            buscarTPs();
+            resetFieldsTP();
+            nuevoTPHabilitado = false;
         }
-
-
     }
 
     public void saveTrabajoPractico() {
 
-        //if (validar())
-        if (trabajoPractico.isNew()) {
-            materia = materiaService.reload(materia, 1);
-            //materia.addTrabajoPractico(trabajoPractico);
-            materia.getTrabajoPractico().add(trabajoPractico);
-            materia = materiaService.save(materia);
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(trabajoPractico.getNombre()
-                + " guardado correctamente."));
-            
-            materia = new Materia();
-            resetFieldsTP();
-            nuevoTPHabilitado = false;
-        } else {
-            trabajoPractico = trabajoPracticoService.save(trabajoPractico);
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(trabajoPractico.getNombre()
-                + " actualizado correctamente."));
-            trabajoPractico = new TrabajoPractico();
-            nuevoTPHabilitado = false;
+        if (validar()) {
+            if (trabajoPractico.isNew()) {
+                materia = materiaService.reload(materia, 1);
+                //materia.addTrabajoPractico(trabajoPractico);
+                materia.getTrabajoPractico().add(trabajoPractico);
+                materia = materiaService.save(materia);
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(trabajoPractico.getNombre()
+                        + " guardado correctamente."));
+
+                buscarTPs();
+                resetFieldsTP();
+
+                nuevoTPHabilitado = false;
+            } else {
+                trabajoPractico = trabajoPracticoService.save(trabajoPractico);
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(trabajoPractico.getNombre()
+                        + " actualizado correctamente."));
+                //trabajoPractico = new TrabajoPractico();
+                //retornarMateria();            
+                buscarTPs();
+                resetFieldsTP();
+
+                nuevoTPHabilitado = false;
+            }
         }
     }
 
@@ -154,7 +164,7 @@ public class MateriaBean {
         boolean var = false;
         predicate = (DiagnosticoSpecs.byTrabajoPractico(trabajoPractico));
         diagnosticos = (List<Diagnostico>) (diagnosticoService.findAll(predicate));
-        if (diagnosticos.size()>0) {            
+        if (diagnosticos.size() > 0) {
             var = true;
         }
         return var;
@@ -163,12 +173,12 @@ public class MateriaBean {
     private boolean validar() {
         boolean varValidacion = true;
 
-        if (!validacion.validarTexto(trabajoPractico.getNombre())) {
+        if (validacion.nullEmpty(trabajoPractico.getNombre())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo nombre de Trabajo Práctico debe ser texto", null));
             varValidacion = false;
         }
 
-        if (validacion.nullEmpty(trabajoPractico.getDescripcion())) {
+        if (validacion.nullEmpty(trabajoPractico.getDescripcion())){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Por favor ingrese una descripción", null));
             varValidacion = false;
         }
@@ -177,8 +187,6 @@ public class MateriaBean {
     }
 
     public void buscarTPs() {
-
-        //materias = buscarMaterias();
         trabajosPracticos = buscarTrabajosPracticos();
     }
 
@@ -217,22 +225,6 @@ public class MateriaBean {
 
     public void setMaterias(List<Materia> materias) {
         this.materias = materias;
-    }
-
-    public Materia getSelectedMateria() {
-        return selectedMateria;
-    }
-
-    public void setSelectedMateria(Materia selectedMateria) {
-        this.selectedMateria = selectedMateria;
-    }
-
-    public Catedra getSelectedCatedra() {
-        return selectedCatedra;
-    }
-
-    public void setSelectedCatedra(Catedra selectedCatedra) {
-        this.selectedCatedra = selectedCatedra;
     }
 
     public Materia getMateria() {
@@ -310,20 +302,6 @@ public class MateriaBean {
     }
 
     /**
-     * @return the trabajosPracticosMateria
-     */
-    public List<TrabajoPractico> getTrabajosPracticosMateria() {
-        return trabajosPracticosMateria;
-    }
-
-    /**
-     * @param trabajosPracticosMateria the trabajosPracticosMateria to set
-     */
-    public void setTrabajosPracticosMateria(List<TrabajoPractico> trabajosPracticosMateria) {
-        this.trabajosPracticosMateria = trabajosPracticosMateria;
-    }
-
-    /**
      * @return the validacion
      */
     public Validacion getValidacion() {
@@ -352,20 +330,6 @@ public class MateriaBean {
     }
 
     /**
-     * @return the rendered
-     */
-    public boolean isRendered() {
-        return rendered;
-    }
-
-    /**
-     * @param rendered the rendered to set
-     */
-    public void setRendered(boolean rendered) {
-        this.rendered = rendered;
-    }
-
-    /**
      * @return the nuevoTPHabilitado
      */
     public boolean isNuevoTPHabilitado() {
@@ -377,20 +341,6 @@ public class MateriaBean {
      */
     public void setNuevoTPHabilitado(boolean nuevoTPHabilitado) {
         this.nuevoTPHabilitado = nuevoTPHabilitado;
-    }
-
-    /**
-     * @return the modificarTPHabilitado
-     */
-    public boolean isModificarTPHabilitado() {
-        return modificarTPHabilitado;
-    }
-
-    /**
-     * @param modificarTPHabilitado the modificarTPHabilitado to set
-     */
-    public void setModificarTPHabilitado(boolean modificarTPHabilitado) {
-        this.modificarTPHabilitado = modificarTPHabilitado;
     }
 
     /**
