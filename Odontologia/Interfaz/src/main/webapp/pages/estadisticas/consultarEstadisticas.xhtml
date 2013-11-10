@@ -6,16 +6,41 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:outputLabel value="CONSULTAR ESTADISTICAS" style="padding: 400px; font-size: 20px; font: " />
+        <h:outputLabel value="#{msg.lblConsultarEstadisticas}" style="padding: 400px; font-size: 20px; font: " />
 
         <h:form id="consultarEstadisticasForm">
-            <p:panel id="pnlConsultarEstadisticas" header="Parámetros de búsqueda">
-            <h:panelGrid columns="2">  
-                <p:lineChart value="#{consultarEstadisticasBean.linearModel}" legendPosition="e" zoom="true" animate="true"  
-                             title="Linear Chart" minY="0" maxY="10" style="width:400px;" />  
+            <p:panel id="pnlParamentroConsultarEstadisticas" header="#{msg.lblParametrosBusquedaEstadisticas}">
+                <h:panelGrid id="paramentros" columns="4" cellpadding="3" cellspacing="3">                 
+  
+                    <p:outputLabel value="#{msg.lblMateria}: "/>
+                    <p:selectOneMenu id="selecciontMateriaBusqueda" value="#{consultarEstadisticasBean.materiaFiltro}" converter="materiaConverter">
+                        <f:selectItem itemLabel="#{msg.lblSelectMateria}"/>
+                        <f:selectItems value="#{consultarEstadisticasBean.materias}"/>   
+                    </p:selectOneMenu>                    
+                     <span></span> 
+                      <h:outputLabel value=""/>
+                      <h:outputLabel value="#{msg.lblFechaAtencionDesde}:"/>
+                      <p:calendar id="calDesde" value="#{consultarEstadisticasBean.fechaDesdeFiltro}" navigator="true"  yearRange="c-100:c"/>
+                     
+                     <h:outputLabel value="#{msg.lblFechaAtencionHasta}:"/>
+                     <p:calendar id="calHasta" value="#{consultarEstadisticasBean.fechaHastaFiltro}" navigator="true"  yearRange="c-100:c"/>
+                    
+                     </h:panelGrid>
+                <p:commandButton  id="btnGenerarEstadisticas" value="#{msg.btnGenerarEstadisticas}" 
+                                  actionListener="#{consultarEstadisticasBean.calcularEstadisticas()}" 
+                                  process="@form"
+                                  update="pnlConsultarEstadisticas, :msg">
+                </p:commandButton>
+                <br/>
 
+          
+            </p:panel>
+            <p:panel id="pnlConsultarEstadisticas" header="#{msg.pnlConsultarEstadisticas}">
+            <h:panelGrid columns="2">
+                <p:pieChart id="custom" value="#{consultarEstadisticasBean.pieModel}" legendPosition="e" fill="false" showDataLabels="true"  
+                title="Cantidad de Asignaciones por Estados" style="width:400px;height:300px" sliceMargin="5" diameter="150" />
                 <p:barChart id="basic" value="#{consultarEstadisticasBean.categoryModel}" legendPosition="ne"  
-                            title="Basic Bar Chart" min="0" max="200" style="width:400px" animate="true"/>  
+                            title="Asignaciones Autorizadas vs Atenciones" min="0" max="10" style="width:400px" animate="true"/>  
             </h:panelGrid>
             </p:panel>
         </h:form>
