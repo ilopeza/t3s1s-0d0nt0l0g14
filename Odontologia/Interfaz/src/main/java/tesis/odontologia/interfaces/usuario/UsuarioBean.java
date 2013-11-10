@@ -45,6 +45,7 @@ public class UsuarioBean {
     private boolean habilitarNuevoUsuario;
     private boolean habilitarBotonNuevo;
     private boolean habilitarContraseña;
+    private Rol rol;
 
     @PostConstruct
     public void init() {
@@ -75,9 +76,10 @@ public class UsuarioBean {
             validacion = true;
         } else if (!validar.validarMail(usuario.getEmail())) {
             agregarMensajeAlUsuario(FacesMessage.SEVERITY_ERROR, "El correo electrónico no tiene el formato correcto.");
+            validacion = true;
         }
 
-        if (usuario.getRol() == null) {
+        if (rol == null) {
             agregarMensajeAlUsuario(FacesMessage.SEVERITY_ERROR, "No se se seleccionó un rol.");
             validacion = true;
         }
@@ -122,7 +124,8 @@ public class UsuarioBean {
     }
 
     private void nuevoUsuario() {
-
+        
+        usuario.setRol(rol);
         usuario = usuarioService.save(usuario);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario " + usuario.getNombreUsuario()
@@ -130,8 +133,9 @@ public class UsuarioBean {
     }
 
     private void actualizarUsuario() {
+        usuario.setRol(rol);
         usuario = usuarioService.save(usuario);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Profesor " + usuario.getNombreUsuario()
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(usuario.getRol().getNombre() + " " + usuario.getNombreUsuario()
                 + " actualizado correctamente."));
     }
 
@@ -140,11 +144,16 @@ public class UsuarioBean {
         BooleanExpression predicate = UsuarioSpecs.byClaseUsuario();
         Validacion validar = new Validacion();
         if (!validar.nullEmpty(filtroBusqueda)) {
-            predicate = predicate.and(UsuarioSpecs.byNombreOrEmail(filtroBusqueda));
+            predicate = UsuarioSpecs.byNombreOrEmail(filtroBusqueda);
             aux = true;
         }
         if (rolBusqueda != null) {
-            predicate = predicate.and(UsuarioSpecs.byRol(rolBusqueda));
+            if (!validar.nullEmpty(filtroBusqueda)) {
+                predicate = predicate.and(UsuarioSpecs.byRol(rolBusqueda));
+            } else {
+                predicate = UsuarioSpecs.byRol(rolBusqueda);
+            }
+            
             aux = true;
         }
 
@@ -157,6 +166,7 @@ public class UsuarioBean {
                     agregarMensajeAlUsuario(FacesMessage.SEVERITY_INFO, "Se encontraron " + usuariosEncontrados.size() + " usuarios.");
                 }
             } catch (Exception e) {
+                agregarMensajeAlUsuario(FacesMessage.SEVERITY_ERROR, e.getMessage());
             }
 
         } else {
@@ -176,6 +186,7 @@ public class UsuarioBean {
             agregarMensajeAlUsuario(FacesMessage.SEVERITY_WARN, "Seleccione un usuario de la lista.");
         } else {
             usuario = selectedUsuario;
+            rol = usuario.getRol();
             habilitarNuevoUsuario = true;
             habilitarBotonNuevo = true;
             habilitarContraseña = false;
@@ -343,5 +354,19 @@ public class UsuarioBean {
      */
     public void setHabilitarContraseña(boolean habilitarContraseña) {
         this.habilitarContraseña = habilitarContraseña;
+    }
+
+    /**
+     * @return the rol
+     */
+    public Rol getRol() {
+        return rol;
+    }
+
+    /**
+     * @param rol the rol to set
+     */
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 }
