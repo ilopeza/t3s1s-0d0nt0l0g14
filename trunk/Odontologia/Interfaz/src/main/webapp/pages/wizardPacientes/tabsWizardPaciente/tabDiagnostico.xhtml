@@ -97,14 +97,13 @@
             <p:dataTable id="tblResultadoDiagnosticos" 
                          emptyMessage="#{msg.msgDiagCargados}"
                          value="#{pacienteWizardBean.diagnosticos}"
-                         var="d" selection="#{pacienteWizardBean.selectedDiagnostico}" selectionMode="single"
+                         var="d" 
+                         selection="#{pacienteWizardBean.selectedDiagnostico}" selectionMode="single"
                          rowKey="#{d.id}"
                          paginator="true" 
                          rows="10"                             
                          rowsPerPageTemplate="5,10,15"
                          paginatorAlwaysVisible="false">
-
-                <f:ajax event="rowSelect" render="btnCancelar btnModificar"/>
 
                 <p:column id="colTrabajoPractico" headerText="#{msg.lblTrabajoPractico}">
                     <h:outputText value="#{d.trabajoPractico}" />
@@ -116,14 +115,25 @@
                     <h:outputText value="#{d.estado}" />
                 </p:column>
                 <p:column id="colAcciones" headerText="Acciones">
-                    <h:panelGrid columns="3" cellpadding="1" cellspacing="1">
-                        <p:commandButton id="btnCancelar" icon="ui-icon-cancel"
-                                         oncomplete="dlgBajaDeDianostico.show();"
-                                         process="tblResultadoDiagnosticos"/>
-                        <p:commandButton id="btnModificar" icon="ui-icon-pencil"
+                    <p:splitButton value="Acciones">  
+                        <p:menuitem value="#{msg.lblDarBajaDiag}"
+                                    oncomplete="dlgBajaDeDianostico.show()"
+                                    disabled="#{pacienteWizardBean.deshabilitarBtnAcciones(d)}"
+                                    update="tblResultadoDiagnosticos"
+                                    icon="ui-icon-arrowthick-1-s"/>
+                         <p:menuitem id="btnDarDeAlta" icon="ui-icon-arrowthick-1-n"
+                                         oncomplete="dlgAltaDiagnostico.show();"
+                                         update="tblResultadoDiagnosticos" value="#{msg.lblDarAltaDiag}"
+                                         disabled="#{!pacienteWizardBean.deshabilitarBtnAcciones(d)}"
+                                         />
+                        <p:menuitem id="btnModificarDiag" icon="ui-icon-pencil"
                                          oncomplete="dlgModificarDiagnostico.show();"
-                                         process="tblResultadoDiagnosticos"/>
-                    </h:panelGrid> 
+                                         update="tblResultadoDiagnosticos"
+                                         disabled="#{pacienteWizardBean.deshabilitarBtnAcciones(d)}"
+                                         value="#{msg.btnModificar}"
+                                         /> 
+                    </p:splitButton>
+
                 </p:column>
             </p:dataTable>
         </p:panel>

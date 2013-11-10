@@ -87,11 +87,14 @@ public class PacienteWizardBean {
     private boolean filtrarHabilitado;
     private boolean nuevoDiagnosticoHabilitado;
     private boolean edicionDiagnosticoHabilitado;
+    private boolean habilitarBtnMod;
     private Date fechaNacimiento;
     private Validacion validacion = new Validacion();
     private String filtroBusqueda;
     private boolean mensaje = true;
     boolean unicoPacienteEncontrado;
+    //Otros
+    private int auxEstadoDiag; // Para manejar la baja del diagnóstico.
 
     //CONSTRUCTORES
     /**
@@ -513,17 +516,33 @@ public class PacienteWizardBean {
         }
     }
 
+    public void darDeBajaDiagnostico() {
+        switch (auxEstadoDiag) {
+            case (1):
+                cambiarEstadoDiagnostico(Diagnostico.EstadoDiagnostico.SOLUCIONADO_EN_FACULTAD);
+                break;
+            case (2):
+                cambiarEstadoDiagnostico(Diagnostico.EstadoDiagnostico.SOLUCIONADO_FUERA);
+                break;
+            case (3):
+                cambiarEstadoDiagnostico(Diagnostico.EstadoDiagnostico.CANCELADO);
+        }
+    }
+    
+    public void darAltaDiagnostico(){
+        cambiarEstadoDiagnostico(Diagnostico.EstadoDiagnostico.PENDIENTE);
+    }
+
     /**
-     * Toma el diagnóstico seleccionado de la tabla y le cambia el estado a
-     * CANCELADO.
+     * Toma el diagnóstico seleccionado de la tabla y le cambia el estado.
      */
-    public void cancelarDiagnosticoEnMemoria() {
+    private void cambiarEstadoDiagnostico(Diagnostico.EstadoDiagnostico est) {
         //Para conocer cuál es el diagnóstico seleccionado en la lista
         // de diagnósticos del paciente (que es la que se carga en la interfaz),
         // y así ponerlo en CANCELADO.
         for (Diagnostico d : diagnosticos) {
             if (d.equals(selectedDiagnostico)) {
-                d.setEstado(Diagnostico.EstadoDiagnostico.CANCELADO);
+                d.setEstado(est);
                 selectedDiagnostico = null;
                 break;
             }
@@ -544,14 +563,14 @@ public class PacienteWizardBean {
      * Elimina un diagnóstico seleccionado de la lista de diagnósticos del
      * paciente.
      */
-    public void eliminarDiagnosticoEnMemoria() {
-        for (Diagnostico d : diagnosticos) {
-            if (d.equals(selectedDiagnostico)) {
-                diagnosticosEliminados.add(d);
-                diagnosticos.remove(d);
-            }
-        }
-    }
+//    public void eliminarDiagnosticoEnMemoria() {
+//        for (Diagnostico d : diagnosticos) {
+//            if (d.equals(selectedDiagnostico)) {
+//                diagnosticosEliminados.add(d);
+//                diagnosticos.remove(d);
+//            }
+//        }
+//    }
 
     /**
      * Método auxiliar para poner en NULL los IDS de todos los diagnósticos
@@ -563,6 +582,12 @@ public class PacienteWizardBean {
             if (diagnosticosNuevos.contains(d)) {
                 d.setId(null);
             }
+        }
+    }
+
+    public void eventoSeleccionarDiagnostico() {
+        if (selectedDiagnostico.getEstado().equals(Diagnostico.EstadoDiagnostico.PENDIENTE)) {
+            habilitarBtnMod = false;
         }
     }
 
@@ -649,7 +674,14 @@ public class PacienteWizardBean {
             edicionDiagnosticoHabilitado = false;
         }
     }
+    
+    public boolean deshabilitarBtnAcciones(Diagnostico d) {
 
+        if (d.getEstado().compareTo(Diagnostico.EstadoDiagnostico.PENDIENTE) == 0) {
+            return false;
+        }
+        return true;
+    }
     //GETTERS Y SETTERS
     public Paciente getPaciente() {
         return paciente;
@@ -971,5 +1003,21 @@ public class PacienteWizardBean {
      */
     public void setNombreApellidoBusqueda(String nombreApellidoBusqueda) {
         this.nombreApellidoBusqueda = nombreApellidoBusqueda;
+    }
+
+    public boolean isHabilitarBtnMod() {
+        return habilitarBtnMod;
+    }
+
+    public void setHabilitarBtnMod(boolean habilitarBtnMod) {
+        this.habilitarBtnMod = habilitarBtnMod;
+    }
+
+    public int getAuxEstadoDiag() {
+        return auxEstadoDiag;
+    }
+
+    public void setAuxEstadoDiag(int auxEstadoDiag) {
+        this.auxEstadoDiag = auxEstadoDiag;
     }
 }

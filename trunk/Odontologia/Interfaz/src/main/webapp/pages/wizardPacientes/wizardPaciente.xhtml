@@ -64,7 +64,8 @@
             </h:form>
         </p:panel>
 
-        <p:dialog header="#{msg.lblConsultarPaciente}" widgetVar="dlgPacientesEncontrados" resizable="false" appendToBody="true" modal="true" >
+        <p:dialog header="#{msg.lblConsultarPaciente}" 
+                  widgetVar="dlgPacientesEncontrados" resizable="false" appendToBody="true" modal="true" >
             <h:form id="secondaryForm">
                 <p:dataTable id="tablaPacientesEncontrados" 
                              var="paciente" value="#{pacienteWizardBean.pacientesEncontrados}"
@@ -105,33 +106,52 @@
                                  icon="ui-icon-pin-w"
                                  />
             </h:form>
-        </p:dialog>  
-
-        <p:confirmDialog message="#{msg.msgBajaDiag}"
-                         header="#{msg.lblDarBajaDiag}" severity="alert"
-                         widgetVar="dlgBajaDeDianostico" appendToBody="true">
-            <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{pacienteWizardBean.cancelarDiagnosticoEnMemoria()}"
-                             oncomplete="dlgBajaDeDianostico.hide();"
-                             update=":formWizard:tblResultadoDiagnosticos"
-                             icon="ui-icon-circle-check"/>
-            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgBajaDeDianostico.hide();" type="button" 
-                             icon="ui-icon-cancel"/>
-        </p:confirmDialog>
-
-        <p:confirmDialog message="¿Desea eliminar o modificar el diagnóstico seleccionado?"
+        </p:dialog>
+        <p:confirmDialog message="#{msg.msgModDiag}"
                          header="#{msg.lblModifDiag}" severity="alert"
                          widgetVar="dlgModificarDiagnostico" id="dlgModificar" appendToBody="true">
             <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{pacienteWizardBean.seleccionarModificarDiagnostico()}"
                              oncomplete="dlgModificarDiagnostico.hide();"
                              update=":formWizard:pnlNuevoDiagnostico"
-                             icon="ui-icon-pencil"/>
-            <p:commandButton value="Eliminar" actionListener="#{pacienteWizardBean.eliminarDiagnosticoEnMemoria()}"
-                             oncomplete="dlgModificarDiagnostico.hide();" 
-                             update=":formWizard:pnlDiagnosticosCargados"
-                             icon="ui-icon-closethick"/>
-            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgModificarDiagnostico.hide();" type="button" icon="ui-icon-arrowreturnthick-1-w" />
+                             icon="ui-icon-check"/>
+            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgModificarDiagnostico.hide();" type="button" icon="ui-icon-cancel" />
+        </p:confirmDialog>
+        
+        <p:confirmDialog message="#{msg.msgAltaDiag}"
+                         header="#{msg.lblDarAltaDiag}" widgetVar="dlgAltaDiagnostico" appendToBody="true">
+            <p:commandButton value="#{msg.btnConfirmar}" 
+                             actionListener="#{pacienteWizardBean.darAltaDiagnostico()}"
+                             oncomplete="dlgAltaDiagnostico.hide();"
+                             icon="ui-icon-check"
+                             update=":formWizard:tblResultadoDiagnosticos"/>
+            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgAltaDiagnostico.hide();" type="button" icon="ui-icon-cancel" />
         </p:confirmDialog>
 
+        <p:dialog header="#{msg.lblDarBajaDiag}" 
+                  widgetVar="dlgBajaDeDianostico" appendToBody="true" modal="true">
+            <h:form>
+                <p:outputLabel value="Elija una de las opciones según corresponda."/>
+                <p:selectOneRadio id="rdbBaja" value="#{pacienteWizardBean.auxEstadoDiag}" layout="custom">
+                    <f:selectItem itemLabel="#{msg.rdbSolucionadoEnFacultad}" itemValue="1"/>
+                    <f:selectItem itemLabel="#{msg.rdbSolucionadoFuera}" itemValue="2"/>
+                    <f:selectItem itemLabel="#{msg.rdbCancelado}" itemValue="3"/>
+                </p:selectOneRadio>
+                <h:panelGrid columns="2">
+                    <p:radioButton id="opt1" for="rdbBaja" itemIndex="0"/>
+                    <p:outputLabel value="#{msg.rdbSolucionadoEnFacultad}"/>
+                    <p:radioButton id="opt2" for="rdbBaja" itemIndex="1"/>
+                    <p:outputLabel value="#{msg.rdbSolucionadoFuera}"/>
+                    <p:radioButton id="opt3" for="rdbBaja" itemIndex="2"/>
+                    <p:outputLabel value="#{msg.rdbCancelado}"/>
+                </h:panelGrid>
+                <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{pacienteWizardBean.darDeBajaDiagnostico()}"
+                                 oncomplete="dlgBajaDeDianostico.hide();"
+                                 update=":formWizard:tblResultadoDiagnosticos"
+                                 icon="ui-icon-circle-check"/>
+                <p:commandButton value="#{msg.btnCancelar}" onclick="dlgBajaDeDianostico.hide();" type="button" 
+                                 icon="ui-icon-cancel"/>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>
 
