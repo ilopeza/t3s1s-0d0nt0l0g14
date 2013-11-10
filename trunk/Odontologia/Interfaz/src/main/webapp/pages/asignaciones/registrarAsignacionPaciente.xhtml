@@ -31,7 +31,11 @@
                              var="asignacion" 
                              value="#{asignacionBean.asignaciones}" 
                              emptyMessage="#{msg.msgAsignacionesAlu}"
-                             rowKey="#{asignacion.id}">
+                             rowKey="#{asignacion.id}"
+                             paginator="true"
+                             paginatorAlwaysVisible="false"
+                             rows="10"
+                             rowsPerPageTemplate="5,10,15">
                     <f:facet name="header">
                         <h:outputText value="#{msg.lblConsularPacientesAsignados} #{asignacionBean.alumnoBuscado.toString()}" />
                     </f:facet>
@@ -85,6 +89,7 @@
                 </h:panelGrid> 
                 <h:outputText value="La cátedra atiende en los siguientes horarios: [lunes 18:00] [martes 20:00]"/>
             </p:panel>
+            <br/>
             <p:dataTable id="tblResultadosBusquedaPacienteAsignacion" 
                          var="p" value="#{asignacionBean.resultadoBusqueda}"
                          selectionMode="single"
@@ -112,16 +117,23 @@
                 <p:column id="practico" headerText="#{msg.lblTrabajoPractico}">
                     <h:outputText value="#{p.practico}" /> 
                 </p:column>
-                <p:column id="diagnostico" headerText="#{msg.lblDescripcionDiagnostico}">
+                <!--p:column id="diagnostico" headerText="}">
                     <h:outputText value="#{p.descripcionDiagnostico}" /> 
+                </p:column-->
+                <p:rowExpansion>
+                    <strong>#{msg.lblDescripcionDiagnostico}: </strong><h:outputText value="#{p.descripcionDiagnostico}" /> 
+                </p:rowExpansion>
+                <p:column headerText="Ver">
+                    <p:rowToggler/>
                 </p:column>
+                    
             </p:dataTable>
             <p:panel id="pnldatosAsignacion" header="Datos asignación de paciente">
                 <h:panelGrid id="pnlgridDatosAsignacion" columns="5" cellpadding="3" cellspacing="3">
                     <p:outputLabel value="#{msg.lblCatedra}: " />
                     <p:selectOneMenu id="selectCatedraBusqueda" value="#{asignacionBean.catedraFiltro}"
                                      converter="catedraConverter">
-                        <f:selectItem itemLabel="S#{msg.lblSelectCatedra}"/>
+                        <f:selectItem itemLabel="#{msg.lblSelectCatedra}"/>
                         <f:selectItems value="#{asignacionBean.catedras}"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="#{msg.lblFechaDeAsignacion}: "></p:outputLabel>

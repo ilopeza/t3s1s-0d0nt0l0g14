@@ -52,7 +52,7 @@ public class MenuBean {
         }
         //Opciones
         if (rol.is(Rol.ALUMNO) || rol.is(Rol.RESPONSABLE)) {
-            menuItem = menuItem("Registrar Paciente", "/pages/wizardPacientes/wizardPaciente.xhtml");
+            menuItem = menuItem("Registrar paciente", "/pages/wizardPacientes/wizardPaciente.xhtml");
             submenu.getChildren().add(menuItem);
             menu.addSubmenu(submenu);
         }
@@ -62,7 +62,7 @@ public class MenuBean {
 
             submenu = subMenu("Gestión de Materias");
             //Opciones
-            menuItem = menuItem("Registrar Materia", "/pages/materias/formMaterias.xhtml");
+            menuItem = menuItem("Registrar materia", "/pages/materias/formMaterias.xhtml");
             submenu.getChildren().add(menuItem);
 
             menu.addSubmenu(submenu);
@@ -83,10 +83,10 @@ public class MenuBean {
             //Menu
             submenu = subMenu("Gestión de Usuarios");
             //Opciones
-            menuItem = menuItem("Registrar Usuario de Alumno", "/pages/alumnos/formUsuarioAlumno.xhtml");
+            menuItem = menuItem("Registrar usuario de alumno", "/pages/alumnos/formUsuarioAlumno.xhtml");
             submenu.getChildren().add(menuItem);
 
-            menuItem = menuItem("Registrar Usuario", "/pages/usuario/registrarUsuario.xhtml");
+            menuItem = menuItem("Registrar usuario", "/pages/usuario/registrarUsuario.xhtml");
             submenu.getChildren().add(menuItem);
             
             menu.addSubmenu(submenu);
@@ -102,20 +102,20 @@ public class MenuBean {
 
         if (rol.is(Rol.ALUMNO) || rol.is(Rol.PROFESOR) || rol.is(Rol.RESPONSABLE)) {
             //Menu
-            submenu = subMenu("Asignaciones de Pacientes");
+            submenu = subMenu("Gestión de Asignaciones");
             //Opciones
-            menuItem = menuItem("Asignacion Paciente", "/pages/asignaciones/registrarAsignacionPaciente.xhtml");
+            menuItem = menuItem("Registrar asignacion", "/pages/asignaciones/registrarAsignacionPaciente.xhtml");
             submenu.getChildren().add(menuItem);
-            menuItem = menuItem("Consultar Asignacion Paciente", "/pages/asignaciones/consultarAsignacionesPaciente.xhtml");
+            menuItem = menuItem("Consultar asignaciones", "/pages/asignaciones/consultarAsignacionesPaciente.xhtml");
             submenu.getChildren().add(menuItem);
 
 
             if (rol.is(Rol.PROFESOR)) {
-                menuItem = menuItem("Consultar Asignaciones Confirmadas", "/pages/asignaciones/consultarAsignacionesConfirmadas.xhtml");
+                menuItem = menuItem("Consultar asignaciones confirmadas", "/pages/asignaciones/consultarAsignacionesConfirmadas.xhtml");
                 submenu.getChildren().add(menuItem);
-                menuItem = menuItem("Consultar Atenciones Realizadas", "/pages/historiaClinica/consultarAtencionesRealizadas.xhtml");
+                menuItem = menuItem("Consultar atenciones realizadas", "/pages/historiaClinica/consultarAtencionesRealizadas.xhtml");
                 submenu.getChildren().add(menuItem);
-                menuItem = menuItem("Consultar Estadisticas", "/pages/estadisticas/consultarEstadisticas.xhtml");
+                menuItem = menuItem("Consultar estadisticas", "/pages/estadisticas/consultarEstadisticas.xhtml");
                 submenu.getChildren().add(menuItem);
             }
             menu.addSubmenu(submenu);
@@ -123,8 +123,8 @@ public class MenuBean {
 
         if (rol.is(Rol.PROFESOR)) {
             //Menu
-            submenu = subMenu("Trabajos Prácticos");
-            menuItem = menuItem("Nuevo Trabajo Práctico", "/pages/trabajosPracticos/registrarTrabajoPractico.xhtml");
+            submenu = subMenu("Gestión de trabajos prácticos");
+            menuItem = menuItem("Registrar nuevo trabajo práctico", "/pages/trabajosPracticos/registrarTrabajoPractico.xhtml");
             submenu.getChildren().add(menuItem);
 
             menu.addSubmenu(submenu);
@@ -134,7 +134,7 @@ public class MenuBean {
             //Menu
             submenu = subMenu("Cuenta");
             //Opciones
-            menuItem = menuItem("Datos Alumno", "/pages/alumnos/formAlumno.xhtml");
+            menuItem = menuItem("Datos del alumno", "/pages/alumnos/formAlumno.xhtml");
             submenu.getChildren().add(menuItem);
             menuItem = menuItem("Recuperar contraseña", "/pages/usuario/recuperarPassword.xhtml");
             submenu.getChildren().add(menuItem);

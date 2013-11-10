@@ -27,6 +27,8 @@
                     font-size: 90% !important;
                 }
             </style>
+            
+            
         </h:head>
 
 
@@ -58,19 +60,19 @@
                 <p:layoutUnit id="left" position="west" size="3%">
                     ui:include src="commonLeftMenu.xhtml"/
                 </p:layoutUnit>
-                
+
                 <p:layoutUnit id="right" position="east" size="3%">
                    ui:include src="commonLeftMenu.xhtml"/>
                 </p:layoutUnit>-->
                 <p:layoutUnit id="center" position="center">
-                    <p:outputPanel id="mainContent">
+                        <p:outputPanel id="mainContent">
 
-                        <p:growl id="msg" sticky="false" life="5000"/>
-                        <ui:insert name="content">
-                            Insertar contenido acá.
+                            <p:growl id="msg" sticky="false" life="5000"/>
+                            <ui:insert name="content">
+                                    Insertar contenido acá. 
                         </ui:insert>
 
-                    </p:outputPanel>
+                        </p:outputPanel>
                 </p:layoutUnit>
             </p:layout>
         </h:body>

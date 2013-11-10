@@ -288,7 +288,7 @@ public class ConsultarAsignacionesBean {
         Diagnostico d = diagnosticoService.findOne(asignacionSeleccionada.getDiagnostico().getId());
         d.setEstado(Diagnostico.EstadoDiagnostico.PENDIENTE);
         diagnosticoService.save(d);
-        
+
     }
 
     public boolean deshabilitarBtnConfirmarAsignacion(AsignacionPaciente a) {
@@ -352,7 +352,7 @@ public class ConsultarAsignacionesBean {
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
 
     public void confirmarModificacion(AsignacionPaciente a) {
         if (this.asignacionSeleccionada != null) {

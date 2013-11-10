@@ -30,7 +30,8 @@
                                  actionListener="#{pacienteWizardBean.habilitar}"
                                  disabled="#{!pacienteWizardBean.estaDeshabilitado}"
                                  update="pnlConsultarPaciente, 
-                                 :formWizard"/>
+                                 :formWizard"
+                                 icon="ui-icon-pencil"/>
 
                 <p:commandButton value="#{msg.btnVerHistoriaClinica}" id="btnVerHC"
                                  action="#{pacienteWizardBean.cargarPaciente()}"
@@ -86,7 +87,7 @@
                         <h:outputText value="#{paciente.documento}" />  
                     </p:column>
 
-                    <p:column headerText="#{msg.lblApeNom}}">  
+                    <p:column headerText="#{msg.lblApeNom}">  
                         <h:outputText value="#{paciente}" />  
                     </p:column>
 
@@ -96,11 +97,13 @@
 
                 </p:dataTable>
                 <br/>
-                <p:commandButton value="#{msg.btnSeleccionar}}" id="btnAceptar" 
+                <p:commandButton value="#{msg.btnSeleccionar}" id="btnAceptar" 
                                  oncomplete="dlgPacientesEncontrados.hide()"
                                  actionListener="#{pacienteWizardBean.mostrarPacienteSeleccionado()}"
                                  update=":formWizard:wizardPaciente,
-                                 :consultarPacienteForm:pnlConsultarPaciente" />
+                                 :consultarPacienteForm:pnlConsultarPaciente"
+                                 icon="ui-icon-pin-w"
+                                 />
             </h:form>
         </p:dialog>  
 
@@ -109,8 +112,10 @@
                          widgetVar="dlgBajaDeDianostico" appendToBody="true">
             <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{pacienteWizardBean.cancelarDiagnosticoEnMemoria()}"
                              oncomplete="dlgBajaDeDianostico.hide();"
-                             update=":formWizard:tblResultadoDiagnosticos"/>
-            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgBajaDeDianostico.hide();" type="button" />
+                             update=":formWizard:tblResultadoDiagnosticos"
+                             icon="ui-icon-circle-check"/>
+            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgBajaDeDianostico.hide();" type="button" 
+                             icon="ui-icon-cancel"/>
         </p:confirmDialog>
 
         <p:confirmDialog message="¿Desea eliminar o modificar el diagnóstico seleccionado?"

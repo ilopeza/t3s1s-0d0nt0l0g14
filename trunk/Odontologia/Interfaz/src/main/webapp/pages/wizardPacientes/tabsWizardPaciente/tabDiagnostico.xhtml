@@ -61,7 +61,7 @@
                 <p:commandButton value="#{msg.btnCancelar}" actionListener="#{pacienteWizardBean.reestablecerDiagnostico()}" 
                                  update="pnlNuevoDiagnostico"
                                  disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}"
-                                 icon="ui-icon-closethick"/>
+                                 icon="ui-icon-cancel"/>
 
             </h:panelGrid>
 
@@ -86,7 +86,8 @@
                                  actionListener="#{pacienteWizardBean.filtrar()}"
                                  update="pnlDiagnosticosCargados"
                                  process="pnlDiagnosticosCargados" 
-                                 disabled="#{!pacienteWizardBean.filtrarHabilitado}"/>
+                                 disabled="#{!pacienteWizardBean.filtrarHabilitado}"
+                                 icon="ui-icon-search"/>
                 <p:commandButton id="btnVerTodos" value="#{msg.btnVerTodos}"
                                  actionListener="#{pacienteWizardBean.verTodos()}"
                                  update="pnlDiagnosticosCargados"
@@ -130,7 +131,7 @@
                          actionListener="#{pacienteWizardBean.savePaciente()}" 
                          process="@form"
                          update=":msg"
-                         value="#{msg.btnGuardar}"/>
+                         value="#{msg.btnGuardar}" icon="ui-icon-disk"/>
     </p:fieldset>
 
 </html>

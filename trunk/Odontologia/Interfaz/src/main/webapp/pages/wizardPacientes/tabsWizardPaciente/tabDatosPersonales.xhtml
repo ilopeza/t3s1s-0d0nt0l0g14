@@ -39,6 +39,7 @@
         </h:panelGrid>
 
     </p:fieldset>
+    <br/>
     <p:fieldset id="fldsDomicilio" legend="Domicilio y contacto" toggleable="true" toggleSpeed="150">
         <h:panelGrid id="gridDomicilio" columns="8" cellpadding="3" cellspacing="3" >
             <h:outputLabel value="Calle (*):"/>
@@ -63,7 +64,7 @@
             <p:inputText id="txtCiudadAnterior" value="#{pacienteWizardBean.paciente.domicilio.ciudadAnterior}" disabled="#{pacienteWizardBean.estaDeshabilitado}"/>
         </h:panelGrid>
     </p:fieldset>
-
+    <br/>
     <p:fieldset id="fldsTrabajoEstudios" legend="Trabajo y estudios" toggleable="true" toggleSpeed="150"  >
         <h:panelGrid id="gridTrabajoEstudios" columns="8" cellpadding="3" cellspacing="3">
             <p:outputLabel value="Trabajo: "/>
@@ -74,7 +75,7 @@
             </p:selectOneMenu>
         </h:panelGrid>
     </p:fieldset>
-    
+    <br/>
     <p:fieldset id="fldsDatosMedicos" legend="Datos médicos" toggleable="true" toggleSpeed="150"> 
         <h:panelGrid id="gridDatosMedicos" columns="10">
             <h:outputLabel value="Obra social: "/>
@@ -93,7 +94,7 @@
 
         </h:panelGrid>
     </p:fieldset>
-
+    <br/>
     <p:fieldset id="fldsOtros" legend="Otros datos" toggleable="true" toggleSpeed="150">
         <h:panelGrid id="gridOtros" columns="8" cellpadding="3" cellspacing="3" >
             <h:outputLabel value="Religión: "/>

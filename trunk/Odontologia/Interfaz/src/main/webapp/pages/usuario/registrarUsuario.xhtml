@@ -10,32 +10,36 @@
     <ui:define name="content">
         <h:outputLabel value="REGISTRAR USUARIO" style="padding: 400px; font-size: 20px; font: " />
         <h:form id="registrarUsuarioForm">
-        <p:panel id="pnlRegistrarUsuario" header="Registrar Usuario">
-            
-                <h:panelGrid id="datosUsuario" columns="2" cellpadding="3" cellspacing="3">
+            <p:panel id="pnlRegistrarUsuario" header="#{msg.lblRegistrarNuevoUsuario}">
+
+                <h:panelGrid id="datosUsuario" columns="4" cellpadding="3" cellspacing="3">
                     <h:outputLabel value="#{msg.lblNombreUsuario}: "/>
                     <p:inputText id="nombreUsuario" value="#{registrarUsuarioBean.nombreUsuario}"></p:inputText>
 
-                            <h:outputLabel value="#{msg.lblCorreoElectronico}: " />
-                            <p:inputText id="email" value="#{registrarUsuarioBean.email}"></p:inputText>
+                    <h:outputLabel value="#{msg.lblCorreoElectronico}: " />
+                    <p:inputText id="email" value="#{registrarUsuarioBean.email}"></p:inputText>
 
-                            <h:outputLabel value="#{msg.lblRol}: " />
-                            <p:selectOneMenu id="rol" value="#{registrarUsuarioBean.rol}" converter="rolConverter">
-                                <f:selectItem itemLabel="#{msg.lblSelectRol}"/>
-                                <f:selectItems value="#{registrarUsuarioBean.roles}"/>
-                            </p:selectOneMenu>
+                    <h:outputLabel value="#{msg.lblRol}: " />
+                    <p:selectOneMenu id="rol" value="#{registrarUsuarioBean.rol}" converter="rolConverter">
+                        <f:selectItem itemLabel="#{msg.lblSelectRol}"/>
+                        <f:selectItems value="#{registrarUsuarioBean.roles}"/>
+                    </p:selectOneMenu>
 
-                            <h:outputLabel value="#{msg.lblContrasenia}: " />
-                            <p:password id="contraseña" value="#{registrarUsuarioBean.contraseña}"></p:password>
 
-                            <h:outputLabel value="#{msg.lblRepetirCont}: " />
-                            <p:password id="repetirContraseña" value="#{registrarUsuarioBean.repetirContraseña}"></p:password>
-                            <p:commandButton id="btnRegistrarUsuario" value="Guardar" update=":msg"
-                                             icon="ui-icon-circle-check"
-                                             action="#{registrarUsuarioBean.registrarUsuario}"/>
                 </h:panelGrid>
+                <h:panelGrid columns="2" cellpadding="3" cellspacing="3">
+                    <h:outputLabel value="#{msg.lblContrasenia}: " />
+                    <p:password id="contraseña" value="#{registrarUsuarioBean.contraseña}"></p:password>
+
+                    <h:outputLabel value="#{msg.lblRepetirCont}: " />
+                    <p:password id="repetirContraseña" value="#{registrarUsuarioBean.repetirContraseña}"></p:password>
+                </h:panelGrid>
+
+                <p:commandButton id="btnRegistrarUsuario" value="Guardar" update=":msg"
+                                 icon="ui-icon-disk"
+                                 action="#{registrarUsuarioBean.registrarUsuario}"/>
             </p:panel>
-            </h:form>
-        
+        </h:form>
+
     </ui:define>
 </ui:composition>
