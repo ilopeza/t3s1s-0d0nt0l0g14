@@ -103,7 +103,7 @@ public class ConsultarAsignacionesConfirmadasBean {
                 }
                 if (fechaDesdeFiltro == null && fechaHastaFiltro == null) {
                 } else if (fechaDesdeFiltro != null && fechaHastaFiltro == null) {
-                    predicate = predicate.and(AsignacionPacienteSpecs.byFecha(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
+                    predicate = predicate.and(AsignacionPacienteSpecs.byFechaDesde(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
                 } else {
                     predicate = predicate.and(AsignacionPacienteSpecs.byFechaDesdeHasta(FechaUtils.convertDateToCalendar(fechaDesdeFiltro), FechaUtils.convertDateToCalendar(fechaHastaFiltro)));
                 }

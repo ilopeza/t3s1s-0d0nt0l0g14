@@ -103,9 +103,9 @@ public class ConsultarEstadisticasBean {
 
                 if (fechaDesdeFiltro == null && fechaHastaFiltro == null) {
                 } else if (fechaDesdeFiltro != null && fechaHastaFiltro == null) {
-                    predicateAsignacionesAutorizadas = predicateAsignacionesAutorizadas.and(AsignacionPacienteSpecs.byFecha(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
-                    predicateAtenciones = predicateAtenciones.and(AtencionGenericaSpecs.byFecha(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
-                    predicateAsignaciones = predicateAsignaciones.and(AsignacionPacienteSpecs.byFecha(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
+                    predicateAsignacionesAutorizadas = predicateAsignacionesAutorizadas.and(AsignacionPacienteSpecs.byFechaDesde(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
+                    predicateAtenciones = predicateAtenciones.and(AtencionGenericaSpecs.byFechaDesde(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
+                    predicateAsignaciones = predicateAsignaciones.and(AsignacionPacienteSpecs.byFechaDesde(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
 
                 } else {
                     predicateAsignacionesAutorizadas = predicateAsignacionesAutorizadas.and(AsignacionPacienteSpecs.byFechaDesdeHasta(FechaUtils.convertDateToCalendar(fechaDesdeFiltro), FechaUtils.convertDateToCalendar(fechaHastaFiltro)));
@@ -185,7 +185,7 @@ public class ConsultarEstadisticasBean {
         ChartSeries asigAut = new ChartSeries();
         asigAut.setLabel("Asignaciones Autorizadas");
 
-        asigAut.set("2008", asignacionesAutorizadas);
+        asigAut.set("Periodo Seleccionado", asignacionesAutorizadas);
 
         ChartSeries aten = new ChartSeries();
         aten.setLabel("Atenciones");
