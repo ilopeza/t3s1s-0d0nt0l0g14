@@ -39,52 +39,27 @@ public abstract class Atencion extends Generic {
     @Size(min = 1, max = 700, message = "El motivo de la consulta debe tener entre 1 y 700 caracteres")
     @NotNull(message = "El motivo de la consulta no puede ser nulo.")
     private String motivoConsultaOdontologica;
-    
-    @Column(length = 255)
-    @Size(min = 1, max = 255, message = "El campo como comenzo debe tener entre 1 y 255 caracteres")
-    private String comoComenzo;
-    
-    @Column(length = 255)
-    @Size(min = 1, max = 255, message = "El campo hace cuanto tiempo debe tener entre 1 y 255 caracteres")
-    private String cuantoTiempoHace;
-    
-    @Column(length = 255)
-    @Size(min = 1, max = 255, message = "El campo donde debe tener entre 1 y 255 caracteres")
-    private String donde;
-    
-    @Column(length = 255)
-    @Size(min = 1, max = 255, message = "El campo a que lo atribuye debe tener entre 1 y 255 caracteres")
-    private String aQueLoAtribuye;
-    
-    @Column(length = 255)
-    @Size(min = 1, max = 255, message = "El campo que hizo debe tener entre 1 y 255 caracteres")
-    private String queHizo;
-    
-    @Column(length = 255)
-    @Size(min = 1, max = 255, message = "El campo descripcion debe tener entre 1 y 255 caracteres")
+        
+    @Column(nullable = false, length = 700)
+    @Size(min = 1, max = 700, message = "El campo descripcion debe tener entre 1 y 700 caracteres")
+    @NotNull(message = "La descripcion del procedimiento no puede ser nula.")
     private String descripcionProcedimiento;
     
     @OneToOne
     @JoinColumn(name = "AsignacionPaciente_id")
     private AsignacionPaciente asignacionPaciente;
     
-    
     //CONSTRUCTORS
     public Atencion() {
     }
 
-    public Atencion(Calendar fechaAtencion, String motivoConsultaOdontologica, String comoComenzo, String cuantoTiempoHace, String donde, String aQueLoAtribuye, String queHizo, String descripcionProcedimiento, AsignacionPaciente asignacionPaciente) {
+    public Atencion(Calendar fechaAtencion, String motivoConsultaOdontologica, String descripcionProcedimiento, AsignacionPaciente asignacionPaciente) {
         this.fechaAtencion = fechaAtencion;
         this.motivoConsultaOdontologica = motivoConsultaOdontologica;
-        this.comoComenzo = comoComenzo;
-        this.cuantoTiempoHace = cuantoTiempoHace;
-        this.donde = donde;
-        this.aQueLoAtribuye = aQueLoAtribuye;
-        this.queHizo = queHizo;
         this.descripcionProcedimiento = descripcionProcedimiento;
         this.asignacionPaciente = asignacionPaciente;
     }
-    
+
     public Calendar getFechaAtencion() {
         return fechaAtencion;
     }
@@ -101,51 +76,9 @@ public abstract class Atencion extends Generic {
         this.motivoConsultaOdontologica = motivoConsultaOdontologica;
     }
 
-    public String getComoComenzo() {
-        return comoComenzo;
-    }
-
-    public void setComoComenzo(String comoComenzo) {
-        this.comoComenzo = comoComenzo;
-    }
-
-    public String getCuantoTiempoHace() {
-        return cuantoTiempoHace;
-    }
-
-    public void setCuantoTiempoHace(String cuantoTiempoHace) {
-        this.cuantoTiempoHace = cuantoTiempoHace;
-    }
-
-    public String getDonde() {
-        return donde;
-    }
-
-    public void setDonde(String donde) {
-        this.donde = donde;
-    }
-
-    public String getaQueLoAtribuye() {
-        return aQueLoAtribuye;
-    }
-
-    public void setaQueLoAtribuye(String aQueLoAtribuye) {
-        this.aQueLoAtribuye = aQueLoAtribuye;
-    }
-
-    public String getQueHizo() {
-        return queHizo;
-    }
-
-    public void setQueHizo(String queHizo) {
-        this.queHizo = queHizo;
-    }    
-
-
     public String getDescripcionProcedimiento() {
         return descripcionProcedimiento;
     }
-
 
     public void setDescripcionProcedimiento(String descripcionProcedimiento) {
         this.descripcionProcedimiento = descripcionProcedimiento;
@@ -158,7 +91,6 @@ public abstract class Atencion extends Generic {
     public void setAsignacionPaciente(AsignacionPaciente asignacionPaciente) {
         this.asignacionPaciente = asignacionPaciente;
     }
- 
     
     @Override
     public void validar() throws GenericException {
