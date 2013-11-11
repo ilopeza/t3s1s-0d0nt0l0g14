@@ -98,7 +98,7 @@ public class ConsultarAtencionesRealizadasBean {
             }
             if (fechaDesdeFiltro == null && fechaHastaFiltro == null) {
             } else if (fechaDesdeFiltro != null && fechaHastaFiltro == null) {
-                predicate = predicate.and(AtencionGenericaSpecs.byFecha(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
+                predicate = predicate.and(AtencionGenericaSpecs.byFechaDesde(FechaUtils.convertDateToCalendar(fechaDesdeFiltro)));
             } else {
                 predicate = predicate.and(AtencionGenericaSpecs.byFechaDesdeHasta(FechaUtils.convertDateToCalendar(fechaDesdeFiltro), FechaUtils.convertDateToCalendar(fechaHastaFiltro)));
             }
