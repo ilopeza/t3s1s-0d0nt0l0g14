@@ -23,9 +23,9 @@
                                       actionListener="#{asignacionBean.buscarAlumno()}" 
                                       update="@form, :msg"
                                       icon="ui-icon-search"/>
-                    <p:panel id="alumnoEncontrado" header="Alumno">
-                            <h:outputLabel value="#{asignacionBean.alumnoBuscado.toString()} "/>
-                        </p:panel>
+                    <p:panel id="alumnoEncontrado" header="Alumno" rendered="#{asignacionBean.habilitarPanel}">
+                        <h:outputLabel value="#{asignacionBean.alumnoBuscado.toString()} "/>
+                    </p:panel>
                 </h:panelGrid>
                 <p:dataTable id="tblAsignacionesAlumno" 
                              var="asignacion" 
@@ -57,13 +57,14 @@
                 </p:dataTable>
 
             </p:panel> 
+           
             <p:panel id="pnlParametrosBusqueda" header="#{msg.lblParamtrosBusquedaPaciente}">
 
                 <h:panelGrid columns="7" cellpadding="3" cellspacing="3">
 
                     <p:outputLabel value="#{msg.lblMateria}: "/>
                     <p:selectOneMenu id="selectMateriaBusqueda" value="#{asignacionBean.materiaFiltro}" 
-                                     converter="materiaConverter">
+                                     converter="materiaConverter" disabled="#{!asignacionBean.habilitarPanel}">
                         <f:selectItem itemLabel="#{msg.lblSelectMateria}"/>
                         <f:selectItems value="#{asignacionBean.materias}"/>
                         <f:ajax event="change"  render="selectTrabajoPracticoBusqueda" execute="selectMateriaBusqueda"
@@ -71,18 +72,18 @@
                     </p:selectOneMenu>  
                     <p:outputLabel value="#{msg.lblTrabajoPractico}: "/>
                     <p:selectOneMenu id="selectTrabajoPracticoBusqueda" value="#{asignacionBean.trabajoPracticoFiltro}"
-                                     converter="trabajoPracticoConverter">
+                                     converter="trabajoPracticoConverter" disabled="#{!asignacionBean.habilitarPanel}">
                         <f:selectItem itemLabel="#{msg.lblSelectTrabPrac}"/>
                         <f:selectItems value="#{asignacionBean.trabajosPracticos}"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel value="#{msg.lblBuscarPorNumApeNom}: "/>
-                    <p:inputText value="#{asignacionBean.filtroPaciente}" id="txtFiltroPaciente"/>
+                    <p:inputText value="#{asignacionBean.filtroPaciente}" id="txtFiltroPaciente" disabled="#{!asignacionBean.habilitarPanel}"/>
                     <p:commandButton id="btnBuscar" value="#{msg.btnBuscar}" 
                                      actionListener="#{asignacionBean.buscarPacientes()}" 
                                      update="tblResultadosBusquedaPacienteAsignacion, :msg, selectCatedraBusqueda" 
                                      icon="ui-icon-search"
-                                     process="@this, :busquedaAlumnoForm, txtFiltroPaciente"/> 
+                                     process="@this, :busquedaAlumnoForm, txtFiltroPaciente" disabled="#{!asignacionBean.habilitarPanel}"/> 
                 </h:panelGrid> 
                 <h:outputText value="La cátedra atiende en los siguientes horarios: [lunes 18:00] [martes 20:00]"/>
             </p:panel>
@@ -96,7 +97,7 @@
                          rows="10"                             
                          rowsPerPageTemplate="5,10,15"
                          paginatorAlwaysVisible="false"
-                         emptyMessage="#{msg.msgPacientes}">
+                         emptyMessage="#{msg.msgPacientes}" >
                 <f:facet name="header" >  
                     <p:outputPanel>  
                         <h:outputText value="#{msg.lblPacientesEncontrados}" />                  
@@ -123,26 +124,30 @@
                 <p:column headerText="Ver">
                     <p:rowToggler/>
                 </p:column>
-                    
+
             </p:dataTable>
             <p:panel id="pnldatosAsignacion" header="Datos asignación de paciente">
-                <h:panelGrid id="pnlgridDatosAsignacion" columns="5" cellpadding="3" cellspacing="3">
+                <h:panelGrid id="pnlgridDatosAsignacion" columns="4" cellpadding="3" cellspacing="3">
                     <p:outputLabel value="#{msg.lblCatedra}: " />
                     <p:selectOneMenu id="selectCatedraBusqueda" value="#{asignacionBean.catedraFiltro}"
-                                     converter="catedraConverter">
+                                     converter="catedraConverter" disabled="#{!asignacionBean.habilitarPanel}">
                         <f:selectItem itemLabel="#{msg.lblSelectCatedra}"/>
-                        <f:selectItems value="#{asignacionBean.catedras}"/>
+                        <f:selectItems value="#{asignacionBean.catedras}" />
                     </p:selectOneMenu>
                     <p:outputLabel value="#{msg.lblFechaDeAsignacion}: "></p:outputLabel>
                     <p:calendar value="#{asignacionBean.fechaAsignacion}" pattern="dd/MM/yyyy HH:mm" stepMinute="5" 
                                 id="txtFechaAsignacion" 
                                 mindate="#{asignacionBean.fechaDesde}" 
-                                label="#{msg.lblFechaDeAsignacion}"/>
-                    <p:commandButton id="asignar" value="#{msg.btnAsignar}" 
+                                label="#{msg.lblFechaDeAsignacion}" disabled="#{!asignacionBean.habilitarPanel}"/>
+                    <p:commandButton id="btnAsignar" value="#{msg.btnAsignar}" 
                                      action="#{asignacionBean.save}"
                                      update=":msg, tblAsignacionesAlumno, tblResultadosBusquedaPacienteAsignacion"
                                      process="@this, :busquedaAlumnoForm, tblResultadosBusquedaPacienteAsignacion, txtFechaAsignacion "
-                                     icon="ui-icon-circle-check"/> 
+                                     icon="ui-icon-circle-check" disabled="#{!asignacionBean.habilitarPanel}"/> 
+                    <p:commandButton id="btnCancelarAsignacion" value="#{msg.btnCancelar}" 
+                                     action="#{asignacionBean.resetCampos()}"
+                                     update="@form" 
+                                     icon="ui-icon-cancel" disabled="#{!asignacionBean.habilitarPanel}"/>
                 </h:panelGrid>
             </p:panel>
         </h:form>

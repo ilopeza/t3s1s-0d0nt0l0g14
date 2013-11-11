@@ -100,11 +100,16 @@
                     <f:facet name="targetCaption">#{msg.lblMatSel}</f:facet>  
                 </p:pickList>
                 <h:panelGrid columns="3">
-                    <p:commandButton id="btnGuardar" value="#{msg.btnGuardar}" icon="ui-icon-disk"
-                                     actionListener="#{profesoresBean.saveProfesor()}" update=":msg @form" 
+                    <p:commandButton id="btnGuardar" value="#{msg.btnGuardar}" 
+                                     icon="ui-icon-disk"
+                                     actionListener="#{profesoresBean.saveProfesor()}" 
+                                     update=":msg @form :formConsultarProfesores:tblResultadoProfesores" 
                                      process="@form" disabled="#{profesoresBean.habilitarBotonNuevo}"/>
-                    <p:commandButton id="btnConfirmarCambios" value="#{msg.btnConfirmarCambios}" icon="ui-icon-check" disabled="#{!profesoresBean.habilitarBotonNuevo}"
-                                     update=":msg @form" actionListener="#{profesoresBean.saveProfesor()}"/>
+                    <p:commandButton id="btnConfirmarCambios" 
+                                     value="#{msg.btnConfirmarCambios}" 
+                                     icon="ui-icon-check" disabled="#{!profesoresBean.habilitarBotonNuevo}"
+                                     update=":msg @form :formConsultarProfesores:tblResultadoProfesores"
+                                     actionListener="#{profesoresBean.saveProfesor()}"/>
                 </h:panelGrid>
             </p:panel>
         </h:form>

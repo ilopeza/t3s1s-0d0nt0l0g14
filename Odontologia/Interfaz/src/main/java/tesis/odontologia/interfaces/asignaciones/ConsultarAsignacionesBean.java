@@ -40,6 +40,7 @@ import tesis.odontologia.core.specification.AlumnoSpecs;
 import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
 import tesis.odontologia.core.specification.DiagnosticoSpecs;
 import tesis.odontologia.core.utils.FechaUtils;
+import tesis.odontologia.interfaces.Web;
 import tesis.odontologia.interfaces.login.LoginBean;
 
 /**
@@ -83,6 +84,7 @@ public class ConsultarAsignacionesBean {
     private MateriaService materiaService;
     @ManagedProperty(value = "#{diagnosticoService}")
     private DiagnosticoService diagnosticoService;
+    private boolean habilitarPanel;
 
     /**
      * Creates a new instance of ConsultarAsignacionesBean
@@ -104,19 +106,17 @@ public class ConsultarAsignacionesBean {
         }
         cargarCombos();
 
-
         pacientes = new ArrayList<Paciente>();
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-        LoginBean login = (LoginBean) session.getAttribute("loginBean");
+        LoginBean login = Web.getLoginBean();
 
         if (login.getUsuario().getRol().is(Rol.ALUMNO)) {
             rendered = false;
             alumno = (Alumno) login.getPersona();
+            habilitarPanel = true;
         }
         if (login.getUsuario().getRol().is(Rol.PROFESOR) || login.getUsuario().getRol().is(Rol.RESPONSABLE)) {
             rendered = true;
+            habilitarPanel = false;
         }
     }
 
@@ -132,6 +132,16 @@ public class ConsultarAsignacionesBean {
         return FechaUtils.fechaMaskFormat(c, "dd/MM/yyyy HH:mm");
     }
 
+    public void resetCampos() {
+        if (!Web.getLoginBean().getUsuario().getRol().is(Rol.ALUMNO)) {
+            alumno = new Alumno();
+            habilitarPanel = false;
+        } else {
+            habilitarPanel = true;
+        }
+        asignaciones = new ArrayList<AsignacionPaciente>();
+    }
+
     /**
      * Método para buscar un alumno sobre el cual se quiere consultar. POR AHORA
      * SOLO SE USA EL NÚM DE DOC PARA BUSCAR
@@ -140,6 +150,7 @@ public class ConsultarAsignacionesBean {
      */
     private Alumno buscarAlumno() {
         Alumno alu = new Alumno();
+        asignaciones = new ArrayList<AsignacionPaciente>();
         if (nroDocumentoFiltro == null || nroDocumentoFiltro.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Numero de documento del alumno nulo o vacio.", null));
             return null;
@@ -148,15 +159,18 @@ public class ConsultarAsignacionesBean {
         Predicate p = AlumnoSpecs.byNumeroDocumento(nroDocumentoFiltro);
         try {
             alu = (Alumno) personaService.findOne(p);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Alumno " + alu.getApellido() + ", " + alu.getNombre() + " encontrado.", null));
+            if (alu == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontro al alumno.", null));
+                habilitarPanel = false;
+                return null;
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Alumno " + alu.getApellido() + ", " + alu.getNombre() + " encontrado.", null));
+                habilitarPanel = true;
+                return alu;
+            }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontro al alumno.", null));
         }
-        if (alu == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontro al alumno.", null));
-            return null;
-        }
-
         return alu;
     }
 
@@ -352,7 +366,6 @@ public class ConsultarAsignacionesBean {
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-
 
     public void confirmarModificacion(AsignacionPaciente a) {
         if (this.asignacionSeleccionada != null) {
@@ -559,5 +572,13 @@ public class ConsultarAsignacionesBean {
      */
     public void setDiagnosticoService(DiagnosticoService diagnosticoService) {
         this.diagnosticoService = diagnosticoService;
+    }
+
+    public boolean isHabilitarPanel() {
+        return habilitarPanel;
+    }
+
+    public void setHabilitarPanel(boolean habilitarPanel) {
+        this.habilitarPanel = habilitarPanel;
     }
 }
