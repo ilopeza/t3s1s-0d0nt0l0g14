@@ -100,7 +100,7 @@ and open the template in the editor.
                     <f:facet name="header">
                         <h:outputText value="Asignaciones del alumno #{consultarAsignacionesBean.alumno}" />
                     </f:facet>
-                    <p:ajax event="rowEdit" listener="#{consultarAsignacionesBean.onEdit}" update=":msg" />  
+                    <p:ajax event="rowEdit" listener="#{consultarAsignacionesBean.onEdit}" update=":msg tblResultadoAsignaciones" />  
                     <p:ajax event="rowEditCancel" listener="#{consultarAsignacionesBean.onCancel}" update=":msg" />
 
                     <p:column id="colPaciente" headerText="Paciente">
