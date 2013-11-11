@@ -18,7 +18,8 @@
                          selectionMode="single"
                          selection="#{formAtencionesBean.asignacionAutorizada}"
                          var="asig"
-                         rowKey="#{asig.id}" >
+                         rowKey="#{asig.id}" paginatorAlwaysVisible="false"
+                         rows="10">
                 <f:facet name="header">
                     <h:outputText value="Asignaciones autorizadas del alumno #{formAtencionesBean.alumno}" />
                 </f:facet>
@@ -69,7 +70,7 @@
             </p:dataTable>
             <p:commandButton value="#{msg.lblRegistrarAtencion}"
                              actionListener="#{formAtencionesBean.validarAsignacionSeleccionada}"
-                             update=":msg :secondaryForm:paneldialog">
+                             update=":msg :secondaryForm:paneldialog" icon="ui-icon-plusthick">
             </p:commandButton>
 
         </h:form>
@@ -109,14 +110,15 @@
 
                     </h:panelGrid>
                 </h:panelGrid>
-
+                <p:separator />
+                <p:spacer height="30"/>
                 <p:commandButton value="#{msg.btnCancelar}"
                                  onclick="dlgRegistrarAtencion.hide();" 
-                                 type="reset">
+                                 type="reset" icon="ui-icon-cancel">
                 </p:commandButton>
                 <p:commandButton value="#{msg.btnGuardar}"
                                  actionListener="#{formAtencionesBean.guardarAsignacion}"
-                                 update=":msg :formAtenciones">
+                                 update=":msg :formAtenciones" icon="ui-icon-disk">
                 </p:commandButton>
 
             </h:form>
