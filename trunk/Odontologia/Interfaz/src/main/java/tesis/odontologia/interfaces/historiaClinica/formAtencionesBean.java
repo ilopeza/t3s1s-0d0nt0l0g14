@@ -4,7 +4,10 @@
  */
 package tesis.odontologia.interfaces.historiaClinica;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Init;
@@ -12,7 +15,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import tesis.odontologia.core.domain.Persona;
@@ -20,11 +25,17 @@ import tesis.odontologia.core.domain.alumno.Alumno;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
 import tesis.odontologia.core.domain.historiaclinica.Atencion;
 import tesis.odontologia.core.domain.historiaclinica.AtencionGenerica;
+import tesis.odontologia.core.domain.historiaclinica.Diagnostico;
+import tesis.odontologia.core.domain.historiaclinica.HistoriaClinica;
 import tesis.odontologia.core.domain.usuario.Rol;
 import tesis.odontologia.core.service.AsignacionPacienteService;
 import tesis.odontologia.core.service.AtencionService;
+import tesis.odontologia.core.service.DiagnosticoService;
+import tesis.odontologia.core.service.HistoriaClinicaService;
 import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
+import tesis.odontologia.core.specification.HistoriaClinicaSpecs;
 import tesis.odontologia.core.utils.FechaUtils;
+import tesis.odontologia.interfaces.Web;
 import tesis.odontologia.interfaces.login.LoginBean;
 import tesis.odontologia.interfaces.validacion.Validacion;
 
@@ -42,66 +53,85 @@ public class formAtencionesBean {
     @ManagedProperty(value = "#{asignacionPacienteService}")
     private AsignacionPacienteService asignacionPacienteService;
     private Atencion atencion;
-    @ManagedProperty(value = "#{atencionService}")
-    private AtencionService atencionService;
+    private Date fechaAtencion;
+    private Diagnostico diagnostico;
+    private String estadoDiagnostico;
+    @ManagedProperty(value = "#{historiaClinicaService}")
+    private HistoriaClinicaService historiaClinicaService;
+    private HistoriaClinica hc;
 
     public formAtencionesBean() {
     }
 
     @PostConstruct
     public void init() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-        LoginBean login = (LoginBean) session.getAttribute("loginBean");
-        alumno = (Alumno) login.getPersona();
+        alumno = (Alumno) Web.getLoginBean().getPersona();
         asignacionesAutorizadas = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumno).and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.AUTORIZADA)));
+        estadoDiagnostico = "pendiente";
     }
 
     public void validarAsignacionSeleccionada() {
-        RequestContext context = RequestContext.getCurrentInstance();
         if (asignacionAutorizada == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "No se selecciono una asignacion autorizada para cargar su atencion.", null));
             return;
         }
-        atencion = new AtencionGenerica();
-        atencion.setAsignacionPaciente(asignacionAutorizada);
 
-        context.execute("dlgRegistrarAtencion.show()");
+        Web.callDialog("dlgRegistrarAtencion.show()");
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                atencion = new AtencionGenerica();
+                atencion.setAsignacionPaciente(asignacionAutorizada);
+                fechaAtencion = asignacionAutorizada.getFechaAsignacion().getTime();
+                diagnostico = asignacionAutorizada.getDiagnostico();
+                hc = historiaClinicaService.findOne(HistoriaClinicaSpecs.byPaciente(asignacionAutorizada.getPaciente()));
+                hc = historiaClinicaService.reload(hc, 1);
+            }
+        };
+        t.start();
     }
 
-    public void guardarAsignacion() {
-        RequestContext context = RequestContext.getCurrentInstance();
-
-        if(!validar()) {
+    public void guardarAsignacion() throws IOException {
+        if (!validar()) {
             return;
         }
-        
-        atencionService.save(atencion);
-        asignacionPacienteService.save(asignacionAutorizada);
+        try {
+            //actualizo el estado de la asignacion a registrada
+            asignacionAutorizada.setEstado(AsignacionPaciente.EstadoAsignacion.REGISTRADA);
 
-        asignacionesAutorizadas = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumno)
-                .and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.AUTORIZADA)));
-        context.execute("dlgRegistrarAtencion.hide()");
-    }
+            //actualizo el estado del diagnostico si el mismo ya no es pendiente
+            if (estadoDiagnostico.equalsIgnoreCase("solucionado")) {
+                diagnostico.setAsignacion(asignacionAutorizada);
+                diagnostico.setEstado(Diagnostico.EstadoDiagnostico.SOLUCIONADO_EN_FACULTAD);
+            }
+            if (estadoDiagnostico.equalsIgnoreCase("nosolucionado")) {
+                diagnostico.setAsignacion(asignacionAutorizada);
+                diagnostico.setEstado(Diagnostico.EstadoDiagnostico.NO_SOLUCIONADO);
+            }
+            //agrego la atencion y el diagnostico a la historia clinica
+            hc.addAtencion(atencion);
+            hc.updateDiagnostico(diagnostico);
 
-    public void cancelarRegistro() {
-        atencion = null;
-        asignacionAutorizada = null;
+            //guardo los cambios en la asignacion y la historia clinica
+            asignacionAutorizada = asignacionPacienteService.save(asignacionAutorizada);
+            historiaClinicaService.save(hc);
+
+            Web.callDialog("dlgRegistrarAtencion.hide()");
+            //necesario recargar la lista, para actualizar la lista de asignaciones y volver el estado 
+            //del diagnostico a pendiente (por defecto)
+            asignacionesAutorizadas = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumno).and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.AUTORIZADA)));
+            estadoDiagnostico = "pendiente";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "La atencion se registro correctamente.", null));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL,
+                    "Error al guardar." + ex.getMessage(), null));
+        }
     }
 
     private boolean validar() {
         boolean varValidacion = true;
-
-        if (Validacion.nullEmpty(atencion.getDescripcionProcedimiento())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "La descripcion del procedimiento no puede ser nula o vacia.", null));
-            varValidacion = false;
-        }
-
-        if (Validacion.nullEmpty(atencion.getMotivoConsultaOdontologica())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "El motivo de la consulta no puede ser nulo o vacio.", null));
-            varValidacion = false;
-        }
 
         if (Validacion.nullObject(atencion.getFechaAtencion())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "La fecha de atencion no puede ser nula", null));
@@ -154,11 +184,55 @@ public class formAtencionesBean {
         this.atencion = atencion;
     }
 
-    public AtencionService getAtencionService() {
-        return atencionService;
+    public Date getFechaAtencion() {
+        if (atencion == null) {
+            return null;
+        }
+        return atencion.getFechaAtencion() != null ? atencion.getFechaAtencion().getTime() : null;
     }
 
-    public void setAtencionService(AtencionService atencionService) {
-        this.atencionService = atencionService;
+    public void setFechaAtencion(Date fechaAtencion) {
+        this.fechaAtencion = fechaAtencion;
+        if (atencion != null) {
+            if (fechaAtencion == null) {
+                atencion.setFechaAtencion(null);
+            } else {
+                Calendar c = new GregorianCalendar();
+                c.setTime(fechaAtencion);
+                atencion.setFechaAtencion(c);
+            }
+        }
+    }
+
+    public Diagnostico getDiagnostico() {
+        return diagnostico;
+    }
+
+    public void setDiagnostico(Diagnostico diagnostico) {
+        this.diagnostico = diagnostico;
+    }
+
+    public String getEstadoDiagnostico() {
+        return estadoDiagnostico;
+    }
+
+    public void setEstadoDiagnostico(String estadoDiagnostico) {
+        this.estadoDiagnostico = estadoDiagnostico;
+    }
+
+    public HistoriaClinicaService getHistoriaClinicaService() {
+        return historiaClinicaService;
+    }
+
+    public void setHistoriaClinicaService(HistoriaClinicaService historiaClinicaService) {
+        this.historiaClinicaService = historiaClinicaService;
+    }
+
+    public HistoriaClinica getHc() {
+        return hc;
+    }
+
+    public void setHc(HistoriaClinica hc) {
+        this.hc = hc;
     }
 }
