@@ -20,9 +20,9 @@ public class AtencionGenerica extends Atencion{
 
     public AtencionGenerica() {
     }
-    
-    public AtencionGenerica(Calendar fechaAtencion, String motivoConsultaOdontologica, String comoComenzo, String cuantoTiempoHace, String donde, String aQueLoAtribuye, String queHizo, String descripcionProcedimiento, AsignacionPaciente asignacionPaciente){
-        super(fechaAtencion, motivoConsultaOdontologica, comoComenzo, cuantoTiempoHace, donde,  aQueLoAtribuye, queHizo, descripcionProcedimiento, asignacionPaciente);
+
+    public AtencionGenerica(Calendar fechaAtencion, String motivoConsultaOdontologica, String descripcionProcedimiento, AsignacionPaciente asignacionPaciente) {
+        super(fechaAtencion, motivoConsultaOdontologica, descripcionProcedimiento, asignacionPaciente);
     }
     
     @Override
