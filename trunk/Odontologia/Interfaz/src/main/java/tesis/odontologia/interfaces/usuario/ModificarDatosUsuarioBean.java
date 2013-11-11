@@ -4,15 +4,25 @@
  */
 package tesis.odontologia.interfaces.usuario;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 import org.springframework.util.SerializationUtils;
 import tesis.odontologia.core.domain.Persona;
 import tesis.odontologia.core.service.PersonaService;
@@ -35,14 +45,37 @@ public class ModificarDatosUsuarioBean {
     private String nuevaContraseña;
     private String repetirContraseña;
     private LoginBean login;
+    private String destination;
+    private String ubicacionImagenUsuario;
+    private boolean mostrarUploader;
 
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
         login = (LoginBean) session.getAttribute("loginBean");
-        
+
         persona = personaService.findOne(PersonaSpecs.byId(login.getPersona().getId()));
+        persona = personaService.reload(persona, 1);
+        obtenerUbicacionImagenUsuario();
+        mostrarUploader = false;
+
+    }
+
+    public void cambiarImagen() {
+        mostrarUploader = true;
+    }
+
+    public void listoImagen() {
+        mostrarUploader = false;
+    }
+
+    public void obtenerUbicacionImagenUsuario() {
+        if (persona.getUsuario().getUbicacionImagen() == null || persona.getUsuario().getUbicacionImagen().isEmpty()) {
+            ubicacionImagenUsuario = "../../resources/images/NOIMAGE.jpg";
+        } else {
+            ubicacionImagenUsuario = "../../" +persona.getUsuario().getUbicacionImagen().substring(persona.getUsuario().getUbicacionImagen().lastIndexOf("resources"));
+        }
 
     }
 
@@ -73,7 +106,7 @@ public class ModificarDatosUsuarioBean {
                 persona.getUsuario().setContraseña(nuevaContraseña);
             }
             persona = personaService.save(persona);
-           login.setPersona(persona);
+            login.setPersona(persona);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Datos guardados correctamente", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha podido actualizar los datos.", null));
@@ -84,6 +117,55 @@ public class ModificarDatosUsuarioBean {
 
     public String volverAInicio() {
         return "index";
+    }
+
+    public void handleFileUpload(FileUploadEvent event) {
+        try {
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            destination = servletContext.getRealPath("").substring(0, servletContext.getRealPath("").lastIndexOf("target"))
+                    + "src" + File.separator + "main" + File.separator + "webapp" + File.separator
+                    + "resources" + File.separator + "images" + File.separator + "ImagenesUsuarios" + File.separator;
+            String nombre = "image_" + persona.getUsuario().getNombreUsuario() + persona.getUsuario().getVersion() + event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf('.'));
+            if (persona.getUsuario().getUbicacionImagen() != null && !persona.getUsuario().getUbicacionImagen().isEmpty()) {
+                File file = new File(persona.getUsuario().getUbicacionImagen());
+                file.delete();
+            }
+            if (copyFile(nombre, event.getFile().getInputstream())) {
+                persona.getUsuario().setUbicacionImagen(destination + nombre);
+                persona = personaService.save(persona);
+                login.setPersona(persona);
+                obtenerUbicacionImagenUsuario();
+                mostrarUploader = false;
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean copyFile(String fileName, InputStream in) {
+        try {
+            // write the inputStream to a FileOutputStream
+            OutputStream out = new FileOutputStream(new File(destination + fileName));
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = in.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+
+            in.close();
+            out.flush();
+            out.close();
+
+            System.out.println("New file created!");
+            return true;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     public String formatFecha(Calendar c) {
@@ -151,5 +233,47 @@ public class ModificarDatosUsuarioBean {
      */
     public void setPersonaService(PersonaService personaService) {
         this.personaService = personaService;
+    }
+
+    /**
+     * @return the destination
+     */
+    public String getDestination() {
+        return destination;
+    }
+
+    /**
+     * @param destination the destination to set
+     */
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    /**
+     * @return the ubicacionImagenUsuario
+     */
+    public String getUbicacionImagenUsuario() {
+        return ubicacionImagenUsuario;
+    }
+
+    /**
+     * @param ubicacionImagenUsuario the ubicacionImagenUsuario to set
+     */
+    public void setUbicacionImagenUsuario(String ubicacionImagenUsuario) {
+        this.ubicacionImagenUsuario = ubicacionImagenUsuario;
+    }
+
+    /**
+     * @return the mostrarUploader
+     */
+    public boolean isMostrarUploader() {
+        return mostrarUploader;
+    }
+
+    /**
+     * @param mostrarUploader the mostrarUploader to set
+     */
+    public void setMostrarUploader(boolean mostrarUploader) {
+        this.mostrarUploader = mostrarUploader;
     }
 }
