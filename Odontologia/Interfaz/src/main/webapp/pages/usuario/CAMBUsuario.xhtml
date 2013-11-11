@@ -62,6 +62,8 @@
         <h:form id="formNuevoUsuario">
             <p:panel id="pnlNuevoUsuario" header="#{msg.lblRegistrarNuevoUsuario}" visible="#{usuarioBean.habilitarNuevoUsuario}">
                 <h:panelGrid columns="2" cellpadding="3" cellspacing="3">
+                    <h:outputLabel value="Nombre: " rendered="#{!usuarioBean.habilitarContraseña}"/>
+                    <h:outputLabel value="" rendered="#{!usuarioBean.habilitarContraseña}"/>
                     <h:outputLabel value="#{msg.lblNombreUsuario}: "/>
                     <p:inputText id="txtnombreUsuario" value="#{usuarioBean.usuario.nombreUsuario}"></p:inputText>
 

@@ -14,12 +14,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import tesis.odontologia.core.domain.Documento;
-import tesis.odontologia.core.domain.profesor.Profesor;
+import tesis.odontologia.core.domain.Persona;
 import tesis.odontologia.core.domain.usuario.Rol;
 import tesis.odontologia.core.domain.usuario.Usuario;
+import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.RolService;
 import tesis.odontologia.core.service.UsuarioService;
+import tesis.odontologia.core.specification.PersonaSpecs;
 import tesis.odontologia.core.specification.UsuarioSpecs;
 import tesis.odontologia.interfaces.validacion.Validacion;
 
@@ -35,6 +36,8 @@ public class UsuarioBean {
     private UsuarioService usuarioService;
     @ManagedProperty(value = "#{rolService}")
     private RolService rolService;
+    @ManagedProperty(value = "#{personaService}")
+    private PersonaService personaService;
     private List<Rol> roles;
     private Usuario usuario;
     private String repetirContraseña;
@@ -46,6 +49,7 @@ public class UsuarioBean {
     private boolean habilitarBotonNuevo;
     private boolean habilitarContraseña;
     private Rol rol;
+    private Persona persona;
 
     @PostConstruct
     public void init() {
@@ -133,7 +137,7 @@ public class UsuarioBean {
     }
 
     private void actualizarUsuario() {
-        usuario.setRol(rol);
+        //usuario.setRol(rol);
         usuario = usuarioService.save(usuario);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(usuario.getRol().getNombre() + " " + usuario.getNombreUsuario()
                 + " actualizado correctamente."));
@@ -186,6 +190,7 @@ public class UsuarioBean {
             agregarMensajeAlUsuario(FacesMessage.SEVERITY_WARN, "Seleccione un usuario de la lista.");
         } else {
             usuario = selectedUsuario;
+            //persona = personaService.findOne(PersonaSpecs.byUsuario(usuario));
             rol = usuario.getRol();
             habilitarNuevoUsuario = true;
             habilitarBotonNuevo = true;
@@ -368,5 +373,26 @@ public class UsuarioBean {
      */
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    /**
+     * @param personaService the personaService to set
+     */
+    public void setPersonaService(PersonaService personaService) {
+        this.personaService = personaService;
+    }
+
+    /**
+     * @return the persona
+     */
+    public Persona getPersona() {
+        return persona;
+    }
+
+    /**
+     * @param persona the persona to set
+     */
+    public void setPersona(Persona persona) {
+        this.persona = persona;
     }
 }
