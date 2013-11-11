@@ -69,7 +69,7 @@
             </p:dataTable>
             <p:commandButton value="#{msg.lblRegistrarAtencion}"
                              actionListener="#{formAtencionesBean.validarAsignacionSeleccionada}"
-                             update=":msg">
+                             update=":msg :secondaryForm:paneldialog">
             </p:commandButton>
 
         </h:form>
@@ -78,30 +78,49 @@
         <p:dialog header="#{msg.lblRegistrarAtencion}" widgetVar="dlgRegistrarAtencion" resizable="false" 
                   appendToBody="true" modal="true" closable="false">  
             <h:form id="secondaryForm">
-                <h:panelGrid id="display" columns="2" cellpadding="3" cellspacing="3" style="margin:0 auto;" >  
-                    <f:facet name="header"> Datos Atención </f:facet>  
-                    <h:outputLabel value="#{msg.lblFechaAtencion}(*):"/>
-                    <p:calendar id="cal" value="#{formAtencionesBean.atencion.fechaAtencion}" navigator="true"/> 
+                <h:panelGrid id="paneldialog" columns="1" > 
+                    <h:panelGrid columns="2" cellpadding="3" cellspacing="3" style="margin:0 auto;" >  
+                        <f:facet name="header"> Datos Atención </f:facet>  
+                        <h:outputLabel value="#{msg.lblFechaAtencion}(*):"/>
+                        <p:calendar id="cal" value="#{formAtencionesBean.fechaAtencion}" navigator="true"/> 
 
-                    <h:outputLabel value="#{msg.lblMotivoConsulta}(*):"/>
-                    <p:inputTextarea id="txtMotivo" value="#{formAtencionesBean.atencion.motivoConsultaOdontologica}" maxlength="700" style="width: 450px; height: 100px;" />
+                        <h:outputLabel value="#{msg.lblMotivoConsulta}(*):"/>
+                        <p:inputTextarea id="txtMotivo" value="#{formAtencionesBean.atencion.motivoConsultaOdontologica}" maxlength="700" style="width: 450px; height: 100px;" />
 
-                    <h:outputLabel value="#{msg.lblDescripcionProcedimiento}(*):"/>
-                    <p:inputTextarea id="txtDescripcionProcedimiento" value="#{formAtencionesBean.atencion.descripcionProcedimiento}" maxlength="700" style="width: 450px; height: 100px;" />
+                        <h:outputLabel value="#{msg.lblDescripcionProcedimiento}(*):"/>
+                        <p:inputTextarea id="txtDescripcionProcedimiento" value="#{formAtencionesBean.atencion.descripcionProcedimiento}" maxlength="700" style="width: 450px; height: 100px;" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="3" cellspacing="3" style="margin:0 auto;">  
+                        <f:facet name="header"> Actualizacion de estado del diagnostico </f:facet>  
+                        <h:outputLabel value="#{msg.lblDiagnostico}:"/>
+                        <h:outputText value="#{formAtencionesBean.diagnostico.materia} - 
+                                      #{formAtencionesBean.diagnostico.trabajoPractico}">
+                        </h:outputText>
+                        <h:outputLabel value="#{msg.lblDescripcionDiagnostico}:"/>
+                        <h:outputText value="#{formAtencionesBean.diagnostico.descripcion}" style="word-wrap: break-word;">
+                        </h:outputText>
 
+                        <h:outputText value="#{msg.lblEstado}" />  
+                        <p:selectOneRadio id="estadoDiagnostico" value="#{formAtencionesBean.estadoDiagnostico}">  
+                            <f:selectItem itemLabel="Pendiente de terminar" itemValue="pendiente" /> 
+                            <f:selectItem itemLabel="Solucionado por completo" itemValue="solucionado" />   
+                            <f:selectItem itemLabel="No se podra solucionar / Derivo a otro diagnostico o problema" itemValue="nosolucionado" />  
+                        </p:selectOneRadio> 
+
+                    </h:panelGrid>
                 </h:panelGrid>
 
-
                 <p:commandButton value="#{msg.btnCancelar}"
-                                 actionListener="#{formAtencionesBean.cancelarRegistro}"
-                                 oncomplete="dlgRegistrarAtencion.hide()">
+                                 onclick="dlgRegistrarAtencion.hide();" 
+                                 type="reset">
                 </p:commandButton>
-
                 <p:commandButton value="#{msg.btnGuardar}"
                                  actionListener="#{formAtencionesBean.guardarAsignacion}"
-                                 update=":msg">
+                                 update=":msg :formAtenciones">
                 </p:commandButton>
+
             </h:form>
+
         </p:dialog>
 
     </ui:define>
