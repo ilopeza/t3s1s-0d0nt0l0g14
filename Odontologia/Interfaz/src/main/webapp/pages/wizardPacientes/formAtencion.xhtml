@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../templates/commonLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+    <ui:define name="content">
+        <h:form id="formAtenciones">
+            <p:dataTable id="tblResultadoAsignaciones" 
+                         value="#{formAtencionesBean.asignacionesAutorizadas}"
+                         emptyMessage="#{msg.msgAsignacionesAutor}"
+                         paginator="true" 
+                         selectionMode="single"
+                         selection="#{formAtencionesBean.asignacionAutorizada}"
+                         var="asig"
+                         rowKey="#{asig.id}" >
+                <f:facet name="header">
+                    <h:outputText value="Asignaciones autorizadas del alumno #{formAtencionesBean.alumno}" />
+                </f:facet>
+
+                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="#{msg.lblPaciente}" />  
+                    </f:facet>  
+                    <h:outputText value="#{asig.paciente}" />  
+                </p:column>  
+
+                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="#{msg.lblAlumno}" />  
+                    </f:facet>  
+                    <h:outputText value="#{asig.alumno}" />  
+                </p:column>  
+
+
+                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="#{msg.lblFechaAtencion}" />  
+                    </f:facet>  
+                    <h:outputText value="#{formAtencionesBean.formatFecha(asig.fechaAsignacion)}"/>
+                </p:column>
+
+                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="#{msg.lblDiagnostico}" />  
+                    </f:facet>  
+                    <h:outputText value="#{asig.diagnostico.descripcion}"/>
+                </p:column>
+
+                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="#{msg.lblMateria}" />  
+                    </f:facet>  
+                    <h:outputText value="#{asig.diagnostico.materia}"/>
+                </p:column>
+
+                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="#{msg.lblTrabajoPractico}" />  
+                    </f:facet>  
+                    <h:outputText value="#{asig.diagnostico.trabajoPractico}"/>
+                </p:column>
+
+            </p:dataTable>
+            <p:commandButton value="#{msg.lblRegistrarAtencion}"
+                             actionListener="#{formAtencionesBean.validarAsignacionSeleccionada}"
+                             update=":msg">
+            </p:commandButton>
+
+        </h:form>
+
+
+        <p:dialog header="#{msg.lblRegistrarAtencion}" widgetVar="dlgRegistrarAtencion" resizable="false" 
+                  appendToBody="true" modal="true" closable="false">  
+            <h:form id="secondaryForm">
+                <h:panelGrid id="display" columns="2" cellpadding="3" cellspacing="3" style="margin:0 auto;" >  
+                    <f:facet name="header"> Datos Atención </f:facet>  
+                    <h:outputLabel value="#{msg.lblFechaAtencion}(*):"/>
+                    <p:calendar id="cal" value="#{formAtencionesBean.atencion.fechaAtencion}" navigator="true"/> 
+
+                    <h:outputLabel value="#{msg.lblMotivoConsulta}(*):"/>
+                    <p:inputTextarea id="txtMotivo" value="#{formAtencionesBean.atencion.motivoConsultaOdontologica}" maxlength="700" style="width: 450px; height: 100px;" />
+
+                    <h:outputLabel value="#{msg.lblDescripcionProcedimiento}(*):"/>
+                    <p:inputTextarea id="txtDescripcionProcedimiento" value="#{formAtencionesBean.atencion.descripcionProcedimiento}" maxlength="700" style="width: 450px; height: 100px;" />
+
+                </h:panelGrid>
+
+
+                <p:commandButton value="#{msg.btnCancelar}"
+                                 actionListener="#{formAtencionesBean.cancelarRegistro}"
+                                 oncomplete="dlgRegistrarAtencion.hide()">
+                </p:commandButton>
+
+                <p:commandButton value="#{msg.btnGuardar}"
+                                 actionListener="#{formAtencionesBean.guardarAsignacion}"
+                                 update=":msg">
+                </p:commandButton>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>
