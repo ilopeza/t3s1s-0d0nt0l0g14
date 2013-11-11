@@ -56,6 +56,11 @@ public class MenuBean {
             submenu.getChildren().add(menuItem);
             menu.addSubmenu(submenu);
         }
+        if (rol.is(Rol.ALUMNO)) {
+            menuItem = menuItem("Registrar Atencion", "/pages/wizardPacientes/formAtencion.xhtml");
+            submenu.getChildren().add(menuItem);
+            menu.addSubmenu(submenu);
+        }
 
         //Menu
         if (rol.is(Rol.ADMINACADEMICO)) {
