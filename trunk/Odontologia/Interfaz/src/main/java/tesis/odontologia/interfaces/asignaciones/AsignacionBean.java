@@ -19,6 +19,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import tesis.odontologia.core.domain.alumno.Alumno;
@@ -40,6 +41,7 @@ import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
 import tesis.odontologia.core.specification.DiagnosticoSpecs;
 import tesis.odontologia.core.specification.PacienteSpecs;
 import tesis.odontologia.core.specification.PersonaSpecs;
+import tesis.odontologia.interfaces.Web;
 import tesis.odontologia.interfaces.login.LoginBean;
 import tesis.odontologia.interfaces.util.Utiles;
 
@@ -74,6 +76,10 @@ public class AsignacionBean {
     private Alumno alumnoBuscado;
     private boolean mostrarBuscarAlumno = true;
     private List<ResultadoConsulta> resultadoBusqueda = new ArrayList<ResultadoConsulta>();
+    //Atributos habilitar/deshabilitar
+    private boolean habilitarPanel;
+    private Web webAux;
+
     //Servicio
     @ManagedProperty(value = "#{asignacionPacienteService}")
     private AsignacionPacienteService asignacionPacienteService;
@@ -99,17 +105,15 @@ public class AsignacionBean {
         //Se cargan los combos.
         cargarCombos();
         pacientes = new ArrayList<Paciente>();
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-        LoginBean login = (LoginBean) session.getAttribute("loginBean");
 
-        if (login.getUsuario().getRol().is(Rol.ALUMNO)) {
+        if (Web.getLoginBean().getUsuario().getRol().is(Rol.ALUMNO)) {
             mostrarBuscarAlumno = false;
-            alumnoBuscado = (Alumno) login.getPersona();
+            alumnoBuscado = (Alumno) Web.getLoginBean().getPersona();
+            habilitarPanel = true;
             buscarAsignaciones();
+        }else{
+            habilitarPanel = false;
         }
-
-
     }
 
     public void filtrarCombosPorMateria() {
@@ -247,8 +251,12 @@ public class AsignacionBean {
     }
 
     public void buscarAlumno() {
+        alumnoBuscado = new Alumno();
+        asignaciones = new ArrayList<AsignacionPaciente>();
+        resultadoBusqueda = new ArrayList<ResultadoConsulta>();
         if (nroDocumentoAlumnoBuscado == null || nroDocumentoAlumnoBuscado.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Numero de documento del alumno nulo o vacio.", null));
+            habilitarPanel = false;
             return;
         }
 
@@ -256,7 +264,10 @@ public class AsignacionBean {
         alumnoBuscado = (Alumno) getPersonaService().findOne(p);
         if (alumnoBuscado == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontro al alumno.", null));
+            habilitarPanel = false;
             return;
+        }else{
+            habilitarPanel = true;
         }
         buscarAsignaciones();
     }
@@ -266,13 +277,10 @@ public class AsignacionBean {
      * seleccionados.
      */
     public void buscarAsignaciones() {
-        asignaciones = new ArrayList<AsignacionPaciente>();
-        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
-                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));
-//        .AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
-        //and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE))
-//                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE).
-//                and(AsignacionPacienteSpecs.byTrabajoPractico(trabajoPracticoFiltro))));
+        //asignaciones = new ArrayList<AsignacionPaciente>();
+        asignaciones = (List<AsignacionPaciente>) asignacionPacienteService.
+                findAll(AsignacionPacienteSpecs.byAlumno(alumnoBuscado).
+                and(AsignacionPacienteSpecs.byEstadoAsignacion(AsignacionPaciente.EstadoAsignacion.PENDIENTE)));;
 
         if (asignaciones == null || asignaciones.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El alumno no posee asignaciones pendientes.", null));
@@ -308,6 +316,18 @@ public class AsignacionBean {
             trabajosPracticos = materiaFiltro.getTrabajoPractico();
             return trabajosPracticos;
         }
+    }
+    
+    public void resetCampos(){
+        if(!Web.getLoginBean().getUsuario().getRol().is(Rol.ALUMNO)){
+            alumnoBuscado = new Alumno();
+            asignaciones = new ArrayList<AsignacionPaciente>();
+            habilitarPanel = false;
+        }else{
+            buscarAsignaciones();
+            habilitarPanel = true;
+        }
+        resultadoBusqueda = new ArrayList<ResultadoConsulta>();
     }
 
     // GETTERS Y SETTERS
@@ -533,6 +553,14 @@ public class AsignacionBean {
      */
     public void setDiagnosticoSeleccionado(ResultadoConsulta diagnosticoSeleccionado) {
         this.diagnosticoSeleccionado = diagnosticoSeleccionado;
+    }
+    
+     public boolean isHabilitarPanel() {
+        return habilitarPanel;
+    }
+
+    public void setHabilitarPanel(boolean habilitarPanel) {
+        this.habilitarPanel = habilitarPanel;
     }
 
     public class ResultadoConsulta {

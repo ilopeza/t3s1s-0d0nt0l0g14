@@ -351,28 +351,28 @@ public class PacienteWizardBean {
             varValidacion = false;
         }
 
-        if (paciente.getEmail()!=null && !paciente.getEmail().isEmpty()) {
+        if (paciente.getEmail() != null && !paciente.getEmail().isEmpty()) {
             if (!validacion.validarMail(paciente.getEmail())) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo inválido", null));
                 varValidacion = false;
             }
         }
 
-        if (paciente.getNacionalidad()!= null && !paciente.getNacionalidad().isEmpty()) {
+        if (paciente.getNacionalidad() != null && !paciente.getNacionalidad().isEmpty()) {
             if (getValidacion().validarTexto(paciente.getNacionalidad()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo nacionalidad debe ser solo texto", null));
                 varValidacion = false;
             }
         }
 
-        if (paciente.getLugarNacimiento()!=null&&!paciente.getLugarNacimiento().isEmpty()) {
+        if (paciente.getLugarNacimiento() != null && !paciente.getLugarNacimiento().isEmpty()) {
             if (getValidacion().validarTexto(paciente.getLugarNacimiento()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo lugar de naciomiento debe ser solo texto", null));
                 varValidacion = false;
             }
         }
 
-        if (paciente.getProvincia()!=null && !paciente.getProvincia().isEmpty()) {
+        if (paciente.getProvincia() != null && !paciente.getProvincia().isEmpty()) {
             if (getValidacion().validarTexto(paciente.getProvincia()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo provincia debe ser solo texto", null));
                 varValidacion = false;
@@ -401,21 +401,21 @@ public class PacienteWizardBean {
 //            }
 //        }
 
-        if (paciente.getCelular()!=null && !paciente.getCelular().isEmpty()) {
+        if (paciente.getCelular() != null && !paciente.getCelular().isEmpty()) {
             if (getValidacion().validarNumero(paciente.getCelular()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo celular debe ser solo numérico", null));
                 varValidacion = false;
             }
         }
 
-        if (paciente.getTelefono()!=null && !paciente.getTelefono().isEmpty()) {
+        if (paciente.getTelefono() != null && !paciente.getTelefono().isEmpty()) {
             if (getValidacion().validarNumero(paciente.getTelefono()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo teléfono debe ser solo numérico", null));
                 varValidacion = false;
             }
         }
 
-        if (paciente.getTelefonoMedico()!=null && !paciente.getTelefonoMedico().isEmpty()) {
+        if (paciente.getTelefonoMedico() != null && !paciente.getTelefonoMedico().isEmpty()) {
             if (getValidacion().validarNumero(paciente.getTelefonoMedico()) == false) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo teléfono médico debe ser solo numérico", null));
                 varValidacion = false;
@@ -426,27 +426,36 @@ public class PacienteWizardBean {
     }
 
     private void nuevoPaciente() {
-        paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
-        HistoriaClinica hc = HistoriaClinica.createDefault();
-        hc.setDiagnostico(paciente.getHistoriaClinica().getDiagnostico());
-        paciente.setHistoriaClinica(hc);
+        if (diagnosticos != null && diagnosticos.size()>0) {
+            paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
+            HistoriaClinica hc = HistoriaClinica.createDefault();
+            hc.setDiagnostico(paciente.getHistoriaClinica().getDiagnostico());
+            paciente.setHistoriaClinica(hc);
 
-        paciente = personaService.save(paciente);
+            paciente = personaService.save(paciente);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
-                + " guardado correctamente."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
+                    + " guardado correctamente."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debe cargar por lo menos un diagnóstico."));
+        }
+
     }
 
     private void actualizarPaciente() {
-        if (!diagnosticosNuevos.isEmpty()) {
-            this.setearIdNuevosDiagosticos(); // Se setean a null los IDS de los NUEVOS DIAGNOSTICOS para no generar conflictos en la BD.
+        if (diagnosticos != null && diagnosticos.size()>0) {
+            
+            if (!diagnosticosNuevos.isEmpty()) {
+                this.setearIdNuevosDiagosticos(); // Se setean a null los IDS de los NUEVOS DIAGNOSTICOS para no generar conflictos en la BD.
+            }
+            paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
+            paciente = personaService.save(paciente);
+            diagnosticosNuevos.clear(); // Vuelve la lista a cero para que se puedan cargar nuevos diagnósticos.
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
+                    + " actualizado correctamente."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debe cargar por lo menos un diagnóstico."));
         }
-        paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
-        paciente = personaService.save(paciente);
-        diagnosticosNuevos.clear(); // Vuelve la lista a cero para que se puedan cargar nuevos diagnósticos.
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
-                + " actualizado correctamente."));
-
     }
 
     /**
@@ -528,8 +537,8 @@ public class PacienteWizardBean {
                 cambiarEstadoDiagnostico(Diagnostico.EstadoDiagnostico.CANCELADO);
         }
     }
-    
-    public void darAltaDiagnostico(){
+
+    public void darAltaDiagnostico() {
         cambiarEstadoDiagnostico(Diagnostico.EstadoDiagnostico.PENDIENTE);
     }
 
@@ -571,7 +580,6 @@ public class PacienteWizardBean {
 //            }
 //        }
 //    }
-
     /**
      * Método auxiliar para poner en NULL los IDS de todos los diagnósticos
      * nuevos (O SEA LOS QUE NO ESTÁN TODAVÍA EN LA BD). Se lo usa para no
@@ -674,7 +682,7 @@ public class PacienteWizardBean {
             edicionDiagnosticoHabilitado = false;
         }
     }
-    
+
     public boolean deshabilitarBtnAcciones(Diagnostico d) {
 
         if (d.getEstado().compareTo(Diagnostico.EstadoDiagnostico.PENDIENTE) == 0) {
@@ -683,6 +691,7 @@ public class PacienteWizardBean {
         return true;
     }
     //GETTERS Y SETTERS
+
     public Paciente getPaciente() {
         return paciente;
     }

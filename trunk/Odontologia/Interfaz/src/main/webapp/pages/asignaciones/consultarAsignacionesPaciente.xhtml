@@ -15,7 +15,7 @@ and open the template in the editor.
         <h:outputLabel value="#{msg.lblConsultarAsignaciones}" style="padding: 400px; font-size: 20px; font: " />
         <p:panel id="pnlBuscarAlumno" header="#{msg.lblConsultarAlumno}" rendered="#{consultarAsignacionesBean.rendered}">
             <h:form id="buscarAlumnoForm">
-                <h:panelGrid id="gridBusquedaAlumno" cellpadding="3" cellspacing="3" columns="5">
+                <h:panelGrid id="gridBusquedaAlumno" cellpadding="3" cellspacing="3" columns="3">
 
                     <p:column>
                         <h:outputLabel value="#{msg.lblNumDoc}: " />
@@ -27,10 +27,10 @@ and open the template in the editor.
                         <p:commandButton value="#{msg.btnBuscar}" icon="ui-icon-search" id="btnBuscarAlumno" 
                                          actionListener="#{consultarAsignacionesBean.cargarAlumno}"
                                          process="@form"
-                                         update="@form, :asignacionesForm:tblResultadoAsignaciones, :msg"/>
+                                         update="@form, :asignacionesForm, :msg"/>
                     </p:column>
-                    <p:column colspan="5">
-                        <p:panel id="alumnoEncontrado" header="Alumno">
+                    <p:column colspan="3">
+                        <p:panel id="alumnoEncontrado" header="Alumno" rendered="#{consultarAsignacionesBean.habilitarPanel}">
                             <h:outputLabel value="#{consultarAsignacionesBean.alumno} "/>
                         </p:panel>
                     </p:column>
@@ -46,7 +46,7 @@ and open the template in the editor.
                     </p:column>
                     <p:column>
                         <p:selectOneMenu id="selectMateria" value="#{consultarAsignacionesBean.materiaFiltro}"
-                                         converter="materiaConverter">
+                                         converter="materiaConverter" disabled="#{!consultarAsignacionesBean.habilitarPanel}">
                             <f:selectItem itemLabel="Todas" noSelectionOption="true"/>
                             <f:selectItems value="#{consultarAsignacionesBean.materias}"/>
                         </p:selectOneMenu>
@@ -55,7 +55,8 @@ and open the template in the editor.
                         <h:outputLabel value="#{msg.lblEstado}: " />
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu id="selectEstadoAsignacion" value="#{consultarAsignacionesBean.estadoFiltro}">
+                        <p:selectOneMenu id="selectEstadoAsignacion" value="#{consultarAsignacionesBean.estadoFiltro}"
+                                         disabled="#{!consultarAsignacionesBean.habilitarPanel}">
                             <f:selectItem itemLabel="Todas" itemValue="#{null}"/>
                             <f:selectItems value="#{consultarAsignacionesBean.estados}"/>
                         </p:selectOneMenu>
@@ -65,19 +66,23 @@ and open the template in the editor.
                         <h:outputLabel value="#{msg.lblNombre} del paciente: " />
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtNombrePaciente" value="#{consultarAsignacionesBean.pacienteFiltro}"/>
+                        <p:inputText id="txtNombrePaciente" value="#{consultarAsignacionesBean.pacienteFiltro}" disabled="#{!consultarAsignacionesBean.habilitarPanel}"/>
                     </p:column>
                     <p:column>
                         <h:outputLabel value="#{msg.lblFechaDeAsignacion}: " />
                     </p:column>
                     <p:column>
-                        <p:calendar id="calFechaAsignación" pattern="dd/MM/yyyy" value="#{consultarAsignacionesBean.fechaFiltro}"/>
+                        <p:calendar id="calFechaAsignación" pattern="dd/MM/yyyy" value="#{consultarAsignacionesBean.fechaFiltro}" disabled="#{!consultarAsignacionesBean.habilitarPanel}"/>
                     </p:column>
 
                     <p:commandButton id="btnFiltrarAsignaciones" value="#{msg.btnBuscar}" icon="ui-icon-search"
                                      actionListener="#{consultarAsignacionesBean.cargarAsignacionesFiltradas}"
                                      process="@form"
-                                     update="tblResultadoAsignaciones"/>
+                                     update="tblResultadoAsignaciones" 
+                                     disabled="#{!consultarAsignacionesBean.habilitarPanel}"/>
+                    <p:commandButton id="btnCancelar" value="#{msg.btnCancelar}" icon="ui-icon-cancel"
+                                     actionListener="#{consultarAsignacionesBean.resetCampos()}"
+                                     update="@form" disabled="#{!consultarAsignacionesBean.habilitarPanel}"/>
                 </h:panelGrid>
 
                 <p:dataTable id="tblResultadoAsignaciones" 
@@ -88,7 +93,8 @@ and open the template in the editor.
                              var="a"
                              rowKey="#{a.id}"
                              editable="true"
-                             paginator="true"                            
+                             paginator="true" 
+                             paginatorAlwaysVisible="false"
                              rowsPerPageTemplate="5,10,15"
                              >
                     <f:facet name="header">
@@ -151,7 +157,7 @@ and open the template in the editor.
                         <p:rowEditor rendered="#{!consultarAsignacionesBean.deshabilitarBtnModificarAsignacion(a)}" />  
                     </p:column>  
                 </p:dataTable>
-            
+
 
 
             </h:form>
@@ -191,6 +197,7 @@ and open the template in the editor.
                         <p:column> 
                             <p:commandButton value="#{msg.btnCancelar}" onclick="dlgCancelarAsignacion.hide();" type="button"/> 
                         </p:column>
+
                     </p:row>
 
                 </h:panelGrid>
