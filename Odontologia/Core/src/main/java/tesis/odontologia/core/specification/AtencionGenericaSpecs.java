@@ -55,4 +55,8 @@ public class AtencionGenericaSpecs {
     public static BooleanExpression byFechaDesdeHasta(Calendar calDesde, Calendar calHasta){
         return $.fechaAtencion.between(calDesde, calHasta);
     }
+    
+    public static BooleanExpression byFechaDesde(Calendar calDesde){
+        return $.fechaAtencion.between(calDesde, Calendar.getInstance());
+    }
 }
