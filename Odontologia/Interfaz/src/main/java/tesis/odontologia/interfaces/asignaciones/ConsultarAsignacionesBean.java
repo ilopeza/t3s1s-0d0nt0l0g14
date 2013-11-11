@@ -337,22 +337,23 @@ public class ConsultarAsignacionesBean {
 
     public String getFechaDesde(AsignacionPaciente asignacion) {
         SimpleDateFormat fechaMin = new SimpleDateFormat("dd/MM/yyyy");
-        return fechaMin.format(asignacion.getFechaAsignacion().getTime());
+        return fechaMin.format(asignacion.getFechaCreacionAsignacion().getTime());
     }
 
     public void onEdit(RowEditEvent event) {
         FacesMessage msg = new FacesMessage();
         AsignacionPaciente asignacionAnterior = asignacionPacienteService.findOne(asignacionSeleccionada.getId());
         if (asignacionAnterior.getFechaAsignacion().equals(asignacionSeleccionada.getFechaAsignacion())) {
-            msg.setSummary("Asignación sin cambios.");
-            msg.setDetail("No has realizado modifaciones.");
+            msg.setSummary("Asignación sin cambios. No has realizado modifaciones.");
         } else {
             try {
                 String fechaAnterior = formatFecha(asignacionAnterior.getFechaAsignacion());
                 String fechaNueva = formatFecha(asignacionSeleccionada.getFechaAsignacion());
-                asignacionPacienteService.save(asignacionSeleccionada);
-                msg.setSummary("Cambios guardados con éxito");
-                msg.setDetail("Fecha/Hora anteriores: " + fechaAnterior + "Fecha/Hora nuevos: " + fechaNueva);
+                int index = asignaciones.indexOf(asignacionSeleccionada);
+                asignacionSeleccionada = asignacionPacienteService.save(asignacionSeleccionada);
+                asignaciones.set(index, asignacionSeleccionada);
+                msg.setSummary("Cambios guardados con éxito."
+                        + " Fecha anteriores: " + fechaAnterior + " Fecha nueva: " + fechaNueva);
                 notificarPacientePorCambioFecha(asignacionSeleccionada, fechaAnterior, fechaNueva);
             } catch (Exception e) {
                 msg.setSummary("No se pudo guardar los cambios.");
