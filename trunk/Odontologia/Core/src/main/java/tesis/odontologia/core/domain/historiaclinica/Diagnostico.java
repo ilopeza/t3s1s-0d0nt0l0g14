@@ -47,6 +47,7 @@ public class Diagnostico extends Generic{
     @Column(length = 255) 
     @Size(min = 1, max = 255, message = "La descripcion del medico debe tener entre 1 y 255 caracteres.")
     private String descripcion;
+    
     @Enumerated(EnumType.STRING)
     private EstadoDiagnostico estado = EstadoDiagnostico.PENDIENTE;
 

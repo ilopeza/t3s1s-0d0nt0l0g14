@@ -6,6 +6,7 @@ package tesis.odontologia.core.specification;
 
 import com.mysema.query.types.expr.BooleanExpression;
 import tesis.odontologia.core.domain.historiaclinica.QHistoriaClinica;
+import tesis.odontologia.core.domain.paciente.Paciente;
 
 
 /**
@@ -18,6 +19,10 @@ public class HistoriaClinicaSpecs {
 
     public static BooleanExpression byNumero(Integer numero) {
         return $.numero.eq(numero);
+    }
+    
+    public static BooleanExpression byPaciente(Paciente p) {
+        return $.eq(p.getHistoriaClinica());
     }
 
 }

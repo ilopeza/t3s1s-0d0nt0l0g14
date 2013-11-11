@@ -123,6 +123,57 @@ public class HistoriaClinica extends Generic {
         this.detallesHC = detallesHC;
     }
 
+    public boolean addAtencion(Atencion a) {
+        if (a == null || atencion == null) {
+            return false;
+        }
+        return atencion.add(a);
+    }
+
+    public boolean removeAtencion(Atencion a) {
+        if (a == null || atencion == null) {
+            return false;
+        }
+        return atencion.remove(a);
+    }
+
+    public void clearAtenciones() {
+        if (atencion != null) {
+            atencion.clear();
+        }
+    }
+
+    
+    public boolean addDiagnostico(Diagnostico d) {
+        if (d == null || diagnostico == null) {
+            return false;
+        }
+        return diagnostico.add(d);
+    }
+    
+    public boolean updateDiagnostico(Diagnostico d) {
+        if(d == null || diagnostico == null) return false;
+        int index = diagnostico.indexOf(d);
+        if(index != -1) {
+            diagnostico.set(index, d);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeDiagnostico(Diagnostico d) {
+        if (d == null || diagnostico == null) {
+            return false;
+        }
+        return diagnostico.remove(d);
+    }
+
+    public void clearDiagnosticos() {
+        if (diagnostico != null) {
+            diagnostico.clear();
+        }
+    }
+    
     private void addDetalle(DetalleHistoriaClinica dhc) {
         if (dhc == null) {
             return;
@@ -139,7 +190,7 @@ public class HistoriaClinica extends Generic {
     }
 
     public Diagnostico getDiagnosticoByTrabajoPractico(TrabajoPractico tp) {
-        
+
         if (tp == null || diagnostico == null || diagnostico.isEmpty()) {
             return null;
         }
