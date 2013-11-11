@@ -101,7 +101,7 @@
         <dependency>
             <groupId>org.primefaces.themes</groupId>  
             <artifactId>all-themes</artifactId>  
-            <version>1.0.9</version> 
+            <version>1.0.10</version> 
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -127,6 +127,17 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
             
              

@@ -9,23 +9,39 @@
 
         <h:form id="formModificarDatosUsuario">
             <h:outputLabel value="#{msg.lblModificarUsuario}" style="padding: 400px; font-size: 20px; " />
-            <p:panel id="pnlModificarDatosUsuario" header="#{msg.lblDatosUsuario}">
-                <h:panelGrid id="gridModificarDatosUsuario" cellpadding="3" cellspacing="3" columns="4">
-                    <h:outputLabel value="#{msg.lblNombre}: "/>
-                    <p:inputText id="txtModificarNombre" value="#{modificarDatosUsuarioBean.persona.nombre}" />
-                    <h:outputLabel value="#{msg.lblApellido}: "/>
-                    <p:inputText id="txtModificarApellido" value="#{modificarDatosUsuarioBean.persona.apellido}"/>
-                    <h:outputLabel value="#{msg.lblNumDoc}: "/>
-                    <p:inputText id="txtModificarDocumento" disabled="true" value="#{modificarDatosUsuarioBean.persona.documento}"/>
-                    <h:outputLabel value="#{msg.lblFechaDeNacimiento}: "/>
-                    <p:calendar id="txtModificarFechaNacimiento" value="#{modificarDatosUsuarioBean.persona.fechaNacimiento.time}"/>
+            <h:panelGrid cellpadding="3" cellspacing="3" columns="2">
+                <p:panel id="pnlModificarDatosUsuario" header="#{msg.lblDatosUsuario}">
+                    <h:panelGrid id="gridModificarDatosUsuario" cellpadding="3" cellspacing="3" columns="2">
+                        <h:outputLabel value="#{msg.lblNombre}: "/>
+                        <p:inputText id="txtModificarNombre" value="#{modificarDatosUsuarioBean.persona.nombre}" />
+                        <h:outputLabel value="#{msg.lblApellido}: "/>
+                        <p:inputText id="txtModificarApellido" value="#{modificarDatosUsuarioBean.persona.apellido}"/>
+                        <h:outputLabel value="#{msg.lblNumDoc}: "/>
+                        <p:inputText id="txtModificarDocumento" disabled="true" value="#{modificarDatosUsuarioBean.persona.documento}"/>
+                        <h:outputLabel value="#{msg.lblFechaDeNacimiento}: "/>
+                        <p:calendar id="txtModificarFechaNacimiento" navigator="true" value="#{modificarDatosUsuarioBean.persona.fechaNacimiento.time}"/>
 
-                    <h:outputLabel value="#{msg.lblCorreoElectronico}: "/>
-                    <p:inputText id="txtModificarEmail" value="#{modificarDatosUsuarioBean.persona.usuario.email}"/>
-                </h:panelGrid>            
-            </p:panel>
+                        <h:outputLabel value="#{msg.lblCorreoElectronico}: "/>
+                        <p:inputText id="txtModificarEmail" value="#{modificarDatosUsuarioBean.persona.usuario.email}"/>
 
-            <p:panel id="pnlCambiarContraseña" header="#{msg.lblModificarCont}">
+                    </h:panelGrid>            
+                </p:panel>
+                <p:panel id="pnlImagen" header="Mi imagen">
+                    <h:panelGrid id="grdImagen" cellpadding="3" cellspacing="3" columns="2">
+                        <p:graphicImage id="imgUsuario" cache="false" value="#{modificarDatosUsuarioBean.ubicacionImagenUsuario}" height="200px" width="200px"></p:graphicImage>
+                        <p:fileUpload id="uploader" fileUploadListener="#{modificarDatosUsuarioBean.handleFileUpload}" mode="advanced" dragDropSupport="false"  
+                                      sizeLimit="300000" allowTypes="/(\.|\/)(jpe?g|png)$/" invalidFileMessage="Los tipos soportados son .png y .jpg" invalidSizeMessage="El tamaño debe ser igual a menor 300KB." 
+                                      rendered="#{modificarDatosUsuarioBean.mostrarUploader}"
+                                      update="pnlImagen"
+                                      />
+                        <p:commandButton id="cambiarImagen" value="Cambiar" action="#{modificarDatosUsuarioBean.cambiarImagen()}"
+                                         update="pnlImagen" rendered="#{!modificarDatosUsuarioBean.mostrarUploader}"/>
+
+                    </h:panelGrid> 
+                </p:panel>
+            </h:panelGrid>
+
+            <p:fieldset legend="#{msg.lblModificarCont}" collapsed="true" toggleable="true" toggleSpeed="500">
 
                 <h:panelGrid columns="2" cellpadding="3" cellspacing="3">  
                     <h:outputLabel value="#{msg.lblCotrActual}: "/>
@@ -37,16 +53,18 @@
                                 />
                     <h:outputLabel for="pwd2" value="#{msg.lblRepetirCont}: "/>
                     <p:password id="pwd2" value="#{modificarDatosUsuarioBean.repetirContraseña}" required="false"/>
-                    <p:commandButton value="#{msg.btnGuardar}" id="btnAceptarModificacionDatosUsuario" 
-                             action="#{modificarDatosUsuarioBean.guardarCambios()}" update=":msg"
-                             icon="ui-icon-disk"/>
-            <p:commandButton value="#{msg.btnCancelar}" id="btnCancelarModificacionDatosUsuario"
-                             action="#{modificarDatosUsuarioBean.volverAInicio()}"
-                             icon="ui-icon-cancel"/>
+
                 </h:panelGrid> 
-            </p:panel>
-            
-        </h:form>   
+            </p:fieldset>
+            <h:panelGrid columns="2" cellpadding="3" cellspacing="3">
+                <p:commandButton value="#{msg.btnGuardar}" id="btnAceptarModificacionDatosUsuario" 
+                                 action="#{modificarDatosUsuarioBean.guardarCambios()}" update=":msg"
+                                 icon="ui-icon-disk"/>
+                <p:commandButton value="#{msg.btnCancelar}" id="btnCancelarModificacionDatosUsuario"
+                                 action="#{modificarDatosUsuarioBean.volverAInicio()}"
+                                 icon="ui-icon-cancel"/>
+            </h:panelGrid>
+        </h:form>  
         <p:confirmDialog message="#{msg.msgModUsuario}"
                          header="#{msg.lblModificarUsuario}" severity="alert"
                          widgetVar="dlgConfirmar" appendToBody="true">

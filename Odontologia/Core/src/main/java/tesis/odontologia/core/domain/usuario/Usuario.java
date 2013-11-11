@@ -41,6 +41,9 @@ public class Usuario extends Bajeable{
     @Size(min = 1, max = 75, message = "El correo electrónico debe tener entre 1 y 75 caracteres.")
     @NotNull(message = "El correo electrónico del usuario no puede estar vacío.")
     private String email;
+    
+    @Column(length = 200, nullable = true)
+    private String ubicacionImagen;
 
     public Usuario() {
     }
@@ -104,5 +107,19 @@ public class Usuario extends Bajeable{
            throw new UsuarioException("El rol del usuario no puede ser nulo");
        }
        rol.validar();
+    }
+
+    /**
+     * @return the ubicacionImagen
+     */
+    public String getUbicacionImagen() {
+        return ubicacionImagen;
+    }
+
+    /**
+     * @param ubicacionImagen the ubicacionImagen to set
+     */
+    public void setUbicacionImagen(String ubicacionImagen) {
+        this.ubicacionImagen = ubicacionImagen;
     }
 }
