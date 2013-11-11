@@ -53,6 +53,10 @@ public class AsignacionPacienteSpecs {
         return $.fechaAsignacion.between(calDesde, calHasta);
     }
     
+    public static BooleanExpression byFechaDesde(Calendar calDesde){
+        return $.fechaAsignacion.between(calDesde, Calendar.getInstance());
+    }
+    
     public static BooleanExpression byDate(Date fecha) {
         Calendar cal1 = new GregorianCalendar();
         cal1.setTime(fecha);
