@@ -86,54 +86,57 @@ public class Initialization {
         m.addCatedra(ca);
         Catedra cb = new Catedra("B");
         m.addCatedra(cb);
-        TrabajoPractico mtp1 = new TrabajoPractico("Trabajo Práctico 1", "AAAAAAA");
+        TrabajoPractico mtp1 = new TrabajoPractico("Limpieza de sarro", "Se realiza la limpieza de"
+                + " sarro en la boca del paciente.");
         m.addTrabajoPractico(mtp1);
-        TrabajoPractico mtp2 = new TrabajoPractico("Trabajo Práctico 2", "BBBBBBB");
+        TrabajoPractico mtp2 = new TrabajoPractico("Baño de fluor", "Se realiza el baño de fluor "
+                + "en la boca del paciente.");
         m.addTrabajoPractico(mtp2);
-        TrabajoPractico mtp3 = new TrabajoPractico("Trabajo Práctico 3", "CCCCCCC");
+        TrabajoPractico mtp3 = new TrabajoPractico("Tratamiento de encias inflamadas", "Se realiza el tratamiento "
+                + "sobre las encias, ya que las mismas se encuentran inflamadas.");
         m.addTrabajoPractico(mtp3);
         materias.add(materiaService.save(m));
         matprofp.add(m);
         matprofp1.add(m);
         
         Materia m1 = new Materia("Cirugia I");
-        Catedra ca1 = new Catedra("C");
+        Catedra ca1 = new Catedra("A");
         m1.addCatedra(ca1);
-        Catedra cb1 = new Catedra("D");
+        Catedra cb1 = new Catedra("B");
         m1.addCatedra(cb1);
-        TrabajoPractico m1tp1 = new TrabajoPractico("Trabajo Práctico 4", "AAAAAAA");
+        TrabajoPractico m1tp1 = new TrabajoPractico("Extraccion Incisivo central", "Extraccion de alguno de los incisivos centrales.");
         m1.addTrabajoPractico(m1tp1);
-        TrabajoPractico m1tp2 = new TrabajoPractico("Trabajo Práctico 5", "BBBBBBB");
+        TrabajoPractico m1tp2 = new TrabajoPractico("Extraccion Incisivo lateral", "Extraccion de alguno de los incisivos laterales.");
         m1.addTrabajoPractico(m1tp2);
-        TrabajoPractico m1tp3 = new TrabajoPractico("Trabajo Práctico 6", "CCCCCCC");
+        TrabajoPractico m1tp3 = new TrabajoPractico("Extraccion Canino", "Extraccion de alguno de los caninos (Colmillo).");
         m1.addTrabajoPractico(m1tp3);
         matprofp.add(m1);
         materias.add(materiaService.save(m1));
         matprofp1.add(m1);
         Materia m2 = new Materia("Periodoncia");
-        Catedra ca2 = new Catedra("L");
+        Catedra ca2 = new Catedra("A");
         m2.addCatedra(ca2);
-        Catedra cb2 = new Catedra("M");
+        Catedra cb2 = new Catedra("B");
         m2.addCatedra(cb2);
-        TrabajoPractico m2tp1 = new TrabajoPractico("Trabajo Práctico 7", "AAAAAAA");
+        TrabajoPractico m2tp1 = new TrabajoPractico("Tratamiento Gingivitis", "Realizar un tratamiento de gingivitis.");
         m2.addTrabajoPractico(m2tp1);
-        TrabajoPractico m2tp2 = new TrabajoPractico("Trabajo Práctico 8", "BBBBBBB");
+        TrabajoPractico m2tp2 = new TrabajoPractico("Tratamiento Periodontitis", "Realizar un tratamiento de periodontitis.");
         m2.addTrabajoPractico(m2tp2);
-        TrabajoPractico m2tp3 = new TrabajoPractico("Trabajo Práctico 9", "CCCCCCC");
+        TrabajoPractico m2tp3 = new TrabajoPractico("Tratamiento de Cancer bucal", "Realizar un tratamiento de cancer bucal.");
         m2.addTrabajoPractico(m2tp3);
         matprofp.add(m2);
         materias.add(materiaService.save(m2));
         
         Materia m3 = new Materia("Cirugia II");
-        Catedra ca3 = new Catedra("F");
+        Catedra ca3 = new Catedra("A");
         m3.addCatedra(ca3);
-        Catedra cb3 = new Catedra("K");
+        Catedra cb3 = new Catedra("B");
         m3.addCatedra(cb3);
-        TrabajoPractico m3tp1 = new TrabajoPractico("Trabajo Práctico 10", "AAAAAA");
+        TrabajoPractico m3tp1 = new TrabajoPractico("Extraccion de primer molar", "Realizar extraccion del primer molar.");
         m3.addTrabajoPractico(m3tp1);
-        TrabajoPractico m3tp2 = new TrabajoPractico("Trabajo Práctico 11", "BBBBBB");
+        TrabajoPractico m3tp2 = new TrabajoPractico("Extraccion de segundo molar", "Realizar extraccion del segundo molar.");
         m3.addTrabajoPractico(m3tp2);
-        TrabajoPractico m3tp3 = new TrabajoPractico("Trabajo Práctico 12", "CCCCCC");
+        TrabajoPractico m3tp3 = new TrabajoPractico("Extraccion de tercer molar", "Realizar extraccion del tercer molar (Muela de juicio).");
         m3.addTrabajoPractico(m3tp3);
         matprofp.add(m3);
         materias.add(materiaService.save(m3));
@@ -145,17 +148,20 @@ public class Initialization {
         Paciente p = new Paciente("Maximiliano", "Barros");
         p.setDocumento(new Documento("34688417", Documento.TipoDocumento.DNI));
         p.setSexo(Paciente.SexoTipo.MASCULIN0);
-        p.setEmail("enzo.biancato@gmail.com");
+        p.setEmail("maxibarros@gmail.com");
         HistoriaClinica hc = HistoriaClinica.createDefault();
         hc.setNumero(1);
 
-        Diagnostico d = new Diagnostico(materias.get(0).getTrabajoPractico().get(0), "Tratar Encias", Diagnostico.EstadoDiagnostico.PENDIENTE);
-        d.setMateria(materias.get(1));
+        Diagnostico d = new Diagnostico(materias.get(0).getTrabajoPractico().get(0), "Se debe realizar una limpieza de sarro,"
+                + " ya que el paciente no tiene una correcta higiene bucal.", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d.setMateria(materias.get(0));
         diagnosticos.add(d);
-        Diagnostico d1 = new Diagnostico(materias.get(0).getTrabajoPractico().get(1), "Descripcion TP", Diagnostico.EstadoDiagnostico.PENDIENTE);
-        d1.setMateria(materias.get(1));
+        Diagnostico d1 = new Diagnostico(materias.get(0).getTrabajoPractico().get(1), "Se debe realizar un baño de fluor en"
+                + " la boca del paciente para proteger y fortalecer los dientes.", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d1.setMateria(materias.get(0));
         diagnosticos.add(d1);
-        Diagnostico d2 = new Diagnostico(materias.get(1).getTrabajoPractico().get(0), "Descripcion TP: Se le realizará una extracción del 7mo molar premeditado pro el raavi shankar", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        Diagnostico d2 = new Diagnostico(materias.get(1).getTrabajoPractico().get(0), "Se debe realizar la extraccion del "
+                + "incisivo central derecho superior del paciente, ya que se encuentra fracturada su raiz.", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d2.setMateria(materias.get(1));
         diagnosticos.add(d2);
 
@@ -164,7 +170,7 @@ public class Initialization {
         p.setHistoriaClinica(hc);
         p.setFechaNacimiento(Calendar.getInstance());
 
-        p.setDomicilio(new Domicilio("Ituzaingó", "1066", "Córdoba"));
+        p.setDomicilio(new Domicilio("Macaon", "4113", "Córdoba", "Jardines del jockey"));
 
         pacientes.add(personaService.save(p));
 
@@ -175,13 +181,16 @@ public class Initialization {
         HistoriaClinica hc3 = HistoriaClinica.createDefault();
         hc3.setNumero(4);
         List<Diagnostico> diagnosticos2 = new ArrayList<Diagnostico>();
-        Diagnostico d3 = new Diagnostico(materias.get(0).getTrabajoPractico().get(0), "Tratar Encias jsj", Diagnostico.EstadoDiagnostico.PENDIENTE);
-        d3.setMateria(materias.get(1));
+        Diagnostico d3 = new Diagnostico(materias.get(0).getTrabajoPractico().get(0), "Se debe realizar una limpieza de sarro,"
+                + " ya que el paciente no tiene una correcta higiene bucal.", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d3.setMateria(materias.get(0));
         diagnosticos2.add(d3);
-        Diagnostico d4 = new Diagnostico(materias.get(0).getTrabajoPractico().get(1), "Descripcion TP hola", Diagnostico.EstadoDiagnostico.PENDIENTE);
-        d4.setMateria(materias.get(1));
+        Diagnostico d4 = new Diagnostico(materias.get(0).getTrabajoPractico().get(1), "Se debe realizar un baño de fluor en"
+                + " la boca del paciente para proteger y fortalecer los dientes.", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        d4.setMateria(materias.get(0));
         diagnosticos2.add(d4);
-        Diagnostico d5 = new Diagnostico(materias.get(1).getTrabajoPractico().get(0), "Descripcion TP: Se le realizará una extracción del 7mo molar premeditado pro el raavi shankar", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        Diagnostico d5 = new Diagnostico(materias.get(1).getTrabajoPractico().get(0), "Se debe realizar la extraccion del "
+                + "incisivo central derecho superior del paciente, ya que se encuentra fracturada su raiz.", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d5.setMateria(materias.get(1));
         diagnosticos2.add(d5);
 
@@ -189,7 +198,7 @@ public class Initialization {
         p3.setHistoriaClinica(hc3);
         p3.setFechaNacimiento(Calendar.getInstance());
 
-        p3.setDomicilio(new Domicilio("Ituzaingó", "1000", "Córdoba"));
+        p3.setDomicilio(new Domicilio("Ituzaingó", "1000", "Córdoba", "Nueva Cordoba"));
 
         pacientes.add(personaService.save(p3));
 
@@ -200,20 +209,23 @@ public class Initialization {
         HistoriaClinica hc1 = HistoriaClinica.createDefault();
         hc1.setNumero(2);
         diagnosticos2 = new ArrayList<Diagnostico>();
-        Diagnostico d6 = new Diagnostico(materias.get(2).getTrabajoPractico().get(0), "Tratar Encias jsj", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        Diagnostico d6 = new Diagnostico(materias.get(2).getTrabajoPractico().get(0), "Se debe realizar un tratamiento"
+                + " de gingivitis en la boca del paciente por infeccion presente en las encias.", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d6.setMateria(materias.get(2));
         diagnosticos2.add(d6);
-        Diagnostico d7 = new Diagnostico(materias.get(2).getTrabajoPractico().get(1), "Descripcion TP hola", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        Diagnostico d7 = new Diagnostico(materias.get(2).getTrabajoPractico().get(1), "Se debe realizar un tratamiento"
+                + " de periodontitis debido a la acumulacion de sarro en la boca del paciente", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d7.setMateria(materias.get(2));
         diagnosticos2.add(d7);
-        Diagnostico d8 = new Diagnostico(materias.get(3).getTrabajoPractico().get(0), "Descripcion TP: Se le realizará una extracción del 7mo molar premeditado pro el raavi shankar", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        Diagnostico d8 = new Diagnostico(materias.get(3).getTrabajoPractico().get(0), "Se debe realizar la extraccion"
+                + " del primer molar izquierdo inferior debido a una infeccion en la raiz del mismo", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d8.setMateria(materias.get(3));
         diagnosticos2.add(d8);
 
         hc1.setDiagnostico(diagnosticos2);
         p1.setHistoriaClinica(hc1);
         p1.setFechaNacimiento(Calendar.getInstance());
-        p1.setDomicilio(new Domicilio("Obispo Salguero", "444", "Córdoba"));
+        p1.setDomicilio(new Domicilio("Obispo Salguero", "444", "Córdoba", "Nueva Cordoba"));
         pacientes.add(personaService.save(p1));
 
         Paciente p2 = new Paciente("Miguel", "Romero");
@@ -223,19 +235,22 @@ public class Initialization {
         HistoriaClinica hc2 = HistoriaClinica.createDefault();
         hc2.setNumero(3);
         diagnosticos2 = new ArrayList<Diagnostico>();
-        Diagnostico d9 = new Diagnostico(materias.get(2).getTrabajoPractico().get(0), "Tratar Encias jsj", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        Diagnostico d9 = new Diagnostico(materias.get(2).getTrabajoPractico().get(0), "Se debe realizar un tratamiento"
+                + " de gingivitis en la boca del paciente por infeccion presente en las encias.", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d9.setMateria(materias.get(2));
         diagnosticos2.add(d9);
-        Diagnostico d10 = new Diagnostico(materias.get(2).getTrabajoPractico().get(1), "Descripcion TP hola", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        Diagnostico d10 = new Diagnostico(materias.get(2).getTrabajoPractico().get(1), "Se debe realizar un tratamiento"
+                + " de periodontitis debido a la acumulacion de sarro en la boca del paciente", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d10.setMateria(materias.get(2));
         diagnosticos2.add(d10);
-        Diagnostico d11 = new Diagnostico(materias.get(3).getTrabajoPractico().get(0), "Descripcion TP: Se le realizará una extracción del 7mo molar premeditado pro el raavi shankar", Diagnostico.EstadoDiagnostico.PENDIENTE);
+        Diagnostico d11 = new Diagnostico(materias.get(3).getTrabajoPractico().get(0), "Se debe realizar la extraccion"
+                + " del primer molar izquierdo inferior debido a una infeccion en la raiz del mismo", Diagnostico.EstadoDiagnostico.PENDIENTE);
         d11.setMateria(materias.get(3));
         diagnosticos2.add(d11);
         hc2.setDiagnostico(diagnosticos2);
         p2.setHistoriaClinica(hc2);
         p2.setFechaNacimiento(Calendar.getInstance());
-        p2.setDomicilio(new Domicilio("Gral. Manuel Belgrano", "745", "Córdoba"));
+        p2.setDomicilio(new Domicilio("Gral. Manuel Belgrano", "745", "Córdoba", "Guemes"));
         pacientes.add(personaService.save(p2));
 
     }
@@ -452,9 +467,12 @@ public class Initialization {
     private void cargarAtenciones(){
         AtencionGenerica at = new AtencionGenerica();
         at.setFechaAtencion(Calendar.getInstance());
-        at.setMotivoConsultaOdontologica("dolor dolor mas dolor");
+        at.setMotivoConsultaOdontologica("El paciente se presento porque sentia dolor en las encias constantemente");
         at.setAsignacionPaciente(asignaciones.get(0));
-        at.setDescripcionProcedimiento("seguramente le saco algo que se yo que? hdasdfhsdfhaiosdhfpoashdfashdfpasidfjasijdfo  asdfhoas  asofdh oiasd hf  ioasdfhoas hfoias ihasd fohasiofdh asodaoisdhfoash foiha sdofh sadfhoahsdfo");
+        at.setDescripcionProcedimiento("Al paciente se le realizo una limpieza de sarro con el instrumental adecuado para "
+                + "dicha practica. Se le extrajo correctamente el sarro ubicado detras de los molares y por delante de "
+                + "los incisivos centrales y laterales, zona donde se encontraba la mayor concentracion de sarro en la "
+                + "boca del paciente.");
         atenciones.add(at);
         pacientes.get(0).getHistoriaClinica().setAtencion(atenciones);
         personaService.save(pacientes.get(0));
