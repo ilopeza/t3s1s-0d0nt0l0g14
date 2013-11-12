@@ -23,9 +23,13 @@
                     <p:outputLabel id="lblMateria" value="#{msg.lblMateria}: "/>
                 </p:column>
                 <p:column>
-                    <p:selectOneMenu id="selectMateria" value="#{pacienteWizardBean.diagnostico.materia}" filterMatchMode="startsWith"
+                    <p:selectOneMenu id="selectMateria" value="#{pacienteWizardBean.diagnostico.materia}" 
+                                     filterMatchMode="startsWith"
                                      converter="materiaConverter" disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}">
+                        <f:selectItem itemLabel="#{msg.lblSelectMateria}"/>
                         <f:selectItems value="#{pacienteWizardBean.materias}"/>
+                        <f:ajax event="change"  render="selectTrabajoPráctico" execute="selectMateria"
+                                listener="#{pacienteWizardBean.filtrarCombosPorMateria()}"/>
                     </p:selectOneMenu>
                 </p:column>          
                 <p:column>
@@ -34,6 +38,7 @@
                 <p:column>
                     <p:selectOneMenu id="selectTrabajoPráctico" value="#{pacienteWizardBean.diagnostico.trabajoPractico}"
                                      converter="trabajoPracticoConverter" disabled="#{!pacienteWizardBean.nuevoDiagnosticoHabilitado}">
+                        <f:selectItem itemLabel="#{msg.lblSelectTrabPrac}"/>
                         <f:selectItems value="#{pacienteWizardBean.trabajosPracticos}"/>
                     </p:selectOneMenu>
                 </p:column>
@@ -113,7 +118,7 @@
                 <p:column id="colDescripcion" headerText="#{msg.lblDesc}">
                     <h:outputText value="#{d.descripcion}" />
                 </p:column>
-                <p:column id="colEstado" headerText="#{msg.lblDesc}">
+                <p:column id="colEstado" headerText="#{msg.lblEstado}">
                     <h:outputText value="#{d.estado}" />
                 </p:column>
                 <p:column id="colAcciones" headerText="Acciones">
@@ -139,11 +144,15 @@
                 </p:column>
             </p:dataTable>
         </p:panel>
+        <p:commandButton id="btnCancelarPaciente" 
+                         actionListener="#{pacienteWizardBean.cancelarPaciente()}"
+                         update="@form"
+                         value="#{msg.btnCancelar}" icon="ui-icon-cancel"/>
         <p:commandButton id="btnSave" 
                          actionListener="#{pacienteWizardBean.savePaciente()}" 
                          process="@form"
                          update=":msg"
-                         value="#{msg.btnGuardar}" icon="ui-icon-disk"/>
+                         value="#{msg.btnGuardar}" icon="ui-icon-disk"/>    
     </p:fieldset>
 
 </html>
