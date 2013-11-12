@@ -6,18 +6,23 @@ package tesis.odontologia.interfaces.paciente;
 
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.FlowEvent;
 import tesis.odontologia.core.domain.Documento;
 import tesis.odontologia.core.domain.Domicilio;
 import tesis.odontologia.core.domain.asignaciones.AsignacionPaciente;
@@ -33,6 +38,7 @@ import tesis.odontologia.core.service.TrabajoPracticoService;
 import tesis.odontologia.core.specification.AsignacionPacienteSpecs;
 import tesis.odontologia.core.specification.PacienteSpecs;
 import tesis.odontologia.core.specification.PersonaSpecs;
+import tesis.odontologia.interfaces.Web;
 import tesis.odontologia.interfaces.validacion.Validacion;
 
 /**
@@ -142,6 +148,7 @@ public class PacienteWizardBean {
 
     public void cargarMaterias() {
         materias = materiaService.findAll();
+        //this.filtrarCombosPorMateria();
     }
 
     public void cargarTrabajosPracticos() {
@@ -301,8 +308,27 @@ public class PacienteWizardBean {
         }
     }
 
-    public void resetFields() {
-        paciente = new Paciente();
+    public void cancelarPaciente() {
+        resetAtributos();
+    }
+
+    private void resetAtributos() {
+        try {
+            //        paciente = new Paciente();
+            //        diagnostico = new Diagnostico();
+            //        filtroBusqueda = "";
+            //        diagnosticosNuevos = new ArrayList<Diagnostico>();
+            //        pacientesEncontrados = new ArrayList<Paciente>();
+            //        selectedDiagnostico = new Diagnostico();
+            //        selectedMateria = new Materia();
+            //        selectedPaciente = new Paciente();
+            Web.reloadPage();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("wizardPaciente.back()");
+            
+        } catch (IOException ex) {
+            Logger.getLogger(PacienteWizardBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private boolean validarCamposBusqueda() {
@@ -329,6 +355,17 @@ public class PacienteWizardBean {
 
 
         return varValidacion;
+    }
+    
+    public String manejarNavegacion(FlowEvent ev){
+        String oldStep = ev.getOldStep();
+        String newStep = ev.getNewStep();
+        
+        if(oldStep.equalsIgnoreCase("tabDatosPersonales")== true && validar()){
+            return newStep;
+        }else{
+            return oldStep;
+        }
     }
 
     private boolean validar() {
@@ -426,7 +463,7 @@ public class PacienteWizardBean {
     }
 
     private void nuevoPaciente() {
-        if (diagnosticos != null && diagnosticos.size()>0) {
+        if (diagnosticos != null && diagnosticos.size() > 0) {
             paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
             HistoriaClinica hc = HistoriaClinica.createDefault();
             hc.setDiagnostico(paciente.getHistoriaClinica().getDiagnostico());
@@ -443,8 +480,8 @@ public class PacienteWizardBean {
     }
 
     private void actualizarPaciente() {
-        if (diagnosticos != null && diagnosticos.size()>0) {
-            
+        if (diagnosticos != null && diagnosticos.size() > 0) {
+
             if (!diagnosticosNuevos.isEmpty()) {
                 this.setearIdNuevosDiagosticos(); // Se setean a null los IDS de los NUEVOS DIAGNOSTICOS para no generar conflictos en la BD.
             }
@@ -556,6 +593,23 @@ public class PacienteWizardBean {
                 break;
             }
         }
+    }
+
+    public void filtrarCombosPorMateria() {
+        Materia materiaFiltro = diagnostico.getMateria();
+        if (materiaFiltro != null) {
+            materiaFiltro = materiaService.reload(materiaFiltro, 1);
+            //buscarCatedras();
+            buscarTrabajosPracticos(materiaFiltro);
+        } else {
+            //catedras = new ArrayList<Catedra>();
+            trabajosPracticos = new ArrayList<TrabajoPractico>();
+        }
+    }
+
+    private List<TrabajoPractico> buscarTrabajosPracticos(Materia m) {
+        trabajosPracticos = m.getTrabajoPractico();
+        return trabajosPracticos;
     }
 
     /**
