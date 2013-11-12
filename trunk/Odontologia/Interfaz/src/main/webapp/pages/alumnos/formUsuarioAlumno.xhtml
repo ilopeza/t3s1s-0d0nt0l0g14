@@ -9,9 +9,8 @@
     template="./../../templates/commonLayout.xhtml">
 
     <ui:define name="content">
-
-        <p:panel id="grid" header="#{msg.lblRegistrarUsuarioAlumno}">
-            <h:form id="primaryForm">
+        <h:form id="primaryForm">
+            <p:panel id="pnlRegistrarUsuarioAlumno" header="#{msg.lblRegistrarUsuarioAlumno}">
                 <h:panelGrid columns="2" style="text-align: right">
                     <h:outputLabel value="#{msg.lblNumDoc} (*): "/>
                     <h:inputText id="txtDocumento" size="50"
@@ -30,15 +29,18 @@
                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </h:inputText>
                     <h:outputLabel/>
-                    <p:commandButton value="#{msg.btnBuscar}" 
+                    <p:commandButton value="#{msg.btnGuardar}" id="btnGuardarUsuario" 
                                      ajax="true" 
                                      action="#{formUsuarioAlumnoBean.saveUsuarioAlumno()}"
                                      update=":msg"
                                      icon="ui-icon-plusthick"/>
                 </h:panelGrid>
-            </h:form>
 
-        </p:panel>
+            </p:panel>
+            <p:blockUI block="pnlRegistrarUsuarioAlumno" trigger="btnGuardarUsuario">
+                <p:graphicImage library="images" name="loading-map.gif"/>
+            </p:blockUI>
+        </h:form>
     </ui:define>
 </ui:composition>
 
