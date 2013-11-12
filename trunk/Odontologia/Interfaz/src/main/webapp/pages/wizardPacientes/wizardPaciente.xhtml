@@ -52,15 +52,6 @@
                         <ui:include src="./tabsWizardPaciente/tabDiagnostico.xhtml"/>
                     </p:tab>
                 </p:wizard>
-                <!--p:confirmDialog message="¿Realmente quiere cancelar el diagnóstico?"
-                                 header="Cancelar diagnóstico" severity="alert"
-                                 widgetVar="dlgCancelar" appendToBody="true">
-                    <p:commandButton value="Sí" action="{pacienteWizardBean.cancelarDiagnostico()}"
-                                     oncomplete="dlgCancelar.hide();"
-                                     update="tblVerDiagnosticosCargados"
-                                     process="tblVerDiagnosticosCargados"/>
-                    <p:commandButton value="No" onclick="dlgCancelar.hide();" type="button" />
-                </p:confirmDialog-->
             </h:form>
         </p:panel>
 
@@ -82,22 +73,26 @@
                         <p:outputPanel>  
                             <h:outputText value="#{msg.lblPacientesEncontrados}" />                  
                         </p:outputPanel>  
-                    </f:facet>                                   
-
-                    <p:column headerText="#{msg.lblNumDoc}">  
-                        <h:outputText value="#{paciente.documento}" />  
-                    </p:column>
-
+                    </f:facet>  
                     <p:column headerText="#{msg.lblApeNom}">  
                         <h:outputText value="#{paciente}" />  
                     </p:column>
 
+                    <p:column headerText="#{msg.lblNumDoc}">  
+                        <h:outputText value="#{paciente.documento}" />  
+                    </p:column>
                     <p:column headerText="#{msg.lblDomicilio}">  
                         <h:outputText value="#{paciente.domicilio}" />  
                     </p:column>
 
                 </p:dataTable>
-                <br/>
+                <p:spacer height="30"/>
+                <p:separator/>
+
+                <p:commandButton value="#{msg.btnCancelar}" id="btnCancelarSeleccion" 
+                                 oncomplete="dlgPacientesEncontrados.hide()"
+                                 icon="ui-icon-cancel"
+                                 />
                 <p:commandButton value="#{msg.btnSeleccionar}" id="btnAceptar" 
                                  oncomplete="dlgPacientesEncontrados.hide()"
                                  actionListener="#{pacienteWizardBean.mostrarPacienteSeleccionado()}"
@@ -116,7 +111,7 @@
                              icon="ui-icon-check"/>
             <p:commandButton value="#{msg.btnCancelar}" onclick="dlgModificarDiagnostico.hide();" type="button" icon="ui-icon-cancel" />
         </p:confirmDialog>
-        
+
         <p:confirmDialog message="#{msg.msgAltaDiag}"
                          header="#{msg.lblDarAltaDiag}" widgetVar="dlgAltaDiagnostico" appendToBody="true">
             <p:commandButton value="#{msg.btnConfirmar}" 
