@@ -84,25 +84,30 @@ public class MenuBean {
 //        menu.addSubmenu(submenu);
 //        }
 
-        if (rol.is(Rol.RESPONSABLE)) {
+        if (rol.is(Rol.RESPONSABLE) || rol.is(Rol.ADMINACADEMICO)) {
             //Menu
             submenu = subMenu("Gestión de Usuarios");
             //Opciones
+            if(rol.is(Rol.RESPONSABLE)) {
             menuItem = menuItem("Registrar usuario de alumno", "/pages/alumnos/formUsuarioAlumno.xhtml");
             submenu.getChildren().add(menuItem);
-
-            menuItem = menuItem("Registrar Usuario", "/pages/usuario/CAMBUsuario.xhtml");
-            submenu.getChildren().add(menuItem);
-            
+            }
+            if (rol.is(Rol.ADMINACADEMICO)) {
+                menuItem = menuItem("Registrar Usuario", "/pages/usuario/CAMBUsuario.xhtml");
+                submenu.getChildren().add(menuItem);
+            }
             menu.addSubmenu(submenu);
 
-            submenu = subMenu("Gestión de Profesores");
-            //Opciones
-            menuItem = menuItem("Consultar profesores", "/pages/profesores/CABMProfesor.xhtml");
-            submenu.getChildren().add(menuItem);
-
-            menu.addSubmenu(submenu);
         }
+        
+        if (rol.is(Rol.ADMINACADEMICO)) {
+                submenu = subMenu("Gestión de Profesores");
+                //Opciones
+                menuItem = menuItem("Consultar profesores", "/pages/profesores/CABMProfesor.xhtml");
+                submenu.getChildren().add(menuItem);
+
+                menu.addSubmenu(submenu);
+            }
 
 
         if (rol.is(Rol.ALUMNO) || rol.is(Rol.PROFESOR) || rol.is(Rol.RESPONSABLE)) {
@@ -139,16 +144,12 @@ public class MenuBean {
             //Menu
             submenu = subMenu("Cuenta");
             //Opciones
-            menuItem = menuItem("Datos del alumno", "/pages/alumnos/formAlumno.xhtml");
-            submenu.getChildren().add(menuItem);
-            menuItem = menuItem("Recuperar contraseña", "/pages/usuario/recuperarPassword.xhtml");
-            submenu.getChildren().add(menuItem);
+//            menuItem = menuItem("Datos del alumno", "/pages/alumnos/formAlumno.xhtml");
+//            submenu.getChildren().add(menuItem);
+//            menuItem = menuItem("Recuperar contraseña", "/pages/usuario/recuperarPassword.xhtml");
+//            submenu.getChildren().add(menuItem);
             menuItem = menuItem("Modificar mis datos", "/pages/usuario/modificarDatosUsuario.xhtml");
             submenu.getChildren().add(menuItem);
-//        menuItem = menuItem("Caducar sesión", "/pages/usuario/caducarSesion.xhtml");
-//        submenu.getChildren().add(menuItem);
-//        menuItem = menuItem("Iniciar sesión", "/pages/usuario/iniciarSesion.xhtml");
-//        submenu.getChildren().add(menuItem);
             menu.addSubmenu(submenu);
         }
     }
