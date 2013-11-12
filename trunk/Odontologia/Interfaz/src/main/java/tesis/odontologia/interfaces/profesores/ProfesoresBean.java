@@ -102,7 +102,7 @@ public class ProfesoresBean {
         boolean aux = false;
         BooleanExpression p = ProfesorSpecs.byClaseProfesor();
         Profesor profAux = new Profesor();
-        ArrayList<Profesor> profesoresAgregadosAux = new ArrayList<Profesor>(); 
+        ArrayList<Profesor> profesoresAgregadosAux = new ArrayList<Profesor>();
 
         if (filtroBusqueda != null && filtroBusqueda.isEmpty() == false) {
             p = buscarPorNombreOrNumDoc(p);
@@ -141,8 +141,8 @@ public class ProfesoresBean {
             profesor = personaService.reload(profesor, 1);
             materiasElegidas.setTarget(profesor.getListaMaterias());
             materiasElegidas.setSource(this.getSourceMaterias());
-            habilitarNuevoProfesor = true;
-            habilitarBotonNuevo = true;
+            //habilitarNuevoProfesor = true;
+            //habilitarBotonNuevo = true;
         }
     }
 
@@ -153,27 +153,23 @@ public class ProfesoresBean {
             } else {
                 nuevoProfesor();
             }
-            habilitarNuevoProfesor = false;
+            //habilitarNuevoProfesor = false;
 
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El profesor " + profesor.toString() + " no fue cargado correctamente", null));
             System.out.println(ex.getMessage());
         } finally {
-            materiasElegidas.setSource(materias);
-            materiasElegidas.setTarget(null);
-            profesor = new Profesor();
-            profesor.setDocumento(new Documento());
         }
     }
 
-    public void cancelar(){
+    public void cancelar() {
         try {
             Web.reloadPage();
         } catch (IOException ex) {
             Logger.getLogger(ProfesoresBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private BooleanExpression buscarPorNombreOrNumDoc(BooleanExpression p) {
         if (filtroBusqueda.matches("[0-9]*")) {
             p = p.and(ProfesorSpecs.byNumeroDocumento(filtroBusqueda));
@@ -212,6 +208,7 @@ public class ProfesoresBean {
     }
 
     private void actualizarProfesor() {
+        selectedProfesor = null;
         profesor.setListaMaterias(materiasElegidas.getTarget());
         profesor = personaService.save(profesor);
         buscarProfesores();
@@ -236,8 +233,10 @@ public class ProfesoresBean {
     }
 
     public void registrarNuevoProfesor() {
-        habilitarNuevoProfesor = true;
-        habilitarBotonNuevo = false;
+        materiasElegidas = new DualListModel<Materia>();
+        materiasElegidas.setSource(materias);
+        profesor = new Profesor();
+        profesor.setDocumento(new Documento());
     }
 
     private List<Materia> getSourceMaterias() {
