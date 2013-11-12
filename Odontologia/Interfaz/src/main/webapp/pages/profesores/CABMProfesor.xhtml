@@ -56,7 +56,9 @@
                     <f:facet name="footer">
                         <p:commandButton id="btnNuevoProfesor" value="#{msg.btnNuevoProfesor}" 
                                          icon="ui-icon-circle-arrow-e"
-                                         onclick="dlgNuevoProfesor.show();"/>
+                                         actionListener="#{profesoresBean.registrarNuevoProfesor()}"
+                                         oncomplete="dlgNuevoProfesor.show();"
+                                         update=":formNuevoProf"/>
                         <p:commandButton id="btnModificarProfesor" value="#{msg.btnModificar}" 
                                          icon="ui-icon-pencil" 
                                          actionListener="#{profesoresBean.seleccionarProfesor()}" 
@@ -102,7 +104,6 @@
                     </p:pickList>
                     <p:spacer height="30"/>
                     <p:separator/>
-                    <h:panelGrid columns="3">
                         
                         <p:commandButton id="btnCancelar" value="#{msg.btnCancelar}" 
                                          icon="ui-icon-cancel"
@@ -114,14 +115,8 @@
                                          actionListener="#{profesoresBean.saveProfesor()}"
                                          oncomplete="dlgNuevoProfesor.hide();"
                                          update=":msg @form :formConsultarProfesores:tblResultadoProfesores" 
-                                         process="@form" disabled="#{profesoresBean.habilitarBotonNuevo}"/>
-                        <p:commandButton id="btnConfirmarCambios" 
-                                         value="#{msg.btnConfirmarCambios}" 
-                                         icon="ui-icon-check" disabled="#{!profesoresBean.habilitarBotonNuevo}"
-                                         oncomplete="dlgNuevoProfesor.hide();"
-                                         update=":msg @form :formConsultarProfesores:tblResultadoProfesores"
-                                         actionListener="#{profesoresBean.saveProfesor()}"/>
-                    </h:panelGrid>
+                                         process="@form"/>
+
                 </p:panel>
             </h:form>
         </p:dialog>
@@ -131,7 +126,7 @@
                          header="#{msg.btnDarDeBaja}" severity="alert"
                          widgetVar="dlgDarDeBaja" appendToBody="true">
             <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{profesoresBean.darBaja()}"
-                             update=":msg :formConsultarProfesores" oncomplete="dlgDarDeBaja.hide()" icon="ui-icon-check"/>
+                             update=":msg :formConsultarProfesores:tblResultadoProfesores" oncomplete="dlgDarDeBaja.hide()" icon="ui-icon-check"/>
             <p:commandButton value="#{msg.btnCancelar}" onclick="dlgDarDeBaja.hide();" type="button" icon="ui-icon-cancel"/>
         </p:confirmDialog>
 
@@ -139,7 +134,7 @@
                          header="#{msg.btnDarDeAlta}" severity="alert"
                          widgetVar="dlgDarDeAlta" appendToBody="true">
             <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{profesoresBean.darAlta()}"
-                             update=":msg :formConsultarProfesores" oncomplete="dlgDarDeAlta.hide()" icon="ui-icon-check"/>
+                             update=":msg :formConsultarProfesores:tblResultadoProfesores" oncomplete="dlgDarDeAlta.hide()" icon="ui-icon-check"/>
             <p:commandButton value="#{msg.btnCancelar}" onclick="dlgDarDeAlta.hide();" type="button" icon="ui-icon-cancel"/>
         </p:confirmDialog>
     </ui:define> 
