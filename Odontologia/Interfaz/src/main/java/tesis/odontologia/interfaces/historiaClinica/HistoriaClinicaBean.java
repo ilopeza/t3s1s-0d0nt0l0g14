@@ -4,6 +4,7 @@
  */
 package tesis.odontologia.interfaces.historiaClinica;
 
+import java.util.Calendar;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -12,10 +13,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import tesis.odontologia.core.domain.historiaclinica.Atencion;
 import tesis.odontologia.core.domain.historiaclinica.HistoriaClinica;
 import tesis.odontologia.core.domain.paciente.Paciente;
 import tesis.odontologia.core.service.HistoriaClinicaService;
 import tesis.odontologia.core.service.PersonaService;
+import tesis.odontologia.interfaces.util.Utiles;
 
 /**
  *
@@ -31,6 +34,9 @@ public class HistoriaClinicaBean {
     private PersonaService personaService;
     @ManagedProperty(value = "#{historiaClinicaService}")
     private HistoriaClinicaService historiaClinicaService;
+    
+    //Pagina de atenciones
+    private Atencion atencionSeleccionada;
 
     public HistoriaClinicaBean() {
     }
@@ -78,5 +84,17 @@ public class HistoriaClinicaBean {
 
     public void setPersonaService(PersonaService personaService) {
         this.personaService = personaService;
+    }
+
+    public Atencion getAtencionSeleccionada() {
+        return atencionSeleccionada;
+    }
+
+    public void setAtencionSeleccionada(Atencion atencionSeleccionada) {
+        this.atencionSeleccionada = atencionSeleccionada;
+    }
+    
+    public String formatFecha(Calendar c) {
+        return Utiles.fechaSinHora(c);
     }
 }

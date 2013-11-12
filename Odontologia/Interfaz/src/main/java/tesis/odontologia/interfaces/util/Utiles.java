@@ -41,6 +41,14 @@ public class Utiles {
         return format.format(fecha.getTime());
     }
     
+     public static String fechaSinHora(Calendar fecha) {
+        if(fecha == null) {
+            return null;
+        }
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy" );
+        return format.format(fecha.getTime());
+    }
+    
      public static Calendar convertDateToCalendar(Date d1){
         Calendar c = Calendar.getInstance();
         c.setTime(d1);

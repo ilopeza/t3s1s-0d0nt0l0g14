@@ -11,48 +11,130 @@
 
     <ui:define name="content">
         <h:form id="historiaClinicaForm">
-            <p:panel header="#{msg.lblHistClinica} #{historiaClinicaBean.paciente}">
-                <c:forEach var="i" begin="1" end="29">
-                    <p:panel>  
-                        <h:panelGrid columns="6">
-                            <c:forEach items="#{historiaClinicaBean.hc.detallesHC}" var="dhc">
-                                <c:if test="#{i eq dhc.grupo}">
-                                    <c:choose>
-                                        <c:when test="#{dhc.getClass().simpleName eq 'CampoSiNo'}">
-                                            <h:panelGrid columns="3">
-                                                <h:outputLabel value="#{dhc.nombre}"/>
-                                                <p:selectOneRadio value="#{dhc.siNo}">  
-                                                    <f:selectItem itemLabel="Sí" itemValue="true" />  
-                                                    <f:selectItem itemLabel="No" itemValue="false" />   
-                                                </p:selectOneRadio> 
-                                            </h:panelGrid>
-                                        </c:when>
-                                        <c:when test="#{dhc.getClass().simpleName eq 'CampoDetalle'}">
-                                            <h:panelGrid columns="2">
-                                                <h:outputLabel value="#{dhc.nombre}"/>
-                                                <p:inputText value="#{dhc.only_detalle}" />
-                                            </h:panelGrid>
-                                        </c:when>
-                                        <c:when test="#{dhc.getClass().simpleName eq 'CampoEnumerable'}">
-                                            <h:panelGrid columns="2">
-                                                <p:selectBooleanCheckbox value="#{dhc.checked}" /> 
-                                                <h:outputLabel value="#{dhc.nombre}"/> 
-                                            </h:panelGrid>
-                                        </c:when>
-                                    </c:choose>
-                                </c:if>
-                            </c:forEach>
-                        </h:panelGrid>
-                    </p:panel>  
-                </c:forEach>
-                <p:commandButton value="#{msg.btnGuardar}" id="btnGuardar" 
-                             actionListener="#{historiaClinicaBean.saveHistoriaClinica()}"
-                              update=":msg"/>
-                <p:commandButton value="#{msg.btnCancelar}" id="btnCancelar" 
+            <p:tabView id="tabViewPaciente" >
+                <p:tab id="tabHistoriaClinica" title="Historia Clinica">   
+                    <p:panel header="#{msg.lblHistClinica} #{historiaClinicaBean.paciente}">
+                        <c:forEach var="i" begin="1" end="29">
+                            <p:panel>  
+                                <h:panelGrid columns="6">
+                                    <c:forEach items="#{historiaClinicaBean.hc.detallesHC}" var="dhc">
+                                        <c:if test="#{i eq dhc.grupo}">
+                                            <c:choose>
+                                                <c:when test="#{dhc.getClass().simpleName eq 'CampoSiNo'}">
+                                                    <h:panelGrid columns="3">
+                                                        <h:outputLabel value="#{dhc.nombre}"/>
+                                                        <p:selectOneRadio value="#{dhc.siNo}">  
+                                                            <f:selectItem itemLabel="Sí" itemValue="true" />  
+                                                            <f:selectItem itemLabel="No" itemValue="false" />   
+                                                        </p:selectOneRadio> 
+                                                    </h:panelGrid>
+                                                </c:when>
+                                                <c:when test="#{dhc.getClass().simpleName eq 'CampoDetalle'}">
+                                                    <h:panelGrid columns="2">
+                                                        <h:outputLabel value="#{dhc.nombre}"/>
+                                                        <p:inputText value="#{dhc.only_detalle}" />
+                                                    </h:panelGrid>
+                                                </c:when>
+                                                <c:when test="#{dhc.getClass().simpleName eq 'CampoEnumerable'}">
+                                                    <h:panelGrid columns="2">
+                                                        <p:selectBooleanCheckbox value="#{dhc.checked}" /> 
+                                                        <h:outputLabel value="#{dhc.nombre}"/> 
+                                                    </h:panelGrid>
+                                                </c:when>
+                                            </c:choose>
+                                        </c:if>
+                                    </c:forEach>
+                                </h:panelGrid>
+                            </p:panel>  
+                        </c:forEach>
+
+                    </p:panel>
+                </p:tab>
+
+
+                <p:tab id="tabAtenciones" title="Atenciones">
+                    <p:panel header="#{msg.lblAtencionesDePaciente} #{historiaClinicaBean.paciente}">
+                        <p:dataTable id="tblResultadoAsignaciones" 
+                                     value="#{historiaClinicaBean.hc.atencion}"
+                                     emptyMessage="#{msg.msg}"
+                                     paginator="true" 
+                                     selectionMode="single"
+                                     selection="#{historiaClinicaBean.atencionSeleccionada}"
+                                     var="atenc"
+                                     rowKey="#{atenc.id}">
+
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="#{msg.lblFechaAtencion}" />  
+                                </f:facet>  
+                                <h:outputText value="#{historiaClinicaBean.formatFecha(atenc.fechaAtencion)}" />  
+                            </p:column>  
+
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="#{msg.lblAlumnoQueRealizo}" />  
+                                </f:facet>  
+                                <h:outputText value="#{atenc.asignacionPaciente.alumno}" />  
+                            </p:column>  
+
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="#{msg.lblProfesorAutorizante}" />  
+                                </f:facet>  
+                                <h:outputText value="#{atenc.asignacionPaciente.profesor}" />  
+                            </p:column>
+
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="#{msg.lblDiagnosticoResuelto}" />  
+                                </f:facet>  
+                                <h:outputText value="#{atenc.asignacionPaciente.diagnostico.descripcion}" />  
+                            </p:column>
+
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Acciones" />  
+                                </f:facet>  
+                                <p:commandLink update=":pgdlgAtencion" oncomplete="dlgAtencion.show()" title="#{msg.lblAtencion}">  
+                                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                                    <f:setPropertyActionListener value="#{atenc}" target="#{historiaClinicaBean.atencionSeleccionada}" />  
+                                </p:commandLink>   
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </p:panel>
+                </p:tab>
+
+            </p:tabView>
+
+            <p:commandButton value="#{msg.btnVolver}" id="btnCancelar" 
                              action="registroPaciente"
-                              />
-            </p:panel>
-            
+                             />
+            <p:commandButton value="#{msg.btnGuardar}" id="btnGuardar" 
+                             actionListener="#{historiaClinicaBean.saveHistoriaClinica()}"
+                             update=":msg"/>
         </h:form>
+
+        <p:dialog header="#{msg.lblAtencion}" widgetVar="dlgAtencion" resizable="false" 
+                  appendToBody="true" modal="true" closable="true" closeOnEscape="true">  
+            <h:panelGrid id="pgdlgAtencion" columns="2" cellpadding="3" cellspacing="3" style="margin:0 auto; height: 450px; width: 700px;" >  
+                <f:facet name="header"> Datos Atención </f:facet>  
+                <h:outputLabel value="#{msg.lblFechaAtencion}:"/>
+                <h:outputText value="#{historiaClinicaBean.formatFecha
+                                       (historiaClinicaBean.atencionSeleccionada.fechaAtencion)}"/> 
+                <h:outputLabel value="#{msg.lblAlumnoQueRealizo}:"/>
+                <h:outputText value="#{historiaClinicaBean.atencionSeleccionada.asignacionPaciente.alumno}"/> 
+                <h:outputLabel value="#{msg.lblProfesorAutorizante}:"/>
+                <h:outputText value="#{historiaClinicaBean.atencionSeleccionada.asignacionPaciente.profesor}"/> 
+                <h:outputLabel value="#{msg.lblDiagnosticoResuelto}:"/>
+                <h:outputText value="#{historiaClinicaBean.atencionSeleccionada.asignacionPaciente.diagnostico.descripcion}"/> 
+                <h:outputLabel value="#{msg.lblMotivoConsulta}:"/>
+                <h:outputText value="#{historiaClinicaBean.atencionSeleccionada.motivoConsultaOdontologica}"/> 
+                <h:outputLabel value="#{msg.lblDescripcionProc}:"/>
+                <h:outputText value="#{historiaClinicaBean.atencionSeleccionada.descripcionProcedimiento}"/> 
+            </h:panelGrid>
+        </p:dialog>
+
     </ui:define>
 </ui:composition>
