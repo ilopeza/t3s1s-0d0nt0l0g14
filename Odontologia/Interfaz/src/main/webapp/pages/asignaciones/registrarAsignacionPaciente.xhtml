@@ -139,15 +139,16 @@
                                 id="txtFechaAsignacion" 
                                 mindate="#{asignacionBean.fechaDesde}" 
                                 label="#{msg.lblFechaDeAsignacion}" disabled="#{!asignacionBean.habilitarPanel}"/>
-                    <p:commandButton id="btnAsignar" value="#{msg.btnAsignar}" 
-                                     action="#{asignacionBean.save}"
-                                     update=":msg, tblAsignacionesAlumno, tblResultadosBusquedaPacienteAsignacion"
-                                     process="@this, :busquedaAlumnoForm, tblResultadosBusquedaPacienteAsignacion, txtFechaAsignacion "
-                                     icon="ui-icon-circle-check" disabled="#{!asignacionBean.habilitarPanel}"/> 
                     <p:commandButton id="btnCancelarAsignacion" value="#{msg.btnCancelar}" 
                                      action="#{asignacionBean.resetCampos()}"
                                      update="@form" 
                                      icon="ui-icon-cancel" disabled="#{!asignacionBean.habilitarPanel}"/>
+                    <p:commandButton id="btnAsignar" value="#{msg.btnAsignar}"
+                                     action="#{asignacionBean.save}"
+                                     update=":msg, tblAsignacionesAlumno, tblResultadosBusquedaPacienteAsignacion"
+                                     process="@this, :busquedaAlumnoForm, tblResultadosBusquedaPacienteAsignacion, txtFechaAsignacion "
+                                     icon="ui-icon-circle-check" disabled="#{!asignacionBean.habilitarPanel}"/> 
+                    
                 </h:panelGrid>
             </p:panel>
         </h:form>

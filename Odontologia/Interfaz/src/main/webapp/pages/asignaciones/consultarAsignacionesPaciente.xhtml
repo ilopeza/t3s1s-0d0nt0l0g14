@@ -74,15 +74,15 @@ and open the template in the editor.
                     <p:column>
                         <p:calendar id="calFechaAsignación" pattern="dd/MM/yyyy" value="#{consultarAsignacionesBean.fechaFiltro}" disabled="#{!consultarAsignacionesBean.habilitarPanel}"/>
                     </p:column>
-
+                    <p:commandButton id="btnCancelar" value="#{msg.btnCancelar}" icon="ui-icon-cancel"
+                                     actionListener="#{consultarAsignacionesBean.resetCampos()}"
+                                     update="@form" disabled="#{!consultarAsignacionesBean.habilitarPanel}"/>
                     <p:commandButton id="btnFiltrarAsignaciones" value="#{msg.btnBuscar}" icon="ui-icon-search"
                                      actionListener="#{consultarAsignacionesBean.cargarAsignacionesFiltradas}"
                                      process="@form"
                                      update="tblResultadoAsignaciones" 
                                      disabled="#{!consultarAsignacionesBean.habilitarPanel}"/>
-                    <p:commandButton id="btnCancelar" value="#{msg.btnCancelar}" icon="ui-icon-cancel"
-                                     actionListener="#{consultarAsignacionesBean.resetCampos()}"
-                                     update="@form" disabled="#{!consultarAsignacionesBean.habilitarPanel}"/>
+
                 </h:panelGrid>
 
                 <p:dataTable id="tblResultadoAsignaciones" 
@@ -95,7 +95,6 @@ and open the template in the editor.
                              editable="true"
                              paginator="true" 
                              paginatorAlwaysVisible="false"
-                             rowsPerPageTemplate="5,10,15"
                              >
                     <f:facet name="header">
                         <h:outputText value="Asignaciones del alumno #{consultarAsignacionesBean.alumno}" />
@@ -157,22 +156,22 @@ and open the template in the editor.
                         <p:rowEditor rendered="#{!consultarAsignacionesBean.deshabilitarBtnModificarAsignacion(a)}" />  
                     </p:column>  
                 </p:dataTable>
-
-
-
             </h:form>
         </p:panel>
         <p:confirmDialog message="#{msg.msgConfAsig}"
                          header="#{msg.lblConfirmarAsignacion}" severity="alert"
-                         widgetVar="dlgConfirmar" appendToBody="true">
+                         widgetVar="dlgConfirmar" appendToBody="true" closeOnEscape="true">
+            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgConfirmar.hide();" type="button" 
+                             icon="ui-icon-cancel"/>
             <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{consultarAsignacionesBean.confirmarAsignacion()}"
                              oncomplete="dlgConfirmar.hide();"
-                             update=":asignacionesForm:tblResultadoAsignaciones,:msg"/>
-            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgConfirmar.hide();" type="button" />
+                             update=":asignacionesForm:tblResultadoAsignaciones,:msg"
+                             icon="ui-icon-check"/>
+
         </p:confirmDialog>
 
         <p:dialog  header="#{msg.lblCancAsig}" appendToBody="true"
-                   widgetVar="dlgCancelarAsignacion" closeOnEscape="true" modal="true">
+                   widgetVar="dlgCancelarAsignacion" closeOnEscape="true" modal="true" resizable="false">
             <h:form id="formCancelar">
                 <h:panelGrid>
 
@@ -186,21 +185,17 @@ and open the template in the editor.
                         <p:inputTextarea id="txtMotivoCancelacion" value="#{consultarAsignacionesBean.motivoCancelacion}" 
                                          maxlength="100" rows="5" cols="35" required="true"/>                     
                     </p:row>
-                    <p:row>
-                        <p:column>
-                            <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{consultarAsignacionesBean.cancelarAsignacion()}"
-                                             oncomplete="dlgCancelarAsignacion.hide();"
-                                             process="@form"
-                                             update=":asignacionesForm:tblResultadoAsignaciones,:msg"
-                                             />
-                        </p:column>
-                        <p:column> 
-                            <p:commandButton value="#{msg.btnCancelar}" onclick="dlgCancelarAsignacion.hide();" type="button"/> 
-                        </p:column>
-
-                    </p:row>
-
                 </h:panelGrid>
+                <p:spacer height="20"/>
+                <p:separator/>
+                <p:commandButton value="#{msg.btnCancelar}" onclick="dlgCancelarAsignacion.hide();" type="button"
+                                 icon="ui-icon-cancel"/> 
+                <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{consultarAsignacionesBean.cancelarAsignacion()}"
+                                 oncomplete="dlgCancelarAsignacion.hide();"
+                                 process="@form"
+                                 update=":asignacionesForm:tblResultadoAsignaciones,:msg"
+                                 icon="ui-icon-check"
+                                 />
             </h:form>
         </p:dialog>
     </ui:define>

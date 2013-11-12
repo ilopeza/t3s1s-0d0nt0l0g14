@@ -57,17 +57,18 @@
                 </h:panelGrid> 
             </p:fieldset>
             <h:panelGrid columns="2" cellpadding="3" cellspacing="3">
-                <p:commandButton value="#{msg.btnGuardar}" id="btnAceptarModificacionDatosUsuario" 
-                                 action="#{modificarDatosUsuarioBean.guardarCambios()}" update=":msg"
-                                 icon="ui-icon-disk"/>
+                
                 <p:commandButton value="#{msg.btnCancelar}" id="btnCancelarModificacionDatosUsuario"
                                  action="#{modificarDatosUsuarioBean.volverAInicio()}"
                                  icon="ui-icon-cancel"/>
+                <p:commandButton value="#{msg.btnGuardar}" id="btnAceptarModificacionDatosUsuario" 
+                                 action="#{modificarDatosUsuarioBean.guardarCambios()}" update=":msg"
+                                 icon="ui-icon-disk"/>
             </h:panelGrid>
         </h:form>  
         <p:confirmDialog message="#{msg.msgModUsuario}"
                          header="#{msg.lblModificarUsuario}" severity="alert"
-                         widgetVar="dlgConfirmar" appendToBody="true">
+                         widgetVar="dlgConfirmar" appendToBody="true" closeOnEscape="true">
             <h:panelGrid id="pnlConfirmacionDatosUsuario" cellpadding="3" cellspacing="3" columns="2">
                 <h:outputLabel value="#{msg.lblNombre}: "/>
                 <h:outputLabel value=":formModificarDatosUsuario:txtModificarNombre"/>             
@@ -77,10 +78,11 @@
                 <h:outputLabel value="#{modificarDatosUsuarioBean.persona.usuario.email}"/> 
                 <h:outputLabel value="#{msg.lblFechaDeNacimiento}: "/>
                 <h:outputLabel value="#{modificarDatosUsuarioBean.formatFecha(modificarDatosUsuarioBean.persona.fechaNacimiento)}"/> 
+                <p:commandButton value="#{msg.btnCancelar}" onclick="dlgConfirmar.hide();" type="button" />
                 <p:commandButton value="#{msg.btnConfirmar}" actionListener="#{modificarDatosUsuarioBean.guardarCambios()}"
                                  oncomplete="dlgConfirmar.hide();"/>
 
-                <p:commandButton value="#{msg.btnCancelar}" onclick="dlgConfirmar.hide();" type="button" />
+                
             </h:panelGrid>
         </p:confirmDialog>
 

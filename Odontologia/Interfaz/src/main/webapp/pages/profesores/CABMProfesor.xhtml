@@ -56,11 +56,11 @@
                     <f:facet name="footer">
                         <p:commandButton id="btnNuevoProfesor" value="#{msg.btnNuevoProfesor}" 
                                          icon="ui-icon-circle-arrow-e"
-                                         actionListener="#{profesoresBean.registrarNuevoProfesor()}" 
-                                         update=":formNuevoProf"/>
+                                         onclick="dlgNuevoProfesor.show();"/>
                         <p:commandButton id="btnModificarProfesor" value="#{msg.btnModificar}" 
                                          icon="ui-icon-pencil" 
                                          actionListener="#{profesoresBean.seleccionarProfesor()}" 
+                                         oncomplete="dlgNuevoProfesor.show();"
                                          update=":formNuevoProf"/>
                         <p:commandButton id="btnBajaProfesor" value="#{msg.btnDarDeBaja}" icon="ui-icon-arrowthick-1-s" 
                                          disabled="#{profesoresBean.habilitarCambioEstado}" onclick="dlgDarDeBaja.show()"/>
@@ -72,47 +72,61 @@
             </p:panel>
 
 
-        </h:form>  
-
-        <h:form id="formNuevoProf">
-            <p:panel id="pnlNuevoProf" header="#{msg.lblRegistrarNuevoProfesor}" visible="#{profesoresBean.habilitarNuevoProfesor}">
-                <h:panelGrid columns="8" cellpadding="3" cellspacing="3">
-                    <p:outputLabel value="#{msg.lblNombre}:"/>
-                    <p:inputText id="txtNombre" value="#{profesoresBean.profesor.nombre}"/> 
-                    <p:outputLabel value="#{msg.lblApellido}:"/>
-                    <p:inputText id="txtApellido" value="#{profesoresBean.profesor.apellido}"/>     
-                    <p:outputLabel value="#{msg.lblTipoDocumento}:"/>
-                    <p:selectOneMenu id="selectTipoDocumento" value="#{profesoresBean.profesor.documento.tipoDocumento}">
-                        <f:selectItem itemLabel="#{msg.lblSelectTipoDoc}"/>
-                        <f:selectItems value="#{profesoresBean.tiposDocuementos}"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="#{msg.lblNumDoc}:"/>
-                    <p:inputText id="txtNumeroDocumento" value="#{profesoresBean.profesor.documento.numero}"/>
-                    <p:outputLabel value="#{msg.lblFechaDeNacimiento}:"/>
-                    <p:calendar id="calFechaNacimientoProfesor" value="#{profesoresBean.fechaNacimiento}" navigator="true"  yearRange="c-100:c"/>
-                </h:panelGrid> 
-                <p:pickList id="pickListMaterias" 
-                            showCheckbox="true" value="#{profesoresBean.materiasElegidas}" var="mat"
-                            converter="materiaConverter" itemValue="#{mat}" itemLabel="#{mat.nombre}"
-                            showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
-
-                    <f:facet name="sourceCaption">#{msg.lblMatDisp}</f:facet>  
-                    <f:facet name="targetCaption">#{msg.lblMatSel}</f:facet>  
-                </p:pickList>
-                <h:panelGrid columns="3">
-                    <p:commandButton id="btnGuardar" value="#{msg.btnGuardar}" 
-                                     icon="ui-icon-disk"
-                                     actionListener="#{profesoresBean.saveProfesor()}" 
-                                     update=":msg @form :formConsultarProfesores:tblResultadoProfesores" 
-                                     process="@form" disabled="#{profesoresBean.habilitarBotonNuevo}"/>
-                    <p:commandButton id="btnConfirmarCambios" 
-                                     value="#{msg.btnConfirmarCambios}" 
-                                     icon="ui-icon-check" disabled="#{!profesoresBean.habilitarBotonNuevo}"
-                                     update=":msg @form :formConsultarProfesores:tblResultadoProfesores"
-                                     actionListener="#{profesoresBean.saveProfesor()}"/>
-                </h:panelGrid>
-            </p:panel>
         </h:form>
+        <p:dialog widgetVar="dlgNuevoProfesor" header="Profesor" modal="true" appendToBody="true"
+                  closeOnEscape="true" resizable="false">
+            <h:form id="formNuevoProf">
+                <p:panel id="pnlNuevoProf" header="#{msg.lblRegistrarNuevoProfesor}">
+                    <h:panelGrid columns="8" cellpadding="3" cellspacing="3">
+                        <p:outputLabel value="#{msg.lblNombre}:"/>
+                        <p:inputText id="txtNombre" value="#{profesoresBean.profesor.nombre}"/> 
+                        <p:outputLabel value="#{msg.lblApellido}:"/>
+                        <p:inputText id="txtApellido" value="#{profesoresBean.profesor.apellido}"/>     
+                        <p:outputLabel value="#{msg.lblTipoDocumento}:"/>
+                        <p:selectOneMenu id="selectTipoDocumento" value="#{profesoresBean.profesor.documento.tipoDocumento}">
+                            <f:selectItem itemLabel="#{msg.lblSelectTipoDoc}"/>
+                            <f:selectItems value="#{profesoresBean.tiposDocuementos}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{msg.lblNumDoc}:"/>
+                        <p:inputText id="txtNumeroDocumento" value="#{profesoresBean.profesor.documento.numero}"/>
+                        <p:outputLabel value="#{msg.lblFechaDeNacimiento}:"/>
+                        <p:calendar id="calFechaNacimientoProfesor" value="#{profesoresBean.fechaNacimiento}" navigator="true"  yearRange="c-100:c"/>
+                    </h:panelGrid> 
+                    <p:pickList id="pickListMaterias" 
+                                showCheckbox="true" value="#{profesoresBean.materiasElegidas}" var="mat"
+                                converter="materiaConverter" itemValue="#{mat}" itemLabel="#{mat.nombre}"
+                                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
+
+                        <f:facet name="sourceCaption">#{msg.lblMatDisp}</f:facet>  
+                        <f:facet name="targetCaption">#{msg.lblMatSel}</f:facet>  
+                    </p:pickList>
+                    <p:spacer height="30"/>
+                    <p:separator/>
+                    <h:panelGrid columns="3">
+                        
+                        <p:commandButton id="btnCancelar" value="#{msg.btnCancelar}" 
+                                         icon="ui-icon-cancel"
+                                         onclick="dlgNuevoProfesor.hide();"
+                                         update="@form :formConsultarProfesores:tblResultadoProfesores" 
+                                         process="@this"/>
+                        <p:commandButton id="btnGuardar" value="#{msg.btnGuardar}" 
+                                         icon="ui-icon-disk"
+                                         actionListener="#{profesoresBean.saveProfesor()}"
+                                         oncomplete="dlgNuevoProfesor.hide();"
+                                         update=":msg @form :formConsultarProfesores:tblResultadoProfesores" 
+                                         process="@form" disabled="#{profesoresBean.habilitarBotonNuevo}"/>
+                        <p:commandButton id="btnConfirmarCambios" 
+                                         value="#{msg.btnConfirmarCambios}" 
+                                         icon="ui-icon-check" disabled="#{!profesoresBean.habilitarBotonNuevo}"
+                                         oncomplete="dlgNuevoProfesor.hide();"
+                                         update=":msg @form :formConsultarProfesores:tblResultadoProfesores"
+                                         actionListener="#{profesoresBean.saveProfesor()}"/>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+
+
         <p:confirmDialog message="#{msg.msgBajaProf}"
                          header="#{msg.btnDarDeBaja}" severity="alert"
                          widgetVar="dlgDarDeBaja" appendToBody="true">

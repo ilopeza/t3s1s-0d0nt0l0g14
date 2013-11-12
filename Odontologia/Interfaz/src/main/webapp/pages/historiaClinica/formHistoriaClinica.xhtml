@@ -61,6 +61,7 @@
                                      selectionMode="single"
                                      selection="#{historiaClinicaBean.atencionSeleccionada}"
                                      var="atenc"
+                                     paginatorAlwaysVisible="false"
                                      rowKey="#{atenc.id}">
 
                             <p:column>  
@@ -109,11 +110,11 @@
             </p:tabView>
 
             <p:commandButton value="#{msg.btnVolver}" id="btnCancelar" 
-                             action="registroPaciente"
+                             action="registroPaciente" icon="ui-icon-arrowthick-1-w"
                              />
             <p:commandButton value="#{msg.btnGuardar}" id="btnGuardar" 
                              actionListener="#{historiaClinicaBean.saveHistoriaClinica()}"
-                             update=":msg"/>
+                             update=":msg" icon="ui-icon-disk"/>
         </h:form>
 
         <p:dialog header="#{msg.lblAtencion}" widgetVar="dlgAtencion" resizable="false" 

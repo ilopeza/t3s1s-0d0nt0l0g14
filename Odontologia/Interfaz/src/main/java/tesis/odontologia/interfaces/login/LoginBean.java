@@ -119,4 +119,8 @@ public class LoginBean {
         context.addCallbackParam("loggedIn", loggedIn);
         return resp;
     }
+    
+    public String recuperarContrasenia(){
+        return "recuperarPassword";
+    }
 }
