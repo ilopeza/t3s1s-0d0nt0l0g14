@@ -337,17 +337,17 @@ public class PacienteWizardBean {
         String nomFiltro = this.getNombreApellidoBusqueda();
         boolean varValidacion = true;
 
-        if (validacion.nullEmpty(docFiltro) || validacion.nullEmpty(nomFiltro)) {
+        if (validacion.nullEmpty(docFiltro) && validacion.nullEmpty(nomFiltro)) {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Por favor ingrese un parámetro de búsqueda", null));
 
         } else {
-            if (!validacion.validarNumero(docFiltro) || docFiltro.isEmpty()) {
+            if (docFiltro != null && (!validacion.validarNumero(docFiltro) || docFiltro.isEmpty())) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo documento debe ser numérico", null));
                 varValidacion = false;
             }
 
-            if (!validacion.validarTexto(nomFiltro) || nomFiltro.isEmpty()) {
+            if (nomFiltro != null && (!validacion.validarTexto(nomFiltro) || nomFiltro.isEmpty())) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campo nombre o apellido debe ser texto", null));
                 varValidacion = false;
             }
