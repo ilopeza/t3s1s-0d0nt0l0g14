@@ -5,11 +5,14 @@
 package tesis.odontologia.interfaces.profesores;
 
 import com.mysema.query.types.expr.BooleanExpression;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -23,6 +26,7 @@ import tesis.odontologia.core.domain.profesor.Profesor;
 import tesis.odontologia.core.service.MateriaService;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.specification.ProfesorSpecs;
+import tesis.odontologia.interfaces.Web;
 
 /**
  *
@@ -162,6 +166,14 @@ public class ProfesoresBean {
         }
     }
 
+    public void cancelar(){
+        try {
+            Web.reloadPage();
+        } catch (IOException ex) {
+            Logger.getLogger(ProfesoresBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private BooleanExpression buscarPorNombreOrNumDoc(BooleanExpression p) {
         if (filtroBusqueda.matches("[0-9]*")) {
             p = p.and(ProfesorSpecs.byNumeroDocumento(filtroBusqueda));

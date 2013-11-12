@@ -38,9 +38,9 @@ and open the template in the editor.
             <p:growl id="growl" showDetail="true" life="3000" />  
 
             <p:dialog id="dialog" header="#{msg.lblIniciarSesion}" widgetVar="dlg" resizable="false" visible="true" draggable="false"
-                      closable="false" height="140"  width="300" modal="true">  
+                      closable="false" height="160"  width="350" modal="true">  
 
-                <h:panelGrid columns="2" cellpadding="5">  
+                <h:panelGrid columns="2" cellpadding="5" cellspacing="5">  
                     <h:outputLabel for="username" value="#{msg.lblUsuario}:" />  
                     <p:inputText value="#{loginBean.username}"   
                                  id="username" required="true" label="username" />  
@@ -54,6 +54,12 @@ and open the template in the editor.
                     <f:facet name="footer">  
                         <p:commandButton id="loginButton" value="#{msg.btnEntrar}" update="growl"   
                                          action="#{loginBean.login}"/>  
+                        <p:spacer width="20"/>
+                       
+                        <p:commandLink id="lnkRecuperar" value="#{msg.lblRecuperarCont}" 
+                                       action="#{loginBean.recuperarContrasenia()}"
+                                       update="growl"
+                                       immediate="true"/>
                     </f:facet>  
                 </h:panelGrid>  
 
