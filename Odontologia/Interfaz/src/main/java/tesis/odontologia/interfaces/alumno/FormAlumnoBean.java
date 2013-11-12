@@ -5,7 +5,9 @@
 package tesis.odontologia.interfaces.alumno;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -19,6 +21,7 @@ import tesis.odontologia.core.domain.usuario.Usuario;
 import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.RolService;
 import tesis.odontologia.core.service.UsuarioService;
+import tesis.odontologia.interfaces.Web;
 import tesis.odontologia.interfaces.login.LoginBean;
 
 /**
@@ -38,6 +41,7 @@ public class FormAlumnoBean {
     private UsuarioService usuarioService;
     @ManagedProperty(value = "#{rolService}")
     private RolService rolService;
+    private boolean firstLogin;
 
     public FormAlumnoBean() {
     }
@@ -48,8 +52,17 @@ public class FormAlumnoBean {
         HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
         LoginBean login = (LoginBean) session.getAttribute("loginBean");
 
+        firstLogin = true;
         alumno = new Alumno();
-        alumno = (Alumno) login.getPersona();
+        alumno.setId(new Long(1));
+        alumno.setFechaNacimiento(Calendar.getInstance());
+        alumno.setDocumento(new Documento());
+        alumno.setUsuario(login.getUsuario());
+        
+        if(login.getPersona() != null ) {
+            alumno = (Alumno) login.getPersona();
+            firstLogin = false;
+        }
 
     }
 
@@ -68,6 +81,11 @@ public class FormAlumnoBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El alumno no fue cargado correctamente", null));
             System.out.println(ex.getMessage());
 
+        }
+        if(firstLogin) {
+            Web.callDialog("dlgFirstLogin.hide()");
+            Web.callDialog("dlg.show()");
+            return null;
         }
         return "formAlumno";
     }

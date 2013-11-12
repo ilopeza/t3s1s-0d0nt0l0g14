@@ -17,6 +17,7 @@ import tesis.odontologia.core.service.PersonaService;
 import tesis.odontologia.core.service.UsuarioService;
 import tesis.odontologia.core.specification.PersonaSpecs;
 import tesis.odontologia.core.specification.UsuarioSpecs;
+import tesis.odontologia.interfaces.Web;
 
 /**
  *
@@ -93,7 +94,7 @@ public class LoginBean {
     }
 
     public String login() {
-        RequestContext context = RequestContext.getCurrentInstance();
+             RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg;
         boolean loggedIn;
         String resp = "index";
@@ -106,6 +107,11 @@ public class LoginBean {
         } else {
             persona = personaService.findOne(PersonaSpecs.byUsuario(usuario));
             loggedIn = true;
+            if(persona == null) {
+                Web.callDialog("dlg.hide()");
+                Web.callDialog("dlgFirstLogin.show()");
+                return null;
+            }
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", usuario.getNombreUsuario());
         }
 
