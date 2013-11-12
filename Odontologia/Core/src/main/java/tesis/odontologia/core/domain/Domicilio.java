@@ -56,10 +56,11 @@ public class Domicilio implements Serializable {
     public Domicilio() {
     }
 
-    public Domicilio(String calle, String calleNumero, String ciudadActual) {
+    public Domicilio(String calle, String calleNumero, String ciudadActual, String barrio) {
         this.calle = calle;
         this.calleNumero = calleNumero;
         this.ciudadActual = ciudadActual;
+        this.barrio = barrio;
     }
     
     //GETTERS AND SETTERS
