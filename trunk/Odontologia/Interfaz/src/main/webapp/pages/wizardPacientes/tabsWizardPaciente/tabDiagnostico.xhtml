@@ -75,29 +75,29 @@
         <p:panel id="pnlDiagnosticosCargados" header="#{msg.lblConsultarDiagnosticos}">
             <h:panelGrid columns="6" cellpadding="3" cellspacing="3">
 
-                <h:outputText value="#{msg.lblEstado}: "/>
-                <p:selectOneMenu id="selectEstadoDiagnostico" value="#{pacienteWizardBean.estadoDiagnosticoFiltro}">
+                <!--h:outputText value="{msg.lblEstado}: "/>
+                <p:selectOneMenu id="selectEstadoDiagnostico" value="{pacienteWizardBean.estadoDiagnosticoFiltro}">
                     <f:selectItem itemLabel="Seleccione una estado"/>
-                    <f:selectItems value="#{pacienteWizardBean.estadosDiagnostico}"/>
+                    <f:selectItems value="{pacienteWizardBean.estadosDiagnostico}"/>
                 </p:selectOneMenu>
 
-                <h:outputText value="#{msg.lblTrabajoPractico}:"/>
+                <h:outputText value="{msg.lblTrabajoPractico}:"/>
                 <p:selectOneMenu id="selectTrabajoPrácticoDiagnostico" converter="trabajoPracticoConverter" value="#{pacienteWizardBean.trabajoPracticoFiltro}">
-                    <f:selectItem itemLabel="#{msg.lblSelectTrabPrac}"/>
-                    <f:selectItems value="#{pacienteWizardBean.trabajosPracticos}"/>
+                    <f:selectItem itemLabelmsg.lblSelectTrabPrac}"/>
+                    <f:selectItems value="{pacienteWizardBean.trabajosPracticos}"/>
                 </p:selectOneMenu>
 
-                <p:commandButton id="btnFiltrarDiagnosticos" value="#{msg.btnBuscar}" 
-                                 actionListener="#{pacienteWizardBean.filtrar()}"
+                <p:commandButton id="btnFiltrarDiagnosticos" value="{msg.btnBuscar}" 
+                                 actionListener="{pacienteWizardBean.filtrar()}"
                                  update="pnlDiagnosticosCargados"
                                  process="pnlDiagnosticosCargados" 
-                                 disabled="#{!pacienteWizardBean.filtrarHabilitado}"
+                                 disabled="{!pacienteWizardBean.filtrarHabilitado}"
                                  icon="ui-icon-search"/>
-                <p:commandButton id="btnVerTodos" value="#{msg.btnVerTodos}"
-                                 actionListener="#{pacienteWizardBean.verTodos()}"
+                <p:commandButton id="btnVerTodos" value="{msg.btnVerTodos}"
+                                 actionListener="{pacienteWizardBean.verTodos()}"
                                  update="pnlDiagnosticosCargados"
                                  process="pnlDiagnosticosCargados"
-                                 disabled="#{pacienteWizardBean.filtrarHabilitado}"/>
+                                 disabled="{pacienteWizardBean.filtrarHabilitado}"/-->
             </h:panelGrid>
             <p:dataTable id="tblResultadoDiagnosticos" 
                          emptyMessage="#{msg.msgDiagCargados}"
@@ -151,7 +151,7 @@
         <p:commandButton id="btnSave" 
                          actionListener="#{pacienteWizardBean.savePaciente()}" 
                          process="@form"
-                         update=":msg"
+                         update=":msg, pnlNuevoDiagnostico"
                          value="#{msg.btnGuardar}" icon="ui-icon-disk"/>    
     </p:fieldset>
 
