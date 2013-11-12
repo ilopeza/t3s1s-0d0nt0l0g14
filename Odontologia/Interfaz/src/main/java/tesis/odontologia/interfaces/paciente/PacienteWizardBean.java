@@ -159,21 +159,6 @@ public class PacienteWizardBean {
         cargarMaterias();
         cargarTrabajosPracticos();
     }
-
-//    public String actualizarComponentes() {
-//        String var="";
-//        if (mensaje) {
-//            var = ":msg";
-//        }         
-//        if(mensaje==false) {
-//            var = ":secondaryForm:tablaPacientesEncontrados";
-//        }
-//        
-//        if(unicoPacienteEncontrado){
-//            var = ":formWizard:wizardPaciente,:consultarPacienteForm:pnlConsultarPaciente";
-//        }
-//        return var;
-//    }
     /**
      * Método para buscar los pacientes en el panel consultar paciente.
      */
@@ -293,7 +278,6 @@ public class PacienteWizardBean {
                     actualizarPaciente();
                     //resetFields();
                 } else {
-
                     nuevoPaciente();
                     //resetFields();
                 }
@@ -464,11 +448,13 @@ public class PacienteWizardBean {
 
     private void nuevoPaciente() {
         if (diagnosticos != null && diagnosticos.size() > 0) {
-            paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
+            
             HistoriaClinica hc = HistoriaClinica.createDefault();
-            hc.setDiagnostico(paciente.getHistoriaClinica().getDiagnostico());
             paciente.setHistoriaClinica(hc);
-
+            paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
+//            paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
+//            hc.setDiagnostico(paciente.getHistoriaClinica().getDiagnostico());
+            
             paciente = personaService.save(paciente);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
@@ -482,12 +468,9 @@ public class PacienteWizardBean {
     private void actualizarPaciente() {
         if (diagnosticos != null && diagnosticos.size() > 0) {
 
-            if (!diagnosticosNuevos.isEmpty()) {
-                this.setearIdNuevosDiagosticos(); // Se setean a null los IDS de los NUEVOS DIAGNOSTICOS para no generar conflictos en la BD.
-            }
             paciente.getHistoriaClinica().getDiagnostico().addAll(diagnosticos);
             paciente = personaService.save(paciente);
-            diagnosticosNuevos.clear(); // Vuelve la lista a cero para que se puedan cargar nuevos diagnósticos.
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + paciente.toString()
                     + " actualizado correctamente."));
         } else {
@@ -520,9 +503,7 @@ public class PacienteWizardBean {
         diagnostico.setEstado(Diagnostico.EstadoDiagnostico.PENDIENTE);
         long idAux = paciente.getHistoriaClinica().getDiagnostico().size();
         diagnostico.setId(Long.valueOf(idAux));
-        diagnosticosNuevos.add(diagnostico);
         diagnosticos.add(diagnostico);
-        paciente.getHistoriaClinica().getDiagnostico().add(diagnostico);
 
         diagnostico = new Diagnostico();
     }
@@ -535,16 +516,15 @@ public class PacienteWizardBean {
      * @return diagnóstico encontrado
      */
     public boolean modificarDiagnosticoEnMemoria(Diagnostico diag) {
+        selectedDiagnostico = new Diagnostico();
+        diagnostico = new Diagnostico();
+        
         boolean band = false;
-        for (Diagnostico d : diagnosticos) {
-            if (d.equals(diag)) {
-                diagnostico = d;
-                band = true;
-                //this.reestablecerDiagnostico();
-                selectedDiagnostico = null;
-                break;
-            }
-        }
+       
+        int aux = diagnosticos.indexOf(diag);
+        if(aux != -1)
+            diagnosticos.set(aux, diag);
+        
         return band;
     }
 
@@ -607,9 +587,8 @@ public class PacienteWizardBean {
         }
     }
 
-    private List<TrabajoPractico> buscarTrabajosPracticos(Materia m) {
+    private void buscarTrabajosPracticos(Materia m) {
         trabajosPracticos = m.getTrabajoPractico();
-        return trabajosPracticos;
     }
 
     /**
@@ -617,9 +596,10 @@ public class PacienteWizardBean {
      * intergaz para que pueda ser modificado.
      */
     public void seleccionarModificarDiagnostico() {
+        //buscarTrabajosPracticos(selectedDiagnostico.getMateria());
         diagnostico = selectedDiagnostico;
-        nuevoDiagnosticoHabilitado = true;
-        //selectedDiagnostico = null;
+        filtrarCombosPorMateria();
+        nuevoDiagnosticoHabilitado = true;    
     }
 
     /**
