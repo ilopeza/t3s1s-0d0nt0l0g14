@@ -27,16 +27,14 @@
                     </h:panelGrid>            
                 </p:panel>
                 <p:panel id="pnlImagen" header="Mi imagen">
-                    <h:panelGrid id="grdImagen" cellpadding="3" cellspacing="3" columns="2">
+                    <h:panelGrid id="grdImagen" cellpadding="3" cellspacing="3" columns="3">
                         <p:graphicImage id="imgUsuario" cache="false" value="#{modificarDatosUsuarioBean.ubicacionImagenUsuario}" height="200px" width="200px"></p:graphicImage>
-                        <p:fileUpload id="uploader" fileUploadListener="#{modificarDatosUsuarioBean.handleFileUpload}" mode="advanced" dragDropSupport="false"  
-                                      sizeLimit="300000" allowTypes="/(\.|\/)(jpe?g|png)$/" invalidFileMessage="Los tipos soportados son .png y .jpg" invalidSizeMessage="El tamaño debe ser igual a menor 300KB." 
-                                      rendered="#{modificarDatosUsuarioBean.mostrarUploader}"
-                                      update="pnlImagen"
-                                      />
+                        <p:fileUpload id="uploader"  fileUploadListener="#{modificarDatosUsuarioBean.handleFileUpload}" mode="advanced" dragDropSupport="false"  
+                                      sizeLimit="500000" allowTypes="/(\.|\/)(jpe?g|png)$/" invalidFileMessage="Los tipos soportados son .png y .jpg" invalidSizeMessage="El tamaño debe ser igual a menor 300KB." 
+                                      rendered="#{modificarDatosUsuarioBean.mostrarUploader}" update="pnlImagen, :msg"/>
                         <p:commandButton id="cambiarImagen" value="Cambiar" action="#{modificarDatosUsuarioBean.cambiarImagen()}"
                                          update="pnlImagen" rendered="#{!modificarDatosUsuarioBean.mostrarUploader}"/>
-
+                        <p:commandLink id="btnCancelarImagen" value="Volver a imagen anterior" update="pnlImagen" actionListener="#{modificarDatosUsuarioBean.volverImagenAnterior()}" rendered="#{modificarDatosUsuarioBean.mostrarLink}"/>
                     </h:panelGrid> 
                 </p:panel>
             </h:panelGrid>

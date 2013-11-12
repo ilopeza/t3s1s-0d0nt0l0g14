@@ -48,6 +48,8 @@ public class ModificarDatosUsuarioBean {
     private String destination;
     private String ubicacionImagenUsuario;
     private boolean mostrarUploader;
+    private String nuevaImagenUbicacion;
+    private boolean mostrarLink;
 
     @PostConstruct
     public void init() {
@@ -59,6 +61,8 @@ public class ModificarDatosUsuarioBean {
         persona = personaService.reload(persona, 1);
         obtenerUbicacionImagenUsuario();
         mostrarUploader = false;
+        mostrarLink = false;
+
 
     }
 
@@ -105,6 +109,12 @@ public class ModificarDatosUsuarioBean {
             if (nuevaContraseña != null && !nuevaContraseña.isEmpty()) {
                 persona.getUsuario().setContraseña(nuevaContraseña);
             }
+            if (persona.getUsuario().getUbicacionImagen() == null ? ubicacionImagenUsuario != null : !persona.getUsuario().getUbicacionImagen().equals(ubicacionImagenUsuario)) {
+                persona.getUsuario().setUbicacionImagen(ubicacionImagenUsuario);
+            } else {
+                File file = new File(ubicacionImagenUsuario);
+                file.delete();
+            }
             persona = personaService.save(persona);
             login.setPersona(persona);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Datos guardados correctamente", null));
@@ -114,33 +124,48 @@ public class ModificarDatosUsuarioBean {
 
         return "index";
     }
+    
+    public void volverImagenAnterior() {
+        if (persona.getUsuario().getUbicacionImagen() == null || persona.getUsuario().getUbicacionImagen().isEmpty()) {
+            ubicacionImagenUsuario = "../../resources/images/NOIMAGE.jpg";
+        } else {
+            ubicacionImagenUsuario = "../../" +persona.getUsuario().getUbicacionImagen().substring(persona.getUsuario().getUbicacionImagen().lastIndexOf("resources"));
+           
+        }
+        mostrarLink=false;
+    }
+    
 
     public String volverAInicio() {
         return "index";
     }
 
-    public void handleFileUpload(FileUploadEvent event) {
+    public void handleFileUpload(FileUploadEvent event) throws InterruptedException {
         try {
             ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             destination = servletContext.getRealPath("").substring(0, servletContext.getRealPath("").lastIndexOf("target"))
                     + "src" + File.separator + "main" + File.separator + "webapp" + File.separator
                     + "resources" + File.separator + "images" + File.separator + "ImagenesUsuarios" + File.separator;
             String nombre = "image_" + persona.getUsuario().getNombreUsuario() + persona.getUsuario().getVersion() + event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf('.'));
-            if (persona.getUsuario().getUbicacionImagen() != null && !persona.getUsuario().getUbicacionImagen().isEmpty()) {
-                File file = new File(persona.getUsuario().getUbicacionImagen());
-                file.delete();
-            }
+            //if (persona.getUsuario().getUbicacionImagen() != null && !persona.getUsuario().getUbicacionImagen().isEmpty()) {
+                //File file = new File(persona.getUsuario().getUbicacionImagen());
+                //file.delete();
+            //}
             if (copyFile(nombre, event.getFile().getInputstream())) {
-                persona.getUsuario().setUbicacionImagen(destination + nombre);
-                persona = personaService.save(persona);
-                login.setPersona(persona);
-                obtenerUbicacionImagenUsuario();
+                ubicacionImagenUsuario = destination + nombre;
+                //persona.getUsuario().setUbicacionImagen(destination + nombre);
+                //persona = personaService.save(persona);
+                //login.setPersona(persona);
                 mostrarUploader = false;
+                agregarMensajeAlUsuario(FacesMessage.SEVERITY_INFO, "Imagen subida correctamente.");
+                Thread.sleep(2000);
+                mostrarLink=true;
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            ubicacionImagenUsuario = "../../" +ubicacionImagenUsuario.substring(ubicacionImagenUsuario.lastIndexOf("resources"));
+            //obtenerUbicacionImagenUsuario();
         }
     }
 
@@ -157,6 +182,7 @@ public class ModificarDatosUsuarioBean {
             }
 
             in.close();
+            
             out.flush();
             out.close();
 
@@ -167,7 +193,12 @@ public class ModificarDatosUsuarioBean {
             return false;
         }
     }
-
+    
+     public void agregarMensajeAlUsuario(FacesMessage.Severity severidad, String mensaje) {
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(severidad, mensaje, null));
+    }
+    
     public String formatFecha(Calendar c) {
         return FechaUtils.fechaMaskFormat(c, "dd/MM/yyyy HH:mm");
     }
@@ -276,4 +307,33 @@ public class ModificarDatosUsuarioBean {
     public void setMostrarUploader(boolean mostrarUploader) {
         this.mostrarUploader = mostrarUploader;
     }
+
+    /**
+     * @return the nuevaImagenUbicacion
+     */
+    public String getNuevaImagenUbicacion() {
+        return nuevaImagenUbicacion;
+    }
+
+    /**
+     * @param nuevaImagenUbicacion the nuevaImagenUbicacion to set
+     */
+    public void setNuevaImagenUbicacion(String nuevaImagenUbicacion) {
+        this.nuevaImagenUbicacion = nuevaImagenUbicacion;
+    }
+
+    /**
+     * @return the mostrarLink
+     */
+    public boolean isMostrarLink() {
+        return mostrarLink;
+    }
+
+    /**
+     * @param mostrarLink the mostrarLink to set
+     */
+    public void setMostrarLink(boolean mostrarLink) {
+        this.mostrarLink = mostrarLink;
+    }
+
 }
