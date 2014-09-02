@@ -52,6 +52,7 @@ public class PacienteWizardBean {
     //Atributos para crear.
     private Paciente paciente;
     private AsignacionPaciente asignacion;
+
     //Listas para los combos.
     private List<Documento.TipoDocumento> listaTipoDocumento;
     private List<Paciente.EstadoCivilTipo> listaEstadoCivilTipo;
